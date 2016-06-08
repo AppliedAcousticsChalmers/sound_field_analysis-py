@@ -119,6 +119,23 @@ def bn(n, krm, krs, ac):
 def sph_harm(m, n, az, el):
     return scy.sph_harm(m, n, az, el)
 
+
+def cart2sph(x, y, z):
+    '''Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.'''
+    hxy = np.hypot(x, y)
+    r = np.hypot(hxy, z)
+    el = np.arctan2(z, hxy)
+    az = np.arctan2(y, x)
+    return az, el, r
+
+
+def sph2cart(az, el, r):
+    '''Converts spherical coordinates az, el, r to cartesian coordinates x, y, z.'''
+    rcos_theta = r * np.cos(el)
+    x = rcos_theta * np.cos(az)
+    y = rcos_theta * np.sin(az)
+    z = r * np.sin(el)
+    return x, y, z
 # DEBUG
 
 
