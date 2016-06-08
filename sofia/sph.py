@@ -2,7 +2,7 @@
 Collection of spherical helper functions
 """
 
-import numpy as np
+import numpy as _np
 from scipy import special as scy
 
 
@@ -10,7 +10,7 @@ def spbessel(n, kr):
     """Spherical Bessel of order n"""
     # spb1 = scy.sph_jn(n, kr)  # returns j and j'
     # return spb1[0][-1]
-    return np.sqrt(np.pi / (2 * kr)) * scy.jn(n + 0.5, kr)
+    return _np.sqrt(_np.pi / (2 * kr)) * scy.jn(n + 0.5, kr)
 
 
 def dspbessel(n, kr):
@@ -24,7 +24,7 @@ def spneumann(n, kr):
     """Spherical Neumann (Bessel second kind) of order n"""
     # spb2 = scy.sph_yn(n, kr)
     # return spb2[0][-1]
-    return np.sqrt(np.pi / (2 * kr)) * scy.yv(n + 0.5, kr)
+    return _np.sqrt(_np.pi / (2 * kr)) * scy.yv(n + 0.5, kr)
 
 
 def dspneumann(n, kr):
@@ -113,7 +113,7 @@ def bn_dualOpenP(n, kr1, kr2):
 
 
 def bn(n, krm, krs, ac):
-    return bn_npf(n, krm, krs, ac) * 4 * np.pi * pow(1j, n)
+    return bn_npf(n, krm, krs, ac) * 4 * _np.pi * pow(1j, n)
 
 
 def sph_harm(m, n, az, el):
@@ -122,19 +122,19 @@ def sph_harm(m, n, az, el):
 
 def cart2sph(x, y, z):
     '''Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.'''
-    hxy = np.hypot(x, y)
-    r = np.hypot(hxy, z)
-    el = np.arctan2(z, hxy)
-    az = np.arctan2(y, x)
+    hxy = _np.hypot(x, y)
+    r = _np.hypot(hxy, z)
+    el = _np.arctan2(z, hxy)
+    az = _np.arctan2(y, x)
     return az, el, r
 
 
 def sph2cart(az, el, r):
     '''Converts spherical coordinates az, el, r to cartesian coordinates x, y, z.'''
-    rcos_theta = r * np.cos(el)
-    x = rcos_theta * np.cos(az)
-    y = rcos_theta * np.sin(az)
-    z = r * np.sin(el)
+    rcos_theta = r * _np.cos(el)
+    x = rcos_theta * _np.cos(az)
+    y = rcos_theta * _np.sin(az)
+    z = r * _np.sin(el)
     return x, y, z
 # DEBUG
 
