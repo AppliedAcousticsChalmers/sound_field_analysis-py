@@ -4,7 +4,7 @@ Generator functions:
 - Modal radial filters (mf)
 """
 import numpy as _np
-from .sph import bn, bn_npf, sphankel, sph_harm
+from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph
 
 
 def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
@@ -233,3 +233,54 @@ def mf(N, kr, ac, **kargs):
         BeamResponse[ctr] = BeamResponse[ctr] / normalizeBeam
 
     return OutputArray, BeamResponse
+
+
+def lebedev(degree, **kargs):
+    '''
+    [gridData, Npoints, Nmax] = sofia_lebedev(degree, plot)
+    ------------------------------------------------------------------------
+    gridData           Lebedev quadrature including weigths(W):
+                       [AZ_1 EL_1 W_1;
+                        AZ_2 EL_2 W_2;
+                        ...
+                        AZ_n EL_n W_n]
+
+    Npoints            Total number of nodes
+    Nmax               Highest stable grid order
+    ------------------------------------------------------------------------
+    Order              Lebedev Degree (Number of nodes)
+                       Call sofia_lebedev() to obtain a
+                       list of valid degrees.
+
+    plot               Show a globe plot of the selected grid
+                       0: Off [default], 1: On
+
+    This function computes Lebedev quadrature nodes and weigths
+    in the SOFiA/VariSphear data format.
+    '''
+    print('SOFiA Lebedev Grid')
+    plot = kargs['plot'] if 'plot' in kargs else 0
+
+    deg_avail = _np.array([6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194, 230, 266, 302, 350, 434, 590, 770, 974, 1202, 1454, 1730, 2030, 2354, 2702, 3074, 3470, 3890, 4334, 4802, 5294, 5810])
+
+    if degree not in deg_avail:
+        raise ValueError('WARNING: Invalid quadrature degree', degree, '[deg] supplied. Choose one of the following:\n', deg_avail)
+
+    # TODO: lebedev.calc
+    leb = lebedev.calc
+    theta, phi, _ = cart2sph(leb.x, leb.y, leb.z)
+    leb.w = leb.w / (4 * _np.pi)
+    theta = theta % (2 * _np.pi)
+    gridData = [theta, phi + _np.pi / 2, leb.w]
+    gridData = gridData.sort(1)
+    gridData = gridData.sort(0)
+
+    # TODO: turnover
+    Npoints = gridData.shape[0]
+    Nmax = _np.floor(_np.sqrt(gridData.shape[0] / 1.3) - 1)
+
+    # TODO: plot
+    if plot:
+        pass
+
+    return gridData, Npoints, Nmax
