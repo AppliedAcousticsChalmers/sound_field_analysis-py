@@ -136,9 +136,9 @@ def sph2cart(az, el, r):
     y = rcos_theta * _np.sin(az)
     z = r * _np.sin(el)
     return x, y, z
+
+
 # DEBUG
-
-
 def printSPH(n, k):
     print(' '.join(('spbessel:', str(spbessel(n, k)))))
     print(' '.join(('dspbessel:', str(dspbessel(n, k)))))
