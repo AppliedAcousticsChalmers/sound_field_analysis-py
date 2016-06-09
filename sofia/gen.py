@@ -272,8 +272,33 @@ def lebedev(degree, **kargs):
     # TODO: turnover
     Nmax = _np.floor(_np.sqrt(degree / 1.3) - 1)
 
-    # TODO: plot
     if plot:
-        pass
+        import matplotlib.pyplot as plt
+        from mpl_toolkits.mplot3d import Axes3D
+
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        ax.set_zlim(-1.01, 1.01)
+
+        # Create sphere
+        u = _np.linspace(0, 2 * _np.pi, 20)
+        v = _np.linspace(0, _np.pi, 20)
+
+        X = _np.outer(_np.cos(u), _np.sin(v))
+        Y = _np.outer(_np.sin(u), _np.sin(v))
+        Z = _np.outer(_np.ones(_np.size(u)), _np.cos(v))
+
+        ax.plot_surface(X, Y, Z, rstride=1, cstride=1, linewidth=1,
+                        color='gray', alpha=0.6, antialiased=True)
+
+        # Scatter points
+        ax.scatter(leb.x, leb.y, leb.z, color='black', s=50)
+
+        # Finish up
+        plt.title('Lebedev configuration with ' + str(degree) + ' degrees')
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        plt.show()
 
     return gridData, Nmax
