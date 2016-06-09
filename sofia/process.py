@@ -8,6 +8,8 @@ import numpy as _np
 from scipy.signal import hann, resample
 from .sph import sph_harm
 
+pi = _np.pi
+
 
 def pdc(N, OmegaL, Pnm, dn, **kargs):
     """
@@ -82,7 +84,7 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
               'The Pnm coefficients deliver a maximum of', int(_np.sqrt(NMDeliveredSize) - 1), '\n'
               'Will decompose on maximum available order.\n\n')
 
-    gaincorrection = 4 * _np.pi / pow(N + 1, 2)
+    gaincorrection = 4 * pi / pow(N + 1, 2)
 
     OutputArray = _np.zeros((numberOfAngles, FFTBlocklengthPnm), dtype=_np.complex_)
 

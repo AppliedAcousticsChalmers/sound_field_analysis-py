@@ -7,6 +7,8 @@ Generator functions:
 import numpy as _np
 from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph
 
+pi = _np.pi
+
 
 def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     """
@@ -78,7 +80,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
             rs = r[1]
             nor = 2
 
-    w = _np.linspace(0, _np.pi * fs, NFFT)
+    w = _np.linspace(0, pi * fs, NFFT)
     # w = 0 breaks stuff ?
     w[0] = w[1]
     k = w / c
@@ -95,7 +97,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
             if wavetype == 0:    # Plane wave
                 rfArray[n][f] = bn(n, krm[f], krs[f], ac) * timeShift
             elif wavetype == 1:  # Spherical wave
-                rfArray[n][f] = 4 * _np.pi * -1j * k[f] * timeShift * sphankel(n, kds[f]) * bn_npf(n, krm[f], krs[f], ac)
+                rfArray[n][f] = 4 * pi * -1j * k[f] * timeShift * sphankel(n, kds[f]) * bn_npf(n, krm[f], krs[f], ac)
 
     # GENERATOR CORE
     Pnm = _np.empty([pow(N + 1, 2), upperSegLim + 1 - lowerSegLim], dtype=complex)
@@ -175,7 +177,7 @@ def mf(N, kr, ac, **kargs):
         for ctrb in range(0, krN):
             bnval = bn(ctr, krm[ctrb], krs[ctrb], ac)
             if limiteronflag:
-                amplicalc = 2 * a_max / _np.pi * abs(bnval) * _np.arctan(_np.pi / (2 * a_max * abs(bnval)))
+                amplicalc = 2 * a_max / pi * abs(bnval) * _np.arctan(pi / (2 * a_max * abs(bnval)))
             else:
                 amplicalc = 1
             OutputArray[ctr][ctrb] = amplicalc / bnval
@@ -266,8 +268,8 @@ def lebedev(degree, **kargs):
 
     leb = lebedev.genGrid(degree)
     theta, phi, _ = cart2sph(leb.x, leb.y, leb.z)
-    theta = theta % (2 * _np.pi)
-    gridData = _np.array([theta, phi + _np.pi / 2, leb.w]).T
+    theta = theta % (2 * pi)
+    gridData = _np.array([theta, phi + pi / 2, leb.w]).T
     gridData = _np.sort(gridData, 0)  # Sort rows
 
     # TODO: turnover
@@ -282,8 +284,8 @@ def lebedev(degree, **kargs):
         ax.set_zlim(-1.01, 1.01)
 
         # Create sphere
-        u = _np.linspace(0, 2 * _np.pi, 20)
-        v = _np.linspace(0, _np.pi, 20)
+        u = _np.linspace(0, 2 * pi, 20)
+        v = _np.linspace(0, pi, 20)
 
         X = _np.outer(_np.cos(u), _np.sin(v))
         Y = _np.outer(_np.sin(u), _np.sin(v))
