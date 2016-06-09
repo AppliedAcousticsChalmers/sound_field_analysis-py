@@ -14,7 +14,7 @@ NFFT = 1024     # FFT-Bins
 AZ = 0          # Azimuth angle
 EL = np.pi / 2  # Elevation angle
 
-quadrature_grid = gen.lebedev(110, 0)  # EXAMPLE GRID LEB110, No Plot
+quadrature_grid, _, _ = gen.lebedev(110)  # Lebedev grid of order 110
 
 fftData, kr = gen.swg(r, quadrature_grid, ac, FS, NFFT, AZ, EL)
 
