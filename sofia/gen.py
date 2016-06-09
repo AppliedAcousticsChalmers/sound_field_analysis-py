@@ -237,50 +237,43 @@ def mf(N, kr, ac, **kargs):
 
 def lebedev(degree, **kargs):
     '''
-    [gridData, Npoints, Nmax] = sofia_lebedev(degree, plot)
+    [gridData, Nmax] = sofia_lebedev(degree, plot)
+    This function computes Lebedev quadrature nodes and weigths.
     ------------------------------------------------------------------------
-    gridData           Lebedev quadrature including weigths(W):
-                       [AZ_1 EL_1 W_1;
-                        AZ_2 EL_2 W_2;
+    gridData            Lebedev quadrature including weigths(W):
+                        [AZ_1 EL_1 W_1;
                         ...
                         AZ_n EL_n W_n]
 
-    Npoints            Total number of nodes
-    Nmax               Highest stable grid order
+    Nmax                Highest stable grid order
     ------------------------------------------------------------------------
-    Order              Lebedev Degree (Number of nodes)
-                       Call sofia_lebedev() to obtain a
-                       list of valid degrees.
+    Degree              Lebedev Degree (Number of nodes). Currently available:
+                        6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194
 
-    plot               Show a globe plot of the selected grid
-                       0: Off [default], 1: On
-
-    This function computes Lebedev quadrature nodes and weigths
-    in the SOFiA/VariSphear data format.
+    plot                Show a globe plot of the selected grid
+                        0: Off [default], 1: On
     '''
+    from sofia import lebedev
+
     print('SOFiA Lebedev Grid')
     plot = kargs['plot'] if 'plot' in kargs else 0
 
-    deg_avail = _np.array([6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194, 230, 266, 302, 350, 434, 590, 770, 974, 1202, 1454, 1730, 2030, 2354, 2702, 3074, 3470, 3890, 4334, 4802, 5294, 5810])
+    deg_avail = _np.array([6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194])
 
     if degree not in deg_avail:
         raise ValueError('WARNING: Invalid quadrature degree', degree, '[deg] supplied. Choose one of the following:\n', deg_avail)
 
-    # TODO: lebedev.calc
-    leb = lebedev.calc
+    leb = lebedev.genGrid(degree)
     theta, phi, _ = cart2sph(leb.x, leb.y, leb.z)
-    leb.w = leb.w / (4 * _np.pi)
     theta = theta % (2 * _np.pi)
-    gridData = [theta, phi + _np.pi / 2, leb.w]
-    gridData = gridData.sort(1)
-    gridData = gridData.sort(0)
+    gridData = _np.array([theta, phi + _np.pi / 2, leb.w]).T
+    gridData = _np.sort(gridData, 0)  # Sort rows
 
     # TODO: turnover
-    Npoints = gridData.shape[0]
-    Nmax = _np.floor(_np.sqrt(gridData.shape[0] / 1.3) - 1)
+    Nmax = _np.floor(_np.sqrt(degree / 1.3) - 1)
 
     # TODO: plot
     if plot:
         pass
 
-    return gridData, Npoints, Nmax
+    return gridData, Nmax
