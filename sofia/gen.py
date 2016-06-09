@@ -174,7 +174,7 @@ def mf(N, kr, ac, **kargs):
         for ctrb in range(0, krN):
             bnval = bn(ctr, krm[ctrb], krs[ctrb], ac)
             if limiteronflag:
-                amplicalc = 2 * a_max / _np.pi * abs(bnval) * _np.arctan(np.pi / (2 * a_max * abs(bnval)))
+                amplicalc = 2 * a_max / _np.pi * abs(bnval) * _np.arctan(_np.pi / (2 * a_max * abs(bnval)))
             else:
                 amplicalc = 1
             OutputArray[ctr][ctrb] = amplicalc / bnval
@@ -194,7 +194,7 @@ def mf(N, kr, ac, **kargs):
             xi[ctr] = xi[ctr] + OutputArray[0][ctr]
 
     if plc == 1:  # low kr only
-        minDisIDX = _np.argmin(np.abs(OutputArray[0] - xi))
+        minDisIDX = _np.argmin(_np.abs(OutputArray[0] - xi))
         minDis = _np.abs(OutputArray[0][minDisIDX] - xi[minDisIDX])
 
         filtergap = 20 * _np.log10(1 / _np.abs(OutputArray[0][minDisIDX] / xi[minDisIDX]))
