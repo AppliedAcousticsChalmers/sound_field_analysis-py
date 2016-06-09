@@ -1,6 +1,7 @@
 """
 Processing functions:
 - Plane Wave Decomposition (pdc)
+- Time domain signals reconstruction (tdt)
 """
 
 import numpy as _np
