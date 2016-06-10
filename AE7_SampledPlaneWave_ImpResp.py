@@ -14,9 +14,9 @@ NFFT = 1024     # FFT-Bins
 AZ = 0          # Azimuth angle
 EL = np.pi / 2  # Elevation angle
 
-quadrature_grid, _, _ = gen.lebedev(110)  # Lebedev grid of order 110
+quadrature_grid, _ = gen.lebedev(110)  # Lebedev grid of order 110
 
-fftData, kr = gen.swg(r, quadrature_grid, ac, FS, NFFT, AZ, EL)
+fftData, kr = gen.swg(r=r, gridData=quadrature_grid, ac=ac, FS=FS, NFFT=NFFT, AZ=AZ, EL=EL)
 
 # Spatial Fourier Transform
 Nsft = 5
