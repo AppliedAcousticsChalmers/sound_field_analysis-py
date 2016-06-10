@@ -70,7 +70,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
 
     # TODO: safety checks, source distance
 
-    if isinstance(r, int):
+    if not isinstance(r, list):
         rm = r
         rs = r
         nor = 1
@@ -305,3 +305,103 @@ def lebedev(degree, **kargs):
         plt.show()
 
     return gridData, Nmax
+
+
+def swg(**kargs):
+    """
+    [fftdata, kr] = sofia_swg(r, gridData, ac, FS, NFFT, ...
+                                          AZ, EL, Nlim, t, c, wavetype, ds)
+    ------------------------------------------------------------------------
+    fftData  Complex sound pressures                   [(N+1)^2 x NFFT]
+    kr       kr-Vector
+             Can also be a matrix [krm; krs] for rigid sphere configurations:
+              [1,:] => krm referring to the Microphone Radius
+              [2,:] => krs referring to the Sphere/Microphone2 Radius
+    ------------------------------------------------------------------------
+    r        Microphone Radius
+             Can also be a vector for rigid sphere configurations:
+              [1,1] => rm  Microphone Radius
+              [2,1] => rs  Sphere Radius (Scatterer)
+    gridData Quadrature grid                           [default LEB110]
+              Columns : Position Number 1...M
+              Rows    : [AZ EL Weight]
+              Angles AZ, EL in [RAD]
+    ac       Array Configuration
+              0  Open Sphere with p Transducers
+              1  Open Sphere with pGrad Transducers
+              2  Rigid Sphere with p Transducers
+              3  Rigid Sphere with pGrad Transducers (Thx to Nils Peters!)
+              4  Dual Open Sphere with p Transducers (Thx to Nils Peters!)
+    FS       Sampling Frequency
+    NFFT     FFT Order (Number of bins) should be 2^x, x=1,2,3,...
+    AZ       Azimuth   angle in [DEG] 0-2pi
+    EL       Elevation angle in [DEG] 0-pi
+    Nlim     Internal generator transform order limit
+    c        Speed of sound in [m/s] (Default: 343m/s)
+    t        Time Delay in s
+    wavetype Type of the Wave. 0: Plane Wave (default) 1: Spherical Wave
+    ds       Distance of the source in [m] (For wavetype = 1 only)
+             Warning: If NFFT is smaller than the time the wavefront
+             needs to travel from the source to the array, the impulse
+             response will by cyclically shifted (cyclic convolution).
+
+    This file is a wrapper generating the complex pressures at the
+    positions given in 'gridData' for a full spectrum 0-FS/2 Hz (NFFT Bins)
+    wave impinging to an array. The wrapper involves the W/G/C wave
+    generator core and the I/T/C spatial transform core.
+
+    S/W/G emulates discrete sampling. You can observe alias artifacts.
+    """
+
+    # Get optional arguments - most probably could be proper optional arguments
+    r = kargs['r'] if 'r' in kargs else 0.1
+    gridData = kargs['gridData'] if 'gridData' in kargs else lebedev(110)
+    ac = kargs['ac'] if 'ac' in kargs else 0
+    FS = kargs['FS'] if 'FS' in kargs else 48000
+    NFFT = kargs['NFFT'] if 'NFFT' in kargs else 512
+    AZ = kargs['AZ'] if 'AZ' in kargs else 0
+    EL = kargs['EL'] if 'EL' in kargs else _np.pi / 2
+    Nlim = kargs['Nlim'] if 'Nlim' in kargs else 120
+    # t = kargs['t'] if 't' in kargs else 0
+    c = kargs['c'] if 'c' in kargs else 343
+    wavetype = kargs['wavetype'] if 'wavetype' in kargs else 0
+    ds = kargs['ds'] if 'ds' in kargs else 1
+
+    if not isinstance(r, list):  # r [1,1] => rm  Microphone Radius
+        kr = _np.linspace(0, r * pi * FS / c, (NFFT / 2 + 1))
+        krRef = kr
+    else:  # r [2,1] => rs  Sphere Radius (Scatterer)
+        kr = _np.array([_np.linspace(0, r[0] * pi * FS / c, NFFT / 2 + 1),
+                        _np.linspace(0, r[1] * pi * FS / c, NFFT / 2 + 1)])
+        krRef = kr[0] if r[0] > r[1] else kr[1]
+
+    minOrderLim = 70
+    rqOrders = _np.ceil(krRef * 2).astype('int')
+    maxReqOrder = _np.max(rqOrders)
+    rqOrders[rqOrders <= minOrderLim] = minOrderLim
+    rqOrders[rqOrders > Nlim] = Nlim
+    Ng = _np.max(rqOrders)
+
+    if maxReqOrder > Ng:
+        print('WARNING: Requested wave needs a minimum order of ' + str(maxReqOrder) + ' but only order ' + str(Ng) + 'can be delivered.')
+    elif minOrderLim == Ng:
+        print('Full spectrum generator order: ' + str(Ng))
+    else:
+        print('Segmented generator orders: ' + str(minOrderLim) + ' to ' + str(Ng))
+
+    # SEGMENTATION
+    # index = 1
+    # ctr = -1
+    Pnm = _np.zeros([(Ng + 1) ** 2, int(NFFT / 2 + 1)], dtype=_np.complex_)
+
+    for idx, order in enumerate(_np.unique(rqOrders)):
+        amtDone = idx / (_np.unique(rqOrders).size - 1)
+        print("\rProgress: [{0:50s}] {1:.1f}%".format('#' * int(amtDone * 50), amtDone * 100))
+        fOrders = _np.flatnonzero(rqOrders == order)
+        temp, _ = wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order)
+        Pnm += temp
+
+    # TODO: inverse spatial transform (process.itc)
+    # fftData = itc(Pnm, gridData)
+
+    return kr  # , fftData
