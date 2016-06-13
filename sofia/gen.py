@@ -3,9 +3,11 @@ Generator functions:
 - Wave generator (wgc)
 - Modal radial filters (mf)
 - Lebedev quadrature nodes and weigths (lebedev)
+- Sampled Wave Generator Wrapper (swg)
 """
 import numpy as _np
 from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph
+from .process import itc
 
 pi = _np.pi
 
@@ -316,7 +318,7 @@ def lebedev(degree, **kargs):
 
 
 def swg(**kargs):
-    """
+    """S/W/G Sampled Wave Generator Wrapper
     [fftdata, kr] = sofia_swg(r, gridData, ac, FS, NFFT, ...
                                           AZ, EL, Nlim, t, c, wavetype, ds)
     ------------------------------------------------------------------------
@@ -408,12 +410,11 @@ def swg(**kargs):
     for idx, order in enumerate(_np.unique(rqOrders)):
         amtDone = idx / (_np.unique(rqOrders).size - 1)
         if printInfo:
-            print("\rProgress: [{0:50s}] {1:.1f}%".format('#' * int(amtDone * 50), amtDone * 100), end="", flush=True)
+            print('\rProgress: [{0:50s}] {1:.1f}%'.format('#' * int(amtDone * 50), amtDone * 100), end="", flush=True)
         fOrders = _np.flatnonzero(rqOrders == order)
         temp, _ = wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order, printInfo=False)
         Pnm += temp
 
-    # TODO: inverse spatial transform (process.itc)
-    # fftData = itc(Pnm, gridData)
+    fftData = itc(Pnm, gridData)
 
-    return kr  # , fftData
+    return fftData, kr
