@@ -35,7 +35,10 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
            If cn is not specified a PWD will be done
     """
 
-    print('SOFiA P/D/C - Plane Wave Decomposition')
+    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+
+    if printInfo:
+        print('SOFiA P/D/C - Plane Wave Decomposition')
 
     if N < 0:
         N = 0
@@ -143,14 +146,16 @@ def tdt(Y, **kargs):
     and the function returns [NumberOfChannels x resampleFactor*2^n] samples.
     """
 
-    print('SOFiA T/D/T - Time Domain Transform')
-
     # Get optional arguments
     win = kargs['win'] if 'win' in kargs else 0
     if win > 1:
         raise ValueError('Argument window must be in range 0.0 ... 1.0!')
     minPhase = kargs['minPhase'] if 'minPhase' in kargs else 0
     resampleFactor = kargs['resampleFactor'] if 'resampleFactor' in kargs else 1
+    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+
+    if printInfo:
+        print('SOFiA T/D/T - Time Domain Transform')
 
     # inverse real FFT
     y = _np.fft.irfft(Y)

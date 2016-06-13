@@ -56,8 +56,6 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     SegN     (Sement Order)        Used by the S/W/G wrapper
     """
 
-    print('SOFiA W/G/C - Wave Generator')
-
     NFFT = F_NFFT / 2 + 1
 
     SegN = kargs['SegN'] if 'SegN' in kargs else N
@@ -67,6 +65,10 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     wavetype = kargs['wavetype'] if 'wavetype' in kargs else 0
     c = kargs['c'] if 'c' in kargs else 343.0
     t = kargs['t'] if 't' in kargs else 0.0
+    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+
+    if printInfo:
+        print('SOFiA W/G/C - Wave Generator')
 
     # TODO: safety checks, source distance
 
@@ -148,14 +150,16 @@ def mf(N, kr, ac, **kargs):
                 0 = auto fadeover
     """
 
-    print('SOFiA M/F - Modal radial filter generator')
-
     # Get optional arguments
     a_maxdB = kargs['a_maxdB'] if 'a_maxdB' in kargs else 0
     a_max = pow(10, (a_maxdB / 20)) if 'a_maxdB' in kargs else 1
     limiteronflag = True if 'a_maxdB' in kargs else False
     plc = kargs['plc'] if 'plc' in kargs else 0
     fadeover = kargs['fadeover'] if 'fadeover' in kargs else 0
+    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+
+    if printInfo:
+        print('SOFiA M/F - Modal radial filter generator')
 
     if kr.ndim == 1:
         krN = kr.size
@@ -201,7 +205,8 @@ def mf(N, kr, ac, **kargs):
         minDis = _np.abs(OutputArray[0][minDisIDX] - xi[minDisIDX])
 
         filtergap = 20 * _np.log10(1 / _np.abs(OutputArray[0][minDisIDX] / xi[minDisIDX]))
-        print("Filter fade gap: ", filtergap)
+        if printInfo:
+            print("Filter fade gap: ", filtergap)
         if _np.abs(filtergap) > 20:
             print("Filter fade gap too large, no powerloss compensation applied.")
             noplcflag = 1
@@ -220,8 +225,8 @@ def mf(N, kr, ac, **kargs):
                     fadeover = minDisIDX
                 else:
                     fadeover = krN - minDisIDX
-
-            print("Auto filter size of length: ", fadeover)
+            if printInfo:
+                print("Auto filter size of length: ", fadeover)
         # TODO: Auto reduce filter length
     elif plc == 2:  # Full spectrum
         OutputArray[0] = xi
@@ -258,8 +263,11 @@ def lebedev(degree, **kargs):
     '''
     from sofia import lebedev
 
-    print('SOFiA Lebedev Grid')
     plot = kargs['plot'] if 'plot' in kargs else 0
+    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+
+    if printInfo:
+        print('SOFiA Lebedev Grid')
 
     deg_avail = _np.array([6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194])
 
@@ -366,6 +374,7 @@ def swg(**kargs):
     c = kargs['c'] if 'c' in kargs else 343
     wavetype = kargs['wavetype'] if 'wavetype' in kargs else 0
     ds = kargs['ds'] if 'ds' in kargs else 1
+    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
 
     if not isinstance(r, list):  # r [1,1] => rm  Microphone Radius
         kr = _np.linspace(0, r * pi * FS / c, (NFFT / 2 + 1))
@@ -385,9 +394,11 @@ def swg(**kargs):
     if maxReqOrder > Ng:
         print('WARNING: Requested wave needs a minimum order of ' + str(maxReqOrder) + ' but only order ' + str(Ng) + 'can be delivered.')
     elif minOrderLim == Ng:
-        print('Full spectrum generator order: ' + str(Ng))
+        if printInfo:
+            print('Full spectrum generator order: ' + str(Ng))
     else:
-        print('Segmented generator orders: ' + str(minOrderLim) + ' to ' + str(Ng))
+        if printInfo:
+            print('Segmented generator orders: ' + str(minOrderLim) + ' to ' + str(Ng))
 
     # SEGMENTATION
     # index = 1
@@ -396,9 +407,10 @@ def swg(**kargs):
 
     for idx, order in enumerate(_np.unique(rqOrders)):
         amtDone = idx / (_np.unique(rqOrders).size - 1)
-        print("\rProgress: [{0:50s}] {1:.1f}%".format('#' * int(amtDone * 50), amtDone * 100))
+        if printInfo:
+            print("\rProgress: [{0:50s}] {1:.1f}%".format('#' * int(amtDone * 50), amtDone * 100))
         fOrders = _np.flatnonzero(rqOrders == order)
-        temp, _ = wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order)
+        temp, _ = wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order, printInfo=False)
         Pnm += temp
 
     # TODO: inverse spatial transform (process.itc)
