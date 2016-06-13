@@ -408,7 +408,7 @@ def swg(**kargs):
     for idx, order in enumerate(_np.unique(rqOrders)):
         amtDone = idx / (_np.unique(rqOrders).size - 1)
         if printInfo:
-            print("\rProgress: [{0:50s}] {1:.1f}%".format('#' * int(amtDone * 50), amtDone * 100))
+            print("\rProgress: [{0:50s}] {1:.1f}%".format('#' * int(amtDone * 50), amtDone * 100), end="", flush=True)
         fOrders = _np.flatnonzero(rqOrders == order)
         temp, _ = wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order, printInfo=False)
         Pnm += temp
