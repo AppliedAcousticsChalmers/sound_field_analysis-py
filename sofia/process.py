@@ -179,3 +179,67 @@ def tdt(Y, **kargs):
         y = resample(y, _np.round(y.shape[1] / resampleFactor), axis=1)
 
     return y
+
+
+def itc(Pnm, angles, **kargs):
+    """I/T/C Fast Inverse spatial Fourier Transform Core
+    p = sofia_itc(Pnm, angles, [N])
+    ------------------------------------------------------------------------
+    p      sound pressures (complex data)
+           Columns : FFT bins
+           Rows    : angles
+    ------------------------------------------------------------------------
+    Pnm    spatial Fourier coefficients (e.g. from SOFiA S/T/C)
+           Columns : FFT bins
+           Rows    : nm coeff
+
+    angles target angles [AZ1 EL1; AZ2 EL2; ... AZn ELn]
+           Columns : Angle Number 1...n
+           Rows    : AZ EL
+
+    [N]     *** Optional: Maximum transform order
+               If not specified the highest order available included in
+               the Pnm coefficients will be taken.
+
+    This is a pure ISFT core that does not involve extrapolation.
+    (=The pressures are referred to the original radius)
+    """
+
+    if angles.ndim == 1 and angles.shape[0] == 2:
+        AzimuthAngles = _np.array([angles[0]])
+        ElevationAngles = _np.array([angles[1]])
+        numberOfAngles = 1
+    elif angles.ndim == 2 and angles.shape[1] == 2:
+        numberOfAngles = angles.shape[0]
+        AzimuthAngles = _np.asarray(angles[:, 0])
+        ElevationAngles = _np.asarray(angles[:, 1])
+    else:
+        raise ValueError('Error: Delivered angles are not valid. Must consist of [AZ1 EL1; AZ2 EL2; ...; AZn ELn] pairs.')
+
+    try:
+        PnmDataLength = Pnm.shape[0]
+        FFTBlocklength = Pnm.shape[1]
+    except:
+        print('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
+
+    Nmax = int(_np.sqrt(PnmDataLength - 1))
+
+    N = kargs['N'] if 'N' in kargs else Nmax
+    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+
+    if printInfo:
+        print('SOFiA I/T/C - Inverse spatial Transform Core R13-0306')
+
+    OutputArray = _np.zeros([numberOfAngles, FFTBlocklength], dtype=_np.complex_)
+
+    ctr = 0
+    for n in range(0, N + 1):
+        for m in range(-n, n + 1):
+            for j in range(0, numberOfAngles):
+                SHresults = sph_harm(m, n, AzimuthAngles[j], ElevationAngles[j])
+
+                for f in range(0, FFTBlocklength):
+                    OutputArray[j][f] += SHresults * Pnm[ctr][f]
+            ctr += 1
+
+    return OutputArray
