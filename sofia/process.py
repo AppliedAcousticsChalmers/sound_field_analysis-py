@@ -209,7 +209,7 @@ def itc(Pnm, angles, **kargs):
         AzimuthAngles = _np.array([angles[0]])
         ElevationAngles = _np.array([angles[1]])
         numberOfAngles = 1
-    elif angles.ndim == 2 and angles.shape[1] == 2:
+    elif angles.ndim == 2 and angles.shape[1] > 1:
         numberOfAngles = angles.shape[0]
         AzimuthAngles = _np.asarray(angles[:, 0])
         ElevationAngles = _np.asarray(angles[:, 1])
