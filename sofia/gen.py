@@ -280,7 +280,8 @@ def lebedev(degree, **kargs):
     theta, phi, _ = cart2sph(leb.x, leb.y, leb.z)
     theta = theta % (2 * pi)
     gridData = _np.array([theta, phi + pi / 2, leb.w]).T
-    gridData = _np.sort(gridData, 0)  # Sort rows
+    gridData = gridData[gridData[:, 1].argsort()]  # ugly double sorting that keeps rows together
+    gridData = gridData[gridData[:, 0].argsort()]
 
     # TODO: turnover
     Nmax = _np.floor(_np.sqrt(degree / 1.3) - 1)
