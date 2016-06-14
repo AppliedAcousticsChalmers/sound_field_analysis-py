@@ -93,11 +93,11 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     krs = k * ds
 
     # RADIAL FILTERS
-    rfArray = _np.empty([SegN, upperSegLim + 1 - lowerSegLim], dtype=complex)
+    rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=complex)
     for f in range(lowerSegLim, upperSegLim + 1):
         timeShift = _np.exp(- 1j * w[f] * t)
 
-        for n in range(0, SegN):
+        for n in range(0, SegN + 1):
             if wavetype == 0:    # Plane wave
                 rfArray[n][f] = bn(n, krm[f], krs[f], ac) * timeShift
             elif wavetype == 1:  # Spherical wave
@@ -106,7 +106,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     # GENERATOR CORE
     Pnm = _np.empty([pow(N + 1, 2), upperSegLim + 1 - lowerSegLim], dtype=complex)
     ctr = 0
-    for n in range(0, SegN):
+    for n in range(0, SegN + 1):
         for m in range(-n, n + 1):
             SHarms = _np.conj(sph_harm(m, n, az, el))
             for f in range(lowerSegLim, upperSegLim + 1):
