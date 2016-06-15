@@ -121,7 +121,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     krs = k * ds
 
     # RADIAL FILTERS
-    rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=complex)
+    rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
     for f in range(lowerSegLim, upperSegLim + 1):
         timeShift = _np.exp(- 1j * w[f] * t)
 
@@ -132,7 +132,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
                 rfArray[n][f] = 4 * pi * -1j * k[f] * timeShift * sphankel(n, kds[f]) * bn_npf(n, krm[f], krs[f], ac)
 
     # GENERATOR CORE
-    Pnm = _np.empty([pow(N + 1, 2), upperSegLim + 1 - lowerSegLim], dtype=complex)
+    Pnm = _np.empty([pow(N + 1, 2), upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
     ctr = 0
     for n in range(0, SegN + 1):
         for m in range(-n, n + 1):
