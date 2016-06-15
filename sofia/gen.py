@@ -145,6 +145,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
         kr = krs
     else:
         kr = krm
+    kr[0] = 0  # resubstitute kr = 0
 
     return Pnm, kr
 
