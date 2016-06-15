@@ -90,17 +90,27 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     if (t * FS > F_NFFT / 2):
         raise ValueError('Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).')
 
-    # TODO: source distance
+    # Check source distance
 
     if not isinstance(r, list):
         rm = r
         rs = r
         nor = 1
     else:  # r is matrix
+        rm = r[0]
         m, n = r.shape
         if m == 2 | n == 2:
             rs = r[1]
             nor = 2
+        else:
+            rs = r[0]
+            nor = 1
+
+    if nor == 2 and (ac == 0 or ac == 1):
+        nor = 1
+
+    if wavetype == 1 and ds <= rm:
+        raise ValueError('Invalid source distance, source must be outside the microphone radius.')
 
     w = _np.linspace(0, pi * fs, NFFT)
     # w = 0 breaks stuff ?
