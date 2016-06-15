@@ -72,7 +72,18 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     if printInfo:
         print('SOFiA W/G/C - Wave Generator')
 
-    # TODO: safety checks, source distance
+    if upperSegLim < lowerSegLim:
+        raise ValueError('Upper segment limit needs to be below lower limit.')
+    if upperSegLim > NFFT - 1:
+        raise ValueError('Upper segment limit needs to be below NFFT - 1.')
+    if upperSegLim > NFFT - 1 or upperSegLim < 0:
+        raise ValueError('Upper segment limit needs to be between 0 and NFFT - 1.')
+    if lowerSegLim > NFFT - 1 or lowerSegLim < 0:
+        raise ValueError('Lower segment limit needs to be between 0 and NFFT - 1.')
+    if SegN > N:
+        raise ValueError("Segment order needs to be smaller than N.")
+
+    # TODO: source distance
 
     if not isinstance(r, list):
         rm = r
