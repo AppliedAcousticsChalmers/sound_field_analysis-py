@@ -72,6 +72,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     if printInfo:
         print('SOFiA W/G/C - Wave Generator')
 
+    # SAVETY CHECKS
     if upperSegLim < lowerSegLim:
         raise ValueError('Upper segment limit needs to be below lower limit.')
     if upperSegLim > NFFT - 1:
@@ -82,6 +83,12 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
         raise ValueError('Lower segment limit needs to be between 0 and NFFT - 1.')
     if SegN > N:
         raise ValueError("Segment order needs to be smaller than N.")
+    if wavetype != 0 and wavetype != 1:
+        raise ValueError('Invalid wavetype: Either 0 (plane wave) or 1 (spherical wave).')
+    if ac != 0 and ac != 1 and ac != 2 and ac != 3 and ac != 4:
+        raise ValueError('Invalid sphere array configuration: Either 0 (open), 1 (open, pGrad), 2 (rigid), 3 (rigid, pGrad), 4 (dual open)')
+    if (t * FS > F_NFFT / 2):
+        raise ValueError('Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).')
 
     # TODO: source distance
 
