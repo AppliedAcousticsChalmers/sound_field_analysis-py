@@ -117,8 +117,8 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     w[0] = w[1]
     k = w / c
     krm = k * rm
-    kds = k * rs
-    krs = k * ds
+    krs = k * rs
+    kds = k * ds
 
     # RADIAL FILTERS
     rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
