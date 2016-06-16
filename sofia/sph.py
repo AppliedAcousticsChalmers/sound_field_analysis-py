@@ -48,17 +48,22 @@ def bn_npf(n, krm, krs, ac):
     """ Spherical coefficients
     Parameters
     ----------
-    n : (type of bar)
-        A description of bar
+    n : (int)
+        Order
 
-    krm : (type of baz), optional
-        A description of baz
+    krm : (list of floats)
+        Microphone k
 
-    krs : (type of baz), optional
-        A description of baz
+    krs : (list of floats)
+        Sphere k
 
-    ac : (type of baz), optional
-        A description of baz
+    ac : (int)
+        Array configuration:
+            0 - open sphere
+            1 - open gradient sphere
+            2 - rigid sphere
+            3 - ridig gradient sphere
+            4 - dual open sphere
 
     Returns
     -------
@@ -117,6 +122,27 @@ def bn(n, krm, krs, ac):
 
 
 def sph_harm(m, n, az, el):
+    '''Compute sphercial harmonics, wraps scipy.special.sph_harm
+    Parameters
+    ----------
+    m : (int)
+        Order of the spherical harmonic. |m| <= n
+
+    n : (int)
+        Degree of the harmonic, sometimes called l. n >= 0
+
+    az: (float)
+        Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
+
+    el : (float)
+        Elevation (colatitudinal) coordinate [0, pi], also called Phi.
+
+    Returns
+    -------
+    y_mn : (complex float)
+        Complex spherical harmonic of order m and degree n,
+        sampled at theta = az, phi = el
+    '''
     return scy.sph_harm(m, n, az, el)
 
 
