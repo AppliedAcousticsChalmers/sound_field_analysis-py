@@ -4,6 +4,7 @@ Collection of spherical helper functions
 
 import numpy as _np
 from scipy import special as scy
+from math import factorial as fact
 
 
 def spbessel(n, kr):
@@ -122,7 +123,7 @@ def bn(n, krm, krs, ac):
 
 
 def sph_harm(m, n, az, el):
-    '''Compute sphercial harmonics, wraps scipy.special.sph_harm
+    '''Compute sphercial harmonics
     Parameters
     ----------
     m : (int)
@@ -142,8 +143,18 @@ def sph_harm(m, n, az, el):
     y_mn : (complex float)
         Complex spherical harmonic of order m and degree n,
         sampled at theta = az, phi = el
+
+    Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5 * exp(i m phi) * P_n^m(cos(theta))
+    as per http://dlmf.nist.gov/14.30
+    Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv
+    scipy.special.lpmn calculates P(0...m 0...n) and its derivative but won't return +inf at high orders
     '''
-    return scy.sph_harm(m, n, az, el)
+    if m < 85:
+        return scy.sph_harm(m, n, az, el)
+    else:
+        P = scy.lpmn(m, n, _np.cos(el))[0][-1][-1]
+        preFactor = ((fact(n - m) * (2 * n + 1))/(4 * fact(n + m)) / _np.pi)**0.5
+        return preFactor * _np.exp(1j * m * az) * P
 
 
 def cart2sph(x, y, z):
