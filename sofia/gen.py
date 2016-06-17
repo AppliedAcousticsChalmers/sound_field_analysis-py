@@ -202,6 +202,8 @@ def mf(N, kr, ac, **kargs):
 
     # TODO: correct krm, krs?
     # TODO: check / replace zeros in krm/krs
+    if kr[0] == 0:
+        kr[0] = kr[1]
     krm = kr
     krs = kr
 
