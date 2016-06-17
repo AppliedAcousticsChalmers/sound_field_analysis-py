@@ -19,7 +19,7 @@ Pnm, kr = gen.wgc(Nwave, r, ac, FS, NFFT, AZ, EL)
 
 # Make radial filters
 Nrf = Nwave                  # radial filter order
-dn, beam = gen.mf(Nrf, kr, ac)
+dn, _ = gen.mf(Nrf, kr, ac)
 
 # Running a plane wave decomposition for different look directions
 

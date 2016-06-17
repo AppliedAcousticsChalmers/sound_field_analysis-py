@@ -26,8 +26,7 @@ Pnm = process.stc(Nsft, fftData, quadrature_grid)
 Nrf = Nsft      # radial filter order
 limit = 150     # Amplification Limit (Keep the result numerical stable at low frequencies)
 
-dn, beam = gen.mf(Nrf, kr, ac, a_max=limit)
-dn[:,0] = dn[:,1]  # TODO: fix row of NANs in dn
+dn, _ = gen.mf(Nrf, kr, ac, a_max=limit)
 
 # Plane wave decomposition for different look directions
 Npdc = Nsft     # Decomposition order
