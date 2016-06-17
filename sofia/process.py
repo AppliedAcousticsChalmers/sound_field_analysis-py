@@ -167,7 +167,7 @@ def tdt(Y, **kargs):
         # Y(Y == 0) = 1e-21;
         # img  = imag(hilbert(log(abs(Y))));
         # y    = real(ifft(abs(Y) .* exp(-1i*img)));
-        # y    = y(1:end/2,:)';  
+        # y    = y(1:end/2,:)';
         pass
 
     # TODO: percentage(?) windowing
