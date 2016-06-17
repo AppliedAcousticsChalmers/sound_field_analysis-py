@@ -2,6 +2,8 @@
 Processing functions:
 - Plane Wave Decomposition (pdc)
 - Time domain signals reconstruction (tdt)
+- Fast Inverse spatial Fourier (itc)
+- Fast Spatial Fourier Transform (stc)
 """
 
 import numpy as _np
@@ -242,4 +244,52 @@ def itc(Pnm, angles, **kargs):
                     OutputArray[j][f] += SHresults * Pnm[ctr][f]
             ctr += 1
 
+    return OutputArray
+
+def stc(N, fftData, grid):
+    '''Pnm = process.stc(N, fftData, grid)
+    ------------------------------------------------------------------------
+    Pnm      Spatial Fourier Coefficients
+             Columns : nm coeff
+             Rows    : FFT bins
+    ------------------------------------------------------------------------
+    N        Maximum transform order
+
+    fftData  Frequency domain sounfield data, e.g. from fdt
+             Columns : number of spatial sampling position
+             Rows    : FFT bins (complex sound pressure data)
+
+    grid     Sample grid configuration
+             Columns : s=1...S spatial positions
+             Rows    : [AZ_s EL_s GridWeight_s]
+             AZ in [0...2pi] and EL [0...pi] in RAD
+    '''
+
+    if not _np.max(_np.iscomplex(fftData)):
+        raise ValueError('FFTData: Complex Input Data expected.')
+
+    numberOfSpatialPositionsInFFTBlock, FFTBlocklength = fftData.shape
+    numberOfGridPoints, numberOfGridInfos = grid.shape
+    if numberOfGridInfos < 3:
+        raise ValueError('GRID: Invalid grid data, must contain [az, el, r].')
+
+    if numberOfSpatialPositionsInFFTBlock != numberOfGridPoints:
+        raise ValueError('Inconsistent spatial sampling points between fftData ('+ str(numberOfSpatialPositionsInFFTBlock) +') and supplied grid  ('+ str(numberOfGridPoints) +').')
+
+    AzimuthAngles = grid[:,0]
+    ElevationAngles = grid[:,1]
+    GridWeights = grid[:,2]
+
+    OutputArray = _np.zeros([(N + 1) ** 2, FFTBlocklength], dtype=_np.complex_)
+
+    ctr = 0
+    for n in range(0, N + 1):
+        for m in range (-n, n + 1):
+            for j in range(0, numberOfGridPoints):
+                SHarm = 4 * pi * GridWeights[j] * _np.conj(sph_harm(m, n, AzimuthAngles[j], ElevationAngles[j]))
+
+                for f in range(0, FFTBlocklength):
+                    OutputArray[ctr][f] += SHarm * fftData[j][f]
+
+            ctr += 1
     return OutputArray
