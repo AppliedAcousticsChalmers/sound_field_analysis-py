@@ -31,7 +31,7 @@ Y = process.pdc(Npdc, OmegaL, Pnm, dn)
 # Reconstruct impulse responses
 impulseResponses = process.tdt(Y)
 
-# Plot results (Impulse Responses)
+#%% Plot results (Impulse Responses)
 print('Plotting...')
 
 plt.subplot(1, 2, 1)
