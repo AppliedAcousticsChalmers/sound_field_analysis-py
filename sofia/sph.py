@@ -152,12 +152,19 @@ def sph_harm(m, n, az, el):
     if _np.abs(m) < 84:
         return scy.sph_harm(m, n, az, el)
     else:  # built-in function fails for large orders
-        P = scy.lpmn(m, n, _np.cos(el))[0][-1][-1]
+        mAbs = _np.abs(m)
+        P = scy.lpmn(mAbs, n, _np.cos(el))[0][-1][-1]
+        preFactor1 = _np.sqrt((2 * n + 1) / (4 *_np.pi))
         try:
-            preFactor = ((fact(n - m) * (2 * n + 1))/(4 * fact(n + m)) / _np.pi)**0.5
+            preFactor2 = _np.sqrt(fact(n - mAbs)/fact(n + mAbs))
         except OverflowError:  # integer division for very large orders
-            preFactor = ((2 * n + 1) * (fact(n - m)//(4 * fact(n + m))) / _np.pi)**0.5
-        return preFactor * _np.exp(1j * m * az) * P
+            preFactor2 = _np.sqrt(fact(n - mAbs)//fact(n + mAbs))
+
+        Y = preFactor1 * preFactor2 * _np.exp(1j * m * az) * P
+        if m < 0:
+            return _np.conj(Y)
+        else:
+            return Y
 
 
 def cart2sph(x, y, z):
