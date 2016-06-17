@@ -26,28 +26,32 @@ Pnm = process.stc(Nsft, fftData, quadrature_grid)
 Nrf = Nsft      # radial filter order
 limit = 150     # Amplification Limit (Keep the result numerical stable at low frequencies)
 
-dn = gen.mf(Nrf, kr, ac, a_max=limit)
+dn, beam = gen.mf(Nrf, kr, ac, a_max=limit)
+dn[:,0] = dn[:,1]  # TODO: fix row of NANs in dn
 
 # Plane wave decomposition for different look directions
 Npdc = Nsft     # Decomposition order
-OmegaL = [0, np.pi / 2, np.pi / 2, np.pi / 2]  # Looking towards the wave and to one side
+OmegaL = np.array([[0, np.pi / 2], [np.pi / 2, np.pi / 2]])  # Looking towards the wave and to one side
 
 Y = process.pdc(Npdc, OmegaL, Pnm, dn)
 
 # Reconstruct impulse responses
-impulseResponses = process.tdt(Y, 0)
+impulseResponses = process.tdt(Y)
 
-# Make IR causal:
-# impulseResponses = [impulseResponses(:, end / 2 + 1:end), impulseResponses(:, 1:end / 2)]
+# Make IR causal (flip first & second half):
+impulseResponses = np.hstack(np.array_split(impulseResponses, 2, axis = 1)[::-1])
 
-# Plot results (Impulse Responses)
+# TODO: fix scaling (constant factor 19)
+impulseResponses = impulseResponses / 19
+
+# %%Plot results (Impulse Responses)
 plt.subplot(1, 2, 1)
 plt.plot(impulseResponses.T)
 plt.title('Impulse response')
 plt.xlabel('Samples')
 plt.ylabel('Amplitude')
 
-plt.axis([-100, NFFT, -0.2, 1.2])
+plt.axis([0, NFFT, -0.2, 1.2])
 plt.grid()
 
 # Plot results (Spectra)
