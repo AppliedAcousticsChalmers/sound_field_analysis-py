@@ -15,7 +15,7 @@ pi = _np.pi
 
 def pdc(N, OmegaL, Pnm, dn, **kargs):
     """
-        Y = ASAR_PDC(N, OmegaL, Pnm, dn, [cn])
+        Y = pdc(N, OmegaL, Pnm, dn, [cn])
     ------------------------------------------------------------------------
     Y      MxN Matrix of the decomposed wavefield
            Col - Look Direction as specified in OmegaL
