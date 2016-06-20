@@ -61,10 +61,16 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
 
     # Extract blocksizes. TODO: Error handle
     NMDeliveredSize = Pnm.shape[0]
-    FFTBlocklengthPnm = Pnm.shape[1]
+    try:
+        FFTBlocklengthPnm = Pnm.shape[1]
+    except IndexError:
+        FFTBlocklengthPnm = 1
 
     Ndn = dn.shape[0]
-    FFTBlocklengthdn = dn.shape[1]
+    try:
+        FFTBlocklengthdn = dn.shape[1]
+    except IndexError:
+        FFTBlocklengthdn = 1
 
     if 'cn' in kargs:
         cn = kargs['cn']
