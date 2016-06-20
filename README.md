@@ -1,5 +1,5 @@
 # SOFiA-toolbox-py
-Python port of the [SOFiA toolbox](https://github.com/fietew/sofia-toolbox) (Benjamin Bernschütz)
+Python port of the [SOFiA toolbox](https://github.com/fietew/sofia-toolbox) by Benjamin Bernschütz. This is currently work in progress and will most probably not include all original functions. For more information you may refer to the original publication: [Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio](http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/)
 
 ## Requirements
 The following external libraries are required to use most of the supplied functions:
@@ -19,3 +19,6 @@ Impulse Response reconstruction on a simulated ideal unity plane wave
 Impulse response reconstruction on a simulated sampled unity plane wave
 
 ![AE7_SampledPlaneWave_ImpResp result](AE7_SampledPlaneWave_ImpResp.png?raw=true "AE7_SampledPlaneWave_ImpResp result")
+
+## Contact
+This repository is currently maintained by Christoph Hohnerlein (firstname.lastname[at]qu.tu-berlin.de).
