@@ -28,8 +28,7 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
         raise ValueError('Oversize parameter must be >= 1')
 
     # Generate angles for sphere with 1[deg] spacing
-    angles = _np.mgrid[0:181, 0:360]
-    angles = angles.reshape((2, -1)).T / (2 * _np.pi)
+    angles = _np.mgrid[0:360, 0:181].T.reshape((-1, 2)) * _np.pi / 180
 
     # Compute plane wave decomposition for all angles at given kr
     Y = pdc(Nviz, angles, Pnm[:, krIndex], dn[:, krIndex])
