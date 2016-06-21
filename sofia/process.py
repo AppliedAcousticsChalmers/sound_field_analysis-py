@@ -59,18 +59,17 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
     Azimut = OmegaL[:, 0]
     Elevation = OmegaL[:, 1]
 
-    # Extract blocksizes. TODO: Error handle
-    NMDeliveredSize = Pnm.shape[0]
-    try:
-        FFTBlocklengthPnm = Pnm.shape[1]
-    except IndexError:
-        FFTBlocklengthPnm = 1
+    # Expand Pnm and dn dims to 2D if necessary
+    if Pnm.ndim == 1:
+        Pnm = _np.expand_dims(Pnm, 1)
 
+    NMDeliveredSize = Pnm.shape[0]
+    FFTBlocklengthPnm = Pnm.shape[1]
+
+    if dn.ndim == 1:
+        dn = _np.expand_dims(dn, 1)
     Ndn = dn.shape[0]
-    try:
-        FFTBlocklengthdn = dn.shape[1]
-    except IndexError:
-        FFTBlocklengthdn = 1
+    FFTBlocklengthdn = dn.shape[1]
 
     if 'cn' in kargs:
         cn = kargs['cn']
