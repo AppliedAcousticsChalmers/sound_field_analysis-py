@@ -54,7 +54,7 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
     else:                 # else: two or more AE/EL pairs
         if OmegaL.shape[1] != 2:
             raise ValueError('Angle Matrix OmegaL is not valid. Must consist of AZ/EL pairs in one column [AZ1 EL1; AZ2 EL2; ... ; AZn ELn].\nRemember: All angles are in RAD.')
-        numberOfAngles = OmegaL.shape[1]
+        numberOfAngles = OmegaL.shape[0]
 
     Azimut = OmegaL[:, 0]
     Elevation = OmegaL[:, 1]
