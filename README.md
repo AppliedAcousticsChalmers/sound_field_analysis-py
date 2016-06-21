@@ -14,17 +14,17 @@ Lebedev grid generation adapted from [Richard P. Muller](https://github.com/gabr
 ##AE1: Ideal Plane Wave
 Ideal unity plane wave simulation and 3D plot
 
-![AE1_IdealPlaneWave result](AE1_IdealPlaneWave.png?raw=true "AE1_IdealPlaneWave result")
+![AE1_IdealPlaneWave result](img/AE1_IdealPlaneWave.png?raw=true "AE1_IdealPlaneWave result")
 
 ### AE6: Impulse response of ideal plane wave
 Impulse Response reconstruction on a simulated ideal unity plane wave
 
-![AE6_IdealPlaneWave_ImpResp result](AE6_IdealPlaneWave_ImpResp.png?raw=true "AE6_IdealPlaneWave_ImpResp result")
+![AE6_IdealPlaneWave_ImpResp result](img/AE6_IdealPlaneWave_ImpResp.png?raw=true "AE6_IdealPlaneWave_ImpResp result")
 
 ### AE7: Impulse response of sampled plane wave
 Impulse response reconstruction on a simulated sampled unity plane wave
 
-![AE7_SampledPlaneWave_ImpResp result](AE7_SampledPlaneWave_ImpResp.png?raw=true "AE7_SampledPlaneWave_ImpResp result")
+![AE7_SampledPlaneWave_ImpResp result](img/AE7_SampledPlaneWave_ImpResp.png?raw=true "AE7_SampledPlaneWave_ImpResp result")
 
 ## Contact
 This repository is currently maintained by Christoph Hohnerlein (firstname.lastname[at]qu.tu-berlin.de).
