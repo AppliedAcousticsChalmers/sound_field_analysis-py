@@ -76,15 +76,18 @@ def visualize3D(vizMTX, style='sphere', **kargs):
         scatter.set_data(xyzCoords.T, size=10, face_color='black', edge_color=None)
 
     # Create scene
-    canvas = scene.SceneCanvas(keys='interactive', bgcolor='white', size=(800, 600), show=True)
+    canvas = scene.SceneCanvas(keys='interactive', bgcolor='white')
 
     # Create view with camera on target
     view = canvas.central_widget.add_view()
     view.camera = 'arcball'
-    view.camera.set_range(x=[-3, 3])
+    view.camera.set_range(x=[-0.1, 0.1])
 
-    # Add scattered points to view
+    # Add scattered points to view and show canvas
     view.add(scatter)
+    canvas.show()
+
+    return canvas
 
 
 def generateAngles():
