@@ -34,7 +34,7 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     # Compute plane wave decomposition for all angles at given kr
     Y = pdc(Nviz, angles, Pnm[:, krIndex], dn[:, krIndex])
 
-    return Y.reshape((181, -1)).shape  # Return pwd data as [181, 360] matrix
+    return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
 
 
 def visualize3D(vizMTX, style='sphere', **kargs):
