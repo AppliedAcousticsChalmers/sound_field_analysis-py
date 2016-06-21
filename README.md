@@ -5,11 +5,17 @@ Python port of the [SOFiA toolbox](https://github.com/fietew/sofia-toolbox) by B
 The following external libraries are required to use most of the supplied functions:
 - [NumPy](http://www.numpy.org)
 - [SciPy](http://www.scipy.org)
-- [matplotlib](http://matplotlib.org) (If you want to plot stuff)
+- [matplotlib](http://matplotlib.org) (for 2D plotting)
+- [vispy](http://vispy.org) (for 3D plotting)
 
 Lebedev grid generation adapted from [Richard P. Muller](https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py)
 
 ## Working examples
+##AE1: Ideal Plane Wave
+Ideal unity plane wave simulation and 3D plot
+
+![AE1_IdealPlaneWave result](AE1_IdealPlaneWave.png?raw=true "AE1_IdealPlaneWave result")
+
 ### AE6: Impulse response of ideal plane wave
 Impulse Response reconstruction on a simulated ideal unity plane wave
 
