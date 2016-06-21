@@ -27,4 +27,9 @@ dn, _ = gen.mf(Nrf, kr, ac)
 vizMTX = plot.makeMTX(Pnm, dn, Nviz, krViz)
 
 # Visualize
-#plot.visualize3D(vizMTX, style='sphere')
+canvas = plot.visualize3D(vizMTX, style='cshape')
+
+# To export to png:
+# >> from vispy import io
+# >> img = canvas.render()
+# >> io.write_png("AE1_render.png", img)
