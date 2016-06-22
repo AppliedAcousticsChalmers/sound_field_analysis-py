@@ -14,7 +14,8 @@ Lebedev grid generation adapted from [Richard P. Muller](https://github.com/gabr
 ##AE1: Ideal Plane Wave
 Ideal unity plane wave simulation and 3D plot
 
-![AE1_IdealPlaneWave result](img/AE1_IdealPlaneWave.png?raw=true "AE1_IdealPlaneWave result")
+![AE1_IdealPlaneWave colored scatter](img/AE1_cscatter.png?raw=true "AE1_IdealPlaneWave colored scatter")
+![AE1_IdealPlaneWave shape](img/AE1_shape.png?raw=true "AE1_IdealPlaneWave shape")
 
 ### AE6: Impulse response of ideal plane wave
 Impulse Response reconstruction on a simulated ideal unity plane wave
