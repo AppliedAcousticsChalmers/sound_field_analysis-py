@@ -17,18 +17,18 @@ The following external libraries are required to use most of the supplied functi
     - `lebedev`: Lebedev Quadrature
     - `swg`: Sampled Wave Generator
 -  `process` contains processing functions:
-    - `pdc` Plane Wave Decomposition
-    - `tdt` Time Domain Reconstruction
-    - `stc` Fast Spatial Fourier Transform
-    - `itc` Fast Inverse Spatial Fourier Transform
+    - `pdc`: Plane Wave Decomposition
+    - `tdt`: Time Domain Reconstruction
+    - `stc`: Fast Spatial Fourier Transform
+    - `itc`: Fast Inverse Spatial Fourier Transform
 - `plot` contains function for visualization:
-    -  `makeMTX` Generate 3D-matrix data
-    -  `visualize3D` Draw matrix data in 3D
+    -  `makeMTX`: Generate 3D-matrix data
+    -  `visualize3D`: Draw matrix data in 3D
 -  `sph` contains helper functions for dealing with spherical harmonics:
     -  `spbessel` / `dspbessel`: Spherical Bessel and derivative
     - `spneumann` / `dspneumann`: Spherical Neumann (Bessel 2nd kind) and derivative
     - `sphankel` / `dsphankel`: Spherical Hankel and derivative
-    - `sph_harm` More robust spherical harmonic coefficients
+    - `sph_harm`: More robust spherical harmonic coefficients
     - `cart2sph` / `sph2cart`: Convert cartesion to spherical coordinates and vice versa
 
 
