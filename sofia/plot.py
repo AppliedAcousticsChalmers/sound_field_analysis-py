@@ -36,37 +36,33 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
 
 
-def visualize3D(vizMTX, style='sphere', **kargs):
+def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **kargs):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
     vizMTX     SOFiA 3D-matrix-data [1[deg] steps]
     style       'sphere',   surface colors indicate the intensity (default)
-                'flat',     surface colors indicate the intensity
+                'flat',     surface colors indicate the intensity (TODO)
+                'scatter',  extension indicates the intensity
                 'shape',    extension indicates the intensity
-                'cshape',   extension+colors indicate the intensity
-    colormap    select colormap (not yet implemented)
+    offset      linear offset for shape (Default: 0)
+    scale       scaling factor for shape (Default: 1)
+    TODO: Implement flat style, fix color position in sphere and shape, make colormap selectable, move grid generation into function
     """
 
     # Prepare data: reshape to [65160 x 1], take abs, normalize
-    vizMTX = _np.abs(vizMTX.reshape((65160, -1)))
+    vizMTX = _np.abs(vizMTX.reshape((65160)))
     vizMTX -= vizMTX.min()
     vizMTX /= vizMTX.max()
 
     # Generate colors
-    cm = color.get_colormap('viridis')
-    colors = cm.map(vizMTX)
+    if colorize:
+        cm = color.get_colormap('viridis')
+        colors = cm[vizMTX]
 
     # Recreate angles
     angles = _np.array(generateAngles())
 
-    # TODO: other styles, proper sphere
-    if style == 'sphere':
-        sphCoords = _np.concatenate((angles, _np.ones((angles.shape[0], 1))), axis=1)
-    elif style == 'scatter' or style == 'cscatter':
-        sphCoords = _np.concatenate((angles, vizMTX), axis=1)
-    else:
-        raise ValueError('Provided style "' + style + '" not available. Try sphere, flat, scatter or cscatter.')
-
-    xyzCoords = _np.array(sph2cart(*sphCoords.T))
+    if style not in ('sphere', 'flat', 'shape', 'scatter'):
+        raise ValueError('Provided style "' + style + '" not available. Try sphere, flat, shape or scatter.')
 
     # Create scene
     canvas = scene.SceneCanvas(keys='interactive', bgcolor='white')
@@ -78,14 +74,36 @@ def visualize3D(vizMTX, style='sphere', **kargs):
 
     # Create correct visual object from mtxData
     if style == 'scatter':
+        sphCoords = _np.concatenate((angles, _np.atleast_2d(vizMTX).T), axis=1)
+        xyzCoords = _np.array(sph2cart(*sphCoords.T))
         visObj = scene.visuals.Markers()
-        visObj.set_data(xyzCoords.T, size=10, face_color='black', edge_color=None)
-    elif style == 'cscatter':
-        visObj = scene.visuals.Markers()
-        visObj.set_data(xyzCoords.T, size=10, face_color=colors, edge_color=None)
+        if colorize:
+            visObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color=colors)
+        else:
+            visObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color='black')
+
     elif style == 'sphere':
-        visObj = scene.visuals.Ellipse(radius=(1, 1), color='black', border_color='black')
-        visObj.draw()
+        #  visObj = scene.visuals.Sphere(radius=1, rows=362, cols=91, method='latitude', face_colors=colors)
+        thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
+        rs = 1
+        xs = rs * _np.sin(thetas) * _np.cos(phis)
+        ys = rs * _np.sin(thetas) * _np.sin(phis)
+        zs = rs * _np.cos(thetas)
+        if colorize:
+            visObj = scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
+        else:
+            visObj = scene.visuals.GridMesh(xs, ys, zs)
+
+    elif style == 'shape':
+        thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
+        rs = offset + scale * vizMTX.reshape((181, -1)).T
+        xs = rs * _np.sin(thetas) * _np.cos(phis)
+        ys = rs * _np.sin(thetas) * _np.sin(phis)
+        zs = rs * _np.cos(thetas)
+        if colorize:
+            visObj = scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
+        else:
+            visObj = scene.visuals.GridMesh(xs, ys, zs)
 
     # Add visual object and show canvas
     view.add(visObj)
