@@ -27,7 +27,7 @@ dn, _ = gen.mf(Nrf, kr, ac)
 vizMTX = plot.makeMTX(Pnm, dn, Nviz, krViz)
 
 # Visualize
-canvas = plot.visualize3D(vizMTX, style='cshape')
+canvas = plot.visualize3D(vizMTX, style='shape', colorize=False)
 
 # To export to png:
 # >> from vispy import io
