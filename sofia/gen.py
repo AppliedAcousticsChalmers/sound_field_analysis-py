@@ -1,9 +1,9 @@
 """
 Generator functions:
-- Wave generator (wgc)
-- Modal radial filters (mf)
-- Lebedev quadrature nodes and weigths (lebedev)
-- Sampled Wave Generator Wrapper (swg)
+- wgc: Wave Generator
+- mf: Modal Radial Filter Generator
+- lebedev: Lebedev quadrature nodes and weigths
+- swg: Sampled Wave Generator
 """
 import numpy as _np
 from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph

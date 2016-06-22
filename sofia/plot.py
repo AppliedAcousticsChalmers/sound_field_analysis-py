@@ -1,6 +1,6 @@
 """Plotting functions
-- makeMTX: Generate 3D-matrix-data
-- visualize3D: Plot 3D data
+- makeMTX: Generate 3D-matrix data
+- visualize3D: Draw matrix data in 3D
 """
 import numpy as _np
 from vispy import scene, color

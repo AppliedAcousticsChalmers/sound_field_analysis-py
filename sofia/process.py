@@ -1,9 +1,9 @@
 """
 Processing functions:
-- Plane Wave Decomposition (pdc)
-- Time domain signals reconstruction (tdt)
-- Fast Inverse spatial Fourier (itc)
-- Fast Spatial Fourier Transform (stc)
+- pdc: Plane Wave Decomposition
+- tdt: Time Domain Reconstruction
+- stc: Fast Spatial Fourier Transform
+- itc: Fast Inverse Spatial Fourier Transform
 """
 
 import numpy as _np

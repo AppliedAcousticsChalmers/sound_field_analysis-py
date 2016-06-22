@@ -1,5 +1,10 @@
 """
 Collection of spherical helper functions
+- sph_harm: More robust spherical harmonic coefficients
+- spbessel / dspbessel: Spherical Bessel and derivative
+- spneumann / dspneumann: Spherical Neumann (Bessel 2nd kind) and derivative
+- sphankel / dsphankel: Spherical Hankel and derivative
+- cart2sph / sph2cart: Convert cartesion to spherical coordinates and vice versa
 """
 
 import numpy as _np
