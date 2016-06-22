@@ -61,19 +61,12 @@ def visualize3D(vizMTX, style='sphere', **kargs):
     # TODO: other styles, proper sphere
     if style == 'sphere':
         sphCoords = _np.concatenate((angles, _np.ones((angles.shape[0], 1))), axis=1)
-    elif style == 'shape' or style == 'cshape':
+    elif style == 'scatter' or style == 'cscatter':
         sphCoords = _np.concatenate((angles, vizMTX), axis=1)
     else:
-        raise ValueError('Provided style "' + style + '" not available. Try sphere, flat, shape or cshape.')
+        raise ValueError('Provided style "' + style + '" not available. Try sphere, flat, scatter or cscatter.')
 
     xyzCoords = _np.array(sph2cart(*sphCoords.T))
-
-    # Create scatter object from mtxData
-    scatter = scene.visuals.Markers()
-    if style == 'cshape':
-        scatter.set_data(xyzCoords.T, size=10, face_color=colors, edge_color=None)
-    else:
-        scatter.set_data(xyzCoords.T, size=10, face_color='black', edge_color=None)
 
     # Create scene
     canvas = scene.SceneCanvas(keys='interactive', bgcolor='white')
@@ -83,8 +76,19 @@ def visualize3D(vizMTX, style='sphere', **kargs):
     view.camera = 'arcball'
     view.camera.set_range(x=[-0.1, 0.1])
 
-    # Add scattered points to view and show canvas
-    view.add(scatter)
+    # Create correct visual object from mtxData
+    if style == 'scatter':
+        visObj = scene.visuals.Markers()
+        visObj.set_data(xyzCoords.T, size=10, face_color='black', edge_color=None)
+    elif style == 'cscatter':
+        visObj = scene.visuals.Markers()
+        visObj.set_data(xyzCoords.T, size=10, face_color=colors, edge_color=None)
+    elif style == 'sphere':
+        visObj = scene.visuals.Ellipse(radius=(1, 1), color='black', border_color='black')
+        visObj.draw()
+
+    # Add visual object and show canvas
+    view.add(visObj)
     canvas.show()
 
     return canvas
