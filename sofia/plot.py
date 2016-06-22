@@ -69,7 +69,7 @@ def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **ka
 
     # Create view with camera on target
     view = canvas.central_widget.add_view()
-    view.camera = 'arcball'
+    view.camera = 'turntable'
     view.camera.set_range(x=[-0.1, 0.1])
 
     # Create correct visual object from mtxData
