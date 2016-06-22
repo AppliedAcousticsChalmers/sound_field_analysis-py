@@ -50,7 +50,7 @@ Impulse response reconstruction on a simulated sampled unity plane wave
 ![AE7_SampledPlaneWave_ImpResp result](img/AE7_SampledPlaneWave_ImpResp.png?raw=true "AE7_SampledPlaneWave_ImpResp result")
 
 ## Contact
-This repository is currently maintained by Christoph Hohnerlein (firstname.lastname[at]qu.tu-berlin.de).
+SOFiA-py is under development by Christoph Hohnerlein (firstname.lastname[at]qu.tu-berlin.de) as part of the [Artificial Reverberation for Sound Field Synthesis](https://www.qu.tu-berlin.de/menue/forschung/laufende_projekte/artificial_reverberation_for_sound_field_synthesis_dfg/) project at the [Quality and Usability Lab](https://www.qu.tu-berlin.de) of the TU Berlin.
 
 This python package is based on the [SOFiA toolbox](https://github.com/fietew/sofia-toolbox) by Benjamin Bernschütz. For more information you may refer to the original publication: [Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio](http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/)
 
