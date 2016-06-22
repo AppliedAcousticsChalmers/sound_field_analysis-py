@@ -33,11 +33,13 @@ The following external libraries are required to use most of the supplied functi
 
 
 ## Working examples
-##AE1: Ideal Plane Wave
-Ideal unity plane wave simulation and 3D plot
-
+## AE1: Ideal Plane Wave
+Ideal unity plane wave simulation and 3D plot.
+#### Colorized 3D scatter:
 ![AE1_IdealPlaneWave colored scatter](img/AE1_cscatter.png?raw=true "AE1_IdealPlaneWave colored scatter")
+#### Shape-based visualization:
 ![AE1_IdealPlaneWave shape](img/AE1_shape.png?raw=true "AE1_IdealPlaneWave shape")
+
 
 ### AE6: Impulse response of ideal plane wave
 Impulse Response reconstruction on a simulated ideal unity plane wave
@@ -50,8 +52,8 @@ Impulse response reconstruction on a simulated sampled unity plane wave
 ![AE7_SampledPlaneWave_ImpResp result](img/AE7_SampledPlaneWave_ImpResp.png?raw=true "AE7_SampledPlaneWave_ImpResp result")
 
 ## Contact
-SOFiA-py is under development by Christoph Hohnerlein (firstname.lastname[at]qu.tu-berlin.de) as part of the [Artificial Reverberation for Sound Field Synthesis](https://www.qu.tu-berlin.de/menue/forschung/laufende_projekte/artificial_reverberation_for_sound_field_synthesis_dfg/) project at the [Quality and Usability Lab](https://www.qu.tu-berlin.de) of the TU Berlin.
+SOFiA-py is under development by Christoph Hohnerlein (`firstname.lastname[at]qu.tu-berlin.de`) as part of the [Artificial Reverberation for Sound Field Synthesis](https://www.qu.tu-berlin.de/menue/forschung/laufende_projekte/artificial_reverberation_for_sound_field_synthesis_dfg/) project at the [Quality and Usability Lab](https://www.qu.tu-berlin.de) of the TU Berlin.
 
-This python package is based on the [SOFiA toolbox](https://github.com/fietew/sofia-toolbox) by Benjamin Bernschütz. For more information you may refer to the original publication: [Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio](http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/)
+SOFiA-py is based on the [SOFiA toolbox](https://github.com/fietew/sofia-toolbox) by Benjamin Bernschütz. For more information you may refer to the original publication: [Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio](http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/)
 
 The Lebedev grid generation was adapted from an implementaion by [Richard P. Muller](https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py)
