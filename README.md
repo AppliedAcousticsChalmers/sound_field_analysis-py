@@ -1,14 +1,14 @@
 # SOFiA-py
-SOFiA-py is a Python port of the <a href="https://github.com/fietew/sofia-toolbox" target="_blank">Sound Field Analysis Toolbox (SOFiA) toolbox</a>, originally by Benjamin Bernschütz[<sup>[1]</sup>](#references). The main goal of the SOFiA toolbox is to analyze, visualize and process soundfield data recorded by spherical microphone arrays. Furthermore, various types of testdata may be generated to evaluate the implemented functions.
+SOFiA-py is a Python port of the [Sound Field Analysis Toolbox (SOFiA) toolbox](https://github.com/fietew/sofia-toolbox), originally by Benjamin Bernschütz[<sup>[1]</sup>](#references). The main goal of the SOFiA toolbox is to analyze, visualize and process soundfield data recorded by spherical microphone arrays. Furthermore, various types of testdata may be generated to evaluate the implemented functions.
 
 The package is pure python and PEP8 compliant (except line-length). As the port is ongoing, no serious attempts at speed optimization have been made, please expect things to be slow for now.
 
 ## Requirements
 The following external libraries are required to use most of the supplied functions:
-- <a href="http://www.numpy.org" target="_blank">NumPy</a>
-- <a href="http://www.scipy.org" target="_blank">SciPy</a>
-- <a href="http://matplotlib.org" target="_blank">matplotlib</a> (for 2D plotting)
-- <a href="http://vispy.org" target="_blank">VisPy</a> (for 3D plotting)
+- [NumPy](http://www.numpy.org)
+- [SciPy](http://www.scipy.org)
+- [matplotlib](http://matplotlib.org) (for 2D plotting)
+- [vispy](http://vispy.org) (for 3D plotting)
 
 ## Overview
 - `gen` contains functions to generate data:
@@ -52,11 +52,11 @@ Impulse response reconstruction on a simulated sampled unity plane wave
 ![AE7_SampledPlaneWave_ImpResp result](img/AE7_SampledPlaneWave_ImpResp.png?raw=true "AE7_SampledPlaneWave_ImpResp result")
 
 ## Contact
-SOFiA-py is under development by Christoph Hohnerlein (`firstname.lastname[at]qu.tu-berlin.de`) as part of the <a href="https://www.qu.tu-berlin.de/menue/forschung/laufende_projekte/artificial_reverberation_for_sound_field_synthesis_dfg/" target="_blank">Artificial Reverberation for Sound Field Synthesis</a> project at the <a href="https://www.qu.tu-berlin.de" target="_blank">Quality and Usability Lab</a> of the TU Berlin.
+SOFiA-py is under development by Christoph Hohnerlein (`firstname.lastname[at]qu.tu-berlin.de`) as part of the [Artificial Reverberation for Sound Field Synthesis](https://www.qu.tu-berlin.de/menue/forschung/laufende_projekte/artificial_reverberation_for_sound_field_synthesis_dfg/) project at the [Quality and Usability Lab](https://www.qu.tu-berlin.de) of the TU Berlin.
 
 ## References
 SOFiA-py is based on the Matlab/C++ toolbox [SOFiA](https://github.com/fietew/sofia-toolbox) by Benjamin Bernschütz. For more information you may refer to the original publication:
 
-[1] <a href="http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/" target="_blank">Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio</a>
+[1] [Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio](http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/)
 
-The Lebedev grid generation was adapted from an implementaion by <a href="https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py" target="_blank">Richard P. Muller</a>.
+The Lebedev grid generation was adapted from an implementaion by [Richard P. Muller](https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py).
