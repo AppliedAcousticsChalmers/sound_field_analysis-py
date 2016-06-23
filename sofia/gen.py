@@ -444,7 +444,7 @@ def swg(**kargs):
         fOrders = _np.flatnonzero(rqOrders == order)
         temp, _ = wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order, printInfo=False)
         Pnm += temp
-
+    print('\n')
     fftData = itc(Pnm, gridData)
 
     return fftData, kr
