@@ -211,12 +211,12 @@ def mf(N, kr, ac, **kargs):
 
     # BN filter calculation
     amplicalc = 1
+    ctrb = _np.array(range(0, krN))
     for ctr in range(0, N + 1):
-        for ctrb in range(0, krN):
-            bnval = bn(ctr, krm[ctrb], krs[ctrb], ac)
-            if limiteronflag:
-                amplicalc = 2 * a_max / pi * abs(bnval) * _np.arctan(pi / (2 * a_max * abs(bnval)))
-            OutputArray[ctr][ctrb] = amplicalc / bnval
+        bnval = bn(ctr, krm[ctrb], krs[ctrb], ac)
+        if limiteronflag:
+            amplicalc = 2 * a_max / pi * abs(bnval) * _np.arctan(pi / (2 * a_max * abs(bnval)))
+        OutputArray[ctr] = amplicalc / bnval
 
     if(krN < 32 & plc != 0):
         plc = 0
@@ -266,11 +266,10 @@ def mf(N, kr, ac, **kargs):
     normalizeBeam = pow(N + 1, 2)
 
     BeamResponse = _np.zeros((krN), dtype=_np.complex_)
-    for ctr in range(0, krN):
-        for ctrb in range(0, N + 1):             # ctrb = n
-            for ctrc in range(0, 2 * ctrb + 1):  # ctrc = m
-                BeamResponse[ctr] = BeamResponse[ctr] + bn(ctrb, krm[ctr], krs[ctr], ac) * OutputArray[ctrb][ctr]
-        BeamResponse[ctr] = BeamResponse[ctr] / normalizeBeam
+    for ctrb in range(0, N + 1):             # ctrb = n
+        # m = 2 * ctrb + 1
+        BeamResponse += (2 * ctrb + 1) * bn(ctrb, krm, krs, ac) * OutputArray[ctrb]
+    BeamResponse /= normalizeBeam
 
     return OutputArray, BeamResponse
 
