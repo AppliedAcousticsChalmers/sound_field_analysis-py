@@ -242,9 +242,7 @@ def itc(Pnm, angles, **kargs):
         for m in range(-n, n + 1):
             for j in range(0, numberOfAngles):
                 SHresults = sph_harm(m, n, AzimuthAngles[j], ElevationAngles[j])
-
-                for f in range(0, FFTBlocklength):
-                    OutputArray[j][f] += SHresults * Pnm[ctr][f]
+                OutputArray[j] += SHresults * Pnm[ctr]
             ctr += 1
 
     return OutputArray
@@ -290,9 +288,6 @@ def stc(N, fftData, grid):
         for m in range (-n, n + 1):
             for j in range(0, numberOfGridPoints):
                 SHarm = 4 * pi * GridWeights[j] * _np.conj(sph_harm(m, n, AzimuthAngles[j], ElevationAngles[j]))
-
-                for f in range(0, FFTBlocklength):
-                    OutputArray[ctr][f] += SHarm * fftData[j][f]
-
+                OutputArray[ctr] += SHarm * fftData[j]
             ctr += 1
     return OutputArray
