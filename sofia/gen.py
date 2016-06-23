@@ -120,9 +120,10 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     krs = k * rs
     kds = k * ds
 
+    f = list(range(lowerSegLim, upperSegLim + 1))
+
     # RADIAL FILTERS
     rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
-    f = list(range(lowerSegLim, upperSegLim + 1))
     timeShift = _np.exp(- 1j * w[f] * t)
 
     for n in range(0, SegN + 1):
@@ -137,8 +138,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     for n in range(0, SegN + 1):
         for m in range(-n, n + 1):
             SHarms = _np.conj(sph_harm(m, n, az, el))
-            for f in range(lowerSegLim, upperSegLim + 1):
-                Pnm[ctr][f] = SHarms * rfArray[n][f]
+            Pnm[ctr] = SHarms * rfArray[n]
             ctr = ctr + 1
 
     if nor == 2:
