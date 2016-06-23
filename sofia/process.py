@@ -106,16 +106,14 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
             for m in range(-n, n + 1):
                 for omegactr in range(0, numberOfAngles):
                     Ynm = sph_harm(m, n, Azimut[omegactr], Elevation[omegactr])
-                    for f in range(0, FFTBlocklengthPnm):
-                        OutputArray[omegactr][f] = OutputArray[omegactr][f] + Ynm * Pnm[ctr][f] * dn[n][f]
+                    OutputArray[omegactr] = OutputArray[omegactr] + Ynm * Pnm[ctr] * dn[n]
                 ctr = ctr + 1
     else:  # BEAMFORMING CORE
         for n in range(0, N + 1):
             for m in range(-n, n + 1):
                 for omegactr in range(0, numberOfAngles):
                     Ynm = sph_harm(m, n, Azimut[omegactr], Elevation[omegactr])
-                    for f in range(0, FFTBlocklengthPnm):
-                        OutputArray[omegactr][f] = OutputArray[omegactr][f] + Ynm * Pnm[ctr][f] * dn[n][f] * cn[n][f]
+                    OutputArray[omegactr] = OutputArray[omegactr] + Ynm * Pnm[ctr] * dn[n] * cn[n]
                 ctr = ctr + 1
     # RETURN
     return OutputArray * gaincorrection
