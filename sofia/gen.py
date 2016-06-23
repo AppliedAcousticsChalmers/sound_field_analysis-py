@@ -122,14 +122,14 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
 
     # RADIAL FILTERS
     rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
-    for f in range(lowerSegLim, upperSegLim + 1):
-        timeShift = _np.exp(- 1j * w[f] * t)
+    f = list(range(lowerSegLim, upperSegLim + 1))
+    timeShift = _np.exp(- 1j * w[f] * t)
 
-        for n in range(0, SegN + 1):
-            if wavetype == 0:    # Plane wave
-                rfArray[n][f] = bn(n, krm[f], krs[f], ac) * timeShift
-            elif wavetype == 1:  # Spherical wave
-                rfArray[n][f] = 4 * pi * -1j * k[f] * timeShift * sphankel(n, kds[f]) * bn_npf(n, krm[f], krs[f], ac)
+    for n in range(0, SegN + 1):
+        if wavetype == 0:    # Plane wave
+            rfArray[n][f] = bn(n, krm[f], krs[f], ac) * timeShift
+        elif wavetype == 1:  # Spherical wave
+            rfArray[n][f] = 4 * pi * -1j * k[f] * timeShift * sphankel(n, kds[f]) * bn_npf(n, krm[f], krs[f], ac)
 
     # GENERATOR CORE
     Pnm = _np.empty([pow(N + 1, 2), upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
