@@ -210,13 +210,12 @@ def mf(N, kr, ac, **kargs):
     OutputArray = _np.empty((N + 1, krN), dtype=_np.complex_)
 
     # BN filter calculation
+    amplicalc = 1
     for ctr in range(0, N + 1):
         for ctrb in range(0, krN):
             bnval = bn(ctr, krm[ctrb], krs[ctrb], ac)
             if limiteronflag:
                 amplicalc = 2 * a_max / pi * abs(bnval) * _np.arctan(pi / (2 * a_max * abs(bnval)))
-            else:
-                amplicalc = 1
             OutputArray[ctr][ctrb] = amplicalc / bnval
 
     if(krN < 32 & plc != 0):
