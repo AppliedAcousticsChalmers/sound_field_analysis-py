@@ -275,17 +275,17 @@ def stc(N, fftData, grid):
         raise ValueError('GRID: Invalid grid data, must contain [az, el, r].')
 
     if numberOfSpatialPositionsInFFTBlock != numberOfGridPoints:
-        raise ValueError('Inconsistent spatial sampling points between fftData ('+ str(numberOfSpatialPositionsInFFTBlock) +') and supplied grid  ('+ str(numberOfGridPoints) +').')
+        raise ValueError('Inconsistent spatial sampling points between fftData (' + str(numberOfSpatialPositionsInFFTBlock) + ') and supplied grid  (' + str(numberOfGridPoints) + ').')
 
-    AzimuthAngles = grid[:,0]
-    ElevationAngles = grid[:,1]
-    GridWeights = grid[:,2]
+    AzimuthAngles = grid[:, 0]
+    ElevationAngles = grid[:, 1]
+    GridWeights = grid[:, 2]
 
     OutputArray = _np.zeros([(N + 1) ** 2, FFTBlocklength], dtype=_np.complex_)
 
     ctr = 0
     for n in range(0, N + 1):
-        for m in range (-n, n + 1):
+        for m in range(-n, n + 1):
             for j in range(0, numberOfGridPoints):
                 SHarm = 4 * pi * GridWeights[j] * _np.conj(sph_harm(m, n, AzimuthAngles[j], ElevationAngles[j]))
                 OutputArray[ctr] += SHarm * fftData[j]
