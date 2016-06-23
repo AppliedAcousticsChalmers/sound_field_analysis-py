@@ -154,16 +154,16 @@ def sph_harm(m, n, az, el):
     Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv
     scipy.special.lpmn calculates P(0...m 0...n) and its derivative but won't return +inf at high orders
     '''
-    if _np.abs(m) < 84:
+    if _np.abs(m).all < 84:
         return scy.sph_harm(m, n, az, el)
     else:  # built-in function fails for large orders
         mAbs = _np.abs(m)
         P = scy.lpmn(mAbs, n, _np.cos(el))[0][-1][-1]
-        preFactor1 = _np.sqrt((2 * n + 1) / (4 *_np.pi))
+        preFactor1 = _np.sqrt((2 * n + 1) / (4 * _np.pi))
         try:
-            preFactor2 = _np.sqrt(fact(n - mAbs)/fact(n + mAbs))
+            preFactor2 = _np.sqrt(fact(n - mAbs) / fact(n + mAbs))
         except OverflowError:  # integer division for very large orders
-            preFactor2 = _np.sqrt(fact(n - mAbs)//fact(n + mAbs))
+            preFactor2 = _np.sqrt(fact(n - mAbs) // fact(n + mAbs))
 
         Y = preFactor1 * preFactor2 * _np.exp(1j * m * az) * P
         if m < 0:
