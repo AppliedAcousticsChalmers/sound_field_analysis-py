@@ -154,7 +154,7 @@ def sph_harm(m, n, az, el):
     Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv
     scipy.special.lpmn calculates P(0...m 0...n) and its derivative but won't return +inf at high orders
     '''
-    if _np.abs(m).all < 84:
+    if all(_np.abs(m) < 84):
         return scy.sph_harm(m, n, az, el)
     else:  # built-in function fails for large orders
         mAbs = _np.abs(m)
