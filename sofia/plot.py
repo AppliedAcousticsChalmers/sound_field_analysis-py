@@ -49,6 +49,51 @@ def genShape(vizMTX, offset=0, scale=1.0, colorize=False):
     else:
         return scene.visuals.GridMesh(xs, ys, zs)
 
+
+def genSphere(vizMTX, colorize=False):
+    #  visObj = scene.visuals.Sphere(radius=1, rows=362, cols=91, method='latitude', face_colors=colors)
+    thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
+    rs = 1
+    xs = rs * _np.sin(thetas) * _np.cos(phis)
+    ys = rs * _np.sin(thetas) * _np.sin(phis)
+    zs = rs * _np.cos(thetas)
+    if colorize:
+        cm = color.get_colormap('viridis')
+        colors = cm[vizMTX]
+        return scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
+    else:
+        return scene.visuals.GridMesh(xs, ys, zs)
+
+
+def genScatter(vizMTX, colorize=False):
+    # Recreate angles
+    angles = _np.array(generateAngles())
+
+    sphCoords = _np.concatenate((angles, _np.atleast_2d(vizMTX).T), axis=1)
+    xyzCoords = _np.array(sph2cart(*sphCoords.T))
+    scatterObj = scene.visuals.Markers()
+
+    if colorize:
+        cm = color.get_colormap('viridis')
+        colors = cm[vizMTX]
+        scatterObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color=colors)
+    else:
+        scatterObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color='black')
+
+    return scatterObj
+
+
+def genVisual(vizMTX, style='shape', colorize=False, offset=0, scale=1.0):
+    if style == 'shape':
+        return genShape(vizMTX, colorize=colorize, offset=offset, scale=scale)
+    elif style == 'sphere':
+        return genSphere(vizMTX, colorize=colorize)
+    elif style == 'scatter':
+        return genScatter(vizMTX, colorize=colorize)
+    else:
+        raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or scatter.')
+
+
 def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **kargs):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
     vizMTX     SOFiA 3D-matrix-data [1[deg] steps]
@@ -66,14 +111,6 @@ def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **ka
     vizMTX -= vizMTX.min()
     vizMTX /= vizMTX.max()
 
-    # Generate colors
-    if colorize:
-        cm = color.get_colormap('viridis')
-        colors = cm[vizMTX]
-
-    # Recreate angles
-    angles = _np.array(generateAngles())
-
     if style not in ('sphere', 'flat', 'shape', 'scatter'):
         raise ValueError('Provided style "' + style + '" not available. Try sphere, flat, shape or scatter.')
 
@@ -86,29 +123,7 @@ def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **ka
     view.camera.set_range(x=[-0.1, 0.1])
 
     # Create correct visual object from mtxData
-    if style == 'scatter':
-        sphCoords = _np.concatenate((angles, _np.atleast_2d(vizMTX).T), axis=1)
-        xyzCoords = _np.array(sph2cart(*sphCoords.T))
-        visObj = scene.visuals.Markers()
-        if colorize:
-            visObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color=colors)
-        else:
-            visObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color='black')
-
-    elif style == 'sphere':
-        #  visObj = scene.visuals.Sphere(radius=1, rows=362, cols=91, method='latitude', face_colors=colors)
-        thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
-        rs = 1
-        xs = rs * _np.sin(thetas) * _np.cos(phis)
-        ys = rs * _np.sin(thetas) * _np.sin(phis)
-        zs = rs * _np.cos(thetas)
-        if colorize:
-            visObj = scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
-        else:
-            visObj = scene.visuals.GridMesh(xs, ys, zs)
-
-    elif style == 'shape':
-        visObj = genShape(vizMTX, offset=offset, scale=scale, colorize=colorize)
+    visObj = genVisual(vizMTX, style=style, colorize=colorize, offset=offset, scale=scale)
 
     # Add visual object and show canvas
     view.add(visObj)
