@@ -36,6 +36,19 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
 
 
+def genShape(vizMTX, offset=0, scale=1.0, colorize=False):
+    thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
+    rs = offset + scale * vizMTX.reshape((181, -1)).T
+    xs = rs * _np.sin(thetas) * _np.cos(phis)
+    ys = rs * _np.sin(thetas) * _np.sin(phis)
+    zs = rs * _np.cos(thetas)
+    if colorize:
+        cm = color.get_colormap('viridis')
+        colors = cm[vizMTX]
+        return scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
+    else:
+        return scene.visuals.GridMesh(xs, ys, zs)
+
 def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **kargs):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
     vizMTX     SOFiA 3D-matrix-data [1[deg] steps]
@@ -95,15 +108,7 @@ def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **ka
             visObj = scene.visuals.GridMesh(xs, ys, zs)
 
     elif style == 'shape':
-        thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
-        rs = offset + scale * vizMTX.reshape((181, -1)).T
-        xs = rs * _np.sin(thetas) * _np.cos(phis)
-        ys = rs * _np.sin(thetas) * _np.sin(phis)
-        zs = rs * _np.cos(thetas)
-        if colorize:
-            visObj = scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
-        else:
-            visObj = scene.visuals.GridMesh(xs, ys, zs)
+        visObj = genShape(vizMTX, offset=offset, scale=scale, colorize=colorize)
 
     # Add visual object and show canvas
     view.add(visObj)
