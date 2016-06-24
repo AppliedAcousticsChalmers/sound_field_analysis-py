@@ -123,7 +123,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     f = list(range(lowerSegLim, upperSegLim + 1))
 
     # RADIAL FILTERS
-    rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
+    rfArray = _np.zeros([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
     timeShift = _np.exp(- 1j * w[f] * t)
 
     for n in range(0, SegN + 1):
@@ -442,8 +442,7 @@ def swg(**kargs):
             amtDone = idx / (_np.unique(rqOrders).size - 1)
             print('\rProgress: [{0:50s}] {1:.1f}%'.format('#' * int(amtDone * 50), amtDone * 100), end="", flush=True)
         fOrders = _np.flatnonzero(rqOrders == order)
-        temp, _ = wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order, printInfo=False)
-        Pnm += temp
+        Pnm += wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lSegLim=fOrders[0], uSegLim=fOrders[-1], SeqN=order, printInfo=False)[0]
     print('\n')
     fftData = itc(Pnm, gridData)
 

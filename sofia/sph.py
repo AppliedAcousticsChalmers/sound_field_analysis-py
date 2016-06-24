@@ -158,7 +158,12 @@ def sph_harm(m, n, az, el):
         return scy.sph_harm(m, n, az, el)
     else:  # built-in function fails for large orders
         mAbs = _np.abs(m)
-        P = scy.lpmn(mAbs, n, _np.cos(el))[0][-1][-1]
+        if isinstance(el, _np.ndarray):
+            P = _np.empty(el.size)
+            for k in range(0, el.size):
+                P[k] = scy.lpmn(mAbs, n, _np.cos(el[k]))[0][-1][-1]
+        else:
+            P = scy.lpmn(mAbs, n, _np.cos(el))[0][-1][-1]
         preFactor1 = _np.sqrt((2 * n + 1) / (4 * _np.pi))
         try:
             preFactor2 = _np.sqrt(fact(n - mAbs) / fact(n + mAbs))
