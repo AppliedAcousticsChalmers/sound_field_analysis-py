@@ -34,27 +34,12 @@ mtxDataMID = plot.makeMTX(Pnm, dn, Nviz, krIDX[1])
 mtxDataHIGH = plot.makeMTX(Pnm, dn, Nviz, krIDX[2])
 mtxDataVHIGH = plot.makeMTX(Pnm, dn, Nviz, krIDX[3])
 
-# Plot Responses
-canvas = scene.SceneCanvas(keys='interactive', bgcolor='white')
-canvas.size = 600, 600
+vizMtx = [np.abs(mtxDataLOW),
+          np.abs(mtxDataMID),
+          np.abs(mtxDataHIGH),
+          np.abs(mtxDataVHIGH)]
 
-# Top-level grid that holds subfigures
-grid = canvas.central_widget.add_grid()
-
-# Add 4 ViewBoxes to the grid
-b1 = grid.add_view(row=0, col=0, border_color=(0.5, 0.5, 0.5, 1), camera='turntable')
-b2 = grid.add_view(row=0, col=1, border_color=(0.5, 0.5, 0.5, 1), camera='turntable')
-b3 = grid.add_view(row=1, col=0, border_color=(0.5, 0.5, 0.5, 1), camera='turntable')
-b4 = grid.add_view(row=1, col=1, border_color=(0.5, 0.5, 0.5, 1), camera='turntable')
-
-# Draw shapes to each ViewBox
-b1.add(plot.genShape(np.abs(mtxDataLOW)))
-b2.add(plot.genShape(np.abs(mtxDataMID)))
-b3.add(plot.genShape(np.abs(mtxDataHIGH)))
-b4.add(plot.genShape(np.abs(mtxDataVHIGH)))
-
-# Show canvas
-canvas.show()
+plot.plotGrid(2, 2, vizMtx, style='shape', bgcolor='white', colorize=False, normalize=True)
 
 input("3D visualization opened in new window.\nUse mouse to look around, scroll to zoom and shift + drag do move around.\nPress any key in the console to exit.")
 

@@ -139,6 +139,27 @@ def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **ka
     return canvas
 
 
+def plotGrid(rows, cols, vizMTX, bgcolor='white', style='shape', colorize=False, normalize=True):
+    canvas = scene.SceneCanvas(keys='interactive', bgcolor=bgcolor)
+
+    vizMTX = _np.atleast_3d(vizMTX)
+    N = vizMTX.shape[0]
+    if rows * cols != N:
+        raise ValueError('rows (' + str(rows) + ') * cols (' + str(cols) + ') must be number of objects (' + str(N) + ').')
+
+    # Top-level grid that holds subfigures
+    grid = canvas.central_widget.add_grid()
+
+    # Add ViewBoxes to the grid
+    for row in range(0, rows):
+        for col in range(0, cols):
+            temp = grid.add_view(row=row, col=col, border_color=(0.5, 0.5, 0.5, 1), camera='turntable')
+            temp.add(genVisual(vizMTX[col + cols * row], style=style, colorize=colorize, normalize=normalize))
+
+    canvas.show()
+    return canvas
+
+
 def generateAngles():
     """Returns a [65160 x 1] grid of all radiant angles in 1 deg steps"""
     return _np.mgrid[0:360, 0:181].T.reshape((-1, 2)) * _np.pi / 180
