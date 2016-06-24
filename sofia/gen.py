@@ -123,7 +123,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     f = list(range(lowerSegLim, upperSegLim + 1))
 
     # RADIAL FILTERS
-    rfArray = _np.empty([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
+    rfArray = _np.zeros([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
     timeShift = _np.exp(- 1j * w[f] * t)
 
     for n in range(0, SegN + 1):
