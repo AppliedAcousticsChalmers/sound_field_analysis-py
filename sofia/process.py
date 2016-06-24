@@ -285,8 +285,7 @@ def stc(N, fftData, grid):
     ctr = 0
     for n in range(0, N + 1):
         for m in range(-n, n + 1):
-            for j in range(0, numberOfGridPoints):
-                SHarm = 4 * pi * GridWeights[j] * _np.conj(sph_harm(m, n, AzimuthAngles[j], ElevationAngles[j]))
-                OutputArray[ctr] += SHarm * fftData[j]
+            SHarm = 4 * pi * GridWeights * _np.conj(sph_harm(m, n, AzimuthAngles, ElevationAngles))
+            OutputArray[ctr] += _np.inner(SHarm, fftData.T)
             ctr += 1
     return OutputArray
