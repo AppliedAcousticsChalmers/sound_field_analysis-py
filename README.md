@@ -40,6 +40,10 @@ Ideal unity plane wave simulation and 3D plot.
 #### Shape-based visualization:
 ![AE1_IdealPlaneWave shape](img/AE1_shape.png?raw=true "AE1_IdealPlaneWave shape")
 
+## AE2: Sampled Plane Wave
+Sampled unity plane wave simulation for different kr
+
+![AE2_SampledPlaneWave](img/AE2_grid.png?raw=true "AE2_SampledPlaneWave")
 
 ### AE6: Impulse response of ideal plane wave
 Impulse Response reconstruction on a simulated ideal unity plane wave
