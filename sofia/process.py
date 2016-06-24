@@ -96,7 +96,7 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
 
     gaincorrection = 4 * pi / pow(N + 1, 2)
 
-    OutputArray = _np.zeros((numberOfAngles, FFTBlocklengthPnm), dtype=_np.complex_)
+    OutputArray = _np.squeeze(_np.zeros((numberOfAngles, FFTBlocklengthPnm), dtype=_np.complex_))
 
     ctr = 0
 
@@ -104,16 +104,14 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
     if pwdflag == 1:  # PWD CORE
         for n in range(0, N + 1):
             for m in range(-n, n + 1):
-                for omegactr in range(0, numberOfAngles):
-                    Ynm = sph_harm(m, n, Azimut[omegactr], Elevation[omegactr])
-                    OutputArray[omegactr] = OutputArray[omegactr] + Ynm * Pnm[ctr] * dn[n]
+                Ynm = sph_harm(m, n, Azimut, Elevation)
+                OutputArray += Ynm * Pnm[ctr] * dn[n]
                 ctr = ctr + 1
     else:  # BEAMFORMING CORE
         for n in range(0, N + 1):
             for m in range(-n, n + 1):
-                for omegactr in range(0, numberOfAngles):
-                    Ynm = sph_harm(m, n, Azimut[omegactr], Elevation[omegactr])
-                    OutputArray[omegactr] = OutputArray[omegactr] + Ynm * Pnm[ctr] * dn[n] * cn[n]
+                Ynm = sph_harm(m, n, Azimut, Elevation)
+                OutputArray += Ynm * Pnm[ctr] * dn[n] * cn[n]
                 ctr = ctr + 1
     # RETURN
     return OutputArray * gaincorrection
