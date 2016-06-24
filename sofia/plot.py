@@ -36,6 +36,10 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
 
 
+def normalizeMTX(vizMTX):
+    vizMTX -= vizMTX.min()
+    return vizMTX / vizMTX.max()
+
 def genShape(vizMTX, offset=0, scale=1.0, colorize=False):
     thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
     rs = offset + scale * vizMTX.reshape((181, -1)).T
@@ -66,16 +70,17 @@ def genSphere(vizMTX, colorize=False):
 
 
 def genScatter(vizMTX, colorize=False):
+    vizMTX = vizMTX.reshape([-1, 1])
     # Recreate angles
     angles = _np.array(generateAngles())
 
-    sphCoords = _np.concatenate((angles, _np.atleast_2d(vizMTX).T), axis=1)
+    sphCoords = _np.concatenate((angles, _np.atleast_2d(vizMTX)), axis=1)
     xyzCoords = _np.array(sph2cart(*sphCoords.T))
     scatterObj = scene.visuals.Markers()
 
     if colorize:
         cm = color.get_colormap('viridis')
-        colors = cm[vizMTX]
+        colors = cm[_np.squeeze(vizMTX)]
         scatterObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color=colors)
     else:
         scatterObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color='black')
@@ -83,7 +88,10 @@ def genScatter(vizMTX, colorize=False):
     return scatterObj
 
 
-def genVisual(vizMTX, style='shape', colorize=False, offset=0, scale=1.0):
+def genVisual(vizMTX, style='shape', colorize=False, offset=0, scale=1.0, normalize=True):
+    if normalize:
+        vizMTX = normalizeMTX(vizMTX)
+
     if style == 'shape':
         return genShape(vizMTX, colorize=colorize, offset=offset, scale=scale)
     elif style == 'sphere':
@@ -108,8 +116,7 @@ def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **ka
 
     # Prepare data: reshape to [65160 x 1], take abs, normalize
     vizMTX = _np.abs(vizMTX.reshape((65160)))
-    vizMTX -= vizMTX.min()
-    vizMTX /= vizMTX.max()
+    vizMTX = normalizeMTX(vizMTX)
 
     if style not in ('sphere', 'flat', 'shape', 'scatter'):
         raise ValueError('Provided style "' + style + '" not available. Try sphere, flat, shape or scatter.')
