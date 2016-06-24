@@ -240,9 +240,8 @@ def itc(Pnm, angles, **kargs):
     ctr = 0
     for n in range(0, N + 1):
         for m in range(-n, n + 1):
-            for j in range(0, numberOfAngles):
-                SHresults = sph_harm(m, n, AzimuthAngles[j], ElevationAngles[j])
-                OutputArray[j] += SHresults * Pnm[ctr]
+            SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
+            OutputArray += _np.outer(SHresults, Pnm[ctr])
             ctr += 1
 
     return OutputArray
