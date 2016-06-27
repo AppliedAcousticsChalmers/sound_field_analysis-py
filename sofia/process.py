@@ -13,7 +13,7 @@ from .sph import sph_harm
 pi = _np.pi
 
 
-def pdc(N, OmegaL, Pnm, dn, **kargs):
+def pdc(N, OmegaL, Pnm, dn, printInfo=True):
     """
         Y = pdc(N, OmegaL, Pnm, dn, [cn])
     ------------------------------------------------------------------------
@@ -36,8 +36,6 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
            Row - kr bins
            If cn is not specified a PWD will be done
     """
-
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
 
     if printInfo:
         print('SOFiA P/D/C - Plane Wave Decomposition')
@@ -117,7 +115,7 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
     return OutputArray * gaincorrection
 
 
-def tdt(Y, **kargs):
+def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
     """
     y = tdt(Y, [win], [resampleFactor], [minPhase])
     ------------------------------------------------------------------------
@@ -148,14 +146,8 @@ def tdt(Y, **kargs):
     Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]
     and the function returns [NumberOfChannels x resampleFactor*2^n] samples.
     """
-
-    # Get optional arguments
-    win = kargs['win'] if 'win' in kargs else 0
     if win > 1:
         raise ValueError('Argument window must be in range 0.0 ... 1.0!')
-    minPhase = kargs['minPhase'] if 'minPhase' in kargs else 0
-    resampleFactor = kargs['resampleFactor'] if 'resampleFactor' in kargs else 1
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
 
     if printInfo:
         print('SOFiA T/D/T - Time Domain Transform')
@@ -184,7 +176,7 @@ def tdt(Y, **kargs):
     return y
 
 
-def itc(Pnm, angles, **kargs):
+def itc(Pnm, angles, N=None, printInfo=True):
     """I/T/C Fast Inverse spatial Fourier Transform Core
     p = sofia_itc(Pnm, angles, [N])
     ------------------------------------------------------------------------
@@ -226,9 +218,8 @@ def itc(Pnm, angles, **kargs):
         print('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
 
     Nmax = int(_np.sqrt(PnmDataLength - 1))
-
-    N = kargs['N'] if 'N' in kargs else Nmax
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+    if N is None:
+        N = Nmax
 
     if printInfo:
         print('SOFiA I/T/C - Inverse spatial Transform Core R13-0306')
