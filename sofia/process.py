@@ -287,3 +287,71 @@ def stc(N, fftData, grid):
             OutputArray[ctr] += _np.inner(SHarm, fftData.T)
             ctr += 1
     return OutputArray
+
+
+def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
+    '''F/D/T frequency domain transform
+    [fftData, kr, f, ctSig] = sofia_fdt(timeData, FFToversize, firstSample, lastSample)
+     ------------------------------------------------------------------------
+     fftData           Frequency domain data ready for the Spatial Fourier Transform (stc)
+     kr                kr-Values of the delivered data
+     f                 Absolute frequency scale
+     ctSig             Center signal, if available
+     ------------------------------------------------------------------------
+     timeData          Named tuple with minimum fields:
+                       * .impulseResponses     [Channels X Samples]
+                       * .FS
+                       * .radius               Array radius
+                       * .averageAirTemp       Temperature in [C]
+                       (* .centerIR            [1 x Samples] )
+
+     FFToversize       FFToversize rises the FFT Blocksize.   [default = 2]
+                       A FFT of the blocksize (FFToversize*NFFT) is applied
+                       to the time domain data,  where  NFFT is determinded
+                       as the next power of two of the signalSize  which is
+                       signalSize = (lastSample-firstSample).
+                       The function will pick a window of
+                       (lastSample-firstSample) for the FFT:
+     firstSample       First time domain sample to be included. Default=0
+     lastSample        Last time domain sample to be included. Default=None
+
+    Call this function with a running window (firstSample+td->lastSample+td)
+    iteration increasing td to obtain time slices. This way you resolve the
+    temporal information within the captured sound field.
+    '''
+
+    IR = timeData.impulseResponse
+    FS = timeData.FS
+    temperature = timeData.averageAirTemp
+    radius = timeData.radius
+
+    N = IR.shape[1]
+
+    if lastSample is None:  # assign lastSample to length of IR if not provided
+        lastSample = N
+
+    if FFToversize < 1:
+        raise ValueError('FFToversize must be >= 1.')
+
+    if lastSample < firstSample or lastSample > N:
+        raise ValueError('lastSample must be between firstSample and N (length of impulse response).')
+
+    if firstSample < 0 or firstSample > lastSample:
+        raise ValueError('firstSample must be between 0 and lastSample.')
+
+    totalSamples = lastSample - firstSample + 1
+    IR = IR[:, firstSample:lastSample]
+    NFFT = int(2**_np.ceil(_np.log2(totalSamples)))
+    fftData = _np.fft.rfft(IR, NFFT * FFToversize, 1)
+
+    if timeData.centerIR.any():
+        centerIR = timeData.centerIR[:, firstSample:lastSample]
+        ctSig = _np.fft.rfft(centerIR, NFFT * FFToversize)
+    else:
+        ctSig = []
+
+    f = _np.fft.rfftfreq(NFFT, d=1 / FS)
+    c = 331.5 + 0.6 * temperature
+    kr = 2 * pi * f / c * radius
+
+    return fftData, kr, f, ctSig
