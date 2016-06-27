@@ -4,7 +4,6 @@
 
 import numpy as np
 from sofia import gen, process, plot
-from vispy import scene
 
 pi = np.pi
 r = 0.1      # Array radius
