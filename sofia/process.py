@@ -13,7 +13,7 @@ from .sph import sph_harm
 pi = _np.pi
 
 
-def pdc(N, OmegaL, Pnm, dn, printInfo=True):
+def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
     """
         Y = pdc(N, OmegaL, Pnm, dn, [cn])
     ------------------------------------------------------------------------
@@ -69,8 +69,7 @@ def pdc(N, OmegaL, Pnm, dn, printInfo=True):
     Ndn = dn.shape[0]
     FFTBlocklengthdn = dn.shape[1]
 
-    if 'cn' in kargs:
-        cn = kargs['cn']
+    if cn is not None:
         pwdflag = 0
         Ncn = cn.shape[0]
         FFTBlocklengthcn = cn.shape[1]
@@ -81,7 +80,7 @@ def pdc(N, OmegaL, Pnm, dn, printInfo=True):
     # Check blocksizes
     if FFTBlocklengthdn != FFTBlocklengthPnm:
         raise ValueError('FFT Blocksizes of Pnm and dn are not consistent.')
-    if 'cn' in kargs:
+    if cn is not None:
         if FFTBlocklengthcn != FFTBlocklengthPnm and FFTBlocklengthcn != 1:
             raise ValueError('FFT Blocksize of cn is not consistent to Pnm and dn.')
 
@@ -356,7 +355,7 @@ def rfi(dn, kernelDownScale=2, highPass=False):
     dn                 Improved radial filters
     kernelSize         Filter kernel size (total)
     latency            Approximate signal latency due to the filters
-         
+
     ------------------------------------------------------------------------
     dn                 Analytical frequency domain radial filters from SOFiA M/F
     kernelDownScale    Downscale factor for the filter kernel #default: 2
