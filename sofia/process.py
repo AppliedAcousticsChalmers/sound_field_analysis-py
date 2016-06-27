@@ -235,6 +235,7 @@ def itc(Pnm, angles, N=None, printInfo=True):
 
     return OutputArray
 
+
 def stc(N, fftData, grid):
     '''Pnm = process.stc(N, fftData, grid)
     ------------------------------------------------------------------------
@@ -346,3 +347,42 @@ def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
     kr = 2 * pi * f / c * radius
 
     return fftData, kr, f, ctSig
+
+
+def rfi(dn, kernelDownScale=2, highPass=False):
+    '''R/F/I Radial Filter Improvement
+    [dn, kernelSize, latency] = rfi(dn, kernelDownScale, highPass)
+    ------------------------------------------------------------------------
+    dn                 Improved radial filters
+    kernelSize         Filter kernel size (total)
+    latency            Approximate signal latency due to the filters
+         
+    ------------------------------------------------------------------------
+    dn                 Analytical frequency domain radial filters from SOFiA M/F
+    kernelDownScale    Downscale factor for the filter kernel #default: 2
+    highPass           Highpass Filter 0:highPass:1
+                    highPass = 1 corresponds to the maximum kr available.
+                    highPass = 0 filter off (#default)
+    INFORMATION: If HPF is on (highPass>0) the radial filter kernel is
+              downscaled by a factor of two. Radial Filters and HPF
+              share the available taps and the latency keeps constant.
+              Be careful using very small signal blocks because there
+              may remain too few taps. Observe the filters by plotting
+              their spectra and impulse responses.
+              > Be very carefull if NFFT/max(kr) < 25
+              > Do not use R/F/I if NFFT/max(kr) < 15
+
+    This function improves the FIR radial filters from SOFiA M/F. The filters
+    are made causal and are windowed in time domain. The DC components are
+    estimated. The R/F/I module should always be inserted to the filter
+    path when treating measured data even if no use is made of the included
+    kernel downscaling or highpass filters.
+
+    Do NOT use R/F/I for single open sphere filters (e.g.simulations).
+
+    IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large
+            enough to cover all filter latencies and reponse slopes.
+            Otherwise undesired cyclic convolution artifacts may appear
+            in the output signal.
+    '''
+    return dn
