@@ -59,7 +59,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerS
     SegN     (Sement Order)        Used by the S/W/G wrapper
     """
 
-    NFFT = F_NFFT / 2 + 1
+    NFFT = int(F_NFFT / 2 + 1)
 
     if SegN is None:
         SegN = N
@@ -180,6 +180,8 @@ def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=True):
     a_max = pow(10, (amp_maxdB / 20))
     if amp_maxdB != 0:
         limiteronflag = True
+    else:
+        limiteronflag = False
 
     if printInfo:
         print('SOFiA M/F - Modal radial filter generator')
@@ -336,7 +338,7 @@ def lebedev(degree, printInfo=True, plot=False):
     return gridData, Nmax
 
 
-def swg(r=0.01, gridDate=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
+def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
         Nlim=120, c=343, wavetype=0, ds=1, printInfo=True):
     """S/W/G Sampled Wave Generator Wrapper
     [fftdata, kr] = sofia_swg(r, gridData, ac, FS, NFFT, ...
