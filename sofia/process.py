@@ -13,7 +13,7 @@ from .sph import sph_harm
 pi = _np.pi
 
 
-def pdc(N, OmegaL, Pnm, dn, **kargs):
+def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
     """
         Y = pdc(N, OmegaL, Pnm, dn, [cn])
     ------------------------------------------------------------------------
@@ -36,8 +36,6 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
            Row - kr bins
            If cn is not specified a PWD will be done
     """
-
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
 
     if printInfo:
         print('SOFiA P/D/C - Plane Wave Decomposition')
@@ -71,8 +69,7 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
     Ndn = dn.shape[0]
     FFTBlocklengthdn = dn.shape[1]
 
-    if 'cn' in kargs:
-        cn = kargs['cn']
+    if cn is not None:
         pwdflag = 0
         Ncn = cn.shape[0]
         FFTBlocklengthcn = cn.shape[1]
@@ -83,7 +80,7 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
     # Check blocksizes
     if FFTBlocklengthdn != FFTBlocklengthPnm:
         raise ValueError('FFT Blocksizes of Pnm and dn are not consistent.')
-    if 'cn' in kargs:
+    if cn is not None:
         if FFTBlocklengthcn != FFTBlocklengthPnm and FFTBlocklengthcn != 1:
             raise ValueError('FFT Blocksize of cn is not consistent to Pnm and dn.')
 
@@ -96,7 +93,7 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
 
     gaincorrection = 4 * pi / pow(N + 1, 2)
 
-    OutputArray = _np.zeros((numberOfAngles, FFTBlocklengthPnm), dtype=_np.complex_)
+    OutputArray = _np.squeeze(_np.zeros((numberOfAngles, FFTBlocklengthPnm), dtype=_np.complex_))
 
     ctr = 0
 
@@ -104,22 +101,20 @@ def pdc(N, OmegaL, Pnm, dn, **kargs):
     if pwdflag == 1:  # PWD CORE
         for n in range(0, N + 1):
             for m in range(-n, n + 1):
-                for omegactr in range(0, numberOfAngles):
-                    Ynm = sph_harm(m, n, Azimut[omegactr], Elevation[omegactr])
-                    OutputArray[omegactr] = OutputArray[omegactr] + Ynm * Pnm[ctr] * dn[n]
+                Ynm = sph_harm(m, n, Azimut, Elevation)
+                OutputArray += Ynm * Pnm[ctr] * dn[n]
                 ctr = ctr + 1
     else:  # BEAMFORMING CORE
         for n in range(0, N + 1):
             for m in range(-n, n + 1):
-                for omegactr in range(0, numberOfAngles):
-                    Ynm = sph_harm(m, n, Azimut[omegactr], Elevation[omegactr])
-                    OutputArray[omegactr] = OutputArray[omegactr] + Ynm * Pnm[ctr] * dn[n] * cn[n]
+                Ynm = sph_harm(m, n, Azimut, Elevation)
+                OutputArray += Ynm * Pnm[ctr] * dn[n] * cn[n]
                 ctr = ctr + 1
     # RETURN
     return OutputArray * gaincorrection
 
 
-def tdt(Y, **kargs):
+def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
     """
     y = tdt(Y, [win], [resampleFactor], [minPhase])
     ------------------------------------------------------------------------
@@ -150,14 +145,8 @@ def tdt(Y, **kargs):
     Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]
     and the function returns [NumberOfChannels x resampleFactor*2^n] samples.
     """
-
-    # Get optional arguments
-    win = kargs['win'] if 'win' in kargs else 0
     if win > 1:
         raise ValueError('Argument window must be in range 0.0 ... 1.0!')
-    minPhase = kargs['minPhase'] if 'minPhase' in kargs else 0
-    resampleFactor = kargs['resampleFactor'] if 'resampleFactor' in kargs else 1
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
 
     if printInfo:
         print('SOFiA T/D/T - Time Domain Transform')
@@ -186,7 +175,7 @@ def tdt(Y, **kargs):
     return y
 
 
-def itc(Pnm, angles, **kargs):
+def itc(Pnm, angles, N=None, printInfo=True):
     """I/T/C Fast Inverse spatial Fourier Transform Core
     p = sofia_itc(Pnm, angles, [N])
     ------------------------------------------------------------------------
@@ -228,9 +217,8 @@ def itc(Pnm, angles, **kargs):
         print('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
 
     Nmax = int(_np.sqrt(PnmDataLength - 1))
-
-    N = kargs['N'] if 'N' in kargs else Nmax
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+    if N is None:
+        N = Nmax
 
     if printInfo:
         print('SOFiA I/T/C - Inverse spatial Transform Core R13-0306')
@@ -245,6 +233,7 @@ def itc(Pnm, angles, **kargs):
             ctr += 1
 
     return OutputArray
+
 
 def stc(N, fftData, grid):
     '''Pnm = process.stc(N, fftData, grid)
@@ -289,3 +278,110 @@ def stc(N, fftData, grid):
             OutputArray[ctr] += _np.inner(SHarm, fftData.T)
             ctr += 1
     return OutputArray
+
+
+def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
+    '''F/D/T frequency domain transform
+    [fftData, kr, f, ctSig] = sofia_fdt(timeData, FFToversize, firstSample, lastSample)
+     ------------------------------------------------------------------------
+     fftData           Frequency domain data ready for the Spatial Fourier Transform (stc)
+     kr                kr-Values of the delivered data
+     f                 Absolute frequency scale
+     ctSig             Center signal, if available
+     ------------------------------------------------------------------------
+     timeData          Named tuple with minimum fields:
+                       * .impulseResponses     [Channels X Samples]
+                       * .FS
+                       * .radius               Array radius
+                       * .averageAirTemp       Temperature in [C]
+                       (* .centerIR            [1 x Samples] )
+
+     FFToversize       FFToversize rises the FFT Blocksize.   [default = 2]
+                       A FFT of the blocksize (FFToversize*NFFT) is applied
+                       to the time domain data,  where  NFFT is determinded
+                       as the next power of two of the signalSize  which is
+                       signalSize = (lastSample-firstSample).
+                       The function will pick a window of
+                       (lastSample-firstSample) for the FFT:
+     firstSample       First time domain sample to be included. Default=0
+     lastSample        Last time domain sample to be included. Default=None
+
+    Call this function with a running window (firstSample+td->lastSample+td)
+    iteration increasing td to obtain time slices. This way you resolve the
+    temporal information within the captured sound field.
+    '''
+
+    IR = timeData.impulseResponse
+    FS = timeData.FS
+    temperature = timeData.averageAirTemp
+    radius = timeData.radius
+
+    N = IR.shape[1]
+
+    if lastSample is None:  # assign lastSample to length of IR if not provided
+        lastSample = N
+
+    if FFToversize < 1:
+        raise ValueError('FFToversize must be >= 1.')
+
+    if lastSample < firstSample or lastSample > N:
+        raise ValueError('lastSample must be between firstSample and N (length of impulse response).')
+
+    if firstSample < 0 or firstSample > lastSample:
+        raise ValueError('firstSample must be between 0 and lastSample.')
+
+    totalSamples = lastSample - firstSample + 1
+    IR = IR[:, firstSample:lastSample]
+    NFFT = int(2**_np.ceil(_np.log2(totalSamples)))
+    fftData = _np.fft.rfft(IR, NFFT * FFToversize, 1)
+
+    if timeData.centerIR.any():
+        centerIR = timeData.centerIR[:, firstSample:lastSample]
+        ctSig = _np.fft.rfft(centerIR, NFFT * FFToversize)
+    else:
+        ctSig = []
+
+    f = _np.fft.rfftfreq(NFFT, d=1 / FS)
+    c = 331.5 + 0.6 * temperature
+    kr = 2 * pi * f / c * radius
+
+    return fftData, kr, f, ctSig
+
+
+def rfi(dn, kernelDownScale=2, highPass=False):
+    '''R/F/I Radial Filter Improvement
+    [dn, kernelSize, latency] = rfi(dn, kernelDownScale, highPass)
+    ------------------------------------------------------------------------
+    dn                 Improved radial filters
+    kernelSize         Filter kernel size (total)
+    latency            Approximate signal latency due to the filters
+
+    ------------------------------------------------------------------------
+    dn                 Analytical frequency domain radial filters from SOFiA M/F
+    kernelDownScale    Downscale factor for the filter kernel #default: 2
+    highPass           Highpass Filter 0:highPass:1
+                    highPass = 1 corresponds to the maximum kr available.
+                    highPass = 0 filter off (#default)
+    INFORMATION: If HPF is on (highPass>0) the radial filter kernel is
+              downscaled by a factor of two. Radial Filters and HPF
+              share the available taps and the latency keeps constant.
+              Be careful using very small signal blocks because there
+              may remain too few taps. Observe the filters by plotting
+              their spectra and impulse responses.
+              > Be very carefull if NFFT/max(kr) < 25
+              > Do not use R/F/I if NFFT/max(kr) < 15
+
+    This function improves the FIR radial filters from SOFiA M/F. The filters
+    are made causal and are windowed in time domain. The DC components are
+    estimated. The R/F/I module should always be inserted to the filter
+    path when treating measured data even if no use is made of the included
+    kernel downscaling or highpass filters.
+
+    Do NOT use R/F/I for single open sphere filters (e.g.simulations).
+
+    IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large
+            enough to cover all filter latencies and reponse slopes.
+            Otherwise undesired cyclic convolution artifacts may appear
+            in the output signal.
+    '''
+    return dn

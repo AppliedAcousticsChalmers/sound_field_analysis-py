@@ -28,6 +28,7 @@ vizMTX = plot.makeMTX(Pnm, dn, Nviz, krViz)
 
 # Visualize
 canvas = plot.visualize3D(vizMTX, style='shape', colorize=False)
+input("3D visualization opened in new window.\nUse mouse to look around, scroll to zoom and shift + drag do move around.\nPress any key in the console to exit.")
 
 # To export to png:
 # >> from vispy import io

@@ -12,7 +12,8 @@ from .process import itc
 pi = _np.pi
 
 
-def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
+def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerSegLim=0,
+        SegN=None, upperSegLim=None, printInfo=True, **kargs):
     """
     Wave Generator Core:
     Returns Spatial Fourier Coefficients Pnm and kr vector
@@ -58,16 +59,12 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     SegN     (Sement Order)        Used by the S/W/G wrapper
     """
 
-    NFFT = F_NFFT / 2 + 1
+    NFFT = int(F_NFFT / 2 + 1)
 
-    SegN = kargs['SegN'] if 'SegN' in kargs else N
-    upperSegLim = int(kargs['upperSegLim'] if 'upperSegLim' in kargs else NFFT - 1)
-    lowerSegLim = int(kargs['lowerSegLim'] if 'lowerSegLim' in kargs else 0)
-    ds = kargs['ds'] if 'ds' in kargs else 1.0
-    wavetype = kargs['wavetype'] if 'wavetype' in kargs else 0
-    c = kargs['c'] if 'c' in kargs else 343.0
-    t = kargs['t'] if 't' in kargs else 0.0
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+    if SegN is None:
+        SegN = N
+    if upperSegLim is None:
+        upperSegLim = NFFT - 1
 
     if printInfo:
         print('SOFiA W/G/C - Wave Generator')
@@ -150,7 +147,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, **kargs):
     return Pnm, kr
 
 
-def mf(N, kr, ac, **kargs):
+def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=True):
     """M/F Modal radial filters
     dn, beam = mf(N, kr, ac)
     Optional keyword parameters: a_max, plc, fadeover
@@ -180,14 +177,11 @@ def mf(N, kr, ac, **kargs):
                 gap of powerloss compensated filter and normal N0 filters.
                 0 = auto fadeover
     """
-
-    # Get optional arguments
-    a_maxdB = kargs['a_maxdB'] if 'a_maxdB' in kargs else 0
-    a_max = pow(10, (a_maxdB / 20)) if 'a_maxdB' in kargs else 1
-    limiteronflag = True if 'a_maxdB' in kargs else False
-    plc = kargs['plc'] if 'plc' in kargs else 0
-    fadeover = kargs['fadeover'] if 'fadeover' in kargs else 0
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+    a_max = pow(10, (amp_maxdB / 20))
+    if amp_maxdB != 0:
+        limiteronflag = True
+    else:
+        limiteronflag = False
 
     if printInfo:
         print('SOFiA M/F - Modal radial filter generator')
@@ -274,7 +268,7 @@ def mf(N, kr, ac, **kargs):
     return OutputArray, BeamResponse
 
 
-def lebedev(degree, **kargs):
+def lebedev(degree, printInfo=True, plot=False):
     '''
     [gridData, Nmax] = sofia_lebedev(degree, plot)
     This function computes Lebedev quadrature nodes and weigths.
@@ -293,9 +287,6 @@ def lebedev(degree, **kargs):
                         0: Off [default], 1: On
     '''
     from sofia import lebedev
-
-    plot = kargs['plot'] if 'plot' in kargs else 0
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
 
     if printInfo:
         print('SOFiA Lebedev Grid')
@@ -347,7 +338,8 @@ def lebedev(degree, **kargs):
     return gridData, Nmax
 
 
-def swg(**kargs):
+def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
+        Nlim=120, c=343, wavetype=0, ds=1, printInfo=True):
     """S/W/G Sampled Wave Generator Wrapper
     [fftdata, kr] = sofia_swg(r, gridData, ac, FS, NFFT, ...
                                           AZ, EL, Nlim, t, c, wavetype, ds)
@@ -393,20 +385,8 @@ def swg(**kargs):
     S/W/G emulates discrete sampling. You can observe alias artifacts.
     """
 
-    # Get optional arguments - most probably could be proper optional arguments
-    r = kargs['r'] if 'r' in kargs else 0.1
-    gridData = kargs['gridData'] if 'gridData' in kargs else lebedev(110)
-    ac = kargs['ac'] if 'ac' in kargs else 0
-    FS = kargs['FS'] if 'FS' in kargs else 48000
-    NFFT = kargs['NFFT'] if 'NFFT' in kargs else 512
-    AZ = kargs['AZ'] if 'AZ' in kargs else 0
-    EL = kargs['EL'] if 'EL' in kargs else _np.pi / 2
-    Nlim = kargs['Nlim'] if 'Nlim' in kargs else 120
-    # t = kargs['t'] if 't' in kargs else 0
-    c = kargs['c'] if 'c' in kargs else 343
-    wavetype = kargs['wavetype'] if 'wavetype' in kargs else 0
-    ds = kargs['ds'] if 'ds' in kargs else 1
-    printInfo = kargs['printInfo'] if 'printInfo' in kargs else True
+    if gridData is None:
+        gridData = lebedev(110)
 
     if not isinstance(r, list):  # r [1,1] => rm  Microphone Radius
         kr = _np.linspace(0, r * pi * FS / c, (NFFT / 2 + 1))
