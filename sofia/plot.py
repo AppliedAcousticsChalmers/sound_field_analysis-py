@@ -40,6 +40,7 @@ def normalizeMTX(vizMTX):
     vizMTX -= vizMTX.min()
     return vizMTX / vizMTX.max()
 
+
 def genShape(vizMTX, offset=0, scale=1.0, colorize=False):
     thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
     rs = offset + scale * vizMTX.reshape((181, -1)).T
