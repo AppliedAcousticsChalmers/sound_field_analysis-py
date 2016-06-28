@@ -6,7 +6,7 @@ Generator functions:
 - swg: Sampled Wave Generator
 """
 import numpy as _np
-from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph
+from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph, sph2cart
 from .process import itc
 
 pi = _np.pi
@@ -427,3 +427,43 @@ def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
     fftData = itc(Pnm, gridData)
 
     return fftData, kr
+
+
+def gaussGrid(AZnodes=10, ELnodes=5, plot=False):
+    '''[gridData, Npoints, Nmax] = gaussGrid(AZnodes, ELnodes, plot)
+    ------------------------------------------------------------------------
+    gridData        Gauss-Legendre quadrature including weigths(W):
+                    [AZ_1 EL_1 W_1;
+                     ...
+                     AZ_n EL_n W_n]
+    Npoints         Total number of nodes
+    Nmax            Highest stable grid order
+    ------------------------------------------------------------------------
+    AZnodes         Number of azimutal nodes  [default = 10]
+    ELnodes         Number of elevation nodes [default = 5]
+    plot            Show a globe plot of the selected grid [default=False]
+    This function computes Gauss-Legendre quadrature nodes and weigths
+    in the SOFiA/VariSphear data format.
+    '''
+
+    # Azimuth: Gauss
+    AZ = _np.linspace(0, AZnodes - 1, AZnodes) * 2 * pi / AZnodes
+    AZw = _np.ones(AZnodes) * 2 * pi / AZnodes
+
+    # Elevation: Legendre
+    EL, ELw = _np.polynomial.legendre.leggauss(ELnodes)
+    EL = _np.arccos(EL)
+
+    # Weights
+    W = _np.outer(AZw, ELw) / 3
+    W /= W.sum()
+
+    # VariSphere order: AZ increasing, EL alternating
+    gridData = _np.empty((ELnodes * AZnodes, 3))
+    for k in range(0, AZnodes):
+        curIDX = k * ELnodes
+        gridData[curIDX:curIDX + ELnodes, 0] = AZ[k].repeat(ELnodes)
+        gridData[curIDX:curIDX + ELnodes, 1] = EL[::-1 + k % 2 * 2]  # flip EL every second iteration
+        gridData[curIDX:curIDX + ELnodes, 2] = W[k][::-1 + k % 2 * 2]  # flip W every second iteration
+
+    return gridData
