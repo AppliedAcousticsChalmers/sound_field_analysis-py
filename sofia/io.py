@@ -1,7 +1,7 @@
 '''Input-Output functions
 - readMiroStruct reads miro matlab files that have been exported as a struct:
     load SOFiA_A1;
-    SOFiA_A1_struct = struct(SOFiA_A4);
+    SOFiA_A1_struct = struct(SOFiA_A1);
     save('SOFiA_A1_struct.mat', 'SOFiA_A1_struct');
 '''
 from pathlib import Path
