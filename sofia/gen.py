@@ -467,3 +467,24 @@ def gaussGrid(AZnodes=10, ELnodes=5, plot=False):
         gridData[curIDX:curIDX + ELnodes, 2] = W[k][::-1 + k % 2 * 2]  # flip W every second iteration
 
     return gridData
+
+
+def awgn(fftData, noiseLevel=80, printInfo=True):
+    '''noiseData = awgn(fftData, noiseLevel, printInfo)
+    -----------------------------------------------------------------------
+    noisyData       Output fftData block including white gaussian noise
+    fftData         Input fftData block (e.g. from F/D/T or S/W/G)
+    noiseLevel      Average noise Level in dB [Default: -80dB]
+    '''
+    if printInfo:
+        print('SOFiA A/W/G/N - Additive White Gaussian Noise Generator')
+
+    dimFactor = 10**(noiseLevel / 20)
+    fftData = _np.atleast_2d(fftData)
+    channels = fftData.shape[0]
+    NFFT = fftData.shape[1] * 2 - 2
+    nNoise = _np.random.rand(channels, NFFT)
+    nNoise = dimFactor * nNoise / _np.mean(_np.abs(nNoise))
+    nNoiseSpectrum = _np.fft.rfft(nNoise, axis=1)
+
+    return fftData + nNoiseSpectrum
