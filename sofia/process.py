@@ -102,13 +102,13 @@ def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
         for n in range(0, N + 1):
             for m in range(-n, n + 1):
                 Ynm = sph_harm(m, n, Azimut, Elevation)
-                OutputArray += _np.outer(Ynm, Pnm[ctr] * dn[n])
+                OutputArray += _np.squeeze(_np.outer(Ynm, Pnm[ctr] * dn[n]))
                 ctr = ctr + 1
     else:  # BEAMFORMING CORE
         for n in range(0, N + 1):
             for m in range(-n, n + 1):
                 Ynm = sph_harm(m, n, Azimut, Elevation)
-                OutputArray += _np.outer(Ynm, Pnm[ctr] * dn[n] * cn[n])
+                OutputArray += _np.squeeze(_np.outer(Ynm, Pnm[ctr] * dn[n] * cn[n]))
                 ctr = ctr + 1
     # RETURN
     return OutputArray * gaincorrection
