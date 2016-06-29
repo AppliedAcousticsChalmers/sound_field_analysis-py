@@ -30,7 +30,7 @@ fftData, kr = gen.swg(r=r, gridData=quadrature_grid, ac=ac, FS=FS, NFFT=NFFT, AZ
 Pnm = process.stc(Nsft, fftData, quadrature_grid)
 
 # Generate modal radial filters (MF)
-dn, _ = gen.mf(Nrf, kr, ac, a_max=limit)
+dn, _ = gen.mf(Nrf, kr, ac, amp_maxdB=limit)
 
 # Plane wave decomposition (PDC) for supplied look directions
 Y = process.pdc(Npdc, OmegaL, Pnm, dn)
@@ -39,7 +39,7 @@ Y = process.pdc(Npdc, OmegaL, Pnm, dn)
 impulseResponses = process.tdt(Y)
 
 # Make IR causal (flip first & second half):
-impulseResponses = np.hstack(np.array_split(impulseResponses, 2, axis = 1)[::-1])
+impulseResponses = np.hstack(np.array_split(impulseResponses, 2, axis=1)[::-1])
 
 # TODO: fix scaling (currently constant factor 19)
 impulseResponses = impulseResponses / 19
