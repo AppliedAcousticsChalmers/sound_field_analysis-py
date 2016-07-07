@@ -1,5 +1,5 @@
 # SOFiA-py
-SOFiA-py is a Python port of the [Sound Field Analysis Toolbox (SOFiA) toolbox](https://github.com/fietew/sofia-toolbox), originally by Benjamin Bernschütz[<sup>[1]</sup>](#references). The main goal of the SOFiA toolbox is to analyze, visualize and process soundfield data recorded by spherical microphone arrays. Furthermore, various types of testdata may be generated to evaluate the implemented functions.
+SOFiA-py is a Python port of the [Sound Field Analysis Toolbox (SOFiA) toolbox](http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html), originally by Benjamin Bernschütz[<sup>[1]</sup>](#references). The main goal of the SOFiA toolbox is to analyze, visualize and process soundfield data recorded by spherical microphone arrays. Furthermore, various types of testdata may be generated to evaluate the implemented functions.
 
 The package is pure python and PEP8 compliant (except line-length). As the port is ongoing, no serious attempts at speed optimization have been made, please expect things to be slow for now.
 
