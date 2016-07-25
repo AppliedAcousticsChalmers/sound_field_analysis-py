@@ -182,7 +182,7 @@ LebFunc = {
 
 
 def genGrid(n):
-    """Returns Lebedev coefficients of `n`th degree
+    """Returns Lebedev coefficients of n'th degree
 
     Parameters
     ----------
