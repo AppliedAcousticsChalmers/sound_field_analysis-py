@@ -10,27 +10,8 @@ The following external libraries are required to use most of the supplied functi
 - [matplotlib](http://matplotlib.org) (for 2D plotting)
 - [vispy](http://vispy.org) (for 3D plotting)
 
-## Overview
-- `gen` contains functions to generate data:
-    - `wgc`: Wave Generator
-    - `mf`: Modal Radial Filter Generator
-    - `lebedev`: Lebedev Quadrature
-    - `swg`: Sampled Wave Generator
--  `process` contains processing functions:
-    - `pdc`: Plane Wave Decomposition
-    - `tdt`: Time Domain Reconstruction
-    - `stc`: Fast Spatial Fourier Transform
-    - `itc`: Fast Inverse Spatial Fourier Transform
-- `plot` contains function for visualization:
-    -  `makeMTX`: Generate 3D-matrix data
-    -  `visualize3D`: Draw matrix data in 3D
--  `sph` contains helper functions for dealing with spherical harmonics:
-    - `sph_harm`: More robust spherical harmonic coefficients
-    -  `spbessel` / `dspbessel`: Spherical Bessel and derivative
-    - `spneumann` / `dspneumann`: Spherical Neumann (Bessel 2nd kind) and derivative
-    - `sphankel` / `dsphankel`: Spherical Hankel and derivative
-    - `cart2sph` / `sph2cart`: Convert cartesion to spherical coordinates and vice versa
-
+## Documentation
+Please find the full documentation at https://qulab.github.io/sofia-py/!
 
 ## Working examples
 ## AE1: Ideal Plane Wave
