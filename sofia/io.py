@@ -22,7 +22,7 @@ def readMiroStruct(matFile):
     Returns
     -------
     timeData : named tuple
-    `timeData tuple with following fields
+    `timeData` tuple with following fields
     ::
        .impulseResponses [Channels X Samples]
        .FS
