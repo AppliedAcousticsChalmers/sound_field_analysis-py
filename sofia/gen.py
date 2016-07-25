@@ -1,9 +1,14 @@
 """
-Generator functions:
-- wgc: Wave Generator
-- mf: Modal Radial Filter Generator
-- lebedev: Lebedev quadrature nodes and weigths
-- swg: Sampled Wave Generator
+Module contains various generator functions:
+
+`wgc`
+   Wave Generator
+`mf`
+   Modal Radial Filter Generator
+`lebedev`
+   Lebedev quadrature nodes and weigths
+`swg`
+   Sampled Wave Generator
 """
 import numpy as _np
 from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph, sph2cart
@@ -13,50 +18,68 @@ pi = _np.pi
 
 
 def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerSegLim=0,
-        SegN=None, upperSegLim=None, printInfo=True, **kargs):
+        SegN=None, upperSegLim=None, printInfo=True):
     """
     Wave Generator Core:
-    Returns Spatial Fourier Coefficients Pnm and kr vector
-    Pnm, kr = sofia.wgc(N, r, ac, FS, NFFT, AZ, EL)
+    Returns Spatial Fourier Coefficients `Pnm` and `kr` vector
 
-    Optional keyword parameters: t, c, wavetype, ds, lSegLim, uSegLim, SeqN
-    ------------------------------------------------------------------------
-    Pnm      Spatial Fourier Coefficients
-             Columns : nm coeff
-             Rows    : FFT bins
-    kr       kr-Vector
-             Can also be a matrix [krm; krs] for rigid sphere configurations:
-             [1,:] => krm referring to the Microphone Radius
-             [2,:] => krs referring to the Sphere Radius (Scatterer)
-    ------------------------------------------------------------------------
-    N        Maximum transform order
-    r        Microphone Radius
-             Can also be a vector for rigid/dual sphere configurations:
-             [1,1] => rm  Microphone Radius
-             [2,1] => rs  Sphere Radius or Microphone2 Radius
-             ! If only one radius (rm) is given using a Rigid/Dual Sphere
-               Configuration: rs = rm and only one kr-vector is returned!
-    ac       Array Configuration
-             0  Open Sphere with p Transducers (NO plc!)
-             1  Open Sphere with pGrad Transducers
-             2  Rigid Sphere with p Transducers
-             3  Rigid Sphere with pGrad Transducers (Thx to Nils Peters!)
-             4  Dual Open Sphere with p Transducers (Thx to Nils Peters!)
-    FS       Sampling Frequency
-    NFFT     FFT Order (Number of bins) should be 2^x, x=1,2,3,...
-    AZ       Azimuth   angle in [DEG] 0-2pi
-    EL       Elevation angle in [DEG] 0-pi
-    t        Time Delay in s. The delay has: (t*FS) Samples
-    c        Speed of sound in [m/s] (Default: 343m/s)
-    wavetype Type of the Wave. 0: Plane Wave (default) 1: Spherical Wave
-    ds       Distance of the source in [m] (For wavetype = 1 only)
-             Warning: If NFFT is smaller than the time the wavefront
-             needs to travel from the source to the array, the impulse
-             response will by cyclically shifted (cyclic convolution).
-    ---
-    lSegLim  (Lower Segment Limit) Used by the S/W/G wrapper
-    uSegLim  (Upper Segment Limit) Used by the S/W/G wrapper
-    SegN     (Sement Order)        Used by the S/W/G wrapper
+    Parameters
+    ----------
+    N : int
+        Maximum transform order.
+    r  : list of ints
+       Microphone radius `r`
+       Can also be a vector for rigid/dual sphere configurations:
+       [1,1] => rm  Microphone radius
+       [2,1] => rs  Sphere or microphone radius
+       ! If only one radius (rm) is given using a Rigid/Dual Sphere
+       Configuration: rs = rm and only one kr-vector is returned!
+    ac : int {0, 1, 2, 3, 4}
+       Array Configuration:
+        - `0`:  Open Sphere with p Transducers (NO plc!)
+        - `1`:  Open Sphere with pGrad Transducers
+        - `2`:  Rigid Sphere with p Transducers
+        - `3`:  Rigid Sphere with pGrad Transducers
+        - `4`:  Dual Open Sphere with p Transducers
+    FS : int
+       Sampling Frequency
+    NFFT : int
+       Order of FFT (number of bins), should be a power of 2.
+    AZ : float
+       Azimuth angle in radians [0-2pi].
+    EL : float
+       Elevation angle in in radians [0-pi].
+    t : float, optional
+       Time Delay in s.
+    c : float, optional
+       Speed of sound in [m/s] (Default: 343m/s)
+    wavetype : int {0, 1}, optional
+       Type of the Wave:
+        - 0: Plane Wave (default)
+        - 1: Spherical Wave
+    ds : float, optional
+       Distance of the source in [m] (For wavetype = 1 only)
+       Warning: If NFFT is smaller than the time the wavefront
+       needs to travel from the source to the array, the impulse
+       response will by cyclically shifted (cyclic convolution).
+    lSegLim : int, optional
+       (Lower Segment Limit) Used by the S/W/G wrapper
+    uSegLim : int, optional
+       (Upper Segment Limit) Used by the S/W/G wrapper
+    SegN : int, optional
+        (Sement Order) Used by the S/W/G wrapper
+    printInfo: bool, optional
+       Toggle print statements
+
+    Returns
+    -------
+    Pnm : array of complex floats
+       Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows
+    kr : array of floats
+       kr-Vector
+       Can also be a matrix [krm; krs] for rigid sphere configurations:
+       [1,:] => krm referring to the Microphone Radius
+       [2,:] => krs referring to the Sphere Radius (Scatterer)
     """
 
     NFFT = int(F_NFFT / 2 + 1)
