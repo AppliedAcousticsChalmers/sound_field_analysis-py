@@ -7,18 +7,24 @@ from vispy import scene, color
 from .process import pdc
 from .sph import sph2cart
 
+
 def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     """mtxData = makeMTX(Nviz=3, Pnm, dn, krIndex)
-    ------------------------------------------------------------------------
-    mtxData   3D-matrix-data in 1[deg] steps
-    ------------------------------------------------------------------------
+
+    Parameters
+    ----------
     Pnm       Spatial Fourier Coefficients (from S/T/C)
     dn        Modal Radial Filters (from M/F)
     N         Order of the spatial fourier transform     [default = 3]
     krIndex   Index of kr Vector                         [default = 1]
     oversize  Integer Factor to increase the resolution. Set oversize = 1
               (default) to use the mtxData matrix for visual3D(), map3D().
+    #Returns
+    -------
+    mtxData   3D-matrix-data in 1[deg] steps
 
+    Notes
+    -----
     The file generates a SOFiA mtxData Matrix of 181x360 pixels for the
     visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).
     The HD version generally allows to raise the resolution (oversize > 1).
@@ -105,6 +111,9 @@ def genVisual(vizMTX, style='shape', colorize=False, offset=0, scale=1.0, normal
 
 def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **kargs):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
+
+    Parameters
+    ----------
     vizMTX     SOFiA 3D-matrix-data [1[deg] steps]
     style       'sphere',   surface colors indicate the intensity (default)
                 'flat',     surface colors indicate the intensity (TODO)
@@ -112,6 +121,9 @@ def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **ka
                 'shape',    extension indicates the intensity
     offset      linear offset for shape (Default: 0)
     scale       scaling factor for shape (Default: 1)
+
+    Notes
+    -----
     TODO: Implement flat style, fix color position in sphere and shape, make colormap selectable, move grid generation into function
     """
 
