@@ -23,5 +23,9 @@ How to Get Started
 
 Various jupyter notebooks are located in the root directory/
 
-* AE1_IdealPlaneWave.inby:
+* AE1_IdealPlaneWave.ipynb:
     Ideal unity plane wave simulation
+
+Reference
+---------
+Feel free to check out the full :doc:`reference.
