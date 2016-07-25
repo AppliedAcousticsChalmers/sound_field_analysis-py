@@ -6,6 +6,8 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build
+PDFDIR        = ../
+HTMLDIR       = ../../sofia-py-docs/
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -53,6 +55,8 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+	cp -a $(BUILDDIR)/html/* $(HTMLDIR)
+	@echo "Copied finished html folder to $(HTMLDIR)."
 
 .PHONY: dirhtml
 dirhtml:
@@ -140,6 +144,8 @@ latexpdf:
 	@echo "Running LaTeX files through pdflatex..."
 	$(MAKE) -C $(BUILDDIR)/latex all-pdf
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
+	cp $(BUILDDIR)/latex/*.pdf $(PDFDIR)
+	@echo "Copied finished pdf file to $(PDFDIR)"
 
 .PHONY: latexpdfja
 latexpdfja:
