@@ -1,9 +1,19 @@
 """
 Processing functions:
-- pdc: Plane Wave Decomposition
-- tdt: Time Domain Reconstruction
-- stc: Fast Spatial Fourier Transform
-- itc: Fast Inverse Spatial Fourier Transform
+
+`fdt`
+   Frequency to time transform
+`itc`
+   Fast Inverse Spatial Fourier Transform
+`pdc`
+   Plane Wave Decomposition
+`rfi`
+   Radial filter Improvement
+`stc`
+   Fast Spatial Fourier Transform
+`tdt`
+   Time Domain Reconstruction
+
 """
 
 import numpy as _np
@@ -13,28 +23,178 @@ from .sph import sph_harm
 pi = _np.pi
 
 
-def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
+def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
+    '''F/D/T frequency domain transform
+
+    Parameters
+    ----------
+    timeData : named tuple
+       timeData tuple with following fields
+       ::
+          .impulseResponses [Channels X Samples]
+          .FS
+          .radius           Array radius
+          .averageAirTemp   Temperature in [C]
+          (.centerIR        [1 x Samples] )
+    FFToversize : int, optional
+       FFToversize rises the FFT Blocksize. [Default: 1]
+       ::
+          A FFT of the blocksize (FFToversize*NFFT) is applied
+          to the time domain data,  where  NFFT is determinded
+          as the next power of two of the signalSize  which is
+          signalSize = (lastSample-firstSample).
+          The function will pick a window of (lastSample-firstSample)
+          for the FFT.
+    firstSample : int, optional
+       First time domain sample to be included. [Default: 0]
+    lastSample : int, optional
+       Last time domain sample to be included. [Default: -1]
+
+    Returns
+    -------
+    fftData : array of floats
+       Frequency domain data ready for the Spatial Fourier Transform (stc)
+    kr : array of floats
+       kr-Values of the delivered data
+    f : array of floats
+       Absolute frequency scale
+    ctSig : array of floats
+       Center signal, if available
+
+    Notes
+    -----
+    Call this function with a running window (firstSample+td->lastSample+td)
+    iteration increasing td to obtain time slices. This way you resolve the
+    temporal information within the captured sound field.
+    '''
+
+    IR = timeData.impulseResponse
+    FS = timeData.FS
+    temperature = timeData.averageAirTemp
+    radius = timeData.radius
+
+    N = IR.shape[1]
+
+    if lastSample is None:  # assign lastSample to length of IR if not provided
+        lastSample = N
+
+    if FFToversize < 1:
+        raise ValueError('FFToversize must be >= 1.')
+
+    if lastSample < firstSample or lastSample > N:
+        raise ValueError('lastSample must be between firstSample and N (length of impulse response).')
+
+    if firstSample < 0 or firstSample > lastSample:
+        raise ValueError('firstSample must be between 0 and lastSample.')
+
+    totalSamples = lastSample - firstSample + 1
+    IR = IR[:, firstSample:lastSample]
+    NFFT = int(2**_np.ceil(_np.log2(totalSamples)))
+    fftData = _np.fft.rfft(IR, NFFT * FFToversize, 1)
+
+    if timeData.centerIR.any():
+        centerIR = timeData.centerIR[:, firstSample:lastSample]
+        ctSig = _np.fft.rfft(centerIR, NFFT * FFToversize)
+    else:
+        ctSig = []
+
+    f = _np.fft.rfftfreq(NFFT, d=1 / FS)
+    c = 331.5 + 0.6 * temperature
+    kr = 2 * pi * f / c * radius
+
+    return fftData, kr, f, ctSig
+
+
+def itc(Pnm, angles, N=None, printInfo=True):
+    """I/T/C Fast Inverse spatial Fourier Transform Core
+
+    Parameters
+    ----------
+    Pnm : array of floats
+       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)
+    angles : array of floats
+       Target angles of shape
+       ::
+          [AZ1, EL1;
+           AZ2, EL2;
+             ...
+           AZn, ELn]
+    [N] : int, optional
+       Maximum transform order [Default: highest available order]
+
+    Returns
+    -------
+    p : array of complex floats
+       Sound pressures with FFT bins in cols and specified angles in rows
+
+    Notes
+    -----
+    This is a pure ISFT core that does not involve extrapolation.
+    (=The pressures are referred to the original radius)
     """
-        Y = pdc(N, OmegaL, Pnm, dn, [cn])
-    ------------------------------------------------------------------------
-    Y      MxN Matrix of the decomposed wavefield
-           Col - Look Direction as specified in OmegaL
-           Row - kr bins
-    ------------------------------------------------------------------------
-    N      Decomposition Order
-    OmegaL Look Directions (Vector)
-           Col - L1, L2, ..., Ln
-           Row - AZn ELn
-    Pnm    Spatial Fourier Coefficients from SOFiA S/T/C
-    dn     Modal Array Filters from SOFiA M/F
-    cn     (Optional) Weighting Function
-           Can be used for N=0...N weigths:
-           Col - n...N
-           Row - 1
-           Or n(f)...N(f) weigths:
-           Col - n...N
-           Row - kr bins
-           If cn is not specified a PWD will be done
+
+    if angles.ndim == 1 and angles.shape[0] == 2:
+        AzimuthAngles = _np.array([angles[0]])
+        ElevationAngles = _np.array([angles[1]])
+        numberOfAngles = 1
+    elif angles.ndim == 2 and angles.shape[1] > 1:
+        numberOfAngles = angles.shape[0]
+        AzimuthAngles = _np.asarray(angles[:, 0])
+        ElevationAngles = _np.asarray(angles[:, 1])
+    else:
+        raise ValueError('Error: Delivered angles are not valid. Must consist of [AZ1 EL1; AZ2 EL2; ...; AZn ELn] pairs.')
+
+    try:
+        PnmDataLength = Pnm.shape[0]
+        FFTBlocklength = Pnm.shape[1]
+    except:
+        print('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
+
+    Nmax = int(_np.sqrt(PnmDataLength - 1))
+    if N is None:
+        N = Nmax
+
+    if printInfo:
+        print('SOFiA I/T/C - Inverse spatial Transform Core R13-0306')
+
+    OutputArray = _np.zeros([numberOfAngles, FFTBlocklength], dtype=_np.complex_)
+
+    ctr = 0
+    for n in range(0, N + 1):
+        for m in range(-n, n + 1):
+            SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
+            OutputArray += _np.outer(SHresults, Pnm[ctr])
+            ctr += 1
+
+    return OutputArray
+
+
+def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
+    """P/D/C - Plane Wave Decomposition
+
+    Parameters
+    ----------
+    N : int
+       Decomposition order
+    OmegaL : array of floats
+       Look directions of shape
+       ::
+          [AZ1, EL1;
+           AZ2, EL2;
+             ...
+           AZn, ELn]
+    Pnm : matrix of complex floats
+       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)
+    dn : matrix of complex floats
+       Modal array filters (e.g. from SOFiA M/F)
+    cn : array of floats, optional
+       Weighting Function. Either frequency invariant weights as 1xN array
+       or with kr bins in rows over N cols. [Default: None]
+
+    Returns
+    -------
+    Y : matrix of floats
+       MxN Matrix of the decomposed wavefield with kr bins in rows
     """
 
     if printInfo:
@@ -114,29 +274,124 @@ def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
     return OutputArray * gaincorrection
 
 
+def rfi(dn, kernelDownScale=2, highPass=0.0):
+    '''R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]
+
+    Parameters
+    ----------
+    dn : array of floats
+       Analytical frequency domain radial filters (e.g. SOFiA M/F)
+    kernelDownScale : int, optional
+       Downscale factor for the filter kernel [Default: 2]
+    highPass : float, optional
+       Highpass Filter from 0.0 (off) to 1.0 (maximum kr) [Default: 0.0]
+
+    Returns
+    -------
+    dn : array of floats
+       Improved radial filters
+    kernelSize : int
+       Filter kernel size (total)
+    latency : float
+       Approximate signal latency due to the filters
+
+    Notes
+    -----
+    This function improves the FIR radial filters from SOFiA M/F. The filters
+    are made causal and are windowed in time domain. The DC components are
+    estimated. The R/F/I module should always be inserted to the filter
+    path when treating measured data even if no use is made of the included
+    kernel downscaling or highpass filters.
+
+    Do NOT use R/F/I for single open sphere filters (e.g.simulations).
+
+    IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large
+            enough to cover all filter latencies and reponse slopes.
+            Otherwise undesired cyclic convolution artifacts may appear
+            in the output signal.
+
+    HIGHPASS: If HPF is on (highPass>0) the radial filter kernel is
+              downscaled by a factor of two. Radial Filters and HPF
+              share the available taps and the latency keeps constant.
+              Be careful using very small signal blocks because there
+              may remain too few taps. Observe the filters by plotting
+              their spectra and impulse responses.
+              > Be very carefull if NFFT/max(kr) < 25
+              > Do not use R/F/I if NFFT/max(kr) < 15
+    '''
+    return dn
+
+
+def stc(N, fftData, grid):
+    '''S/T/C Fast Spatial Fourier Transform
+
+    Parameters
+    ----------
+    N : int
+       Maximum transform order
+    fftData : array of floats
+       Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows
+    grid : array of floats
+       Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape
+       ::
+          [AZ1, EL1, W1;
+           AZ2, EL2, W2;
+             ...
+           AZn, ELn, Wn]
+
+    Returns
+    -------
+    Pnm : array of floats
+       Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows
+    '''
+
+    if not _np.max(_np.iscomplex(fftData)):
+        raise ValueError('FFTData: Complex Input Data expected.')
+
+    numberOfSpatialPositionsInFFTBlock, FFTBlocklength = fftData.shape
+    numberOfGridPoints, numberOfGridInfos = grid.shape
+    if numberOfGridInfos < 3:
+        raise ValueError('GRID: Invalid grid data, must contain [az, el, r].')
+
+    if numberOfSpatialPositionsInFFTBlock != numberOfGridPoints:
+        raise ValueError('Inconsistent spatial sampling points between fftData (' + str(numberOfSpatialPositionsInFFTBlock) + ') and supplied grid  (' + str(numberOfGridPoints) + ').')
+
+    AzimuthAngles = grid[:, 0]
+    ElevationAngles = grid[:, 1]
+    GridWeights = grid[:, 2]
+
+    OutputArray = _np.zeros([(N + 1) ** 2, FFTBlocklength], dtype=_np.complex_)
+
+    ctr = 0
+    for n in range(0, N + 1):
+        for m in range(-n, n + 1):
+            SHarm = 4 * pi * GridWeights * _np.conj(sph_harm(m, n, AzimuthAngles, ElevationAngles))
+            OutputArray[ctr] += _np.inner(SHarm, fftData.T)
+            ctr += 1
+    return OutputArray
+
+
 def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
-    """
-    y = tdt(Y, [win], [resampleFactor], [minPhase])
-    ------------------------------------------------------------------------
-    y                  Reconstructed Time Domain Signal
-                       Columns : Index / Channel: IR1, IR2, ... IRn
-                       Rows    : Impulse responses (time domain)
-    ------------------------------------------------------------------------
-    Y                  Frequency domain FFT data for multiple channels
-                       Columns : Index / Channel
-                       Rows    : FFT data (frequency domain)
+    """ T/D/T - Time Domain Transform
 
-    [win]              Window Signal tail [0...1] with a HANN window
-                       0    off (#default)
-                       0-1  window coverage (1 full, 0 off)
+    Parameters
+    ----------
+    Y : array of floats
+       Frequency domain data over multiple channels (cols) with FFT data in rows
+    win float, optional
+       Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED
+    resampleFactor int, optional
+       Resampling factor (FS_target/FS_source)
+    minPhase bool, optional
+    Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]
 
-    [resampleFactor]   Optional resampling: Resampling factor
-                       e.g. FS_target/FS_source
+    Returns
+    -------
+    y : array of floats
+       Reconstructed time-domain signal of channels in cols and impulse responses in rows
 
-    [minPhase]         Optional minimum phase reduction
-                       0 off (#default)
-                       1 on
-
+    Notes
+    -----
     This function recombines time domain signals for multiple channels from
     frequency domain data. It is made to work with half-sided spectrum FFT
     data.  The impulse responses can be windowed.  The IFFT blocklength is
@@ -173,215 +428,3 @@ def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
         y = resample(y, _np.round(y.shape[1] / resampleFactor), axis=1)
 
     return y
-
-
-def itc(Pnm, angles, N=None, printInfo=True):
-    """I/T/C Fast Inverse spatial Fourier Transform Core
-    p = sofia_itc(Pnm, angles, [N])
-    ------------------------------------------------------------------------
-    p      sound pressures (complex data)
-           Columns : FFT bins
-           Rows    : angles
-    ------------------------------------------------------------------------
-    Pnm    spatial Fourier coefficients (e.g. from SOFiA S/T/C)
-           Columns : FFT bins
-           Rows    : nm coeff
-
-    angles target angles [AZ1 EL1; AZ2 EL2; ... AZn ELn]
-           Columns : Angle Number 1...n
-           Rows    : AZ EL
-
-    [N]     *** Optional: Maximum transform order
-               If not specified the highest order available included in
-               the Pnm coefficients will be taken.
-
-    This is a pure ISFT core that does not involve extrapolation.
-    (=The pressures are referred to the original radius)
-    """
-
-    if angles.ndim == 1 and angles.shape[0] == 2:
-        AzimuthAngles = _np.array([angles[0]])
-        ElevationAngles = _np.array([angles[1]])
-        numberOfAngles = 1
-    elif angles.ndim == 2 and angles.shape[1] > 1:
-        numberOfAngles = angles.shape[0]
-        AzimuthAngles = _np.asarray(angles[:, 0])
-        ElevationAngles = _np.asarray(angles[:, 1])
-    else:
-        raise ValueError('Error: Delivered angles are not valid. Must consist of [AZ1 EL1; AZ2 EL2; ...; AZn ELn] pairs.')
-
-    try:
-        PnmDataLength = Pnm.shape[0]
-        FFTBlocklength = Pnm.shape[1]
-    except:
-        print('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
-
-    Nmax = int(_np.sqrt(PnmDataLength - 1))
-    if N is None:
-        N = Nmax
-
-    if printInfo:
-        print('SOFiA I/T/C - Inverse spatial Transform Core R13-0306')
-
-    OutputArray = _np.zeros([numberOfAngles, FFTBlocklength], dtype=_np.complex_)
-
-    ctr = 0
-    for n in range(0, N + 1):
-        for m in range(-n, n + 1):
-            SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
-            OutputArray += _np.outer(SHresults, Pnm[ctr])
-            ctr += 1
-
-    return OutputArray
-
-
-def stc(N, fftData, grid):
-    '''Pnm = process.stc(N, fftData, grid)
-    ------------------------------------------------------------------------
-    Pnm      Spatial Fourier Coefficients
-             Columns : nm coeff
-             Rows    : FFT bins
-    ------------------------------------------------------------------------
-    N        Maximum transform order
-
-    fftData  Frequency domain sounfield data, e.g. from fdt
-             Columns : number of spatial sampling position
-             Rows    : FFT bins (complex sound pressure data)
-
-    grid     Sample grid configuration
-             Columns : s=1...S spatial positions
-             Rows    : [AZ_s EL_s GridWeight_s]
-             AZ in [0...2pi] and EL [0...pi] in RAD
-    '''
-
-    if not _np.max(_np.iscomplex(fftData)):
-        raise ValueError('FFTData: Complex Input Data expected.')
-
-    numberOfSpatialPositionsInFFTBlock, FFTBlocklength = fftData.shape
-    numberOfGridPoints, numberOfGridInfos = grid.shape
-    if numberOfGridInfos < 3:
-        raise ValueError('GRID: Invalid grid data, must contain [az, el, r].')
-
-    if numberOfSpatialPositionsInFFTBlock != numberOfGridPoints:
-        raise ValueError('Inconsistent spatial sampling points between fftData (' + str(numberOfSpatialPositionsInFFTBlock) + ') and supplied grid  (' + str(numberOfGridPoints) + ').')
-
-    AzimuthAngles = grid[:, 0]
-    ElevationAngles = grid[:, 1]
-    GridWeights = grid[:, 2]
-
-    OutputArray = _np.zeros([(N + 1) ** 2, FFTBlocklength], dtype=_np.complex_)
-
-    ctr = 0
-    for n in range(0, N + 1):
-        for m in range(-n, n + 1):
-            SHarm = 4 * pi * GridWeights * _np.conj(sph_harm(m, n, AzimuthAngles, ElevationAngles))
-            OutputArray[ctr] += _np.inner(SHarm, fftData.T)
-            ctr += 1
-    return OutputArray
-
-
-def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
-    '''F/D/T frequency domain transform
-    [fftData, kr, f, ctSig] = sofia_fdt(timeData, FFToversize, firstSample, lastSample)
-     ------------------------------------------------------------------------
-     fftData           Frequency domain data ready for the Spatial Fourier Transform (stc)
-     kr                kr-Values of the delivered data
-     f                 Absolute frequency scale
-     ctSig             Center signal, if available
-     ------------------------------------------------------------------------
-     timeData          Named tuple with minimum fields:
-                       * .impulseResponses     [Channels X Samples]
-                       * .FS
-                       * .radius               Array radius
-                       * .averageAirTemp       Temperature in [C]
-                       (* .centerIR            [1 x Samples] )
-
-     FFToversize       FFToversize rises the FFT Blocksize.   [default = 2]
-                       A FFT of the blocksize (FFToversize*NFFT) is applied
-                       to the time domain data,  where  NFFT is determinded
-                       as the next power of two of the signalSize  which is
-                       signalSize = (lastSample-firstSample).
-                       The function will pick a window of
-                       (lastSample-firstSample) for the FFT:
-     firstSample       First time domain sample to be included. Default=0
-     lastSample        Last time domain sample to be included. Default=None
-
-    Call this function with a running window (firstSample+td->lastSample+td)
-    iteration increasing td to obtain time slices. This way you resolve the
-    temporal information within the captured sound field.
-    '''
-
-    IR = timeData.impulseResponse
-    FS = timeData.FS
-    temperature = timeData.averageAirTemp
-    radius = timeData.radius
-
-    N = IR.shape[1]
-
-    if lastSample is None:  # assign lastSample to length of IR if not provided
-        lastSample = N
-
-    if FFToversize < 1:
-        raise ValueError('FFToversize must be >= 1.')
-
-    if lastSample < firstSample or lastSample > N:
-        raise ValueError('lastSample must be between firstSample and N (length of impulse response).')
-
-    if firstSample < 0 or firstSample > lastSample:
-        raise ValueError('firstSample must be between 0 and lastSample.')
-
-    totalSamples = lastSample - firstSample + 1
-    IR = IR[:, firstSample:lastSample]
-    NFFT = int(2**_np.ceil(_np.log2(totalSamples)))
-    fftData = _np.fft.rfft(IR, NFFT * FFToversize, 1)
-
-    if timeData.centerIR.any():
-        centerIR = timeData.centerIR[:, firstSample:lastSample]
-        ctSig = _np.fft.rfft(centerIR, NFFT * FFToversize)
-    else:
-        ctSig = []
-
-    f = _np.fft.rfftfreq(NFFT, d=1 / FS)
-    c = 331.5 + 0.6 * temperature
-    kr = 2 * pi * f / c * radius
-
-    return fftData, kr, f, ctSig
-
-
-def rfi(dn, kernelDownScale=2, highPass=False):
-    '''R/F/I Radial Filter Improvement
-    [dn, kernelSize, latency] = rfi(dn, kernelDownScale, highPass)
-    ------------------------------------------------------------------------
-    dn                 Improved radial filters
-    kernelSize         Filter kernel size (total)
-    latency            Approximate signal latency due to the filters
-
-    ------------------------------------------------------------------------
-    dn                 Analytical frequency domain radial filters from SOFiA M/F
-    kernelDownScale    Downscale factor for the filter kernel #default: 2
-    highPass           Highpass Filter 0:highPass:1
-                    highPass = 1 corresponds to the maximum kr available.
-                    highPass = 0 filter off (#default)
-    INFORMATION: If HPF is on (highPass>0) the radial filter kernel is
-              downscaled by a factor of two. Radial Filters and HPF
-              share the available taps and the latency keeps constant.
-              Be careful using very small signal blocks because there
-              may remain too few taps. Observe the filters by plotting
-              their spectra and impulse responses.
-              > Be very carefull if NFFT/max(kr) < 25
-              > Do not use R/F/I if NFFT/max(kr) < 15
-
-    This function improves the FIR radial filters from SOFiA M/F. The filters
-    are made causal and are windowed in time domain. The DC components are
-    estimated. The R/F/I module should always be inserted to the filter
-    path when treating measured data even if no use is made of the included
-    kernel downscaling or highpass filters.
-
-    Do NOT use R/F/I for single open sphere filters (e.g.simulations).
-
-    IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large
-            enough to cover all filter latencies and reponse slopes.
-            Otherwise undesired cyclic convolution artifacts may appear
-            in the output signal.
-    '''
-    return dn

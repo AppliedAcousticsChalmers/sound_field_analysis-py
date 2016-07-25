@@ -1,10 +1,17 @@
 """
-Collection of spherical helper functions
-- sph_harm: More robust spherical harmonic coefficients
-- spbessel / dspbessel: Spherical Bessel and derivative
-- spneumann / dspneumann: Spherical Neumann (Bessel 2nd kind) and derivative
-- sphankel / dsphankel: Spherical Hankel and derivative
-- cart2sph / sph2cart: Convert cartesion to spherical coordinates and vice versa
+Collection of spherical helper functions:
+
+
+`sph_harm`
+   More robust spherical harmonic coefficients
+`spbessel / dspbessel`
+   Spherical Bessel and derivative
+`spneumann / dspneumann`
+   Spherical Neumann (Bessel 2nd kind) and derivative
+`sphankel / dsphankel`
+   Spherical Hankel and derivative
+`cart2sph / sph2cart`
+   Convert cartesion to spherical coordinates and vice versa
 """
 
 import numpy as _np
@@ -13,68 +20,146 @@ from math import factorial as fact
 
 
 def spbessel(n, kr):
-    """Spherical Bessel of order n"""
+    """Spherical Bessel function
+
+    Parameters
+    ----------
+    n : int
+       Order
+    kr: int
+       Degree
+
+    Returns
+    -------
+    J : complex float
+       Spherical Bessel
+    """
     # spb1 = scy.sph_jn(n, kr)  # returns j and j'
     # return spb1[0][-1]
     return _np.sqrt(_np.pi / (2 * kr)) * scy.jn(n + 0.5, kr)
 
 
 def dspbessel(n, kr):
-    """Derivative spherical Bessel of order n"""
+    """Derivative of spherical Bessel
+
+    Parameters
+    ----------
+    n : int
+       Order
+    kr: int
+       Degree
+
+    Returns
+    -------
+    J' : complex float
+       Derivative of spherical Bessel
+    """
     # spb1 = scy.sph_jn(n, kr)  # returns j and j'
     # return spb1[1][-1]
     return 1 / (2 * n + 1) * (n * spbessel(n - 1, kr) - (n + 1) * spbessel(n + 1, kr))
 
 
 def spneumann(n, kr):
-    """Spherical Neumann (Bessel second kind) of order n"""
+    """Spherical Neumann (Bessel second kind)
+
+    Parameters
+    ----------
+    n : int
+       Order
+    kr: int
+       Degree
+
+    Returns
+    -------
+    Yv : complex float
+       Spherical Neumann (Bessel second kind)
+    """
     # spb2 = scy.sph_yn(n, kr)
     # return spb2[0][-1]
     return _np.sqrt(_np.pi / (2 * kr)) * scy.yv(n + 0.5, kr)
 
 
 def dspneumann(n, kr):
-    """Derivative spherical Neumann (Bessel second kind) of order n"""
+    """Derivative spherical Neumann (Bessel second kind) of order n
+
+    Parameters
+    ----------
+    n : int
+       Order
+    kr: int
+       Degree
+
+    Returns
+    -------
+    Yv' : complex float
+       Derivative of spherical Neumann (Bessel second kind)
+    """
     # spb2 = scy.sph_yn(n, kr)
     # return spb2[1][-1]
     return 1 / (2 * n + 1) * (n * spneumann(n - 1, kr) - (n + 1) * spneumann(n + 1, kr))
 
 
 def sphankel(n, kr):
-    """Spherical Hankel of order n"""
+    """Spherical Hankel hn
+
+    Parameters
+    ----------
+    n : int
+       Order
+    kr: int
+       Degree
+
+    Returns
+    -------
+    hn : complex float
+       Spherical Hankel function hn
+    """
     return spbessel(n, kr) - 1j * spneumann(n, kr)
 
 
 def dsphankel(n, kr):
-    """Derivative spherical Hankel of order n"""
+    """Derivative spherical Hankel function hn'
+
+    Parameters
+    ----------
+    n : int
+       Order
+    kr: int
+       Degree
+
+    Returns
+    -------
+    hn' : complex float
+       Derivative of spherical Hankel function hn'
+    """
     return 0.5 * (sphankel(n - 1, kr) - sphankel(n + 1, kr) - sphankel(n, kr) / kr)
 
 
 def bn_npf(n, krm, krs, ac):
-    """ Spherical coefficients
+    """ Microphone scaling
+
     Parameters
     ----------
-    n : (int)
-        Order
+    n : int
+       Order
 
-    krm : (list of floats)
-        Microphone k
+    krm : array of floats
+       Microphone radius
 
-    krs : (list of floats)
-        Sphere k
+    krs : array of floats
+       Sphere radius
 
-    ac : (int)
-        Array configuration:
-            0 - open sphere
-            1 - open gradient sphere
-            2 - rigid sphere
-            3 - ridig gradient sphere
-            4 - dual open sphere
+    ac : int {0, 1, 2, 3, 4}
+       Array Configuration:
+        - `0`:  Open Sphere with p Transducers (NO plc!) [Default]
+        - `1`:  Open Sphere with pGrad Transducers
+        - `2`:  Rigid Sphere with p Transducers
+        - `3`:  Rigid Sphere with pGrad Transducers
+        - `4`:  Dual Open Sphere with p Transducers
 
     Returns
     -------
-    foobar : (type of foobar)
-        A description of foobar
+    b : array of floats
     """
     if ac == 0:
         return bn_openP(n, krm)
@@ -129,10 +214,11 @@ def bn(n, krm, krs, ac):
 
 def sph_harm(m, n, az, el):
     '''Compute sphercial harmonics
+
     Parameters
     ----------
     m : (int)
-        Order of the spherical harmonic. |m| <= n
+        Order of the spherical harmonic. abs(m) <= n
 
     n : (int)
         Degree of the harmonic, sometimes called l. n >= 0
