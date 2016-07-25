@@ -25,7 +25,7 @@ Sphericals
     :members:
     :undoc-members:
 
-io
+I/O
 ----------
 .. automodule:: sofia.io
     :members:
