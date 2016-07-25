@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sofia.io &mdash; sofia-py 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="sofia-py 0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> sofia-py
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generators.html">Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">sofia-py</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>sofia.io</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for sofia.io</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Input-Output functions</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">io</span> <span class="k">as</span> <span class="n">sio</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+
+
+<div class="viewcode-block" id="readMiroStruct"><a class="viewcode-back" href="../../reference.html#sofia.io.readMiroStruct">[docs]</a><span class="k">def</span> <span class="nf">readMiroStruct</span><span class="p">(</span><span class="n">matFile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Reads miro matlab files.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matFile : filepath</span>
+<span class="sd">       .miro file that has been exported as a struct like so</span>
+<span class="sd">       ::</span>
+<span class="sd">         load SOFiA_A1;</span>
+<span class="sd">         SOFiA_A1_struct = struct(SOFiA_A1);</span>
+<span class="sd">         save(&#39;SOFiA_A1_struct.mat&#39;, &#39;SOFiA_A1_struct&#39;);</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    timeData : named tuple</span>
+<span class="sd">    `timeData` tuple with following fields</span>
+<span class="sd">    ::</span>
+<span class="sd">       .impulseResponses [Channels X Samples]</span>
+<span class="sd">       .FS</span>
+<span class="sd">       .radius           Array radius</span>
+<span class="sd">       .averageAirTemp   Temperature in [C]</span>
+<span class="sd">       (.centerIR        [1 x Samples] )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Import matlab struct</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">matFile</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">matFile</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span>
+
+    <span class="c1"># timeData tuple</span>
+    <span class="n">timeData</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;timeData&#39;</span><span class="p">,</span> <span class="s1">&#39;FS, radius, quadratureGrid, downSample, averageAirTemp, irOverlay, centerIR, impulseResponse&#39;</span><span class="p">)</span>
+    <span class="n">timeData</span><span class="o">.</span><span class="n">FS</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;fs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">timeData</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;resampleToFS&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">timeData</span><span class="o">.</span><span class="n">downSample</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">FS</span> <span class="o">/</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;resampleToFS&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">timeData</span><span class="o">.</span><span class="n">downSample</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">timeData</span><span class="o">.</span><span class="n">quadratureGrid</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;azimuth&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;elevation&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                                         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;quadWeight&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">timeData</span><span class="o">.</span><span class="n">averageAirTemp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;avgAirTemp&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># TODO: hcomp, resample</span>
+    <span class="n">timeData</span><span class="o">.</span><span class="n">centerIR</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;irCenter&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># Flatten nested array</span>
+    <span class="n">timeData</span><span class="o">.</span><span class="n">impulseResponse</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;irChOne&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">timeData</span><span class="o">.</span><span class="n">irOverlay</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timeData</span><span class="o">.</span><span class="n">impulseResponse</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">timeData</span><span class="o">.</span><span class="n">irOverlay</span> <span class="o">/=</span> <span class="n">_np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">timeData</span><span class="o">.</span><span class="n">irOverlay</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">timeData</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Christoph Hohnerlein (QU Lab).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

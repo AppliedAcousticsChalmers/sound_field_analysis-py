@@ -1,0 +1,1222 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Reference &mdash; sofia-py 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="sofia-py 0.2 documentation" href="index.html"/>
+        <link rel="prev" title="Plotting" href="plotting.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> sofia-py
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generators.html">Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-sofia.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sofia.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sofia.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sofia.sph">Sphericals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sofia.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sofia.lebedev">lebedev</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">sofia-py</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Reference</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/reference.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-sofia.gen">
+<span id="generators"></span><h2>Generators<a class="headerlink" href="#module-sofia.gen" title="Permalink to this headline">¶</a></h2>
+<p>Module contains various generator functions:</p>
+<dl class="docutils">
+<dt><cite>awgn</cite></dt>
+<dd>Generate additive White Gaussian noise</dd>
+<dt><cite>gaussGrid</cite></dt>
+<dd>Gauss-Legendre quadrature grid and weights</dd>
+<dt><cite>lebedev</cite></dt>
+<dd>Lebedev quadrature grid and weigths</dd>
+<dt><cite>mf</cite></dt>
+<dd>Modal Radial Filter</dd>
+<dt><cite>swg</cite></dt>
+<dd>Sampled Wave Generator, emulating discrete sampling</dd>
+<dt><cite>wgc</cite></dt>
+<dd>Wave Generator, returns spatial Fourier coefficients</dd>
+</dl>
+<dl class="function">
+<dt id="sofia.gen.awgn">
+<code class="descclassname">sofia.gen.</code><code class="descname">awgn</code><span class="sig-paren">(</span><em>fftData</em>, <em>noiseLevel=80</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#awgn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.awgn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds White Gaussian Noise of approx. 16dB crest to a FFT block.
+:param fftData: Input fftData block (e.g. from F/D/T or S/W/G)
+:type fftData: array of complex floats
+:param noiseLevel: Average noise Level in dB [Default: -80dB]
+:type noiseLevel: int, optional
+:param printInfo: Toggle print statements [Default: True]
+:type printInfo: bool, optional</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>noisyData</strong> &#8211; Output fftData block including white gaussian noise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array of complex floats</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.gen.gaussGrid">
+<code class="descclassname">sofia.gen.</code><code class="descname">gaussGrid</code><span class="sig-paren">(</span><em>AZnodes=10</em>, <em>ELnodes=5</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#gaussGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.gaussGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Gauss-Legendre quadrature nodes and weigths in the SOFiA/VariSphear data format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ELnodes</strong> (<em>AZnodes,</em>) &#8211; Number of azimutal / elevation nodes  [Default: 10 / 5]</li>
+<li><strong>plot</strong> (<em>bool, optional</em>) &#8211; Show a globe plot of the selected grid [Default: False]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>gridData</strong> (<em>matrix of floats</em>) &#8211; Gauss-Legendre quadrature positions and weigths</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ_0</span><span class="p">,</span> <span class="n">EL_0</span><span class="p">,</span> <span class="n">W_0</span>
+     <span class="o">...</span>
+<span class="n">AZ_n</span><span class="p">,</span> <span class="n">EL_n</span><span class="p">,</span> <span class="n">W_n</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Npoints</strong> (<em>int</em>) &#8211; Total number of nodes</p>
+</li>
+<li><p class="first"><strong>Nmax</strong> (<em>int</em>) &#8211; Highest stable grid order</p>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.gen.lebedev">
+<code class="descclassname">sofia.gen.</code><code class="descname">lebedev</code><span class="sig-paren">(</span><em>degree</em>, <em>plot=False</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#lebedev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.lebedev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Lebedev quadrature nodes and weigths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Degree</strong> (<em>int</em>) &#8211; Lebedev Degree. Currently available: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194</li>
+<li><strong>plot</strong> (<em>bool, optional</em>) &#8211; Plot selected Lebedev grid [Default: False]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>gridData</strong> (<em>array of floats</em>) &#8211; Lebedev quadrature positions and weigths: [AZ, EL, W]</li>
+<li><strong>Nmax</strong> (<em>int</em>) &#8211; Highest stable grid order</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.gen.mf">
+<code class="descclassname">sofia.gen.</code><code class="descname">mf</code><span class="sig-paren">(</span><em>N</em>, <em>kr</em>, <em>ac</em>, <em>amp_maxdB=0</em>, <em>plc=0</em>, <em>fadeover=0</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#mf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.mf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate modal radial filters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>N</strong> (<em>int</em>) &#8211; Maximum Order</li>
+<li><strong>kr</strong> (<em>array of floats</em>) &#8211; <p>Vector or Matrix of kr values</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>First Row  (M=1) N: kr values microphone radius
+Second Row (M=2) N: kr values sphere/microphone radius
+[kr_mic;kr_sphere] for rigid/dual sphere configurations
+! If only one kr-vector is given using a rigid/dual sphere
+Configuration: kr_sphere = kr_mic
+</pre></div>
+</div>
+</li>
+<li><strong>ac</strong> (<em>int {0, 1, 2, 3, 4}</em>) &#8211; <dl class="docutils">
+<dt>Array Configuration:</dt>
+<dd><ul class="first last">
+<li><cite>0</cite>:  Open Sphere with p Transducers (NO plc!)</li>
+<li><cite>1</cite>:  Open Sphere with pGrad Transducers</li>
+<li><cite>2</cite>:  Rigid Sphere with p Transducers</li>
+<li><cite>3</cite>:  Rigid Sphere with pGrad Transducers</li>
+<li><cite>4</cite>:  Dual Open Sphere with p Transducers</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>amp_maxdB</strong> (<em>int, optional</em>) &#8211; Maximum modal amplification limit in dB [Default: 0]</li>
+<li><strong>plc</strong> (<em>int {0, 1, 2}, optional</em>) &#8211; OnAxis powerloss-compensation:
+- <cite>0</cite>:  Off [Default]
+- <cite>1</cite>:  Full kr-spectrum plc
+- <cite>2</cite>:  Low kr only -&gt; set fadeover</li>
+<li><strong>fadeover</strong> (<em>int, optional</em>) &#8211; ::
+Number of kr values to fade over +/- around min-distance
+gap of powerloss compensated filter and normal N0 filters.
+0 is auto fadeover [Default]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>dn</strong> (<em>array of floats</em>) &#8211; Vector of modal 0-N frequency domain filters</li>
+<li><strong>beam</strong> (<em>array of floats</em>) &#8211; Expected free field on-axis kr-response</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.gen.swg">
+<code class="descclassname">sofia.gen.</code><code class="descname">swg</code><span class="sig-paren">(</span><em>r=0.01</em>, <em>gridData=None</em>, <em>ac=0</em>, <em>FS=48000</em>, <em>NFFT=512</em>, <em>AZ=0</em>, <em>EL=1.5707963267948966</em>, <em>c=343</em>, <em>wavetype=0</em>, <em>ds=1</em>, <em>Nlim=120</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#swg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.swg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sampled Wave Generator Wrapper</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>r</strong> (<em>array of floats, optional</em>) &#8211; <p>Microphone Radius [Default: 0.01]</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Can</span> <span class="n">also</span> <span class="n">be</span> <span class="n">a</span> <span class="n">vector</span> <span class="k">for</span> <span class="n">rigid</span> <span class="n">sphere</span> <span class="n">configurations</span><span class="p">:</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="n">rm</span>  <span class="n">Microphone</span> <span class="n">Radius</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="n">rs</span>  <span class="n">Sphere</span> <span class="n">Radius</span> <span class="p">(</span><span class="n">Scatterer</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><strong>gridData</strong> (<em>array of floats</em>) &#8211; <p>Quadrature grid [Default: 110 Lebebdev grid]</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Columns</span> <span class="p">:</span> <span class="n">Position</span> <span class="n">Number</span> <span class="mf">1.</span><span class="o">..</span><span class="n">M</span>
+<span class="n">Rows</span>    <span class="p">:</span> <span class="p">[</span><span class="n">AZ</span> <span class="n">EL</span> <span class="n">Weight</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><strong>ac</strong> (<em>int {0, 1, 2, 3, 4}</em>) &#8211; <dl class="docutils">
+<dt>Array Configuration:</dt>
+<dd><ul class="first last">
+<li><cite>0</cite>:  Open Sphere with p Transducers (NO plc!) [Default]</li>
+<li><cite>1</cite>:  Open Sphere with pGrad Transducers</li>
+<li><cite>2</cite>:  Rigid Sphere with p Transducers</li>
+<li><cite>3</cite>:  Rigid Sphere with pGrad Transducers</li>
+<li><cite>4</cite>:  Dual Open Sphere with p Transducers</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>FS</strong> (<em>int, optional</em>) &#8211; Sampling frequency [Default: 48000 Hz]</li>
+<li><strong>NFFT</strong> (<em>int, optional</em>) &#8211; Order of FFT (number of bins), should be a power of 2. [Default: 512]</li>
+<li><strong>AZ</strong> (<em>float, optional</em>) &#8211; Azimuth angle in radians [0-2pi]. [Default: 0]</li>
+<li><strong>EL</strong> (<em>float, optional</em>) &#8211; Elevation angle in in radians [0-pi]. [Default: pi / 2]</li>
+<li><strong>c</strong> (<em>float, optional</em>) &#8211; Speed of sound in [m/s] [Default: 343 m/s]</li>
+<li><strong>wavetype</strong> (<em>int {0, 1}, optional</em>) &#8211; <dl class="docutils">
+<dt>Type of the Wave:</dt>
+<dd><ul class="first last">
+<li>0: Plane Wave [Default]</li>
+<li>1: Spherical Wave</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>ds</strong> (<em>float, optional</em>) &#8211; <p>Distance of the source in [m] (For wavetype = 1 only)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ne">Warning</span><span class="p">:</span> <span class="n">If</span> <span class="n">NFFT</span> <span class="ow">is</span> <span class="n">smaller</span> <span class="n">than</span> <span class="n">the</span> <span class="n">time</span> <span class="n">the</span> <span class="n">wavefront</span>
+<span class="n">needs</span> <span class="n">to</span> <span class="n">travel</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">source</span> <span class="n">to</span> <span class="n">the</span> <span class="n">array</span><span class="p">,</span> <span class="n">the</span> <span class="n">impulse</span>
+<span class="n">response</span> <span class="n">will</span> <span class="n">by</span> <span class="n">cyclically</span> <span class="n">shifted</span> <span class="p">(</span><span class="n">cyclic</span> <span class="n">convolution</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><strong>Nlim</strong> (<em>int, optional</em>) &#8211; Internal generator transform order limit [Default: 120]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>fftData</strong> (<em>array of floats</em>) &#8211; Complex sound pressures of size [(N+1)^2 x NFFT]</p>
+</li>
+<li><p class="first"><strong>kr</strong> (<em>array of floats</em>) &#8211; kr-vector</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Can</span> <span class="n">also</span> <span class="n">be</span> <span class="n">a</span> <span class="n">matrix</span> <span class="p">[</span><span class="n">krm</span><span class="p">;</span> <span class="n">krs</span><span class="p">]</span> <span class="k">for</span> <span class="n">rigid</span> <span class="n">sphere</span> <span class="n">configurations</span><span class="p">:</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krm</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">microphone</span> <span class="n">radius</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krs</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">sphere</span> <span class="n">radius</span> <span class="p">(</span><span class="n">scatterer</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This file is a wrapper generating the complex pressures at the
+positions given in &#8216;gridData&#8217; for a full spectrum 0-FS/2 Hz (NFFT Bins)
+wave impinging to an array. The wrapper involves the W/G/C wave
+generator core and the I/T/C spatial transform core.</p>
+<p>S/W/G emulates discrete sampling. You can observe alias artifacts.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.gen.wgc">
+<code class="descclassname">sofia.gen.</code><code class="descname">wgc</code><span class="sig-paren">(</span><em>N</em>, <em>r</em>, <em>ac</em>, <em>fs</em>, <em>F_NFFT</em>, <em>az</em>, <em>el</em>, <em>t=0.0</em>, <em>c=343.0</em>, <em>wavetype=0</em>, <em>ds=1.0</em>, <em>lowerSegLim=0</em>, <em>SegN=None</em>, <em>upperSegLim=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#wgc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.wgc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wave Generator Core:
+Returns Spatial Fourier Coefficients <cite>Pnm</cite> and <cite>kr</cite> vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>N</strong> (<em>int</em>) &#8211; Maximum transform order.</li>
+<li><strong>r</strong> (<em>list of ints</em>) &#8211; <p>Microphone radius</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>Can also be a vector for rigid/dual sphere configurations:
+[1,1] =&gt; rm  Microphone radius
+[2,1] =&gt; rs  Sphere or microphone radius
+! If only one radius (rm) is given using a rigid/dual sphere
+Configuration: rs = rm and only one kr-vector is returned!
+</pre></div>
+</div>
+</li>
+<li><strong>ac</strong> (<em>int {0, 1, 2, 3, 4}</em>) &#8211; <dl class="docutils">
+<dt>Array Configuration:</dt>
+<dd><ul class="first last">
+<li><cite>0</cite>:  Open Sphere with p Transducers (NO plc!)</li>
+<li><cite>1</cite>:  Open Sphere with pGrad Transducers</li>
+<li><cite>2</cite>:  Rigid Sphere with p Transducers</li>
+<li><cite>3</cite>:  Rigid Sphere with pGrad Transducers</li>
+<li><cite>4</cite>:  Dual Open Sphere with p Transducers</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>FS</strong> (<em>int</em>) &#8211; Sampling frequency</li>
+<li><strong>NFFT</strong> (<em>int</em>) &#8211; Order of FFT (number of bins), should be a power of 2.</li>
+<li><strong>AZ</strong> (<em>float</em>) &#8211; Azimuth angle in radians [0-2pi].</li>
+<li><strong>EL</strong> (<em>float</em>) &#8211; Elevation angle in in radians [0-pi].</li>
+<li><strong>t</strong> (<em>float, optional</em>) &#8211; Time Delay in s.</li>
+<li><strong>c</strong> (<em>float, optional</em>) &#8211; Speed of sound in [m/s] [Default: 343m/s]</li>
+<li><strong>wavetype</strong> (<em>int {0, 1}, optional</em>) &#8211; <dl class="docutils">
+<dt>Type of the Wave:</dt>
+<dd><ul class="first last">
+<li>0: Plane Wave [Default]</li>
+<li>1: Spherical Wave</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>ds</strong> (<em>float, optional</em>) &#8211; <p>Distance of the source in [m] (For wavetype = 1 only)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ne">Warning</span><span class="p">:</span> <span class="n">If</span> <span class="n">NFFT</span> <span class="ow">is</span> <span class="n">smaller</span> <span class="n">than</span> <span class="n">the</span> <span class="n">time</span> <span class="n">the</span> <span class="n">wavefront</span>
+<span class="n">needs</span> <span class="n">to</span> <span class="n">travel</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">source</span> <span class="n">to</span> <span class="n">the</span> <span class="n">array</span><span class="p">,</span> <span class="n">the</span> <span class="n">impulse</span>
+<span class="n">response</span> <span class="n">will</span> <span class="n">by</span> <span class="n">cyclically</span> <span class="n">shifted</span> <span class="p">(</span><span class="n">cyclic</span> <span class="n">convolution</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><strong>lSegLim</strong> (<em>int, optional</em>) &#8211; (Lower Segment Limit) Used by the S/W/G wrapper</li>
+<li><strong>uSegLim</strong> (<em>int, optional</em>) &#8211; (Upper Segment Limit) Used by the S/W/G wrapper</li>
+<li><strong>SegN</strong> (<em>int, optional</em>) &#8211; (Sement Order) Used by the S/W/G wrapper</li>
+<li><strong>printInfo</strong> (<em>bool, optional</em>) &#8211; Toggle print statements</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul>
+<li><p class="first"><strong>Pnm</strong> (<em>array of complex floats</em>) &#8211; Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows</p>
+</li>
+<li><p class="first"><strong>kr</strong> (<em>array of floats</em>) &#8211; kr-vector</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Can</span> <span class="n">also</span> <span class="n">be</span> <span class="n">a</span> <span class="n">matrix</span> <span class="p">[</span><span class="n">krm</span><span class="p">;</span> <span class="n">krs</span><span class="p">]</span> <span class="k">for</span> <span class="n">rigid</span> <span class="n">sphere</span> <span class="n">configurations</span><span class="p">:</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krm</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">microphone</span> <span class="n">radius</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krs</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">sphere</span> <span class="n">radius</span> <span class="p">(</span><span class="n">scatterer</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sofia.process">
+<span id="processing"></span><h2>Processing<a class="headerlink" href="#module-sofia.process" title="Permalink to this headline">¶</a></h2>
+<p>Processing functions:</p>
+<dl class="docutils">
+<dt><cite>fdt</cite></dt>
+<dd>Frequency to time transform</dd>
+<dt><cite>itc</cite></dt>
+<dd>Fast Inverse Spatial Fourier Transform</dd>
+<dt><cite>pdc</cite></dt>
+<dd>Plane Wave Decomposition</dd>
+<dt><cite>rfi</cite></dt>
+<dd>Radial filter Improvement</dd>
+<dt><cite>stc</cite></dt>
+<dd>Fast Spatial Fourier Transform</dd>
+<dt><cite>tdt</cite></dt>
+<dd>Time Domain Reconstruction</dd>
+</dl>
+<dl class="function">
+<dt id="sofia.process.fdt">
+<code class="descclassname">sofia.process.</code><code class="descname">fdt</code><span class="sig-paren">(</span><em>timeData</em>, <em>FFToversize=1</em>, <em>firstSample=0</em>, <em>lastSample=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#fdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.fdt" title="Permalink to this definition">¶</a></dt>
+<dd><p>F/D/T frequency domain transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>timeData</strong> (<em>named tuple</em>) &#8211; <p>timeData tuple with following fields</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">impulseResponses</span> <span class="p">[</span><span class="n">Channels</span> <span class="n">X</span> <span class="n">Samples</span><span class="p">]</span>
+<span class="o">.</span><span class="n">FS</span>
+<span class="o">.</span><span class="n">radius</span>           <span class="n">Array</span> <span class="n">radius</span>
+<span class="o">.</span><span class="n">averageAirTemp</span>   <span class="n">Temperature</span> <span class="ow">in</span> <span class="p">[</span><span class="n">C</span><span class="p">]</span>
+<span class="p">(</span><span class="o">.</span><span class="n">centerIR</span>        <span class="p">[</span><span class="mi">1</span> <span class="n">x</span> <span class="n">Samples</span><span class="p">]</span> <span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><strong>FFToversize</strong> (<em>int, optional</em>) &#8211; <p>FFToversize rises the FFT Blocksize. [Default: 1]</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="n">FFT</span> <span class="n">of</span> <span class="n">the</span> <span class="n">blocksize</span> <span class="p">(</span><span class="n">FFToversize</span><span class="o">*</span><span class="n">NFFT</span><span class="p">)</span> <span class="ow">is</span> <span class="n">applied</span>
+<span class="n">to</span> <span class="n">the</span> <span class="n">time</span> <span class="n">domain</span> <span class="n">data</span><span class="p">,</span>  <span class="n">where</span>  <span class="n">NFFT</span> <span class="ow">is</span> <span class="n">determinded</span>
+<span class="k">as</span> <span class="n">the</span> <span class="nb">next</span> <span class="n">power</span> <span class="n">of</span> <span class="n">two</span> <span class="n">of</span> <span class="n">the</span> <span class="n">signalSize</span>  <span class="n">which</span> <span class="ow">is</span>
+<span class="n">signalSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">lastSample</span><span class="o">-</span><span class="n">firstSample</span><span class="p">)</span><span class="o">.</span>
+<span class="n">The</span> <span class="n">function</span> <span class="n">will</span> <span class="n">pick</span> <span class="n">a</span> <span class="n">window</span> <span class="n">of</span> <span class="p">(</span><span class="n">lastSample</span><span class="o">-</span><span class="n">firstSample</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">the</span> <span class="n">FFT</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><strong>firstSample</strong> (<em>int, optional</em>) &#8211; First time domain sample to be included. [Default: 0]</li>
+<li><strong>lastSample</strong> (<em>int, optional</em>) &#8211; Last time domain sample to be included. [Default: -1]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>fftData</strong> (<em>array of floats</em>) &#8211; Frequency domain data ready for the Spatial Fourier Transform (stc)</li>
+<li><strong>kr</strong> (<em>array of floats</em>) &#8211; kr-Values of the delivered data</li>
+<li><strong>f</strong> (<em>array of floats</em>) &#8211; Absolute frequency scale</li>
+<li><strong>ctSig</strong> (<em>array of floats</em>) &#8211; Center signal, if available</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Call this function with a running window (firstSample+td-&gt;lastSample+td)
+iteration increasing td to obtain time slices. This way you resolve the
+temporal information within the captured sound field.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.process.itc">
+<code class="descclassname">sofia.process.</code><code class="descname">itc</code><span class="sig-paren">(</span><em>Pnm</em>, <em>angles</em>, <em>N=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#itc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.itc" title="Permalink to this definition">¶</a></dt>
+<dd><p>I/T/C Fast Inverse spatial Fourier Transform Core</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Pnm</strong> (<em>array of floats</em>) &#8211; Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)</li>
+<li><strong>angles</strong> (<em>array of floats</em>) &#8211; <p>Target angles of shape</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ1</span><span class="p">,</span> <span class="n">EL1</span><span class="p">;</span>
+ <span class="n">AZ2</span><span class="p">,</span> <span class="n">EL2</span><span class="p">;</span>
+   <span class="o">...</span>
+ <span class="n">AZn</span><span class="p">,</span> <span class="n">ELn</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><strong>[N]</strong> (<em>int, optional</em>) &#8211; Maximum transform order [Default: highest available order]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>p</strong> &#8211; Sound pressures with FFT bins in cols and specified angles in rows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of complex floats</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This is a pure ISFT core that does not involve extrapolation.
+(=The pressures are referred to the original radius)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.process.pdc">
+<code class="descclassname">sofia.process.</code><code class="descname">pdc</code><span class="sig-paren">(</span><em>N</em>, <em>OmegaL</em>, <em>Pnm</em>, <em>dn</em>, <em>cn=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#pdc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.pdc" title="Permalink to this definition">¶</a></dt>
+<dd><p>P/D/C - Plane Wave Decomposition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>N</strong> (<em>int</em>) &#8211; Decomposition order</li>
+<li><strong>OmegaL</strong> (<em>array of floats</em>) &#8211; <p>Look directions of shape</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ1</span><span class="p">,</span> <span class="n">EL1</span><span class="p">;</span>
+ <span class="n">AZ2</span><span class="p">,</span> <span class="n">EL2</span><span class="p">;</span>
+   <span class="o">...</span>
+ <span class="n">AZn</span><span class="p">,</span> <span class="n">ELn</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><strong>Pnm</strong> (<em>matrix of complex floats</em>) &#8211; Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</li>
+<li><strong>dn</strong> (<em>matrix of complex floats</em>) &#8211; Modal array filters (e.g. from SOFiA M/F)</li>
+<li><strong>cn</strong> (<em>array of floats, optional</em>) &#8211; Weighting Function. Either frequency invariant weights as 1xN array
+or with kr bins in rows over N cols. [Default: None]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Y</strong> &#8211; MxN Matrix of the decomposed wavefield with kr bins in rows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matrix of floats</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.process.rfi">
+<code class="descclassname">sofia.process.</code><code class="descname">rfi</code><span class="sig-paren">(</span><em>dn</em>, <em>kernelDownScale=2</em>, <em>highPass=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#rfi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.rfi" title="Permalink to this definition">¶</a></dt>
+<dd><p>R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dn</strong> (<em>array of floats</em>) &#8211; Analytical frequency domain radial filters (e.g. SOFiA M/F)</li>
+<li><strong>kernelDownScale</strong> (<em>int, optional</em>) &#8211; Downscale factor for the filter kernel [Default: 2]</li>
+<li><strong>highPass</strong> (<em>float, optional</em>) &#8211; Highpass Filter from 0.0 (off) to 1.0 (maximum kr) [Default: 0.0]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>dn</strong> (<em>array of floats</em>) &#8211; Improved radial filters</li>
+<li><strong>kernelSize</strong> (<em>int</em>) &#8211; Filter kernel size (total)</li>
+<li><strong>latency</strong> (<em>float</em>) &#8211; Approximate signal latency due to the filters</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This function improves the FIR radial filters from SOFiA M/F. The filters
+are made causal and are windowed in time domain. The DC components are
+estimated. The R/F/I module should always be inserted to the filter
+path when treating measured data even if no use is made of the included
+kernel downscaling or highpass filters.</p>
+<p>Do NOT use R/F/I for single open sphere filters (e.g.simulations).</p>
+<dl class="docutils">
+<dt>IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large</dt>
+<dd>enough to cover all filter latencies and reponse slopes.
+Otherwise undesired cyclic convolution artifacts may appear
+in the output signal.</dd>
+<dt>HIGHPASS: If HPF is on (highPass&gt;0) the radial filter kernel is</dt>
+<dd>downscaled by a factor of two. Radial Filters and HPF
+share the available taps and the latency keeps constant.
+Be careful using very small signal blocks because there
+may remain too few taps. Observe the filters by plotting
+their spectra and impulse responses.
+&gt; Be very carefull if NFFT/max(kr) &lt; 25
+&gt; Do not use R/F/I if NFFT/max(kr) &lt; 15</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.process.stc">
+<code class="descclassname">sofia.process.</code><code class="descname">stc</code><span class="sig-paren">(</span><em>N</em>, <em>fftData</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#stc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.stc" title="Permalink to this definition">¶</a></dt>
+<dd><p>S/T/C Fast Spatial Fourier Transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>N</strong> (<em>int</em>) &#8211; Maximum transform order</li>
+<li><strong>fftData</strong> (<em>array of floats</em>) &#8211; Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows</li>
+<li><strong>grid</strong> (<em>array of floats</em>) &#8211; <p>Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ1</span><span class="p">,</span> <span class="n">EL1</span><span class="p">,</span> <span class="n">W1</span><span class="p">;</span>
+ <span class="n">AZ2</span><span class="p">,</span> <span class="n">EL2</span><span class="p">,</span> <span class="n">W2</span><span class="p">;</span>
+   <span class="o">...</span>
+ <span class="n">AZn</span><span class="p">,</span> <span class="n">ELn</span><span class="p">,</span> <span class="n">Wn</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Pnm</strong> &#8211; Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of floats</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.process.tdt">
+<code class="descclassname">sofia.process.</code><code class="descname">tdt</code><span class="sig-paren">(</span><em>Y</em>, <em>win=0</em>, <em>minPhase=False</em>, <em>resampleFactor=1</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#tdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.tdt" title="Permalink to this definition">¶</a></dt>
+<dd><p>T/D/T - Time Domain Transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Y</strong> (<em>array of floats</em>) &#8211; Frequency domain data over multiple channels (cols) with FFT data in rows</li>
+<li><strong>float, optional</strong> (<em>win</em>) &#8211; Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED</li>
+<li><strong>int, optional</strong> (<em>resampleFactor</em>) &#8211; Resampling factor (FS_target/FS_source)</li>
+<li><strong>bool, optional</strong> (<em>minPhase</em>) &#8211; </li>
+<li><strong>minimum phase reduction - NOT YET IMPLEMENTED [Default</strong> (<em>Ensure</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> &#8211; Reconstructed time-domain signal of channels in cols and impulse responses in rows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of floats</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This function recombines time domain signals for multiple channels from
+frequency domain data. It is made to work with half-sided spectrum FFT
+data.  The impulse responses can be windowed.  The IFFT blocklength is
+determined by the Y data itself:</p>
+<p>Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]
+and the function returns [NumberOfChannels x resampleFactor*2^n] samples.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sofia.plot">
+<span id="plotting"></span><h2>Plotting<a class="headerlink" href="#module-sofia.plot" title="Permalink to this headline">¶</a></h2>
+<p>Plotting functions
+- makeMTX: Generate 3D-matrix data
+- visualize3D: Draw matrix data in 3D</p>
+<dl class="function">
+<dt id="sofia.plot.genScatter">
+<code class="descclassname">sofia.plot.</code><code class="descname">genScatter</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>colorize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genScatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genScatter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.genShape">
+<code class="descclassname">sofia.plot.</code><code class="descname">genShape</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>offset=0</em>, <em>scale=1.0</em>, <em>colorize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genShape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genShape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.genSphere">
+<code class="descclassname">sofia.plot.</code><code class="descname">genSphere</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>colorize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genSphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genSphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.genVisual">
+<code class="descclassname">sofia.plot.</code><code class="descname">genVisual</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>colorize=False</em>, <em>offset=0</em>, <em>scale=1.0</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genVisual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genVisual" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.generateAngles">
+<code class="descclassname">sofia.plot.</code><code class="descname">generateAngles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#generateAngles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.generateAngles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a [65160 x 1] grid of all radiant angles in 1 deg steps</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.makeMTX">
+<code class="descclassname">sofia.plot.</code><code class="descname">makeMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>Nviz=3</em>, <em>krIndex=1</em>, <em>oversize=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#makeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.makeMTX" title="Permalink to this definition">¶</a></dt>
+<dd><p>mtxData = makeMTX(Nviz=3, Pnm, dn, krIndex)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Spatial Fourier Coefficients (from S/T/C)</strong> (<em>Pnm</em>) &#8211; </li>
+<li><strong>Modal Radial Filters (from M/F)</strong> (<em>dn</em>) &#8211; </li>
+<li><strong>Order of the spatial fourier transform     [default = 3]</strong> (<em>N</em>) &#8211; </li>
+<li><strong>Index of kr Vector                         [default = 1]</strong> (<em>krIndex</em>) &#8211; </li>
+<li><strong>Integer Factor to increase the resolution. Set oversize = 1</strong> (<em>oversize</em>) &#8211; (default) to use the mtxData matrix for visual3D(), map3D().</li>
+<li><strong>#Returns</strong> &#8211; </li>
+<li><strong>-------</strong> &#8211; </li>
+<li><strong>3D-matrix-data in 1[deg] steps</strong> (<em>mtxData</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The file generates a SOFiA mtxData Matrix of 181x360 pixels for the
+visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).
+The HD version generally allows to raise the resolution (oversize &gt; 1).
+(visual3D(), map3D() admit 1[deg] data only, oversize = 1)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.normalizeMTX">
+<code class="descclassname">sofia.plot.</code><code class="descname">normalizeMTX</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#normalizeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.normalizeMTX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.plotGrid">
+<code class="descclassname">sofia.plot.</code><code class="descname">plotGrid</code><span class="sig-paren">(</span><em>rows</em>, <em>cols</em>, <em>vizMTX</em>, <em>bgcolor='white'</em>, <em>style='shape'</em>, <em>colorize=False</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#plotGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.plotGrid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.visualize3D">
+<code class="descclassname">sofia.plot.</code><code class="descname">visualize3D</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='sphere'</em>, <em>colorize=True</em>, <em>offset=0.0</em>, <em>scale=1.0</em>, <em>**kargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#visualize3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.visualize3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize matrix data, such as from makeMTX(Pnm, dn)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>SOFiA 3D-matrix-data [1[deg] steps]</strong> (<em>vizMTX</em>) &#8211; </li>
+<li><strong>'sphere',   surface colors indicate the intensity (default)</strong> (<em>style</em>) &#8211; &#8216;flat&#8217;,     surface colors indicate the intensity (TODO)
+&#8216;scatter&#8217;,  extension indicates the intensity
+&#8216;shape&#8217;,    extension indicates the intensity</li>
+<li><strong>linear offset for shape (Default</strong> (<em>offset</em>) &#8211; </li>
+<li><strong>scaling factor for shape (Default</strong> (<em>scale</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>TODO: Implement flat style, fix color position in sphere and shape, make colormap selectable, move grid generation into function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sofia.sph">
+<span id="sphericals"></span><h2>Sphericals<a class="headerlink" href="#module-sofia.sph" title="Permalink to this headline">¶</a></h2>
+<p>Collection of spherical helper functions:</p>
+<dl class="docutils">
+<dt><cite>sph_harm</cite></dt>
+<dd>More robust spherical harmonic coefficients</dd>
+<dt><cite>spbessel / dspbessel</cite></dt>
+<dd>Spherical Bessel and derivative</dd>
+<dt><cite>spneumann / dspneumann</cite></dt>
+<dd>Spherical Neumann (Bessel 2nd kind) and derivative</dd>
+<dt><cite>sphankel / dsphankel</cite></dt>
+<dd>Spherical Hankel and derivative</dd>
+<dt><cite>cart2sph / sph2cart</cite></dt>
+<dd>Convert cartesion to spherical coordinates and vice versa</dd>
+</dl>
+<dl class="function">
+<dt id="sofia.sph.bn">
+<code class="descclassname">sofia.sph.</code><code class="descname">bn</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em>, <em>ac</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.bn_dualOpenP">
+<code class="descclassname">sofia.sph.</code><code class="descname">bn_dualOpenP</code><span class="sig-paren">(</span><em>n</em>, <em>kr1</em>, <em>kr2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_dualOpenP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_dualOpenP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.bn_npf">
+<code class="descclassname">sofia.sph.</code><code class="descname">bn_npf</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em>, <em>ac</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_npf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_npf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Microphone scaling</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Order</li>
+<li><strong>krm</strong> (<em>array of floats</em>) &#8211; Microphone radius</li>
+<li><strong>krs</strong> (<em>array of floats</em>) &#8211; Sphere radius</li>
+<li><strong>ac</strong> (<em>int {0, 1, 2, 3, 4}</em>) &#8211; <dl class="docutils">
+<dt>Array Configuration:</dt>
+<dd><ul class="first last">
+<li><cite>0</cite>:  Open Sphere with p Transducers (NO plc!) [Default]</li>
+<li><cite>1</cite>:  Open Sphere with pGrad Transducers</li>
+<li><cite>2</cite>:  Rigid Sphere with p Transducers</li>
+<li><cite>3</cite>:  Rigid Sphere with pGrad Transducers</li>
+<li><cite>4</cite>:  Dual Open Sphere with p Transducers</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>b</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of floats</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.bn_openP">
+<code class="descclassname">sofia.sph.</code><code class="descname">bn_openP</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_openP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_openP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.bn_openPG">
+<code class="descclassname">sofia.sph.</code><code class="descname">bn_openPG</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_openPG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_openPG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.bn_rigidP">
+<code class="descclassname">sofia.sph.</code><code class="descname">bn_rigidP</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_rigidP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_rigidP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.bn_rigidPG">
+<code class="descclassname">sofia.sph.</code><code class="descname">bn_rigidPG</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_rigidPG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_rigidPG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.cart2sph">
+<code class="descclassname">sofia.sph.</code><code class="descname">cart2sph</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#cart2sph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.cart2sph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.dspbessel">
+<code class="descclassname">sofia.sph.</code><code class="descname">dspbessel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#dspbessel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.dspbessel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derivative of spherical Bessel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Order</li>
+<li><strong>kr</strong> (<em>int</em>) &#8211; Degree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>J&#8217;</strong> &#8211; Derivative of spherical Bessel</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.dsphankel">
+<code class="descclassname">sofia.sph.</code><code class="descname">dsphankel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#dsphankel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.dsphankel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derivative spherical Hankel function hn&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Order</li>
+<li><strong>kr</strong> (<em>int</em>) &#8211; Degree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>hn&#8217;</strong> &#8211; Derivative of spherical Hankel function hn&#8217;</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.dspneumann">
+<code class="descclassname">sofia.sph.</code><code class="descname">dspneumann</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#dspneumann"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.dspneumann" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derivative spherical Neumann (Bessel second kind) of order n</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Order</li>
+<li><strong>kr</strong> (<em>int</em>) &#8211; Degree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Yv&#8217;</strong> &#8211; Derivative of spherical Neumann (Bessel second kind)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.printBNs">
+<code class="descclassname">sofia.sph.</code><code class="descname">printBNs</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#printBNs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.printBNs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.printSPH">
+<code class="descclassname">sofia.sph.</code><code class="descname">printSPH</code><span class="sig-paren">(</span><em>n</em>, <em>k</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#printSPH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.printSPH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.spbessel">
+<code class="descclassname">sofia.sph.</code><code class="descname">spbessel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#spbessel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.spbessel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spherical Bessel function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Order</li>
+<li><strong>kr</strong> (<em>int</em>) &#8211; Degree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>J</strong> &#8211; Spherical Bessel</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.sph2cart">
+<code class="descclassname">sofia.sph.</code><code class="descname">sph2cart</code><span class="sig-paren">(</span><em>az</em>, <em>el</em>, <em>r</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#sph2cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.sph2cart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts spherical coordinates az, el, r to cartesian coordinates x, y, z.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.sph_harm">
+<code class="descclassname">sofia.sph.</code><code class="descname">sph_harm</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>az</em>, <em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#sph_harm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.sph_harm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute sphercial harmonics</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m</strong> (<em>(int)</em>) &#8211; Order of the spherical harmonic. abs(m) &lt;= n</li>
+<li><strong>n</strong> (<em>(int)</em>) &#8211; Degree of the harmonic, sometimes called l. n &gt;= 0</li>
+<li><strong>az</strong> (<em>(float)</em>) &#8211; Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.</li>
+<li><strong>el</strong> (<em>(float)</em>) &#8211; Elevation (colatitudinal) coordinate [0, pi], also called Phi.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>y_mn</strong> (<em>(complex float)</em>) &#8211; Complex spherical harmonic of order m and degree n,
+sampled at theta = az, phi = el</li>
+<li><em>Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5 * exp(i m phi) * P_n^m(cos(theta))</em></li>
+<li><strong>as per http</strong> (<em>//dlmf.nist.gov/14.30</em>)</li>
+<li><em>Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv</em></li>
+<li><em>scipy.special.lpmn calculates P(0...m 0...n) and its derivative but won&#8217;t return +inf at high orders</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.sphankel">
+<code class="descclassname">sofia.sph.</code><code class="descname">sphankel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#sphankel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.sphankel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spherical Hankel hn</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Order</li>
+<li><strong>kr</strong> (<em>int</em>) &#8211; Degree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>hn</strong> &#8211; Spherical Hankel function hn</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.spneumann">
+<code class="descclassname">sofia.sph.</code><code class="descname">spneumann</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#spneumann"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.spneumann" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spherical Neumann (Bessel second kind)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<em>int</em>) &#8211; Order</li>
+<li><strong>kr</strong> (<em>int</em>) &#8211; Degree</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Yv</strong> &#8211; Spherical Neumann (Bessel second kind)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">complex float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sofia.io">
+<span id="i-o"></span><h2>I/O<a class="headerlink" href="#module-sofia.io" title="Permalink to this headline">¶</a></h2>
+<p>Input-Output functions</p>
+<dl class="function">
+<dt id="sofia.io.readMiroStruct">
+<code class="descclassname">sofia.io.</code><code class="descname">readMiroStruct</code><span class="sig-paren">(</span><em>matFile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/io.html#readMiroStruct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.io.readMiroStruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads miro matlab files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>matFile</strong> (<em>filepath</em>) &#8211; <p>.miro file that has been exported as a struct like so</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">load</span> <span class="n">SOFiA_A1</span><span class="p">;</span>
+<span class="n">SOFiA_A1_struct</span> <span class="o">=</span> <span class="n">struct</span><span class="p">(</span><span class="n">SOFiA_A1</span><span class="p">);</span>
+<span class="n">save</span><span class="p">(</span><span class="s1">&#39;SOFiA_A1_struct.mat&#39;</span><span class="p">,</span> <span class="s1">&#39;SOFiA_A1_struct&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>timeData</strong> (<em>named tuple</em>)</li>
+<li><cite>timeData</cite> tuple with following fields</li>
+<li><em>:</em> &#8211; .impulseResponses [Channels X Samples]
+.FS
+.radius           Array radius
+.averageAirTemp   Temperature in [C]
+(.centerIR        [1 x Samples] )</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sofia.lebedev">
+<span id="lebedev"></span><h2>lebedev<a class="headerlink" href="#module-sofia.lebedev" title="Permalink to this headline">¶</a></h2>
+<p>Generate Lebedev grid and coefficients
+This module only exposes the function  <cite>lebGrid = lebedev.genGrid(degree)</cite>.</p>
+<p>lebGrid is a named tuple containing the coordinates .x, .y, .z and the weights .w
+Possible degrees: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194</p>
+<p>Adapted from Richard P. Mullers Python version, <a class="reference external" href="https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py">https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py</a>
+C version: Dmitri Laikov
+F77 version: Christoph van Wuellen, <a class="reference external" href="http://www.ccl.net">http://www.ccl.net</a></p>
+<p>Users of this code are asked to include reference [1] in their publications,
+and in the user- and programmers-manuals describing their codes.</p>
+<p>[1] V.I. Lebedev, and D.N. Laikov
+&#8216;A quadrature formula for the sphere of the 131st algebraic order of accuracy&#8217;
+Doklady Mathematics, Vol. 59, No. 3, 1999, pp. 477-481.</p>
+<dl class="function">
+<dt id="sofia.lebedev.genGrid">
+<code class="descclassname">sofia.lebedev.</code><code class="descname">genGrid</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/lebedev.html#genGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.lebedev.genGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns Lebedev coefficients of n&#8217;th degree</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<em>int{6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}</em>) &#8211; Lebedev degree</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>lebGrid</strong> &#8211; lebGrid is a named tuple containing .x, .y, .z and .w</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">named tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="plotting.html" class="btn btn-neutral" title="Plotting" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Christoph Hohnerlein (QU Lab).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

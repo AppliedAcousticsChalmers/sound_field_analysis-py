@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sofia.lebedev &mdash; sofia-py 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="sofia-py 0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> sofia-py
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generators.html">Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">sofia-py</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>sofia.lebedev</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for sofia.lebedev</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Generate Lebedev grid and coefficients</span>
+<span class="sd">This module only exposes the function  `lebGrid = lebedev.genGrid(degree)`.</span>
+
+<span class="sd">lebGrid is a named tuple containing the coordinates .x, .y, .z and the weights .w</span>
+<span class="sd">Possible degrees: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194</span>
+
+<span class="sd">Adapted from Richard P. Mullers Python version, https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py</span>
+<span class="sd">C version: Dmitri Laikov</span>
+<span class="sd">F77 version: Christoph van Wuellen, http://www.ccl.net</span>
+
+<span class="sd">Users of this code are asked to include reference [1] in their publications,</span>
+<span class="sd">and in the user- and programmers-manuals describing their codes.</span>
+
+<span class="sd">[1] V.I. Lebedev, and D.N. Laikov</span>
+<span class="sd">&#39;A quadrature formula for the sphere of the 131st algebraic order of accuracy&#39;</span>
+<span class="sd">Doklady Mathematics, Vol. 59, No. 3, 1999, pp. 477-481.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+
+
+<span class="k">def</span> <span class="nf">_genOh_a00</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;(0, 0, a) etc. (6 points)&quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">_genOh_aa0</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;(0, a, a) etc, a=1/sqrt(2) (12 points)&quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">_genOh_aaa</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;(a, a, a) etc, a=1/sqrt(3) (8 points)&quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="mf">3.</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">_genOh_aab</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;(a, a, b) etc, b=sqrt(1-2 a^2), a input (24 points)&quot;&quot;&quot;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">_genOh_ab0</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;(a, b, 0) etc, b=sqrt(1-a^2), a input (24 points)&quot;&quot;&quot;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">_genOh_abc</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;(a, b, c) etc, c=sqrt(1-a^2-b^2), a, b input  (48 points)&quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">+</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">_leb6</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.1666666666666667</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb14</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.06666666666666667</span><span class="p">)</span>\
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.07500000000000000</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb26</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.04761904761904762</span><span class="p">)</span>\
+        <span class="o">+</span> <span class="n">_genOh_aa0</span><span class="p">(</span><span class="mf">0.03809523809523810</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.03214285714285714</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb38</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.009523809523809524</span><span class="p">)</span>\
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.3214285714285714E-1</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_ab0</span><span class="p">(</span><span class="mf">0.2857142857142857E-1</span><span class="p">,</span> <span class="mf">0.4597008433809831E+0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb50</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.1269841269841270E-1</span><span class="p">)</span>\
+        <span class="o">+</span> <span class="n">_genOh_aa0</span><span class="p">(</span><span class="mf">0.2257495590828924E-1</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.2109375000000000E-1</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.2017333553791887E-1</span><span class="p">,</span> <span class="mf">0.3015113445777636E+0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb74</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.5130671797338464E-3</span><span class="p">)</span>\
+        <span class="o">+</span> <span class="n">_genOh_aa0</span><span class="p">(</span><span class="mf">0.1660406956574204E-1</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2958603896103896E-1</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.2657620708215946E-1</span><span class="p">,</span> <span class="mf">0.4803844614152614E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_ab0</span><span class="p">(</span><span class="mf">0.1652217099371571E-1</span><span class="p">,</span> <span class="mf">0.3207726489807764E+0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb86</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.1154401154401154E-1</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.1194390908585628E-1</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.1111055571060340E-1</span><span class="p">,</span> <span class="mf">0.3696028464541502E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.1187650129453714E-1</span><span class="p">,</span> <span class="mf">0.6943540066026664E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_ab0</span><span class="p">(</span><span class="mf">0.1181230374690448E-1</span><span class="p">,</span> <span class="mf">0.3742430390903412E+0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb110</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.3828270494937162E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.9793737512487512E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.8211737283191111E-2</span><span class="p">,</span> <span class="mf">0.1851156353447362E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.9942814891178103E-2</span><span class="p">,</span> <span class="mf">0.6904210483822922E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.9595471336070963E-2</span><span class="p">,</span> <span class="mf">0.3956894730559419E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_ab0</span><span class="p">(</span><span class="mf">0.9694996361663028E-2</span><span class="p">,</span> <span class="mf">0.4783690288121502E+0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb146</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.5996313688621381E-3</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aa0</span><span class="p">(</span><span class="mf">0.7372999718620756E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.7210515360144488E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.7116355493117555E-2</span><span class="p">,</span> <span class="mf">0.6764410400114264E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.6753829486314477E-2</span><span class="p">,</span> <span class="mf">0.4174961227965453E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.7574394159054034E-2</span><span class="p">,</span> <span class="mf">0.1574676672039082E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_abc</span><span class="p">(</span><span class="mf">0.6991087353303262E-2</span><span class="p">,</span> <span class="mf">0.1403553811713183E+0</span><span class="p">,</span> <span class="mf">0.4493328323269557E+0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb170</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.5544842902037365E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aa0</span><span class="p">(</span><span class="mf">0.6071332770670752E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.6383674773515093E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.5183387587747790E-2</span><span class="p">,</span> <span class="mf">0.2551252621114134E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.6317929009813725E-2</span><span class="p">,</span> <span class="mf">0.6743601460362766E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.6201670006589077E-2</span><span class="p">,</span> <span class="mf">0.4318910696719410E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_ab0</span><span class="p">(</span><span class="mf">0.5477143385137348E-2</span><span class="p">,</span> <span class="mf">0.2613931360335988E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_abc</span><span class="p">(</span><span class="mf">0.5968383987681156E-2</span><span class="p">,</span> <span class="mf">0.4990453161796037E+0</span><span class="p">,</span> <span class="mf">0.1446630744325115E+0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_leb194</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">_genOh_a00</span><span class="p">(</span><span class="mf">0.1782340447244611E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aa0</span><span class="p">(</span><span class="mf">0.5716905949977102E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aaa</span><span class="p">(</span><span class="mf">0.5573383178848738E-2</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.5608704082587997E-2</span><span class="p">,</span> <span class="mf">0.6712973442695226E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.5158237711805383E-2</span><span class="p">,</span> <span class="mf">0.2892465627575439E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.5518771467273614E-2</span><span class="p">,</span> <span class="mf">0.4446933178717437E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_aab</span><span class="p">(</span><span class="mf">0.4106777028169394E-2</span><span class="p">,</span> <span class="mf">0.1299335447650067E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_ab0</span><span class="p">(</span><span class="mf">0.5051846064614808E-2</span><span class="p">,</span> <span class="mf">0.3457702197611283E+0</span><span class="p">)</span> \
+        <span class="o">+</span> <span class="n">_genOh_abc</span><span class="p">(</span><span class="mf">0.5530248916233094E-2</span><span class="p">,</span> <span class="mf">0.1590417105383530E+0</span><span class="p">,</span> <span class="mf">0.8360360154824589E+0</span><span class="p">)</span>
+
+
+<span class="n">LebFunc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="n">_leb6</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="n">_leb14</span><span class="p">,</span>
+    <span class="mi">26</span><span class="p">:</span> <span class="n">_leb26</span><span class="p">,</span>
+    <span class="mi">38</span><span class="p">:</span> <span class="n">_leb38</span><span class="p">,</span>
+    <span class="mi">50</span><span class="p">:</span> <span class="n">_leb50</span><span class="p">,</span>
+    <span class="mi">74</span><span class="p">:</span> <span class="n">_leb74</span><span class="p">,</span>
+    <span class="mi">86</span><span class="p">:</span> <span class="n">_leb86</span><span class="p">,</span>
+    <span class="mi">110</span><span class="p">:</span> <span class="n">_leb110</span><span class="p">,</span>
+    <span class="mi">146</span><span class="p">:</span> <span class="n">_leb146</span><span class="p">,</span>
+    <span class="mi">170</span><span class="p">:</span> <span class="n">_leb170</span><span class="p">,</span>
+    <span class="mi">194</span><span class="p">:</span> <span class="n">_leb194</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="genGrid"><a class="viewcode-back" href="../../reference.html#sofia.lebedev.genGrid">[docs]</a><span class="k">def</span> <span class="nf">genGrid</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns Lebedev coefficients of n&#39;th degree</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int{6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}</span>
+<span class="sd">       Lebedev degree</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lebGrid : named tuple</span>
+<span class="sd">       lebGrid is a named tuple containing .x, .y, .z and .w</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">leb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">LebFunc</span><span class="p">[</span><span class="n">n</span><span class="p">]())</span>  <span class="c1"># try retrieving grid first</span>
+
+        <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+        <span class="n">lebGrid</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;lebGrid&#39;</span><span class="p">,</span> <span class="s1">&#39;x y z w&#39;</span><span class="p">)</span>
+        <span class="n">lebGrid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">leb</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">lebGrid</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">leb</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">lebGrid</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">leb</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">lebGrid</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">leb</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">lebGrid</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No grid available for degree&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Christoph Hohnerlein (QU Lab).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

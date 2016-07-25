@@ -1,0 +1,625 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sofia.process &mdash; sofia-py 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="sofia-py 0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> sofia-py
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generators.html">Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">sofia-py</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>sofia.process</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for sofia.process</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Processing functions:</span>
+
+<span class="sd">`fdt`</span>
+<span class="sd">   Frequency to time transform</span>
+<span class="sd">`itc`</span>
+<span class="sd">   Fast Inverse Spatial Fourier Transform</span>
+<span class="sd">`pdc`</span>
+<span class="sd">   Plane Wave Decomposition</span>
+<span class="sd">`rfi`</span>
+<span class="sd">   Radial filter Improvement</span>
+<span class="sd">`stc`</span>
+<span class="sd">   Fast Spatial Fourier Transform</span>
+<span class="sd">`tdt`</span>
+<span class="sd">   Time Domain Reconstruction</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">hann</span><span class="p">,</span> <span class="n">resample</span>
+<span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">sph_harm</span>
+
+<span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+
+
+<div class="viewcode-block" id="fdt"><a class="viewcode-back" href="../../reference.html#sofia.process.fdt">[docs]</a><span class="k">def</span> <span class="nf">fdt</span><span class="p">(</span><span class="n">timeData</span><span class="p">,</span> <span class="n">FFToversize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstSample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lastSample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;F/D/T frequency domain transform</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    timeData : named tuple</span>
+<span class="sd">       timeData tuple with following fields</span>
+<span class="sd">       ::</span>
+<span class="sd">          .impulseResponses [Channels X Samples]</span>
+<span class="sd">          .FS</span>
+<span class="sd">          .radius           Array radius</span>
+<span class="sd">          .averageAirTemp   Temperature in [C]</span>
+<span class="sd">          (.centerIR        [1 x Samples] )</span>
+<span class="sd">    FFToversize : int, optional</span>
+<span class="sd">       FFToversize rises the FFT Blocksize. [Default: 1]</span>
+<span class="sd">       ::</span>
+<span class="sd">          A FFT of the blocksize (FFToversize*NFFT) is applied</span>
+<span class="sd">          to the time domain data,  where  NFFT is determinded</span>
+<span class="sd">          as the next power of two of the signalSize  which is</span>
+<span class="sd">          signalSize = (lastSample-firstSample).</span>
+<span class="sd">          The function will pick a window of (lastSample-firstSample)</span>
+<span class="sd">          for the FFT.</span>
+<span class="sd">    firstSample : int, optional</span>
+<span class="sd">       First time domain sample to be included. [Default: 0]</span>
+<span class="sd">    lastSample : int, optional</span>
+<span class="sd">       Last time domain sample to be included. [Default: -1]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fftData : array of floats</span>
+<span class="sd">       Frequency domain data ready for the Spatial Fourier Transform (stc)</span>
+<span class="sd">    kr : array of floats</span>
+<span class="sd">       kr-Values of the delivered data</span>
+<span class="sd">    f : array of floats</span>
+<span class="sd">       Absolute frequency scale</span>
+<span class="sd">    ctSig : array of floats</span>
+<span class="sd">       Center signal, if available</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Call this function with a running window (firstSample+td-&gt;lastSample+td)</span>
+<span class="sd">    iteration increasing td to obtain time slices. This way you resolve the</span>
+<span class="sd">    temporal information within the captured sound field.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">IR</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">impulseResponse</span>
+    <span class="n">FS</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">FS</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">averageAirTemp</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">radius</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="n">IR</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">lastSample</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># assign lastSample to length of IR if not provided</span>
+        <span class="n">lastSample</span> <span class="o">=</span> <span class="n">N</span>
+
+    <span class="k">if</span> <span class="n">FFToversize</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFToversize must be &gt;= 1.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">lastSample</span> <span class="o">&lt;</span> <span class="n">firstSample</span> <span class="ow">or</span> <span class="n">lastSample</span> <span class="o">&gt;</span> <span class="n">N</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;lastSample must be between firstSample and N (length of impulse response).&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">firstSample</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">firstSample</span> <span class="o">&gt;</span> <span class="n">lastSample</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;firstSample must be between 0 and lastSample.&#39;</span><span class="p">)</span>
+
+    <span class="n">totalSamples</span> <span class="o">=</span> <span class="n">lastSample</span> <span class="o">-</span> <span class="n">firstSample</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">IR</span> <span class="o">=</span> <span class="n">IR</span><span class="p">[:,</span> <span class="n">firstSample</span><span class="p">:</span><span class="n">lastSample</span><span class="p">]</span>
+    <span class="n">NFFT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">totalSamples</span><span class="p">)))</span>
+    <span class="n">fftData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">IR</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">*</span> <span class="n">FFToversize</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">timeData</span><span class="o">.</span><span class="n">centerIR</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="n">centerIR</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">centerIR</span><span class="p">[:,</span> <span class="n">firstSample</span><span class="p">:</span><span class="n">lastSample</span><span class="p">]</span>
+        <span class="n">ctSig</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">centerIR</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">*</span> <span class="n">FFToversize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ctSig</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">NFFT</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">FS</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">331.5</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="n">temperature</span>
+    <span class="n">kr</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">/</span> <span class="n">c</span> <span class="o">*</span> <span class="n">radius</span>
+
+    <span class="k">return</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">ctSig</span></div>
+
+
+<div class="viewcode-block" id="itc"><a class="viewcode-back" href="../../reference.html#sofia.process.itc">[docs]</a><span class="k">def</span> <span class="nf">itc</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;I/T/C Fast Inverse spatial Fourier Transform Core</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Pnm : array of floats</span>
+<span class="sd">       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)</span>
+<span class="sd">    angles : array of floats</span>
+<span class="sd">       Target angles of shape</span>
+<span class="sd">       ::</span>
+<span class="sd">          [AZ1, EL1;</span>
+<span class="sd">           AZ2, EL2;</span>
+<span class="sd">             ...</span>
+<span class="sd">           AZn, ELn]</span>
+<span class="sd">    [N] : int, optional</span>
+<span class="sd">       Maximum transform order [Default: highest available order]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    p : array of complex floats</span>
+<span class="sd">       Sound pressures with FFT bins in cols and specified angles in rows</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a pure ISFT core that does not involve extrapolation.</span>
+<span class="sd">    (=The pressures are referred to the original radius)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">angles</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">AzimuthAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">angles</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">ElevationAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">angles</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">angles</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">AzimuthAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">angles</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">ElevationAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">angles</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Error: Delivered angles are not valid. Must consist of [AZ1 EL1; AZ2 EL2; ...; AZn ELn] pairs.&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">PnmDataLength</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">FFTBlocklength</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.&#39;</span><span class="p">)</span>
+
+    <span class="n">Nmax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">PnmDataLength</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">N</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">Nmax</span>
+
+    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA I/T/C - Inverse spatial Transform Core R13-0306&#39;</span><span class="p">)</span>
+
+    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">numberOfAngles</span><span class="p">,</span> <span class="n">FFTBlocklength</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+
+    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">SHresults</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">AzimuthAngles</span><span class="p">,</span> <span class="n">ElevationAngles</span><span class="p">)</span>
+            <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">SHresults</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">])</span>
+            <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">OutputArray</span></div>
+
+
+<div class="viewcode-block" id="pdc"><a class="viewcode-back" href="../../reference.html#sofia.process.pdc">[docs]</a><span class="k">def</span> <span class="nf">pdc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">OmegaL</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">cn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;P/D/C - Plane Wave Decomposition</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    N : int</span>
+<span class="sd">       Decomposition order</span>
+<span class="sd">    OmegaL : array of floats</span>
+<span class="sd">       Look directions of shape</span>
+<span class="sd">       ::</span>
+<span class="sd">          [AZ1, EL1;</span>
+<span class="sd">           AZ2, EL2;</span>
+<span class="sd">             ...</span>
+<span class="sd">           AZn, ELn]</span>
+<span class="sd">    Pnm : matrix of complex floats</span>
+<span class="sd">       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</span>
+<span class="sd">    dn : matrix of complex floats</span>
+<span class="sd">       Modal array filters (e.g. from SOFiA M/F)</span>
+<span class="sd">    cn : array of floats, optional</span>
+<span class="sd">       Weighting Function. Either frequency invariant weights as 1xN array</span>
+<span class="sd">       or with kr bins in rows over N cols. [Default: None]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Y : matrix of floats</span>
+<span class="sd">       MxN Matrix of the decomposed wavefield with kr bins in rows</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA P/D/C - Plane Wave Decomposition&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Check shape of supplied look directions</span>
+    <span class="n">OmegaL</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">OmegaL</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># only one dimension -&gt; one AE/EL pair</span>
+        <span class="k">if</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Angle Matrix OmegaL is not valid. Must consist of AZ/EL pairs in one column [AZ1 EL1; AZ2 EL2; ... ; AZn ELn].</span><span class="se">\n</span><span class="s1">Remember: All angles are in RAD.&#39;</span><span class="p">)</span>
+        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>                 <span class="c1"># else: two or more AE/EL pairs</span>
+        <span class="k">if</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Angle Matrix OmegaL is not valid. Must consist of AZ/EL pairs in one column [AZ1 EL1; AZ2 EL2; ... ; AZn ELn].</span><span class="se">\n</span><span class="s1">Remember: All angles are in RAD.&#39;</span><span class="p">)</span>
+        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">Azimut</span> <span class="o">=</span> <span class="n">OmegaL</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">Elevation</span> <span class="o">=</span> <span class="n">OmegaL</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Expand Pnm and dn dims to 2D if necessary</span>
+    <span class="k">if</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">Pnm</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">NMDeliveredSize</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">FFTBlocklengthPnm</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">dn</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">dn</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Ndn</span> <span class="o">=</span> <span class="n">dn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">FFTBlocklengthdn</span> <span class="o">=</span> <span class="n">dn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">cn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pwdflag</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">Ncn</span> <span class="o">=</span> <span class="n">cn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">FFTBlocklengthcn</span> <span class="o">=</span> <span class="n">cn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">cnnofreqflag</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cn</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pwdflag</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Check blocksizes</span>
+    <span class="k">if</span> <span class="n">FFTBlocklengthdn</span> <span class="o">!=</span> <span class="n">FFTBlocklengthPnm</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFT Blocksizes of Pnm and dn are not consistent.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">FFTBlocklengthcn</span> <span class="o">!=</span> <span class="n">FFTBlocklengthPnm</span> <span class="ow">and</span> <span class="n">FFTBlocklengthcn</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFT Blocksize of cn is not consistent to Pnm and dn.&#39;</span><span class="p">)</span>
+
+    <span class="n">NMLocatorSize</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># TODO: Implement all other warnings</span>
+    <span class="k">if</span> <span class="n">NMLocatorSize</span> <span class="o">&gt;</span> <span class="n">NMDeliveredSize</span><span class="p">:</span>  <span class="c1"># Maybe throw proper warning?</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: The requested order N=&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;cannot be achieved.</span><span class="se">\n</span><span class="s1">&#39;</span>
+              <span class="s1">&#39;The Pnm coefficients deliver a maximum of&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">NMDeliveredSize</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+              <span class="s1">&#39;Will decompose on maximum available order.</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">gaincorrection</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numberOfAngles</span><span class="p">,</span> <span class="n">FFTBlocklengthPnm</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">))</span>
+
+    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># TODO: clean up for loops</span>
+    <span class="k">if</span> <span class="n">pwdflag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># PWD CORE</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">Ynm</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Azimut</span><span class="p">,</span> <span class="n">Elevation</span><span class="p">)</span>
+                <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Ynm</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">*</span> <span class="n">dn</span><span class="p">[</span><span class="n">n</span><span class="p">]))</span>
+                <span class="n">ctr</span> <span class="o">=</span> <span class="n">ctr</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># BEAMFORMING CORE</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">Ynm</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Azimut</span><span class="p">,</span> <span class="n">Elevation</span><span class="p">)</span>
+                <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Ynm</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">*</span> <span class="n">dn</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">cn</span><span class="p">[</span><span class="n">n</span><span class="p">]))</span>
+                <span class="n">ctr</span> <span class="o">=</span> <span class="n">ctr</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1"># RETURN</span>
+    <span class="k">return</span> <span class="n">OutputArray</span> <span class="o">*</span> <span class="n">gaincorrection</span></div>
+
+
+<div class="viewcode-block" id="rfi"><a class="viewcode-back" href="../../reference.html#sofia.process.rfi">[docs]</a><span class="k">def</span> <span class="nf">rfi</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="n">kernelDownScale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">highPass</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dn : array of floats</span>
+<span class="sd">       Analytical frequency domain radial filters (e.g. SOFiA M/F)</span>
+<span class="sd">    kernelDownScale : int, optional</span>
+<span class="sd">       Downscale factor for the filter kernel [Default: 2]</span>
+<span class="sd">    highPass : float, optional</span>
+<span class="sd">       Highpass Filter from 0.0 (off) to 1.0 (maximum kr) [Default: 0.0]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dn : array of floats</span>
+<span class="sd">       Improved radial filters</span>
+<span class="sd">    kernelSize : int</span>
+<span class="sd">       Filter kernel size (total)</span>
+<span class="sd">    latency : float</span>
+<span class="sd">       Approximate signal latency due to the filters</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function improves the FIR radial filters from SOFiA M/F. The filters</span>
+<span class="sd">    are made causal and are windowed in time domain. The DC components are</span>
+<span class="sd">    estimated. The R/F/I module should always be inserted to the filter</span>
+<span class="sd">    path when treating measured data even if no use is made of the included</span>
+<span class="sd">    kernel downscaling or highpass filters.</span>
+
+<span class="sd">    Do NOT use R/F/I for single open sphere filters (e.g.simulations).</span>
+
+<span class="sd">    IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large</span>
+<span class="sd">            enough to cover all filter latencies and reponse slopes.</span>
+<span class="sd">            Otherwise undesired cyclic convolution artifacts may appear</span>
+<span class="sd">            in the output signal.</span>
+
+<span class="sd">    HIGHPASS: If HPF is on (highPass&gt;0) the radial filter kernel is</span>
+<span class="sd">              downscaled by a factor of two. Radial Filters and HPF</span>
+<span class="sd">              share the available taps and the latency keeps constant.</span>
+<span class="sd">              Be careful using very small signal blocks because there</span>
+<span class="sd">              may remain too few taps. Observe the filters by plotting</span>
+<span class="sd">              their spectra and impulse responses.</span>
+<span class="sd">              &gt; Be very carefull if NFFT/max(kr) &lt; 25</span>
+<span class="sd">              &gt; Do not use R/F/I if NFFT/max(kr) &lt; 15</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">dn</span></div>
+
+
+<div class="viewcode-block" id="stc"><a class="viewcode-back" href="../../reference.html#sofia.process.stc">[docs]</a><span class="k">def</span> <span class="nf">stc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;S/T/C Fast Spatial Fourier Transform</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    N : int</span>
+<span class="sd">       Maximum transform order</span>
+<span class="sd">    fftData : array of floats</span>
+<span class="sd">       Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows</span>
+<span class="sd">    grid : array of floats</span>
+<span class="sd">       Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape</span>
+<span class="sd">       ::</span>
+<span class="sd">          [AZ1, EL1, W1;</span>
+<span class="sd">           AZ2, EL2, W2;</span>
+<span class="sd">             ...</span>
+<span class="sd">           AZn, ELn, Wn]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Pnm : array of floats</span>
+<span class="sd">       Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">iscomplex</span><span class="p">(</span><span class="n">fftData</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFTData: Complex Input Data expected.&#39;</span><span class="p">)</span>
+
+    <span class="n">numberOfSpatialPositionsInFFTBlock</span><span class="p">,</span> <span class="n">FFTBlocklength</span> <span class="o">=</span> <span class="n">fftData</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">numberOfGridPoints</span><span class="p">,</span> <span class="n">numberOfGridInfos</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="n">numberOfGridInfos</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;GRID: Invalid grid data, must contain [az, el, r].&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">numberOfSpatialPositionsInFFTBlock</span> <span class="o">!=</span> <span class="n">numberOfGridPoints</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Inconsistent spatial sampling points between fftData (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">numberOfSpatialPositionsInFFTBlock</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;) and supplied grid  (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">numberOfGridPoints</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;).&#39;</span><span class="p">)</span>
+
+    <span class="n">AzimuthAngles</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">ElevationAngles</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">GridWeights</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">FFTBlocklength</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+
+    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">SHarm</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">GridWeights</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">AzimuthAngles</span><span class="p">,</span> <span class="n">ElevationAngles</span><span class="p">))</span>
+            <span class="n">OutputArray</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">SHarm</span><span class="p">,</span> <span class="n">fftData</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">OutputArray</span></div>
+
+
+<div class="viewcode-block" id="tdt"><a class="viewcode-back" href="../../reference.html#sofia.process.tdt">[docs]</a><span class="k">def</span> <span class="nf">tdt</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minPhase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resampleFactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; T/D/T - Time Domain Transform</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Y : array of floats</span>
+<span class="sd">       Frequency domain data over multiple channels (cols) with FFT data in rows</span>
+<span class="sd">    win float, optional</span>
+<span class="sd">       Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED</span>
+<span class="sd">    resampleFactor int, optional</span>
+<span class="sd">       Resampling factor (FS_target/FS_source)</span>
+<span class="sd">    minPhase bool, optional</span>
+<span class="sd">    Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    y : array of floats</span>
+<span class="sd">       Reconstructed time-domain signal of channels in cols and impulse responses in rows</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function recombines time domain signals for multiple channels from</span>
+<span class="sd">    frequency domain data. It is made to work with half-sided spectrum FFT</span>
+<span class="sd">    data.  The impulse responses can be windowed.  The IFFT blocklength is</span>
+<span class="sd">    determined by the Y data itself:</span>
+
+<span class="sd">    Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]</span>
+<span class="sd">    and the function returns [NumberOfChannels x resampleFactor*2^n] samples.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">win</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Argument window must be in range 0.0 ... 1.0!&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA T/D/T - Time Domain Transform&#39;</span><span class="p">)</span>
+
+    <span class="c1"># inverse real FFT</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+
+    <span class="c1"># TODO: minphase</span>
+    <span class="k">if</span> <span class="n">minPhase</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># y    = [y, zeros(size(y))]&#39;;</span>
+        <span class="c1"># Y    = fft(y);</span>
+        <span class="c1"># Y(Y == 0) = 1e-21;</span>
+        <span class="c1"># img  = imag(hilbert(log(abs(Y))));</span>
+        <span class="c1"># y    = real(ifft(abs(Y) .* exp(-1i*img)));</span>
+        <span class="c1"># y    = y(1:end/2,:)&#39;;</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># TODO: percentage(?) windowing</span>
+    <span class="k">if</span> <span class="n">win</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">winfkt</span> <span class="o">=</span> <span class="n">hann</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">winfkt</span> <span class="o">*</span> <span class="n">y</span>
+
+    <span class="k">if</span> <span class="n">resampleFactor</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">resampleFactor</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">y</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Christoph Hohnerlein (QU Lab).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

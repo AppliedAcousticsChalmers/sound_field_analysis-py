@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sofia.sph &mdash; sofia-py 0.2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="sofia-py 0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> sofia-py
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generators.html">Generators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">sofia-py</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>sofia.sph</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for sofia.sph</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Collection of spherical helper functions:</span>
+
+
+<span class="sd">`sph_harm`</span>
+<span class="sd">   More robust spherical harmonic coefficients</span>
+<span class="sd">`spbessel / dspbessel`</span>
+<span class="sd">   Spherical Bessel and derivative</span>
+<span class="sd">`spneumann / dspneumann`</span>
+<span class="sd">   Spherical Neumann (Bessel 2nd kind) and derivative</span>
+<span class="sd">`sphankel / dsphankel`</span>
+<span class="sd">   Spherical Hankel and derivative</span>
+<span class="sd">`cart2sph / sph2cart`</span>
+<span class="sd">   Convert cartesion to spherical coordinates and vice versa</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">special</span> <span class="k">as</span> <span class="n">scy</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">factorial</span> <span class="k">as</span> <span class="n">fact</span>
+
+
+<div class="viewcode-block" id="spbessel"><a class="viewcode-back" href="../../reference.html#sofia.sph.spbessel">[docs]</a><span class="k">def</span> <span class="nf">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spherical Bessel function</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">       Order</span>
+<span class="sd">    kr: int</span>
+<span class="sd">       Degree</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    J : complex float</span>
+<span class="sd">       Spherical Bessel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># spb1 = scy.sph_jn(n, kr)  # returns j and j&#39;</span>
+    <span class="c1"># return spb1[0][-1]</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kr</span><span class="p">))</span> <span class="o">*</span> <span class="n">scy</span><span class="o">.</span><span class="n">jn</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dspbessel"><a class="viewcode-back" href="../../reference.html#sofia.sph.dspbessel">[docs]</a><span class="k">def</span> <span class="nf">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Derivative of spherical Bessel</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">       Order</span>
+<span class="sd">    kr: int</span>
+<span class="sd">       Degree</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    J&#39; : complex float</span>
+<span class="sd">       Derivative of spherical Bessel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># spb1 = scy.sph_jn(n, kr)  # returns j and j&#39;</span>
+    <span class="c1"># return spb1[1][-1]</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="spneumann"><a class="viewcode-back" href="../../reference.html#sofia.sph.spneumann">[docs]</a><span class="k">def</span> <span class="nf">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spherical Neumann (Bessel second kind)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">       Order</span>
+<span class="sd">    kr: int</span>
+<span class="sd">       Degree</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Yv : complex float</span>
+<span class="sd">       Spherical Neumann (Bessel second kind)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># spb2 = scy.sph_yn(n, kr)</span>
+    <span class="c1"># return spb2[0][-1]</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kr</span><span class="p">))</span> <span class="o">*</span> <span class="n">scy</span><span class="o">.</span><span class="n">yv</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dspneumann"><a class="viewcode-back" href="../../reference.html#sofia.sph.dspneumann">[docs]</a><span class="k">def</span> <span class="nf">dspneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Derivative spherical Neumann (Bessel second kind) of order n</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">       Order</span>
+<span class="sd">    kr: int</span>
+<span class="sd">       Degree</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Yv&#39; : complex float</span>
+<span class="sd">       Derivative of spherical Neumann (Bessel second kind)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># spb2 = scy.sph_yn(n, kr)</span>
+    <span class="c1"># return spb2[1][-1]</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">spneumann</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spneumann</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="sphankel"><a class="viewcode-back" href="../../reference.html#sofia.sph.sphankel">[docs]</a><span class="k">def</span> <span class="nf">sphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spherical Hankel hn</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">       Order</span>
+<span class="sd">    kr: int</span>
+<span class="sd">       Degree</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    hn : complex float</span>
+<span class="sd">       Spherical Hankel function hn</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dsphankel"><a class="viewcode-back" href="../../reference.html#sofia.sph.dsphankel">[docs]</a><span class="k">def</span> <span class="nf">dsphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Derivative spherical Hankel function hn&#39;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">       Order</span>
+<span class="sd">    kr: int</span>
+<span class="sd">       Degree</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    hn&#39; : complex float</span>
+<span class="sd">       Derivative of spherical Hankel function hn&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">sphankel</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">-</span> <span class="n">sphankel</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">-</span> <span class="n">sphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">/</span> <span class="n">kr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="bn_npf"><a class="viewcode-back" href="../../reference.html#sofia.sph.bn_npf">[docs]</a><span class="k">def</span> <span class="nf">bn_npf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="n">ac</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Microphone scaling</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">       Order</span>
+
+<span class="sd">    krm : array of floats</span>
+<span class="sd">       Microphone radius</span>
+
+<span class="sd">    krs : array of floats</span>
+<span class="sd">       Sphere radius</span>
+
+<span class="sd">    ac : int {0, 1, 2, 3, 4}</span>
+<span class="sd">       Array Configuration:</span>
+<span class="sd">        - `0`:  Open Sphere with p Transducers (NO plc!) [Default]</span>
+<span class="sd">        - `1`:  Open Sphere with pGrad Transducers</span>
+<span class="sd">        - `2`:  Rigid Sphere with p Transducers</span>
+<span class="sd">        - `3`:  Rigid Sphere with pGrad Transducers</span>
+<span class="sd">        - `4`:  Dual Open Sphere with p Transducers</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    b : array of floats</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ac</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bn_openP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ac</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bn_openPG</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ac</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bn_rigidP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ac</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bn_rigidPG</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ac</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bn_dualOpenP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="bn_openP"><a class="viewcode-back" href="../../reference.html#sofia.sph.bn_openP">[docs]</a><span class="k">def</span> <span class="nf">bn_openP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="bn_openPG"><a class="viewcode-back" href="../../reference.html#sofia.sph.bn_openPG">[docs]</a><span class="k">def</span> <span class="nf">bn_openPG</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="bn_rigidP"><a class="viewcode-back" href="../../reference.html#sofia.sph.bn_rigidP">[docs]</a><span class="k">def</span> <span class="nf">bn_rigidP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span> <span class="o">/</span> <span class="n">dsphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">))</span> <span class="o">*</span> <span class="n">sphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="bn_rigidPG"><a class="viewcode-back" href="../../reference.html#sofia.sph.bn_rigidPG">[docs]</a><span class="k">def</span> <span class="nf">bn_rigidPG</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">):</span>
+    <span class="c1">#  Rerence for Filter design for rigid sphere with cardioid microphones:</span>
+    <span class="c1">#  P. Plessas, F. Zotter: Microphone arrays around rigid spheres for spatial recording and holography, DAGA 2010</span>
+    <span class="c1">#  krm: for mic radius, krs: for sphere radius</span>
+    <span class="c1">#  Implementation by Nils Peters, November 2011</span>
+    <span class="k">return</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dsphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span class="n">sphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span> <span class="o">/</span> <span class="n">dsphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="bn_dualOpenP"><a class="viewcode-back" href="../../reference.html#sofia.sph.bn_dualOpenP">[docs]</a><span class="k">def</span> <span class="nf">bn_dualOpenP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr1</span><span class="p">,</span> <span class="n">kr2</span><span class="p">):</span>
+    <span class="c1"># Reference: Rafaely et al,</span>
+    <span class="c1">#  High-resolution plane-wave decomposition in an auditorium using a dual-radius scanning spherical microphone array</span>
+    <span class="c1">#  JASA, 122(5), 2007</span>
+    <span class="c1"># kr1, kr2 are the kr values of the two different microphone spheres</span>
+    <span class="c1"># Implementation by Nils Peters, November 2011*/</span>
+    <span class="n">bn1</span> <span class="o">=</span> <span class="n">bn_openP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr1</span><span class="p">)</span>
+    <span class="n">bn2</span> <span class="o">=</span> <span class="n">bn_openP</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">bn1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bn2</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">bn1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">bn2</span></div>
+
+
+<div class="viewcode-block" id="bn"><a class="viewcode-back" href="../../reference.html#sofia.sph.bn">[docs]</a><span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="n">ac</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">bn_npf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="n">ac</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sph_harm"><a class="viewcode-back" href="../../reference.html#sofia.sph.sph_harm">[docs]</a><span class="k">def</span> <span class="nf">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Compute sphercial harmonics</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    m : (int)</span>
+<span class="sd">        Order of the spherical harmonic. abs(m) &lt;= n</span>
+
+<span class="sd">    n : (int)</span>
+<span class="sd">        Degree of the harmonic, sometimes called l. n &gt;= 0</span>
+
+<span class="sd">    az: (float)</span>
+<span class="sd">        Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.</span>
+
+<span class="sd">    el : (float)</span>
+<span class="sd">        Elevation (colatitudinal) coordinate [0, pi], also called Phi.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    y_mn : (complex float)</span>
+<span class="sd">        Complex spherical harmonic of order m and degree n,</span>
+<span class="sd">        sampled at theta = az, phi = el</span>
+
+<span class="sd">    Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5 * exp(i m phi) * P_n^m(cos(theta))</span>
+<span class="sd">    as per http://dlmf.nist.gov/14.30</span>
+<span class="sd">    Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv</span>
+<span class="sd">    scipy.special.lpmn calculates P(0...m 0...n) and its derivative but won&#39;t return +inf at high orders</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">84</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># built-in function fails for large orders</span>
+        <span class="n">mAbs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">el</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+                <span class="n">P</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">lpmn</span><span class="p">(</span><span class="n">mAbs</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="n">k</span><span class="p">]))[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">lpmn</span><span class="p">(</span><span class="n">mAbs</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">preFactor1</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">preFactor2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">mAbs</span><span class="p">)</span> <span class="o">/</span> <span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">mAbs</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">OverflowError</span><span class="p">:</span>  <span class="c1"># integer division for very large orders</span>
+            <span class="n">preFactor2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">mAbs</span><span class="p">)</span> <span class="o">//</span> <span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">mAbs</span><span class="p">))</span>
+
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">preFactor1</span> <span class="o">*</span> <span class="n">preFactor2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">az</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Y</span></div>
+
+
+<div class="viewcode-block" id="cart2sph"><a class="viewcode-back" href="../../reference.html#sofia.sph.cart2sph">[docs]</a><span class="k">def</span> <span class="nf">cart2sph</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.&#39;&#39;&#39;</span>
+    <span class="n">hxy</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">hxy</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">el</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">hxy</span><span class="p">)</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">r</span></div>
+
+
+<div class="viewcode-block" id="sph2cart"><a class="viewcode-back" href="../../reference.html#sofia.sph.sph2cart">[docs]</a><span class="k">def</span> <span class="nf">sph2cart</span><span class="p">(</span><span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Converts spherical coordinates az, el, r to cartesian coordinates x, y, z.&#39;&#39;&#39;</span>
+    <span class="n">rcos_theta</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rcos_theta</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rcos_theta</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span></div>
+
+
+<span class="c1"># DEBUG</span>
+<div class="viewcode-block" id="printSPH"><a class="viewcode-back" href="../../reference.html#sofia.sph.printSPH">[docs]</a><span class="k">def</span> <span class="nf">printSPH</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;spbessel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dspbessel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;spneumann:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dspneumann:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dspneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;sphankel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dsphankel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dsphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span></div>
+
+
+<div class="viewcode-block" id="printBNs"><a class="viewcode-back" href="../../reference.html#sofia.sph.printBNs">[docs]</a><span class="k">def</span> <span class="nf">printBNs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_openP:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_openPG:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigidP:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigidPG:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_dualopenP:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))))</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Christoph Hohnerlein (QU Lab).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
