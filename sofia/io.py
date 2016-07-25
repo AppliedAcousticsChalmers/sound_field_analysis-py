@@ -1,9 +1,6 @@
 '''Input-Output functions
-- readMiroStruct reads miro matlab files that have been exported as a struct:
-    load SOFiA_A1;
-    SOFiA_A1_struct = struct(SOFiA_A1);
-    save('SOFiA_A1_struct.mat', 'SOFiA_A1_struct');
 '''
+
 from pathlib import Path
 from scipy import io as sio
 from collections import namedtuple
@@ -11,6 +8,28 @@ import numpy as _np
 
 
 def readMiroStruct(matFile):
+    """ Reads miro matlab files.
+
+    Parameters
+    ----------
+    matFile : filepath
+       .miro file that has been exported as a struct like so
+       ::
+         load SOFiA_A1;
+         SOFiA_A1_struct = struct(SOFiA_A1);
+         save('SOFiA_A1_struct.mat', 'SOFiA_A1_struct');
+
+    Returns
+    -------
+    timeData : named tuple
+    `timeData tuple with following fields
+    ::
+       .impulseResponses [Channels X Samples]
+       .FS
+       .radius           Array radius
+       .averageAirTemp   Temperature in [C]
+       (.centerIR        [1 x Samples] )
+    """
     # Import matlab struct
     mat = sio.loadmat(matFile)
     filename = Path(matFile).stem
