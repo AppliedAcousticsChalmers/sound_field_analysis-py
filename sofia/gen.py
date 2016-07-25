@@ -10,7 +10,7 @@ Module contains various generator functions:
 `mf`
    Modal Radial Filter
 `swg`
-   Sampled Wave Generator, emulating discrete sampling.
+   Sampled Wave Generator, emulating discrete sampling
 `wgc`
    Wave Generator, returns spatial Fourier coefficients
 """
