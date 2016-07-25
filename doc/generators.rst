@@ -1,0 +1,4 @@
+Generators
+========
+
+.. automodule:: sofia.gen

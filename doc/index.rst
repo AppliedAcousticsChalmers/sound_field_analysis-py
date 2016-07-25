@@ -11,6 +11,11 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   usage
+   generators
+   processing
+   plotting
+   misc
 
 
 Indices and tables
