@@ -15,6 +15,9 @@ Processing functions:
    Time Domain Reconstruction
 
 Not yet implemented:
+
+`bsa`
+   BEMA Spatial Anti-Aliasing
 `sfe`
    Sound field extrapolation
 `wdr`
@@ -27,6 +30,43 @@ from scipy.signal import hann, resample
 from .sph import sph_harm, besselj, besselh
 
 pi = _np.pi
+
+
+def bsa(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
+    '''B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED
+
+    Parameters
+    ----------
+    Pnm : array_like
+       Spatial Fourier coefficients
+    ctSig : array_like
+       Signal of the center microphone
+    dn : array_like
+       Radial filters for the current array configuration
+    transition : int
+       Highest stable bin, approx: transition = (NFFT/FS+1) * (N*c)/(2*pi*r)
+    avgBandwidth : int
+       Averaging Bandwidth in oct
+    fade : bool, optional
+       Fade over if True, else hard cut {false} [Default: True]
+
+    Returns
+    -------
+    Pnm : array_like
+       Alias-free spatial Fourier coefficients
+
+    Notes
+    -----
+    This was presented at the 2012 AES convention, see [1]_.
+
+    References
+    ----------
+    .. [1] B. Bernschütz, "Bandwidth Extension for Microphone Arrays",
+       AES Convention 2012, Convention Paper 8751, 2012. http://www.aes.org/e-lib/browse.cfm?elib=16493
+    '''
+
+    print('!Warning, BSA is not yet implemented. Continuing with initial coefficients!')
+    return Pnm
 
 
 def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
