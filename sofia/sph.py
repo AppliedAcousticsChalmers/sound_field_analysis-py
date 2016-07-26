@@ -30,7 +30,7 @@ def besselj(n, z):
 
     Returns
     -------
-    H : array_like
+    J : array_like
        Values of Bessel function of order n at position z
     """
     return scy.jn(n, z)
