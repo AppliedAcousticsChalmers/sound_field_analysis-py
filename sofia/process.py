@@ -9,6 +9,8 @@ Processing functions:
    Plane Wave Decomposition
 `rfi`
    Radial filter Improvement
+`sfe`
+   Sound field extrapolation
 `stc`
    Fast Spatial Fourier Transform
 `tdt`
@@ -18,7 +20,7 @@ Processing functions:
 
 import numpy as _np
 from scipy.signal import hann, resample
-from .sph import sph_harm
+from .sph import sph_harm, besselj, besselh
 
 pi = _np.pi
 
@@ -320,6 +322,54 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
               > Do not use R/F/I if NFFT/max(kr) < 15
     '''
     return dn
+
+
+def sfe(Pnm_kra, kra, krb, problem='interior'):
+    ''' S/F/E Sound Field Extrapolation. CURRENTLY WIP
+    Parameters
+    ----------
+    Pnm_kra : array of floats
+       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)
+    kra, krb : array of floats
+       k * ra/rb vector
+    problem : string{'interior', 'exterior'}
+       Select between interior and exterior problem [Default: interior]
+    '''
+
+    if kra.shape[1] != Pnm_kra.shape[1] or kra.shape[1] != krb.shape[1]:
+        raise ValueError('FFTData: Complex Input Data expected.')
+
+    FCoeff = Pnm_kra.shape[0]
+    N = int(_np.floor(_np.sqrt(FCoeff) - 1))
+
+    nvector = _np.zeros(FCoeff)
+    IDX = 1
+
+    for n in range(0, N + 1):
+        for m in range(-n, n + 1):
+            nvector[IDX] = n
+            IDX += 1
+
+    nvector = _np.tile(nvector, (1, Pnm_kra.shape[1]))
+    kra = _np.tile(kra, (FCoeff, 1))
+    krb = _np.tile(krb, (FCoeff, 1))
+
+    if problem == 'interior':
+        jn_kra = _np.sqrt(pi / (2 * kra)) * besselj(n + 5, kra)
+        jn_krb = _np.sqrt(pi / (2 * krb)) * besselj(n + 5, krb)
+        exp = jn_krb / jn_kra
+
+        if _np.any(_np.abs(exp) > 1e2):  # 40dB
+            print('WARNING: Extrapolation might be unstable for one or more frequencies/orders!')
+
+    elif problem == 'exterior':
+        hn_kra = _np.sqrt(pi / (2 * kra)) . spc.hankel1(nvector + 0.5, 1, kra)
+        hn_krb = _np.sqrt(pi / (2 * krb)) . spc.hankel1(nvector + 0.5, 1, krb)
+        exp = hn_krb / hn_kra
+    else:
+        raise ValueError('Problem selector ' + problem + ' not recognized. Please either choose "interior" [Default] or "exterior".')
+
+    return Pnm_kra * exp.T
 
 
 def stc(N, fftData, grid):
