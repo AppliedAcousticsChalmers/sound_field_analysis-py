@@ -407,8 +407,8 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
             print('WARNING: Extrapolation might be unstable for one or more frequencies/orders!')
 
     elif problem == 'exterior':
-        hn_kra = _np.sqrt(pi / (2 * kra)) . spc.hankel1(nvector + 0.5, 1, kra)
-        hn_krb = _np.sqrt(pi / (2 * krb)) . spc.hankel1(nvector + 0.5, 1, krb)
+        hn_kra = _np.sqrt(pi / (2 * kra)) . besselh(nvector + 0.5, 1, kra)
+        hn_krb = _np.sqrt(pi / (2 * krb)) . besselh(nvector + 0.5, 1, krb)
         exp = hn_krb / hn_kra
     else:
         raise ValueError('Problem selector ' + problem + ' not recognized. Please either choose "interior" [Default] or "exterior".')
