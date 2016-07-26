@@ -9,12 +9,16 @@ Processing functions:
    Plane Wave Decomposition
 `rfi`
    Radial filter Improvement
-`sfe`
-   Sound field extrapolation
 `stc`
    Fast Spatial Fourier Transform
 `tdt`
    Time Domain Reconstruction
+
+Not yet implemented:
+`sfe`
+   Sound field extrapolation
+`wdr`
+   Wigner-D Rotation
 
 """
 
@@ -478,3 +482,23 @@ def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
         y = resample(y, _np.round(y.shape[1] / resampleFactor), axis=1)
 
     return y
+
+
+def wdr(Pnm, xAngle, yAngle, zAngle):
+    """W/D/R Wigner-D Rotation - NOT YET IMPLEMENTED
+
+    Parameters
+    ----------
+    Pnm : array_like
+       Spatial Fourier coefficients
+    xAngle, yAngle, zAngle : float
+       Rotation angle around the x/y/z-Axis
+
+    Returns
+    -------
+    PnmRot: array_like
+       Rotated spatial Fourier coefficients
+    """
+    print('!WARNING. Wigner-D Rotation is not yet implemented. Continuing with un-rotated coefficients!')
+
+    return Pnm
