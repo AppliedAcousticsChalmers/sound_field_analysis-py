@@ -467,6 +467,8 @@ Configuration: rs = rm and only one kr-vector is returned!
 <dd>Plane Wave Decomposition</dd>
 <dt><cite>rfi</cite></dt>
 <dd>Radial filter Improvement</dd>
+<dt><cite>sfe</cite></dt>
+<dd>Sound field extrapolation</dd>
 <dt><cite>stc</cite></dt>
 <dd>Fast Spatial Fourier Transform</dd>
 <dt><cite>tdt</cite></dt>
@@ -638,6 +640,18 @@ their spectra and impulse responses.
 &gt; Be very carefull if NFFT/max(kr) &lt; 25
 &gt; Do not use R/F/I if NFFT/max(kr) &lt; 15</dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.process.sfe">
+<code class="descclassname">sofia.process.</code><code class="descname">sfe</code><span class="sig-paren">(</span><em>Pnm_kra</em>, <em>kra</em>, <em>krb</em>, <em>problem='interior'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#sfe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.sfe" title="Permalink to this definition">¶</a></dt>
+<dd><p>S/F/E Sound Field Extrapolation. CURRENTLY WIP
+:param Pnm_kra: Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)
+:type Pnm_kra: array of floats
+:param kra, krb: k * ra/rb vector
+:type kra, krb: array of floats
+:param problem: Select between interior and exterior problem [Default: interior]
+:type problem: string{&#8216;interior&#8217;, &#8216;exterior&#8217;}</p>
 </dd></dl>
 
 <dl class="function">
@@ -818,6 +832,46 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 <dd>Convert cartesion to spherical coordinates and vice versa</dd>
 </dl>
 <dl class="function">
+<dt id="sofia.sph.besselh">
+<code class="descclassname">sofia.sph.</code><code class="descname">besselh</code><span class="sig-paren">(</span><em>n</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#besselh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.besselh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bessel function of third kind (Hankel function). Wraps scipy.special.hankel1(n, z)
+:param n: Order (float)
+:type n: array_like
+:param z: Argument (float or complex)
+:type z: array_like</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>H</strong> &#8211; Values of Hankel function of order n at position z</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array_like</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.sph.besselj">
+<code class="descclassname">sofia.sph.</code><code class="descname">besselj</code><span class="sig-paren">(</span><em>n</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#besselj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.besselj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bessel function of first kind. Wraps scipy.special.jn(n, z)
+:param n: Order (float)
+:type n: array_like
+:param z: Argument (float or complex)
+:type z: array_like</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>H</strong> &#8211; Values of Bessel function of order n at position z</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array_like</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="sofia.sph.bn">
 <code class="descclassname">sofia.sph.</code><code class="descname">bn</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em>, <em>ac</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -961,16 +1015,6 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </tbody>
 </table>
 </dd></dl>
-
-<dl class="function">
-<dt id="sofia.sph.printBNs">
-<code class="descclassname">sofia.sph.</code><code class="descname">printBNs</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#printBNs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.printBNs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="sofia.sph.printSPH">
-<code class="descclassname">sofia.sph.</code><code class="descname">printSPH</code><span class="sig-paren">(</span><em>n</em>, <em>k</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#printSPH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.printSPH" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="function">
 <dt id="sofia.sph.spbessel">

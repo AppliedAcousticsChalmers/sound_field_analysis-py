@@ -152,6 +152,40 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">factorial</span> <span class="k">as</span> <span class="n">fact</span>
 
 
+<div class="viewcode-block" id="besselj"><a class="viewcode-back" href="../../reference.html#sofia.sph.besselj">[docs]</a><span class="k">def</span> <span class="nf">besselj</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Bessel function of first kind. Wraps scipy.special.jn(n, z)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : array_like</span>
+<span class="sd">       Order (float)</span>
+<span class="sd">    z: array_like</span>
+<span class="sd">       Argument (float or complex)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    H : array_like</span>
+<span class="sd">       Values of Bessel function of order n at position z</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">jn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="besselh"><a class="viewcode-back" href="../../reference.html#sofia.sph.besselh">[docs]</a><span class="k">def</span> <span class="nf">besselh</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Bessel function of third kind (Hankel function). Wraps scipy.special.hankel1(n, z)</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : array_like</span>
+<span class="sd">       Order (float)</span>
+<span class="sd">    z: array_like</span>
+<span class="sd">       Argument (float or complex)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    H : array_like</span>
+<span class="sd">       Values of Hankel function of order n at position z</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">hankel1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="spbessel"><a class="viewcode-back" href="../../reference.html#sofia.sph.spbessel">[docs]</a><span class="k">def</span> <span class="nf">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Spherical Bessel function</span>
 
@@ -415,21 +449,21 @@
 
 
 <span class="c1"># DEBUG</span>
-<div class="viewcode-block" id="printSPH"><a class="viewcode-back" href="../../reference.html#sofia.sph.printSPH">[docs]</a><span class="k">def</span> <span class="nf">printSPH</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_printSPH</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;spbessel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dspbessel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;spneumann:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dspneumann:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dspneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;sphankel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dsphankel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dsphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dsphankel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dsphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
 
 
-<div class="viewcode-block" id="printBNs"><a class="viewcode-back" href="../../reference.html#sofia.sph.printBNs">[docs]</a><span class="k">def</span> <span class="nf">printBNs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_printBNs</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_openP:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_openPG:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigidP:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigidPG:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_dualopenP:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))))</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_dualopenP:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))))</span>
 </pre></div>
 
            </div>
