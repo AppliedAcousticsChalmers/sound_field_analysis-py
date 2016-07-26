@@ -148,6 +148,9 @@
 <span class="sd">   Time Domain Reconstruction</span>
 
 <span class="sd">Not yet implemented:</span>
+
+<span class="sd">`bsa`</span>
+<span class="sd">   BEMA Spatial Anti-Aliasing</span>
 <span class="sd">`sfe`</span>
 <span class="sd">   Sound field extrapolation</span>
 <span class="sd">`wdr`</span>
@@ -160,6 +163,43 @@
 <span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">sph_harm</span><span class="p">,</span> <span class="n">besselj</span><span class="p">,</span> <span class="n">besselh</span>
 
 <span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+
+
+<div class="viewcode-block" id="bsa"><a class="viewcode-back" href="../../reference.html#sofia.process.bsa">[docs]</a><span class="k">def</span> <span class="nf">bsa</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">ctSig</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">avgBandwidth</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Pnm : array_like</span>
+<span class="sd">       Spatial Fourier coefficients</span>
+<span class="sd">    ctSig : array_like</span>
+<span class="sd">       Signal of the center microphone</span>
+<span class="sd">    dn : array_like</span>
+<span class="sd">       Radial filters for the current array configuration</span>
+<span class="sd">    transition : int</span>
+<span class="sd">       Highest stable bin, approx: transition = (NFFT/FS+1) * (N*c)/(2*pi*r)</span>
+<span class="sd">    avgBandwidth : int</span>
+<span class="sd">       Averaging Bandwidth in oct</span>
+<span class="sd">    fade : bool, optional</span>
+<span class="sd">       Fade over if True, else hard cut {false} [Default: True]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Pnm : array_like</span>
+<span class="sd">       Alias-free spatial Fourier coefficients</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This was presented at the 2012 AES convention, see [1]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] B. Bernschütz, &quot;Bandwidth Extension for Microphone Arrays&quot;,</span>
+<span class="sd">       AES Convention 2012, Convention Paper 8751, 2012. http://www.aes.org/e-lib/browse.cfm?elib=16493</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!Warning, BSA is not yet implemented. Continuing with initial coefficients!&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Pnm</span></div>
 
 
 <div class="viewcode-block" id="fdt"><a class="viewcode-back" href="../../reference.html#sofia.process.fdt">[docs]</a><span class="k">def</span> <span class="nf">fdt</span><span class="p">(</span><span class="n">timeData</span><span class="p">,</span> <span class="n">FFToversize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstSample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lastSample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -500,8 +540,8 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: Extrapolation might be unstable for one or more frequencies/orders!&#39;</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">problem</span> <span class="o">==</span> <span class="s1">&#39;exterior&#39;</span><span class="p">:</span>
-        <span class="n">hn_kra</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kra</span><span class="p">))</span> <span class="o">.</span> <span class="n">spc</span><span class="o">.</span><span class="n">hankel1</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kra</span><span class="p">)</span>
-        <span class="n">hn_krb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">krb</span><span class="p">))</span> <span class="o">.</span> <span class="n">spc</span><span class="o">.</span><span class="n">hankel1</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">krb</span><span class="p">)</span>
+        <span class="n">hn_kra</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kra</span><span class="p">))</span> <span class="o">.</span> <span class="n">besselh</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kra</span><span class="p">)</span>
+        <span class="n">hn_krb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">krb</span><span class="p">))</span> <span class="o">.</span> <span class="n">besselh</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">krb</span><span class="p">)</span>
         <span class="n">exp</span> <span class="o">=</span> <span class="n">hn_krb</span> <span class="o">/</span> <span class="n">hn_kra</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Problem selector &#39;</span> <span class="o">+</span> <span class="n">problem</span> <span class="o">+</span> <span class="s1">&#39; not recognized. Please either choose &quot;interior&quot; [Default] or &quot;exterior&quot;.&#39;</span><span class="p">)</span>

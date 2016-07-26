@@ -472,14 +472,53 @@ Configuration: rs = rm and only one kr-vector is returned!
 <dt><cite>tdt</cite></dt>
 <dd>Time Domain Reconstruction</dd>
 </dl>
-<p>Not yet implemented:
-<cite>sfe</cite></p>
-<blockquote>
-<div>Sound field extrapolation</div></blockquote>
+<p>Not yet implemented:</p>
 <dl class="docutils">
+<dt><cite>bsa</cite></dt>
+<dd>BEMA Spatial Anti-Aliasing</dd>
+<dt><cite>sfe</cite></dt>
+<dd>Sound field extrapolation</dd>
 <dt><cite>wdr</cite></dt>
 <dd>Wigner-D Rotation</dd>
 </dl>
+<dl class="function">
+<dt id="sofia.process.bsa">
+<code class="descclassname">sofia.process.</code><code class="descname">bsa</code><span class="sig-paren">(</span><em>Pnm</em>, <em>ctSig</em>, <em>dn</em>, <em>transition</em>, <em>avgBandwidth</em>, <em>fade=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#bsa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.bsa" title="Permalink to this definition">¶</a></dt>
+<dd><p>B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Pnm</strong> (<em>array_like</em>) &#8211; Spatial Fourier coefficients</li>
+<li><strong>ctSig</strong> (<em>array_like</em>) &#8211; Signal of the center microphone</li>
+<li><strong>dn</strong> (<em>array_like</em>) &#8211; Radial filters for the current array configuration</li>
+<li><strong>transition</strong> (<em>int</em>) &#8211; Highest stable bin, approx: transition = (NFFT/FS+1) * (N*c)/(2*pi*r)</li>
+<li><strong>avgBandwidth</strong> (<em>int</em>) &#8211; Averaging Bandwidth in oct</li>
+<li><strong>fade</strong> (<em>bool, optional</em>) &#8211; Fade over if True, else hard cut {false} [Default: True]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Pnm</strong> &#8211; Alias-free spatial Fourier coefficients</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array_like</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This was presented at the 2012 AES convention, see <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>B. Bernschütz, &#8220;Bandwidth Extension for Microphone Arrays&#8221;,
+AES Convention 2012, Convention Paper 8751, 2012. <a class="reference external" href="http://www.aes.org/e-lib/browse.cfm?elib=16493">http://www.aes.org/e-lib/browse.cfm?elib=16493</a></td></tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="function">
 <dt id="sofia.process.fdt">
 <code class="descclassname">sofia.process.</code><code class="descname">fdt</code><span class="sig-paren">(</span><em>timeData</em>, <em>FFToversize=1</em>, <em>firstSample=0</em>, <em>lastSample=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#fdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.fdt" title="Permalink to this definition">¶</a></dt>
