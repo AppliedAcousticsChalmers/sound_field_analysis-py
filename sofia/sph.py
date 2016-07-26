@@ -316,7 +316,7 @@ def sph2cart(az, el, r):
 
 
 # DEBUG
-def printSPH(n, k):
+def _printSPH(n, k):
     print(' '.join(('spbessel:', str(spbessel(n, k)))))
     print(' '.join(('dspbessel:', str(dspbessel(n, k)))))
     print(' '.join(('spneumann:', str(spneumann(n, k)))))
@@ -325,7 +325,7 @@ def printSPH(n, k):
     print(' '.join(('dsphankel:', str(dsphankel(n, k)))))
 
 
-def printBNs(n, krm, krs):
+def _printBNs(n, krm, krs):
     print(' '.join(('bn_openP:', str(bn(n, krm, krs, 0)))))
     print(' '.join(('bn_openPG:', str(bn(n, krm, krs, 1)))))
     print(' '.join(('bn_rigidP:', str(bn(n, krm, krs, 2)))))
