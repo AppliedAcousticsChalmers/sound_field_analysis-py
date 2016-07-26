@@ -142,12 +142,16 @@
 <span class="sd">   Plane Wave Decomposition</span>
 <span class="sd">`rfi`</span>
 <span class="sd">   Radial filter Improvement</span>
-<span class="sd">`sfe`</span>
-<span class="sd">   Sound field extrapolation</span>
 <span class="sd">`stc`</span>
 <span class="sd">   Fast Spatial Fourier Transform</span>
 <span class="sd">`tdt`</span>
 <span class="sd">   Time Domain Reconstruction</span>
+
+<span class="sd">Not yet implemented:</span>
+<span class="sd">`sfe`</span>
+<span class="sd">   Sound field extrapolation</span>
+<span class="sd">`wdr`</span>
+<span class="sd">   Wigner-D Rotation</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -611,6 +615,26 @@
         <span class="n">y</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">resampleFactor</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="wdr"><a class="viewcode-back" href="../../reference.html#sofia.process.wdr">[docs]</a><span class="k">def</span> <span class="nf">wdr</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">xAngle</span><span class="p">,</span> <span class="n">yAngle</span><span class="p">,</span> <span class="n">zAngle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;W/D/R Wigner-D Rotation - NOT YET IMPLEMENTED</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Pnm : array_like</span>
+<span class="sd">       Spatial Fourier coefficients</span>
+<span class="sd">    xAngle, yAngle, zAngle : float</span>
+<span class="sd">       Rotation angle around the x/y/z-Axis</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    PnmRot: array_like</span>
+<span class="sd">       Rotated spatial Fourier coefficients</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!WARNING. Wigner-D Rotation is not yet implemented. Continuing with un-rotated coefficients!&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Pnm</span></div>
 </pre></div>
 
            </div>
