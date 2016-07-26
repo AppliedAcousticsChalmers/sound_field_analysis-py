@@ -19,6 +19,40 @@ from scipy import special as scy
 from math import factorial as fact
 
 
+def besselj(n, z):
+    """Bessel function of first kind. Wraps scipy.special.jn(n, z)
+    Parameters
+    ----------
+    n : array_like
+       Order (float)
+    z: array_like
+       Argument (float or complex)
+
+    Returns
+    -------
+    H : array_like
+       Values of Bessel function of order n at position z
+    """
+    return scy.jn(n, z)
+
+
+def besselh(n, z):
+    """Bessel function of third kind (Hankel function). Wraps scipy.special.hankel1(n, z)
+    Parameters
+    ----------
+    n : array_like
+       Order (float)
+    z: array_like
+       Argument (float or complex)
+
+    Returns
+    -------
+    H : array_like
+       Values of Hankel function of order n at position z
+    """
+    return scy.hankel1(n, z)
+
+
 def spbessel(n, kr):
     """Spherical Bessel function
 
