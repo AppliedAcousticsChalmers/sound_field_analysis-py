@@ -3,9 +3,23 @@
 - visualize3D: Draw matrix data in 3D
 """
 import numpy as _np
-from vispy import scene, color
+from collections import namedtuple
+
+from plotly.offline import plot as pltoff
+import plotly.graph_objs as go
+
 from .process import pdc
 from .sph import sph2cart
+
+pi = _np.pi
+
+
+def show(trace, colorize=False):
+    data = [trace]
+    if colorize:
+        data.colorscale = 'Viridis'
+        # data.surfacecolor = rs
+    pltoff(data)
 
 
 def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
@@ -47,18 +61,39 @@ def normalizeMTX(vizMTX):
     return vizMTX / vizMTX.max()
 
 
-def genShape(vizMTX, offset=0, scale=1.0, colorize=False):
+def genSphCoords():
+    """ Generates cartesian (x,y,z) and spherical (theta, phi) coordinates of a sphere
+    Returns
+    -------
+    coords : named tuple
+        holds cartesian (x,y,z) and spherical (theta, phi) coordinates
+    """
+    coords = namedtuple('coords', ['x', 'y', 'z', 'theta', 'phi'])
+    coords.theta = _np.linspace(0, 2 * pi, 360)
+    coords.phi = _np.linspace(0, pi, 181)
+    coords.x = _np.outer(_np.cos(coords.theta), _np.sin(coords.phi))
+    coords.y = _np.outer(_np.sin(coords.theta), _np.sin(coords.phi))
+    coords.z = _np.outer(_np.ones(360), _np.cos(coords.phi))
+    return coords
+
+
+def genShape(vizMTX, colorize=False):
+    vizMTX = _np.abs(vizMTX)
     thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
-    rs = offset + scale * vizMTX.reshape((181, -1)).T
+    rs = vizMTX.reshape((181, -1)).T
+    rs = rs / rs.max()
     xs = rs * _np.sin(thetas) * _np.cos(phis)
     ys = rs * _np.sin(thetas) * _np.sin(phis)
     zs = rs * _np.cos(thetas)
-    if colorize:
-        cm = color.get_colormap('viridis')
-        colors = cm[vizMTX]
-        return scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
-    else:
-        return scene.visuals.GridMesh(xs, ys, zs)
+
+    trace = go.Surface(
+        x=xs,
+        y=ys,
+        z=zs,
+        showscale=False,
+        hoverinfo='none'
+    )
+    return trace
 
 
 def genSphere(vizMTX, colorize=False):
