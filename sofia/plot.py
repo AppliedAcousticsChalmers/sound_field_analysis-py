@@ -1,6 +1,12 @@
 """Plotting functions
-- makeMTX: Generate 3D-matrix data
-- visualize3D: Draw matrix data in 3D
+Helps visualizing spherical microphone data.
+
+Generally, you probably want to first extract the amplitude information in spherical coordinates:
+>> plot.makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1)
+And then visualize that:
+>> visualize3D(vizMTX, style='shape')
+
+Other valid styles are 'sphere' and 'flat'.
 """
 import numpy as _np
 from collections import namedtuple
@@ -9,7 +15,6 @@ from plotly.offline import plot as pltoff
 import plotly.graph_objs as go
 
 from .process import pdc
-from .sph import sph2cart
 
 pi = _np.pi
 
@@ -136,6 +141,8 @@ def genShape(vizMTX):
     -------
     T : plotly_trace
        Trace of desired shape
+
+    TODO: fix camera position
     """
     V = sph2cartMTX(vizMTX)
 
@@ -249,34 +256,8 @@ def visualize3D(vizMTX, style='shape', colorize=True):
     normalize : Bool, optional
        Toggle normalization of data to [-1 ... 1] [Default: True]
 
-    # TODO: Colorization
+    # TODO: Colorization, contour plot
     -----
     """
 
     showTrace(genVisual(vizMTX, style=style, normalize=True))
-
-
-def plotGrid(rows, cols, vizMTX, bgcolor='white', style='shape', colorize=False, normalize=True):
-    canvas = scene.SceneCanvas(keys='interactive', bgcolor=bgcolor)
-
-    vizMTX = _np.atleast_3d(vizMTX)
-    N = vizMTX.shape[0]
-    if rows * cols != N:
-        raise ValueError('rows (' + str(rows) + ') * cols (' + str(cols) + ') must be number of objects (' + str(N) + ').')
-
-    # Top-level grid that holds subfigures
-    grid = canvas.central_widget.add_grid()
-
-    # Add ViewBoxes to the grid
-    for row in range(0, rows):
-        for col in range(0, cols):
-            temp = grid.add_view(row=row, col=col, border_color=(0.5, 0.5, 0.5, 1), camera='turntable')
-            temp.add(genVisual(vizMTX[col + cols * row], style=style, colorize=colorize, normalize=normalize))
-
-    canvas.show()
-    return canvas
-
-
-def generateAngles():
-    """Returns a [65160 x 1] grid of all radiant angles in 1 deg steps"""
-    return _np.mgrid[0:360, 0:181].T.reshape((-1, 2)) * _np.pi / 180
