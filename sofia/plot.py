@@ -30,7 +30,7 @@ def ipython_info():
     return ip
 
 
-def showTrace(trace, colorize=True):
+def showTrace(trace, layout=None, colorize=True):
     """ Wrapper around plotlys offline .plot() function
 
     Parameters
@@ -40,15 +40,23 @@ def showTrace(trace, colorize=True):
     colorize : Bool, optional
        Toggles bw / colored plot [Default: True]
     """
-    data = [trace]
+    if not layout:
+        layout = go.Layout()
+
+    fig = go.Figure(
+        data=[trace],
+        layout=layout
+    )
 
     # if colorize:
     #    data[0].autocolorscale = False
     #    data[0].surfacecolor = [0, 0.5, 1]
     if ipython_info() == 'notebook':
-        iplot(data)
+        iplot(fig)
     else:
-        pltoff(data)
+        pltoff(fig)
+
+    return fig
 
 
 def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
@@ -258,7 +266,7 @@ def genVisual(vizMTX, style='shape', normalize=True):
         raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
 
 
-def visualize3D(vizMTX, style='shape', colorize=True):
+def visualize3D(vizMTX, style='shape', layout=None, colorize=True):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
 
     Parameters
@@ -274,4 +282,4 @@ def visualize3D(vizMTX, style='shape', colorize=True):
     -----
     """
 
-    showTrace(genVisual(vizMTX, style=style, normalize=True))
+    showTrace(genVisual(vizMTX, style=style, normalize=True), layout=layout)
