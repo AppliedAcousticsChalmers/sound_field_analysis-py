@@ -66,21 +66,21 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
 
 
-def normalizeMTX(vizMTX):
+def normalizeMTX(MTX):
     """ Normalizes a matrix to [-1 ... 1]
 
     Parameters
     ----------
-    vizMTX : array_like
+    MTX : array_like
        Matrix to be normalized
 
     Returns
     -------
-    vizMTX : array_liked
+    MTX : array_liked
        Normalized Matrix
     """
-    vizMTX -= vizMTX.min()
-    return vizMTX / vizMTX.max()
+    MTX -= MTX.min()
+    return MTX / MTX.max()
 
 
 def genSphCoords():
