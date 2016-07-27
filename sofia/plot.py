@@ -139,19 +139,21 @@ def genShape(vizMTX):
     return trace
 
 
-def genSphere(vizMTX, colorize=False):
-    #  visObj = scene.visuals.Sphere(radius=1, rows=362, cols=91, method='latitude', face_colors=colors)
-    thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
-    rs = 1
-    xs = rs * _np.sin(thetas) * _np.cos(phis)
-    ys = rs * _np.sin(thetas) * _np.sin(phis)
-    zs = rs * _np.cos(thetas)
-    if colorize:
-        cm = color.get_colormap('viridis')
-        colors = cm[vizMTX]
-        return scene.visuals.GridMesh(xs, ys, zs, colors=colors.rgba.reshape((181, -1, 4)))
-    else:
-        return scene.visuals.GridMesh(xs, ys, zs)
+def genSphere(vizMTX):
+
+    coords = genSphCoords()
+
+    trace = go.Surface(
+        x=coords.x,
+        y=coords.y,
+        z=coords.z,
+        surfacecolor=_np.abs(vizMTX.reshape((181, -1))).T,
+        colorscale='Viridis',
+        showscale=False,
+        hoverinfo='none'
+    )
+
+    return trace
 
 
 def genScatter(vizMTX, colorize=False):
