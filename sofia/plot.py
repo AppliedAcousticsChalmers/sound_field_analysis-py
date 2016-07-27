@@ -14,7 +14,7 @@ from .sph import sph2cart
 pi = _np.pi
 
 
-def show(trace, colorize=True):
+def showTrace(trace, colorize=True):
     """ Wrapper around plotlys offline .plot() function
 
     Parameters
@@ -253,7 +253,7 @@ def visualize3D(vizMTX, style='shape', colorize=True):
     -----
     """
 
-    show(genVisual(vizMTX, style=style, normalize=True))
+    showTrace(genVisual(vizMTX, style=style, normalize=True))
 
 
 def plotGrid(rows, cols, vizMTX, bgcolor='white', style='shape', colorize=False, normalize=True):
