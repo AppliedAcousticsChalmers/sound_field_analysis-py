@@ -12,11 +12,22 @@ import numpy as _np
 from collections import namedtuple
 
 from plotly.offline import plot as pltoff
+from plotly.offline import iplot
 import plotly.graph_objs as go
 
 from .process import pdc
+import sys
 
 pi = _np.pi
+
+
+def ipython_info():
+    ip = False
+    if 'ipykernel' in sys.modules:
+        ip = 'notebook'
+    elif 'IPython' in sys.modules:
+        ip = 'terminal'
+    return ip
 
 
 def showTrace(trace, colorize=True):
@@ -34,7 +45,10 @@ def showTrace(trace, colorize=True):
     # if colorize:
     #    data[0].autocolorscale = False
     #    data[0].surfacecolor = [0, 0.5, 1]
-    pltoff(data)
+    if ipython_info() == 'notebook':
+        iplot(data)
+    else:
+        pltoff(data)
 
 
 def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
