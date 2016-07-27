@@ -125,6 +125,18 @@ def sph2cartMTX(vizMTX):
 
 
 def genShape(vizMTX):
+    """ Returns trace of shape with intensity as radial extension
+
+    Parameters
+    ----------
+    vizMTX : array_like
+       Matrix holding spherical data for visualization
+
+    Returns
+    -------
+    T : plotly_trace
+       Trace of desired shape
+    """
     V = sph2cartMTX(vizMTX)
 
     trace = go.Surface(
@@ -140,7 +152,18 @@ def genShape(vizMTX):
 
 
 def genSphere(vizMTX):
+    """ Returns trace of sphere with intensity as surface color
 
+    Parameters
+    ----------
+    vizMTX : array_like
+       Matrix holding spherical data for visualization
+
+    Returns
+    -------
+    T : plotly_trace
+       Trace of desired sphere
+    """
     coords = genSphCoords()
 
     trace = go.Surface(
@@ -152,7 +175,6 @@ def genSphere(vizMTX):
         showscale=False,
         hoverinfo='none'
     )
-
     return trace
 
 
