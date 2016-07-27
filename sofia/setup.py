@@ -12,7 +12,6 @@ setup(
     install_requires=[
         'Numpy',
         'Scipy',
-        'matplotlib',
-        'Vispy'
+        'plotly'
     ],
 )

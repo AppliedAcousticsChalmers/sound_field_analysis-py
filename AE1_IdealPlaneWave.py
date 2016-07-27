@@ -27,10 +27,10 @@ dn, _ = gen.mf(Nrf, kr, ac)
 vizMTX = plot.makeMTX(Pnm, dn, Nviz, krViz)
 
 # Visualize
-canvas = plot.visualize3D(vizMTX, style='shape', colorize=False)
-input("3D visualization opened in new window.\nUse mouse to look around, scroll to zoom and shift + drag do move around.\nPress any key in the console to exit.")
+layout = {'title': 'Ideal unity plane wave',
+          'height': 800,
+          'width': 800}
 
-# To export to png:
-# >> from vispy import io
-# >> img = canvas.render()
-# >> io.write_png("AE1_render.png", img)
+plot.visualize3D(vizMTX, style='shape', layout=layout)
+
+print("3D visualization opened in browser window, exiting.")
