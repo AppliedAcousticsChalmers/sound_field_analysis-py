@@ -156,25 +156,6 @@ def genSphere(vizMTX):
     return trace
 
 
-def genScatter(vizMTX, colorize=False):
-    vizMTX = vizMTX.reshape([-1, 1])
-    # Recreate angles
-    angles = _np.array(generateAngles())
-
-    sphCoords = _np.concatenate((angles, _np.atleast_2d(vizMTX)), axis=1)
-    xyzCoords = _np.array(sph2cart(*sphCoords.T))
-    scatterObj = scene.visuals.Markers()
-
-    if colorize:
-        cm = color.get_colormap('viridis')
-        colors = cm[_np.squeeze(vizMTX)]
-        scatterObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color=colors)
-    else:
-        scatterObj.set_data(xyzCoords.T, size=10, edge_color=None, face_color='black')
-
-    return scatterObj
-
-
 def genVisual(vizMTX, style='shape', colorize=False, offset=0, scale=1.0, normalize=True):
     if normalize:
         vizMTX = normalizeMTX(vizMTX)
