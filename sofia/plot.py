@@ -156,18 +156,35 @@ def genSphere(vizMTX):
     return trace
 
 
-def genVisual(vizMTX, style='shape', colorize=False, offset=0, scale=1.0, normalize=True):
+def genVisual(vizMTX, style='shape', normalize=True):
+    """ Returns desired trace after cleaning the data
+
+    Parameters
+    ----------
+    vizMTX : array_like
+       Matrix holding spherical data for visualization
+    style : string{'shape', 'sphere', 'flat'}, optional
+       Style of visualization. [Default: 'Shape']
+    normalize : Bool, optional
+       Toggle normalization of data to [-1 ... 1] [Default: True]
+
+    Returns
+    -------
+    T : plotly_trace
+       Trace of desired visualization
+    """
+    vizMTX = _np.abs(vizMTX)  # Can we be sure to only need the abs?
     if normalize:
         vizMTX = normalizeMTX(vizMTX)
 
     if style == 'shape':
-        return genShape(vizMTX, colorize=colorize, offset=offset, scale=scale)
+        return genShape(vizMTX)
     elif style == 'sphere':
-        return genSphere(vizMTX, colorize=colorize)
-    elif style == 'scatter':
-        return genScatter(vizMTX, colorize=colorize)
+        return genSphere(vizMTX)
+    elif style == 'flat':
+        return genSphere(vizMTX)
     else:
-        raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or scatter.')
+        raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
 
 
 def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **kargs):
