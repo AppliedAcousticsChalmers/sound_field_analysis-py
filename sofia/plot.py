@@ -79,19 +79,24 @@ def genSphCoords():
     return coords
 
 
-def genShape(vizMTX, colorize=False):
-    vizMTX = _np.abs(vizMTX)
-    thetas, phis = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
+def sph2cartMTX(vizMTX):
     rs = vizMTX.reshape((181, -1)).T
-    rs = rs / rs.max()
-    xs = rs * _np.sin(thetas) * _np.cos(phis)
-    ys = rs * _np.sin(thetas) * _np.sin(phis)
-    zs = rs * _np.cos(thetas)
+
+    coords = genSphCoords()
+    vizMTX = namedtuple('vizMTX', ['xs', 'ys', 'zs'])
+    vizMTX.xs = rs * _np.sin(coords.theta) * _np.cos(coords.phi)
+    vizMTX.ys = rs * _np.sin(coords.theta) * _np.sin(coords.phi)
+    vizMTX.zs = rs * _np.cos(coords.theta)
+    return vizMTX
+
+
+def genShape(vizMTX, colorize=False):
+    V = sph2cartMTX(vizMTX)
 
     trace = go.Surface(
-        x=xs,
-        y=ys,
-        z=zs,
+        x=_np.abs(V.xs),
+        y=_np.abs(V.ys),
+        z=_np.abs(V.zs),
         showscale=False,
         hoverinfo='none'
     )
