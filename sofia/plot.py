@@ -121,7 +121,7 @@ def sph2cartMTX(vizMTX):
     V.xs = rs * _np.sin(coords.theta) * _np.cos(coords.phi)
     V.ys = rs * _np.sin(coords.theta) * _np.sin(coords.phi)
     V.zs = rs * _np.cos(coords.theta)
-    return vizMTX
+    return V
 
 
 def genShape(vizMTX):
