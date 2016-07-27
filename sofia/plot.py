@@ -14,11 +14,12 @@ from .sph import sph2cart
 pi = _np.pi
 
 
-def show(trace, colorize=False):
+def show(trace, colorize=True):
     data = [trace]
-    if colorize:
-        data.colorscale = 'Viridis'
-        # data.surfacecolor = rs
+
+    # if colorize:
+    #    data[0].autocolorscale = False
+    #    data[0].surfacecolor = [0, 0.5, 1]
     pltoff(data)
 
 
@@ -90,13 +91,15 @@ def sph2cartMTX(vizMTX):
     return vizMTX
 
 
-def genShape(vizMTX, colorize=False):
+def genShape(vizMTX):
     V = sph2cartMTX(vizMTX)
 
     trace = go.Surface(
         x=_np.abs(V.xs),
         y=_np.abs(V.ys),
         z=_np.abs(V.zs),
+        surfacecolor=_np.abs(vizMTX.reshape((181, -1))).T,
+        colorscale='Viridis',
         showscale=False,
         hoverinfo='none'
     )
