@@ -69,11 +69,13 @@ def genSphCoords():
         holds cartesian (x,y,z) and spherical (theta, phi) coordinates
     """
     coords = namedtuple('coords', ['x', 'y', 'z', 'theta', 'phi'])
-    coords.theta = _np.linspace(0, 2 * pi, 360)
-    coords.phi = _np.linspace(0, pi, 181)
-    coords.x = _np.outer(_np.cos(coords.theta), _np.sin(coords.phi))
-    coords.y = _np.outer(_np.sin(coords.theta), _np.sin(coords.phi))
-    coords.z = _np.outer(_np.ones(360), _np.cos(coords.phi))
+    theta = _np.linspace(0, 2 * pi, 360)
+    phi = _np.linspace(0, pi, 181)
+    coords.x = _np.outer(_np.cos(theta), _np.sin(phi))
+    coords.y = _np.outer(_np.sin(theta), _np.sin(phi))
+    coords.z = _np.outer(_np.ones(360), _np.cos(phi))
+
+    coords.theta, coords.phi = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
     return coords
 
 
