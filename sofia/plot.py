@@ -178,6 +178,34 @@ def genSphere(vizMTX):
     return trace
 
 
+def genFlat(vizMTX):
+    """ Returns trace of flat surface with intensity as surface elevation and color
+
+    Parameters
+    ----------
+    vizMTX : array_like
+       Matrix holding spherical data for visualization
+
+    Returns
+    -------
+    T : plotly_trace
+       Trace of desired surface
+
+    TODO: Fix orientation and axis limits
+    """
+
+    trace = go.Surface(
+        x=_np.r_[0:360],
+        y=_np.r_[0:180],
+        z=_np.abs(vizMTX).T,
+        surfacecolor=_np.abs(vizMTX.reshape((181, -1))).T,
+        colorscale='Viridis',
+        showscale=False,
+        hoverinfo='none'
+    )
+    return trace
+
+
 def genVisual(vizMTX, style='shape', normalize=True):
     """ Returns desired trace after cleaning the data
 
@@ -204,7 +232,7 @@ def genVisual(vizMTX, style='shape', normalize=True):
     elif style == 'sphere':
         return genSphere(vizMTX)
     elif style == 'flat':
-        return genSphere(vizMTX)
+        return genFlat(vizMTX)
     else:
         raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
 
