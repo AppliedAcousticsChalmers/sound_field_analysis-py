@@ -237,47 +237,23 @@ def genVisual(vizMTX, style='shape', normalize=True):
         raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
 
 
-def visualize3D(vizMTX, style='sphere', colorize=True, offset=0., scale=1., **kargs):
+def visualize3D(vizMTX, style='shape', colorize=True):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
 
     Parameters
     ----------
-    vizMTX     SOFiA 3D-matrix-data [1[deg] steps]
-    style       'sphere',   surface colors indicate the intensity (default)
-                'flat',     surface colors indicate the intensity (TODO)
-                'scatter',  extension indicates the intensity
-                'shape',    extension indicates the intensity
-    offset      linear offset for shape (Default: 0)
-    scale       scaling factor for shape (Default: 1)
+    vizMTX : array_like
+       Matrix holding spherical data for visualization
+    style : string{'shape', 'sphere', 'flat'}, optional
+       Style of visualization. [Default: 'shape']
+    normalize : Bool, optional
+       Toggle normalization of data to [-1 ... 1] [Default: True]
 
-    Notes
+    # TODO: Colorization
     -----
-    TODO: Implement flat style, fix color position in sphere and shape, make colormap selectable, move grid generation into function
     """
 
-    # Prepare data: reshape to [65160 x 1], take abs, normalize
-    vizMTX = _np.abs(vizMTX.reshape((65160)))
-    vizMTX = normalizeMTX(vizMTX)
-
-    if style not in ('sphere', 'flat', 'shape', 'scatter'):
-        raise ValueError('Provided style "' + style + '" not available. Try sphere, flat, shape or scatter.')
-
-    # Create scene
-    canvas = scene.SceneCanvas(keys='interactive', bgcolor='white')
-
-    # Create view with camera on target
-    view = canvas.central_widget.add_view()
-    view.camera = 'turntable'
-    view.camera.set_range(x=[-0.1, 0.1])
-
-    # Create correct visual object from mtxData
-    visObj = genVisual(vizMTX, style=style, colorize=colorize, offset=offset, scale=scale)
-
-    # Add visual object and show canvas
-    view.add(visObj)
-    canvas.show()
-
-    return canvas
+    show(genVisual(vizMTX, style=style, normalize=True))
 
 
 def plotGrid(rows, cols, vizMTX, bgcolor='white', style='shape', colorize=False, normalize=True):
