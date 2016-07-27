@@ -15,6 +15,15 @@ pi = _np.pi
 
 
 def show(trace, colorize=True):
+    """ Wrapper around plotlys offline .plot() function
+
+    Parameters
+    ----------
+    trace : plotly_trace
+       Plotly generated trace to be displayed offline
+    colorize : Bool, optional
+       Toggles bw / colored plot [Default: True]
+    """
     data = [trace]
 
     # if colorize:
@@ -58,6 +67,18 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
 
 
 def normalizeMTX(vizMTX):
+    """ Normalizes a matrix to [-1 ... 1]
+
+    Parameters
+    ----------
+    vizMTX : array_like
+       Matrix to be normalized
+
+    Returns
+    -------
+    vizMTX : array_liked
+       Normalized Matrix
+    """
     vizMTX -= vizMTX.min()
     return vizMTX / vizMTX.max()
 
@@ -81,13 +102,25 @@ def genSphCoords():
 
 
 def sph2cartMTX(vizMTX):
+    """ Converts the spherical vizMTX data to named tuple contaibubg .xs/.ys/.zs
+
+    Parameters
+    ----------
+    vizMTX : array_like
+       [180 x 360] matrix that hold amplitude information over phi and theta
+
+    Returns
+    -------
+    V : named_tuple
+       Contains .xs, .ys, .zs cartesian coordinates
+    """
     rs = vizMTX.reshape((181, -1)).T
 
     coords = genSphCoords()
-    vizMTX = namedtuple('vizMTX', ['xs', 'ys', 'zs'])
-    vizMTX.xs = rs * _np.sin(coords.theta) * _np.cos(coords.phi)
-    vizMTX.ys = rs * _np.sin(coords.theta) * _np.sin(coords.phi)
-    vizMTX.zs = rs * _np.cos(coords.theta)
+    V = namedtuple('V', ['xs', 'ys', 'zs'])
+    V.xs = rs * _np.sin(coords.theta) * _np.cos(coords.phi)
+    V.ys = rs * _np.sin(coords.theta) * _np.sin(coords.phi)
+    V.zs = rs * _np.cos(coords.theta)
     return vizMTX
 
 
