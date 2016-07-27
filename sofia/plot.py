@@ -39,6 +39,11 @@ def showTrace(trace, layout=None, colorize=True):
        Plotly generated trace to be displayed offline
     colorize : Bool, optional
        Toggles bw / colored plot [Default: True]
+
+    Returns
+    -------
+    fig : plotly_fig_handle
+       JSON representation of generated figure
     """
     if not layout:
         layout = go.Layout()
