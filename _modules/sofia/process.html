@@ -132,7 +132,7 @@
             
   <h1>Source code for sofia.process</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Processing functions:</span>
+<span class="sd">Functions that act on the Spatial Fourier Coefficients</span>
 
 <span class="sd">`fdt`</span>
 <span class="sd">   Frequency to time transform</span>
@@ -155,6 +155,10 @@
 <span class="sd">   Sound field extrapolation</span>
 <span class="sd">`wdr`</span>
 <span class="sd">   Wigner-D Rotation</span>
+
+<span class="sd">TODO</span>
+<span class="sd">----</span>
+<span class="sd">Use more descriptive function names</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -188,8 +192,8 @@
 <span class="sd">    Pnm : array_like</span>
 <span class="sd">       Alias-free spatial Fourier coefficients</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    This was presented at the 2012 AES convention, see [1]_.</span>
 
 <span class="sd">    References</span>
@@ -216,14 +220,7 @@
 <span class="sd">          .averageAirTemp   Temperature in [C]</span>
 <span class="sd">          (.centerIR        [1 x Samples] )</span>
 <span class="sd">    FFToversize : int, optional</span>
-<span class="sd">       FFToversize rises the FFT Blocksize. [Default: 1]</span>
-<span class="sd">       ::</span>
-<span class="sd">          A FFT of the blocksize (FFToversize*NFFT) is applied</span>
-<span class="sd">          to the time domain data,  where  NFFT is determinded</span>
-<span class="sd">          as the next power of two of the signalSize  which is</span>
-<span class="sd">          signalSize = (lastSample-firstSample).</span>
-<span class="sd">          The function will pick a window of (lastSample-firstSample)</span>
-<span class="sd">          for the FFT.</span>
+<span class="sd">       FFToversize &gt; 1 increase the FFT Blocksize. [Default: 1]</span>
 <span class="sd">    firstSample : int, optional</span>
 <span class="sd">       First time domain sample to be included. [Default: 0]</span>
 <span class="sd">    lastSample : int, optional</span>
@@ -231,17 +228,24 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    fftData : array of floats</span>
+<span class="sd">    fftData : array_like</span>
 <span class="sd">       Frequency domain data ready for the Spatial Fourier Transform (stc)</span>
-<span class="sd">    kr : array of floats</span>
+<span class="sd">    kr : array_like</span>
 <span class="sd">       kr-Values of the delivered data</span>
-<span class="sd">    f : array of floats</span>
+<span class="sd">    f : array_like</span>
 <span class="sd">       Absolute frequency scale</span>
-<span class="sd">    ctSig : array of floats</span>
+<span class="sd">    ctSig : array_like</span>
 <span class="sd">       Center signal, if available</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    A FFT of the blocksize (FFToversize*NFFT) is applied</span>
+<span class="sd">    to the time domain data,  where  NFFT is determinded</span>
+<span class="sd">    as the next power of two of the signalSize  which is</span>
+<span class="sd">    signalSize = (lastSample-firstSample).</span>
+<span class="sd">    The function will pick a window of (lastSample-firstSample)</span>
+<span class="sd">    for the FFT.</span>
+
 <span class="sd">    Call this function with a running window (firstSample+td-&gt;lastSample+td)</span>
 <span class="sd">    iteration increasing td to obtain time slices. This way you resolve the</span>
 <span class="sd">    temporal information within the captured sound field.</span>
@@ -289,9 +293,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Pnm : array of floats</span>
+<span class="sd">    Pnm : array_like</span>
 <span class="sd">       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)</span>
-<span class="sd">    angles : array of floats</span>
+<span class="sd">    angles : array_like</span>
 <span class="sd">       Target angles of shape</span>
 <span class="sd">       ::</span>
 <span class="sd">          [AZ1, EL1;</span>
@@ -306,8 +310,8 @@
 <span class="sd">    p : array of complex floats</span>
 <span class="sd">       Sound pressures with FFT bins in cols and specified angles in rows</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    This is a pure ISFT core that does not involve extrapolation.</span>
 <span class="sd">    (=The pressures are referred to the original radius)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -355,7 +359,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    N : int</span>
 <span class="sd">       Decomposition order</span>
-<span class="sd">    OmegaL : array of floats</span>
+<span class="sd">    OmegaL : array_like</span>
 <span class="sd">       Look directions of shape</span>
 <span class="sd">       ::</span>
 <span class="sd">          [AZ1, EL1;</span>
@@ -366,7 +370,7 @@
 <span class="sd">       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</span>
 <span class="sd">    dn : matrix of complex floats</span>
 <span class="sd">       Modal array filters (e.g. from SOFiA M/F)</span>
-<span class="sd">    cn : array of floats, optional</span>
+<span class="sd">    cn : array_like, optional</span>
 <span class="sd">       Weighting Function. Either frequency invariant weights as 1xN array</span>
 <span class="sd">       or with kr bins in rows over N cols. [Default: None]</span>
 
@@ -458,7 +462,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    dn : array of floats</span>
+<span class="sd">    dn : array_like</span>
 <span class="sd">       Analytical frequency domain radial filters (e.g. SOFiA M/F)</span>
 <span class="sd">    kernelDownScale : int, optional</span>
 <span class="sd">       Downscale factor for the filter kernel [Default: 2]</span>
@@ -467,15 +471,15 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dn : array of floats</span>
+<span class="sd">    dn : array_like</span>
 <span class="sd">       Improved radial filters</span>
 <span class="sd">    kernelSize : int</span>
 <span class="sd">       Filter kernel size (total)</span>
 <span class="sd">    latency : float</span>
 <span class="sd">       Approximate signal latency due to the filters</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    This function improves the FIR radial filters from SOFiA M/F. The filters</span>
 <span class="sd">    are made causal and are windowed in time domain. The DC components are</span>
 <span class="sd">    estimated. The R/F/I module should always be inserted to the filter</span>
@@ -484,30 +488,33 @@
 
 <span class="sd">    Do NOT use R/F/I for single open sphere filters (e.g.simulations).</span>
 
-<span class="sd">    IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large</span>
-<span class="sd">            enough to cover all filter latencies and reponse slopes.</span>
-<span class="sd">            Otherwise undesired cyclic convolution artifacts may appear</span>
-<span class="sd">            in the output signal.</span>
+<span class="sd">    IMPORTANT</span>
+<span class="sd">       Remember to choose a fft-oversize factor (F/D/T) being large</span>
+<span class="sd">       enough to cover all filter latencies and reponse slopes.</span>
+<span class="sd">       Otherwise undesired cyclic convolution artifacts may appear</span>
+<span class="sd">       in the output signal.</span>
 
-<span class="sd">    HIGHPASS: If HPF is on (highPass&gt;0) the radial filter kernel is</span>
-<span class="sd">              downscaled by a factor of two. Radial Filters and HPF</span>
-<span class="sd">              share the available taps and the latency keeps constant.</span>
-<span class="sd">              Be careful using very small signal blocks because there</span>
-<span class="sd">              may remain too few taps. Observe the filters by plotting</span>
-<span class="sd">              their spectra and impulse responses.</span>
-<span class="sd">              &gt; Be very carefull if NFFT/max(kr) &lt; 25</span>
-<span class="sd">              &gt; Do not use R/F/I if NFFT/max(kr) &lt; 15</span>
+<span class="sd">    HIGHPASS</span>
+<span class="sd">       If HPF is on (highPass&gt;0) the radial filter kernel is</span>
+<span class="sd">       downscaled by a factor of two. Radial Filters and HPF</span>
+<span class="sd">       share the available taps and the latency keeps constant.</span>
+<span class="sd">       Be careful using very small signal blocks because there</span>
+<span class="sd">       may remain too few taps. Observe the filters by plotting</span>
+<span class="sd">       their spectra and impulse responses.</span>
+<span class="sd">       &gt; Be very carefull if NFFT/max(kr) &lt; 25</span>
+<span class="sd">       &gt; Do not use R/F/I if NFFT/max(kr) &lt; 15</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">dn</span></div>
 
 
 <div class="viewcode-block" id="sfe"><a class="viewcode-back" href="../../reference.html#sofia.process.sfe">[docs]</a><span class="k">def</span> <span class="nf">sfe</span><span class="p">(</span><span class="n">Pnm_kra</span><span class="p">,</span> <span class="n">kra</span><span class="p">,</span> <span class="n">krb</span><span class="p">,</span> <span class="n">problem</span><span class="o">=</span><span class="s1">&#39;interior&#39;</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; S/F/E Sound Field Extrapolation. CURRENTLY WIP</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Pnm_kra : array of floats</span>
+<span class="sd">    Pnm_kra : array_like</span>
 <span class="sd">       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</span>
-<span class="sd">    kra, krb : array of floats</span>
+<span class="sd">    kra,krb : array_like</span>
 <span class="sd">       k * ra/rb vector</span>
 <span class="sd">    problem : string{&#39;interior&#39;, &#39;exterior&#39;}</span>
 <span class="sd">       Select between interior and exterior problem [Default: interior]</span>
@@ -556,9 +563,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    N : int</span>
 <span class="sd">       Maximum transform order</span>
-<span class="sd">    fftData : array of floats</span>
+<span class="sd">    fftData : array_like</span>
 <span class="sd">       Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows</span>
-<span class="sd">    grid : array of floats</span>
+<span class="sd">    grid : array_like</span>
 <span class="sd">       Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape</span>
 <span class="sd">       ::</span>
 <span class="sd">          [AZ1, EL1, W1;</span>
@@ -568,7 +575,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Pnm : array of floats</span>
+<span class="sd">    Pnm : array_like</span>
 <span class="sd">       Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -603,7 +610,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Y : array of floats</span>
+<span class="sd">    Y : array_like</span>
 <span class="sd">       Frequency domain data over multiple channels (cols) with FFT data in rows</span>
 <span class="sd">    win float, optional</span>
 <span class="sd">       Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED</span>
@@ -614,11 +621,11 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    y : array of floats</span>
+<span class="sd">    y : array_like</span>
 <span class="sd">       Reconstructed time-domain signal of channels in cols and impulse responses in rows</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    This function recombines time domain signals for multiple channels from</span>
 <span class="sd">    frequency domain data. It is made to work with half-sided spectrum FFT</span>
 <span class="sd">    data.  The impulse responses can be windowed.  The IFFT blocklength is</span>

@@ -28,4 +28,4 @@ Various jupyter notebooks are located in the root directory/
 
 Reference
 ---------
-Feel free to check out the full :doc:`reference.
+Feel free to check out the full :doc:`reference`.

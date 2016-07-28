@@ -156,9 +156,9 @@
 
 <div class="viewcode-block" id="awgn"><a class="viewcode-back" href="../../reference.html#sofia.gen.awgn">[docs]</a><span class="k">def</span> <span class="nf">awgn</span><span class="p">(</span><span class="n">fftData</span><span class="p">,</span> <span class="n">noiseLevel</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-
 <span class="sd">    fftData : array of complex floats</span>
 <span class="sd">       Input fftData block (e.g. from F/D/T or S/W/G)</span>
 <span class="sd">    noiseLevel : int, optional</span>
@@ -244,7 +244,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    gridData : array of floats</span>
+<span class="sd">    gridData : array_like</span>
 <span class="sd">       Lebedev quadrature positions and weigths: [AZ, EL, W]</span>
 <span class="sd">    Nmax : int</span>
 <span class="sd">       Highest stable grid order</span>
@@ -308,7 +308,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    N : int</span>
 <span class="sd">       Maximum Order</span>
-<span class="sd">    kr : array of floats</span>
+<span class="sd">    kr : array_like</span>
 <span class="sd">       Vector or Matrix of kr values</span>
 <span class="sd">       ::</span>
 <span class="sd">          First Row  (M=1) N: kr values microphone radius</span>
@@ -317,12 +317,12 @@
 <span class="sd">          ! If only one kr-vector is given using a rigid/dual sphere</span>
 <span class="sd">          Configuration: kr_sphere = kr_mic</span>
 <span class="sd">    ac : int {0, 1, 2, 3, 4}</span>
-<span class="sd">       Array Configuration:</span>
-<span class="sd">        - `0`:  Open Sphere with p Transducers (NO plc!)</span>
-<span class="sd">        - `1`:  Open Sphere with pGrad Transducers</span>
-<span class="sd">        - `2`:  Rigid Sphere with p Transducers</span>
-<span class="sd">        - `3`:  Rigid Sphere with pGrad Transducers</span>
-<span class="sd">        - `4`:  Dual Open Sphere with p Transducers</span>
+<span class="sd">       Array configuration</span>
+<span class="sd">         - `0`:  Open Sphere with p Transducers (NO plc!)</span>
+<span class="sd">         - `1`:  Open Sphere with pGrad Transducers</span>
+<span class="sd">         - `2`:  Rigid Sphere with p Transducers</span>
+<span class="sd">         - `3`:  Rigid Sphere with pGrad Transducers</span>
+<span class="sd">         - `4`:  Dual Open Sphere with p Transducers</span>
 <span class="sd">    amp_maxdB : int, optional</span>
 <span class="sd">       Maximum modal amplification limit in dB [Default: 0]</span>
 <span class="sd">    plc : int {0, 1, 2}, optional</span>
@@ -331,15 +331,15 @@
 <span class="sd">        - `1`:  Full kr-spectrum plc</span>
 <span class="sd">        - `2`:  Low kr only -&gt; set fadeover</span>
 <span class="sd">    fadeover : int, optional</span>
-<span class="sd">       ::</span>
-<span class="sd">          Number of kr values to fade over +/- around min-distance</span>
-<span class="sd">          gap of powerloss compensated filter and normal N0 filters.</span>
-<span class="sd">          0 is auto fadeover [Default]</span>
+<span class="sd">       Number of kr values to fade over +/- around min-distance</span>
+<span class="sd">       gap of powerloss compensated filter and normal N0 filters.</span>
+<span class="sd">       0 is auto fadeover [Default]</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dn : array of floats</span>
+<span class="sd">    dn : array_like</span>
 <span class="sd">       Vector of modal 0-N frequency domain filters</span>
-<span class="sd">    beam : array of floats</span>
+<span class="sd">    beam : array_like</span>
 <span class="sd">       Expected free field on-axis kr-response</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a_max</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="n">amp_maxdB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">))</span>
@@ -439,13 +439,13 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    r : array of floats, optional</span>
+<span class="sd">    r : array_like, optional</span>
 <span class="sd">       Microphone Radius [Default: 0.01]</span>
 <span class="sd">       ::</span>
 <span class="sd">          Can also be a vector for rigid sphere configurations:</span>
 <span class="sd">          [1,1] =&gt; rm  Microphone Radius</span>
 <span class="sd">          [2,1] =&gt; rs  Sphere Radius (Scatterer)</span>
-<span class="sd">    gridData : array of floats</span>
+<span class="sd">    gridData : array_like</span>
 <span class="sd">       Quadrature grid [Default: 110 Lebebdev grid]</span>
 <span class="sd">       ::</span>
 <span class="sd">          Columns : Position Number 1...M</span>
@@ -468,31 +468,33 @@
 <span class="sd">    c : float, optional</span>
 <span class="sd">       Speed of sound in [m/s] [Default: 343 m/s]</span>
 <span class="sd">    wavetype : int {0, 1}, optional</span>
-<span class="sd">       Type of the Wave:</span>
-<span class="sd">        - 0: Plane Wave [Default]</span>
-<span class="sd">        - 1: Spherical Wave</span>
+<span class="sd">       Type of the wave:</span>
+<span class="sd">        - 0: Plane wave [Default]</span>
+<span class="sd">        - 1: Spherical wave</span>
 <span class="sd">    ds : float, optional</span>
 <span class="sd">       Distance of the source in [m] (For wavetype = 1 only)</span>
-<span class="sd">       ::</span>
-<span class="sd">          Warning: If NFFT is smaller than the time the wavefront</span>
-<span class="sd">          needs to travel from the source to the array, the impulse</span>
-<span class="sd">          response will by cyclically shifted (cyclic convolution).</span>
 <span class="sd">    Nlim : int, optional</span>
 <span class="sd">       Internal generator transform order limit [Default: 120]</span>
 
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    If NFFT is smaller than the time the wavefront</span>
+<span class="sd">    needs to travel from the source to the array, the impulse</span>
+<span class="sd">    response will by cyclically shifted (cyclic convolution).</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    fftData : array of floats</span>
+<span class="sd">    fftData : array_like</span>
 <span class="sd">        Complex sound pressures of size [(N+1)^2 x NFFT]</span>
-<span class="sd">    kr : array of floats</span>
+<span class="sd">    kr : array_like</span>
 <span class="sd">       kr-vector</span>
 <span class="sd">       ::</span>
 <span class="sd">          Can also be a matrix [krm; krs] for rigid sphere configurations:</span>
 <span class="sd">          [1,:] =&gt; krm referring to the microphone radius</span>
 <span class="sd">          [2,:] =&gt; krs referring to the sphere radius (scatterer)</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
 <span class="sd">    This file is a wrapper generating the complex pressures at the</span>
 <span class="sd">    positions given in &#39;gridData&#39; for a full spectrum 0-FS/2 Hz (NFFT Bins)</span>
 <span class="sd">    wave impinging to an array. The wrapper involves the W/G/C wave</span>
@@ -588,10 +590,6 @@
 <span class="sd">        - 1: Spherical Wave</span>
 <span class="sd">    ds : float, optional</span>
 <span class="sd">       Distance of the source in [m] (For wavetype = 1 only)</span>
-<span class="sd">       ::</span>
-<span class="sd">          Warning: If NFFT is smaller than the time the wavefront</span>
-<span class="sd">          needs to travel from the source to the array, the impulse</span>
-<span class="sd">          response will by cyclically shifted (cyclic convolution).</span>
 <span class="sd">    lSegLim : int, optional</span>
 <span class="sd">       (Lower Segment Limit) Used by the S/W/G wrapper</span>
 <span class="sd">    uSegLim : int, optional</span>
@@ -601,11 +599,17 @@
 <span class="sd">    printInfo: bool, optional</span>
 <span class="sd">       Toggle print statements</span>
 
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    If NFFT is smaller than the time the wavefront</span>
+<span class="sd">    needs to travel from the source to the array, the impulse</span>
+<span class="sd">    response will by cyclically shifted (cyclic convolution).</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Pnm : array of complex floats</span>
 <span class="sd">       Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows</span>
-<span class="sd">    kr : array of floats</span>
+<span class="sd">    kr : array_like</span>
 <span class="sd">       kr-vector</span>
 <span class="sd">       ::</span>
 <span class="sd">          Can also be a matrix [krm; krs] for rigid sphere configurations:</span>

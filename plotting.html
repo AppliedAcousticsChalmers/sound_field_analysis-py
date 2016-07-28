@@ -135,8 +135,12 @@
 <h1>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h1>
 <p>Plotting explanation.</p>
 <span class="target" id="module-sofia.plot"></span><p>Plotting functions
-- makeMTX: Generate 3D-matrix data
-- visualize3D: Draw matrix data in 3D</p>
+Helps visualizing spherical microphone data.</p>
+<p>Generally, you probably want to first extract the amplitude information in spherical coordinates:
+&gt;&gt; plot.makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1)
+And then visualize that:
+&gt;&gt; visualize3D(vizMTX, style=&#8217;shape&#8217;)</p>
+<p>Other valid styles are &#8216;sphere&#8217; and &#8216;flat&#8217;.</p>
 </div>
 
 
