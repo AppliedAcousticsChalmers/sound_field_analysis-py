@@ -79,8 +79,8 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     -------
     mtxData   3D-matrix-data in 1[deg] steps
 
-    Notes
-    -----
+    Note
+    ----
     The file generates a SOFiA mtxData Matrix of 181x360 pixels for the
     visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).
     The HD version generally allows to raise the resolution (oversize > 1).
@@ -169,7 +169,9 @@ def genShape(vizMTX):
     T : plotly_trace
        Trace of desired shape
 
-    TODO: fix camera position
+    TODO
+    ----
+    Fix camera position
     """
     V = sph2cartMTX(vizMTX)
 
@@ -225,7 +227,9 @@ def genFlat(vizMTX):
     T : plotly_trace
        Trace of desired surface
 
-    TODO: Fix orientation and axis limits
+    TODO
+    ----
+    Fix orientation and axis limits
     """
 
     trace = go.Surface(
@@ -283,8 +287,9 @@ def visualize3D(vizMTX, style='shape', layout=None, colorize=True):
     normalize : Bool, optional
        Toggle normalization of data to [-1 ... 1] [Default: True]
 
-    # TODO: Colorization, contour plot
-    -----
+    TODO
+    ----
+    Colorization, contour plot
     """
 
     showTrace(genVisual(vizMTX, style=style, normalize=True), layout=layout)

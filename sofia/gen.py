@@ -23,9 +23,9 @@ pi = _np.pi
 
 def awgn(fftData, noiseLevel=80, printInfo=True):
     '''Adds White Gaussian Noise of approx. 16dB crest to a FFT block.
+
     Parameters
     ----------
-
     fftData : array of complex floats
        Input fftData block (e.g. from F/D/T or S/W/G)
     noiseLevel : int, optional
@@ -111,7 +111,7 @@ def lebedev(degree, plot=False, printInfo=True):
 
     Returns
     -------
-    gridData : array of floats
+    gridData : array_like
        Lebedev quadrature positions and weigths: [AZ, EL, W]
     Nmax : int
        Highest stable grid order
@@ -175,7 +175,7 @@ def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=True):
     ----------
     N : int
        Maximum Order
-    kr : array of floats
+    kr : array_like
        Vector or Matrix of kr values
        ::
           First Row  (M=1) N: kr values microphone radius
@@ -184,12 +184,12 @@ def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=True):
           ! If only one kr-vector is given using a rigid/dual sphere
           Configuration: kr_sphere = kr_mic
     ac : int {0, 1, 2, 3, 4}
-       Array Configuration:
-        - `0`:  Open Sphere with p Transducers (NO plc!)
-        - `1`:  Open Sphere with pGrad Transducers
-        - `2`:  Rigid Sphere with p Transducers
-        - `3`:  Rigid Sphere with pGrad Transducers
-        - `4`:  Dual Open Sphere with p Transducers
+       Array configuration
+         - `0`:  Open Sphere with p Transducers (NO plc!)
+         - `1`:  Open Sphere with pGrad Transducers
+         - `2`:  Rigid Sphere with p Transducers
+         - `3`:  Rigid Sphere with pGrad Transducers
+         - `4`:  Dual Open Sphere with p Transducers
     amp_maxdB : int, optional
        Maximum modal amplification limit in dB [Default: 0]
     plc : int {0, 1, 2}, optional
@@ -198,15 +198,15 @@ def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=True):
         - `1`:  Full kr-spectrum plc
         - `2`:  Low kr only -> set fadeover
     fadeover : int, optional
-       ::
-          Number of kr values to fade over +/- around min-distance
-          gap of powerloss compensated filter and normal N0 filters.
-          0 is auto fadeover [Default]
+       Number of kr values to fade over +/- around min-distance
+       gap of powerloss compensated filter and normal N0 filters.
+       0 is auto fadeover [Default]
+
     Returns
     -------
-    dn : array of floats
+    dn : array_like
        Vector of modal 0-N frequency domain filters
-    beam : array of floats
+    beam : array_like
        Expected free field on-axis kr-response
     """
     a_max = pow(10, (amp_maxdB / 20))
@@ -306,13 +306,13 @@ def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
 
     Parameters
     ----------
-    r : array of floats, optional
+    r : array_like, optional
        Microphone Radius [Default: 0.01]
        ::
           Can also be a vector for rigid sphere configurations:
           [1,1] => rm  Microphone Radius
           [2,1] => rs  Sphere Radius (Scatterer)
-    gridData : array of floats
+    gridData : array_like
        Quadrature grid [Default: 110 Lebebdev grid]
        ::
           Columns : Position Number 1...M
@@ -335,31 +335,33 @@ def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
     c : float, optional
        Speed of sound in [m/s] [Default: 343 m/s]
     wavetype : int {0, 1}, optional
-       Type of the Wave:
-        - 0: Plane Wave [Default]
-        - 1: Spherical Wave
+       Type of the wave:
+        - 0: Plane wave [Default]
+        - 1: Spherical wave
     ds : float, optional
        Distance of the source in [m] (For wavetype = 1 only)
-       ::
-          Warning: If NFFT is smaller than the time the wavefront
-          needs to travel from the source to the array, the impulse
-          response will by cyclically shifted (cyclic convolution).
     Nlim : int, optional
        Internal generator transform order limit [Default: 120]
 
+    Warning
+    -------
+    If NFFT is smaller than the time the wavefront
+    needs to travel from the source to the array, the impulse
+    response will by cyclically shifted (cyclic convolution).
+
     Returns
     -------
-    fftData : array of floats
+    fftData : array_like
         Complex sound pressures of size [(N+1)^2 x NFFT]
-    kr : array of floats
+    kr : array_like
        kr-vector
        ::
           Can also be a matrix [krm; krs] for rigid sphere configurations:
           [1,:] => krm referring to the microphone radius
           [2,:] => krs referring to the sphere radius (scatterer)
 
-    Notes
-    -----
+    Note
+    ----
     This file is a wrapper generating the complex pressures at the
     positions given in 'gridData' for a full spectrum 0-FS/2 Hz (NFFT Bins)
     wave impinging to an array. The wrapper involves the W/G/C wave
@@ -455,10 +457,6 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerS
         - 1: Spherical Wave
     ds : float, optional
        Distance of the source in [m] (For wavetype = 1 only)
-       ::
-          Warning: If NFFT is smaller than the time the wavefront
-          needs to travel from the source to the array, the impulse
-          response will by cyclically shifted (cyclic convolution).
     lSegLim : int, optional
        (Lower Segment Limit) Used by the S/W/G wrapper
     uSegLim : int, optional
@@ -468,11 +466,17 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerS
     printInfo: bool, optional
        Toggle print statements
 
+    Warning
+    -------
+    If NFFT is smaller than the time the wavefront
+    needs to travel from the source to the array, the impulse
+    response will by cyclically shifted (cyclic convolution).
+
     Returns
     -------
     Pnm : array of complex floats
        Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows
-    kr : array of floats
+    kr : array_like
        kr-vector
        ::
           Can also be a matrix [krm; krs] for rigid sphere configurations:

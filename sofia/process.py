@@ -1,5 +1,5 @@
 """
-Processing functions:
+Functions that act on the Spatial Fourier Coefficients
 
 `fdt`
    Frequency to time transform
@@ -22,6 +22,10 @@ Not yet implemented:
    Sound field extrapolation
 `wdr`
    Wigner-D Rotation
+
+TODO
+----
+Use more descriptive function names
 
 """
 
@@ -55,8 +59,8 @@ def bsa(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
     Pnm : array_like
        Alias-free spatial Fourier coefficients
 
-    Notes
-    -----
+    Note
+    ----
     This was presented at the 2012 AES convention, see [1]_.
 
     References
@@ -83,14 +87,7 @@ def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
           .averageAirTemp   Temperature in [C]
           (.centerIR        [1 x Samples] )
     FFToversize : int, optional
-       FFToversize rises the FFT Blocksize. [Default: 1]
-       ::
-          A FFT of the blocksize (FFToversize*NFFT) is applied
-          to the time domain data,  where  NFFT is determinded
-          as the next power of two of the signalSize  which is
-          signalSize = (lastSample-firstSample).
-          The function will pick a window of (lastSample-firstSample)
-          for the FFT.
+       FFToversize > 1 increase the FFT Blocksize. [Default: 1]
     firstSample : int, optional
        First time domain sample to be included. [Default: 0]
     lastSample : int, optional
@@ -98,17 +95,24 @@ def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
 
     Returns
     -------
-    fftData : array of floats
+    fftData : array_like
        Frequency domain data ready for the Spatial Fourier Transform (stc)
-    kr : array of floats
+    kr : array_like
        kr-Values of the delivered data
-    f : array of floats
+    f : array_like
        Absolute frequency scale
-    ctSig : array of floats
+    ctSig : array_like
        Center signal, if available
 
-    Notes
-    -----
+    Note
+    ----
+    A FFT of the blocksize (FFToversize*NFFT) is applied
+    to the time domain data,  where  NFFT is determinded
+    as the next power of two of the signalSize  which is
+    signalSize = (lastSample-firstSample).
+    The function will pick a window of (lastSample-firstSample)
+    for the FFT.
+
     Call this function with a running window (firstSample+td->lastSample+td)
     iteration increasing td to obtain time slices. This way you resolve the
     temporal information within the captured sound field.
@@ -156,9 +160,9 @@ def itc(Pnm, angles, N=None, printInfo=True):
 
     Parameters
     ----------
-    Pnm : array of floats
+    Pnm : array_like
        Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)
-    angles : array of floats
+    angles : array_like
        Target angles of shape
        ::
           [AZ1, EL1;
@@ -173,8 +177,8 @@ def itc(Pnm, angles, N=None, printInfo=True):
     p : array of complex floats
        Sound pressures with FFT bins in cols and specified angles in rows
 
-    Notes
-    -----
+    Note
+    ----
     This is a pure ISFT core that does not involve extrapolation.
     (=The pressures are referred to the original radius)
     """
@@ -222,7 +226,7 @@ def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
     ----------
     N : int
        Decomposition order
-    OmegaL : array of floats
+    OmegaL : array_like
        Look directions of shape
        ::
           [AZ1, EL1;
@@ -233,7 +237,7 @@ def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
        Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)
     dn : matrix of complex floats
        Modal array filters (e.g. from SOFiA M/F)
-    cn : array of floats, optional
+    cn : array_like, optional
        Weighting Function. Either frequency invariant weights as 1xN array
        or with kr bins in rows over N cols. [Default: None]
 
@@ -325,7 +329,7 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
 
     Parameters
     ----------
-    dn : array of floats
+    dn : array_like
        Analytical frequency domain radial filters (e.g. SOFiA M/F)
     kernelDownScale : int, optional
        Downscale factor for the filter kernel [Default: 2]
@@ -334,15 +338,15 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
 
     Returns
     -------
-    dn : array of floats
+    dn : array_like
        Improved radial filters
     kernelSize : int
        Filter kernel size (total)
     latency : float
        Approximate signal latency due to the filters
 
-    Notes
-    -----
+    Note
+    ----
     This function improves the FIR radial filters from SOFiA M/F. The filters
     are made causal and are windowed in time domain. The DC components are
     estimated. The R/F/I module should always be inserted to the filter
@@ -351,30 +355,33 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
 
     Do NOT use R/F/I for single open sphere filters (e.g.simulations).
 
-    IMPORTANT: Remember to choose a fft-oversize factor (F/D/T) being large
-            enough to cover all filter latencies and reponse slopes.
-            Otherwise undesired cyclic convolution artifacts may appear
-            in the output signal.
+    IMPORTANT
+       Remember to choose a fft-oversize factor (F/D/T) being large
+       enough to cover all filter latencies and reponse slopes.
+       Otherwise undesired cyclic convolution artifacts may appear
+       in the output signal.
 
-    HIGHPASS: If HPF is on (highPass>0) the radial filter kernel is
-              downscaled by a factor of two. Radial Filters and HPF
-              share the available taps and the latency keeps constant.
-              Be careful using very small signal blocks because there
-              may remain too few taps. Observe the filters by plotting
-              their spectra and impulse responses.
-              > Be very carefull if NFFT/max(kr) < 25
-              > Do not use R/F/I if NFFT/max(kr) < 15
+    HIGHPASS
+       If HPF is on (highPass>0) the radial filter kernel is
+       downscaled by a factor of two. Radial Filters and HPF
+       share the available taps and the latency keeps constant.
+       Be careful using very small signal blocks because there
+       may remain too few taps. Observe the filters by plotting
+       their spectra and impulse responses.
+       > Be very carefull if NFFT/max(kr) < 25
+       > Do not use R/F/I if NFFT/max(kr) < 15
     '''
     return dn
 
 
 def sfe(Pnm_kra, kra, krb, problem='interior'):
     ''' S/F/E Sound Field Extrapolation. CURRENTLY WIP
+
     Parameters
     ----------
-    Pnm_kra : array of floats
+    Pnm_kra : array_like
        Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)
-    kra, krb : array of floats
+    kra,krb : array_like
        k * ra/rb vector
     problem : string{'interior', 'exterior'}
        Select between interior and exterior problem [Default: interior]
@@ -423,9 +430,9 @@ def stc(N, fftData, grid):
     ----------
     N : int
        Maximum transform order
-    fftData : array of floats
+    fftData : array_like
        Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows
-    grid : array of floats
+    grid : array_like
        Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape
        ::
           [AZ1, EL1, W1;
@@ -435,7 +442,7 @@ def stc(N, fftData, grid):
 
     Returns
     -------
-    Pnm : array of floats
+    Pnm : array_like
        Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows
     '''
 
@@ -470,7 +477,7 @@ def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
 
     Parameters
     ----------
-    Y : array of floats
+    Y : array_like
        Frequency domain data over multiple channels (cols) with FFT data in rows
     win float, optional
        Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED
@@ -481,11 +488,11 @@ def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
 
     Returns
     -------
-    y : array of floats
+    y : array_like
        Reconstructed time-domain signal of channels in cols and impulse responses in rows
 
-    Notes
-    -----
+    Note
+    ----
     This function recombines time domain signals for multiple channels from
     frequency domain data. It is made to work with half-sided spectrum FFT
     data.  The impulse responses can be windowed.  The IFFT blocklength is
