@@ -21,7 +21,7 @@ import sys
 pi = _np.pi
 
 
-def ipython_info():
+def _ipython_info():
     ip = False
     if 'ipykernel' in sys.modules:
         ip = 'notebook'
@@ -56,7 +56,7 @@ def showTrace(trace, layout=None, colorize=True):
     # if colorize:
     #    data[0].autocolorscale = False
     #    data[0].surfacecolor = [0, 0.5, 1]
-    if ipython_info() == 'notebook':
+    if _ipython_info() == 'notebook':
         iplot(fig)
     else:
         pltoff(fig)
