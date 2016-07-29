@@ -4,7 +4,7 @@ Helps visualizing spherical microphone data.
 Generally, you probably want to first extract the amplitude information in spherical coordinates:
 >> plot.makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1)
 And then visualize that:
->> visualize3D(vizMTX, style='shape')
+>> plot3D(vizMTX, style='shape')
 
 Other valid styles are 'sphere' and 'flat'.
 """
@@ -323,7 +323,7 @@ def plot2D(data, type=None, fs=44100):
     showTrace(traces, layout=layout)
 
 
-def visualize3D(vizMTX, style='shape', layout=None, colorize=True):
+def plot3D(vizMTX, style='shape', layout=None, colorize=True):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
 
     Parameters

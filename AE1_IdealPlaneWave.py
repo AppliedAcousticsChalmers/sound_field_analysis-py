@@ -31,6 +31,6 @@ layout = {'title': 'Ideal unity plane wave',
           'height': 800,
           'width': 800}
 
-plot.visualize3D(vizMTX, style='shape', layout=layout)
+plot.plot3D(vizMTX, style='shape', layout=layout)
 
 print("3D visualization opened in browser window, exiting.")
