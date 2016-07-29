@@ -485,6 +485,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerS
     """
 
     NFFT = int(F_NFFT / 2 + 1)
+    NMLocatorSize = (N + 1) ** 2
 
     if SegN is None:
         SegN = N
@@ -545,7 +546,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerS
     f = list(range(lowerSegLim, upperSegLim + 1))
 
     # RADIAL FILTERS
-    rfArray = _np.zeros([SegN + 1, upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
+    rfArray = _np.zeros([NMLocatorSize, NFFT], dtype=_np.complex_)
     timeShift = _np.exp(- 1j * w[f] * t)
 
     for n in range(0, SegN + 1):
@@ -555,7 +556,7 @@ def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerS
             rfArray[n][f] = 4 * pi * -1j * k[f] * timeShift * sphankel(n, kds[f]) * bn_npf(n, krm[f], krs[f], ac)
 
     # GENERATOR CORE
-    Pnm = _np.empty([pow(N + 1, 2), upperSegLim + 1 - lowerSegLim], dtype=_np.complex_)
+    Pnm = _np.empty([NMLocatorSize, NFFT], dtype=_np.complex_)
     ctr = 0
     for n in range(0, SegN + 1):
         for m in range(-n, n + 1):
