@@ -827,7 +827,7 @@ Helps visualizing spherical microphone data.</p>
 <p>Generally, you probably want to first extract the amplitude information in spherical coordinates:
 &gt;&gt; plot.makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1)
 And then visualize that:
-&gt;&gt; visualize3D(vizMTX, style=&#8217;shape&#8217;)</p>
+&gt;&gt; plot3D(vizMTX, style=&#8217;shape&#8217;)</p>
 <p>Other valid styles are &#8216;sphere&#8217; and &#8216;flat&#8217;.</p>
 <dl class="function">
 <dt id="sofia.plot.genFlat">
@@ -974,6 +974,48 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
+<dt id="sofia.plot.plot2D">
+<code class="descclassname">sofia.plot.</code><code class="descname">plot2D</code><span class="sig-paren">(</span><em>data</em>, <em>type=None</em>, <em>fs=44100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#plot2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.plot2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize 2D data using plotly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>array_like</em>) &#8211; Data to be plotted, separated along the first dimension (rows).</li>
+<li><strong>type</strong> (<em>string{None, 'time'}</em>) &#8211; Type of data to be displayed. [Default: None]</li>
+<li><strong>fs</strong> (<em>int</em>) &#8211; Sampling rate in Hz used to display time signals. [Default: 44100]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sofia.plot.plot3D">
+<code class="descclassname">sofia.plot.</code><code class="descname">plot3D</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#plot3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.plot3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize matrix data, such as from makeMTX(Pnm, dn)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>vizMTX</strong> (<em>array_like</em>) &#8211; Matrix holding spherical data for visualization</li>
+<li><strong>style</strong> (<em>string{'shape', 'sphere', 'flat'}, optional</em>) &#8211; Style of visualization. [Default: &#8216;shape&#8217;]</li>
+<li><strong>normalize</strong> (<em>Bool, optional</em>) &#8211; Toggle normalization of data to [-1 ... 1] [Default: True]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-todo admonition" id="index-3">
+<p class="first admonition-title">Todo</p>
+<p class="last">Colorization, contour plot</p>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="sofia.plot.showTrace">
 <code class="descclassname">sofia.plot.</code><code class="descname">showTrace</code><span class="sig-paren">(</span><em>trace</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#showTrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.showTrace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper around plotlys offline .plot() function</p>
@@ -1013,29 +1055,6 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="sofia.plot.visualize3D">
-<code class="descclassname">sofia.plot.</code><code class="descname">visualize3D</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#visualize3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.visualize3D" title="Permalink to this definition">¶</a></dt>
-<dd><p>Visualize matrix data, such as from makeMTX(Pnm, dn)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>vizMTX</strong> (<em>array_like</em>) &#8211; Matrix holding spherical data for visualization</li>
-<li><strong>style</strong> (<em>string{'shape', 'sphere', 'flat'}, optional</em>) &#8211; Style of visualization. [Default: &#8216;shape&#8217;]</li>
-<li><strong>normalize</strong> (<em>Bool, optional</em>) &#8211; Toggle normalization of data to [-1 ... 1] [Default: True]</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition-todo admonition" id="index-3">
-<p class="first admonition-title">Todo</p>
-<p class="last">Colorization, contour plot</p>
-</div>
 </dd></dl>
 
 </div>
