@@ -48,8 +48,14 @@ def showTrace(trace, layout=None, colorize=True):
     if not layout:
         layout = go.Layout()
 
+    # Check wether we have one or multiple traces
+    if isinstance(trace, list):
+        data = trace
+    else:
+        data = [trace]
+
     fig = go.Figure(
-        data=[trace],
+        data=data,
         layout=layout
     )
 
@@ -273,6 +279,48 @@ def genVisual(vizMTX, style='shape', normalize=True):
         return genFlat(vizMTX)
     else:
         raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
+
+
+def plot2D(data, type=None, fs=44100):
+    """Visualize 2D data using plotly.
+
+    Parameters
+    ----------
+    data : array_like
+       Data to be plotted, separated along the first dimension (rows).
+    type : string{None, 'time'}
+       Type of data to be displayed. [Default: None]
+    fs : int
+       Sampling rate in Hz used to display time signals. [Default: 44100]
+    """
+
+    # X vector: samples or time
+    x = _np.linspace(0, data.shape[0] - 1)
+    layout = go.Layout(
+        xaxis=dict(
+            title='Samples'
+        ),
+        yaxis=dict(
+            title='Amplitude'
+        )
+    )
+
+    if type == 'time':
+        x /= fs
+        layout.xaxis.title = 'Time [s]'
+
+    data = _np.atleast_2d(data)
+    N = data.shape[0]
+
+    traces = [None] * N
+
+    for k in range(0, N):
+        traces[k] = go.Scatter(
+            x=x,
+            y=data[k]
+        )
+
+    showTrace(traces, layout=layout)
 
 
 def visualize3D(vizMTX, style='shape', layout=None, colorize=True):
