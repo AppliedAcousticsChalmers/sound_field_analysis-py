@@ -11,7 +11,9 @@ setup(
     packages=['gen', 'io', 'lebedev', 'plot', 'process', 'sph', 'utils'],
     install_requires=[
         'Numpy',
-        'Scipy',
-        'plotly'
+        'Scipy'
     ],
+    extras_require={
+        'plotting': ["plotly"]
+    }
 )
