@@ -8,7 +8,7 @@ setup(
     author='QU Lab / Christoph Hohnerlein',
     author_email='christoph.hohnerlein@qu.tu-berlin.de',
     license='GPLv3',
-    packages=['gen', 'io', 'lebedev', 'plot', 'process', 'sph'],
+    packages=['gen', 'io', 'lebedev', 'plot', 'process', 'sph', 'utils'],
     install_requires=[
         'Numpy',
         'Scipy',
