@@ -17,6 +17,7 @@ Module contains various generator functions:
 import numpy as _np
 from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph, sph2cart
 from .process import itc
+from .utils import progress_bar
 
 pi = _np.pi
 
@@ -402,13 +403,9 @@ def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
     # ctr = -1
     Pnm = _np.zeros([(Ng + 1) ** 2, int(NFFT / 2 + 1)], dtype=_np.complex_)
 
-    for idx, order in enumerate(_np.unique(rqOrders)):
-        if printInfo:
-            amtDone = idx / (_np.unique(rqOrders).size - 1)
-            print('\rProgress: [{0:50s}] {1:.1f}%'.format('#' * int(amtDone * 50), amtDone * 100), end="", flush=True)
+    for idx, order in progress_bar(enumerate(_np.unique(rqOrders))):
         fOrders = _np.flatnonzero(rqOrders == order)
         Pnm += wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order, printInfo=False)[0]
-    print('\n')
     fftData = itc(Pnm, gridData)
 
     return fftData, kr

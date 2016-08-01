@@ -14,6 +14,7 @@ setup(
         'Scipy'
     ],
     extras_require={
-        'plotting': ["plotly"]
+        'plotting': ["plotly"],
+        'progress_bars': ["tqdm"]
     }
 )
