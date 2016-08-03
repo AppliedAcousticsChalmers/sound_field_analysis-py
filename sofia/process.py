@@ -32,6 +32,7 @@ Use more descriptive function names
 import numpy as _np
 from scipy.signal import hann, resample
 from .sph import sph_harm, besselj, besselh
+from .utils import progress_bar
 
 pi = _np.pi
 
@@ -205,7 +206,7 @@ def itc(Pnm, angles, N=None, printInfo=True):
         N = Nmax
 
     if printInfo:
-        print('SOFiA I/T/C - Inverse spatial Transform Core R13-0306')
+        print('SOFiA I/T/C - Inverse spatial Transform Core')
 
     OutputArray = _np.zeros([numberOfAngles, FFTBlocklength], dtype=_np.complex_)
 
@@ -215,7 +216,7 @@ def itc(Pnm, angles, N=None, printInfo=True):
             SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
             OutputArray += _np.outer(SHresults, Pnm[ctr])
             ctr += 1
-
+            progress_bar(ctr)
     return OutputArray
 
 
