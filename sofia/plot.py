@@ -61,7 +61,7 @@ def showTrace(trace, layout=None, colorize=True):
     return fig
 
 
-def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
+def makeMTX(Pnm, dn, krIndex=1, Nviz=3, oversize=1):
     """mtxData = makeMTX(Nviz=3, Pnm, dn, krIndex)
 
     Parameters
@@ -121,7 +121,7 @@ def makeFullMTX(Pnm, dn, kr, Nviz=3):
     vizMtx = [None] * N
     for k in range(0, N):
         progress_bar(k, N, 'Visual matrix generation')
-        vizMtx[k] = makeMTX(Pnm, dn, Nviz, k)
+        vizMtx[k] = makeMTX(Pnm, dn, k, Nviz)
     return vizMtx
 
 
