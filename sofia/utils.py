@@ -1,6 +1,11 @@
 """Miscellenious utility functions
 """
 import sys
+try:
+    from tqdm import tqdm_notebook, tqdm
+    __has_tqdm = True
+except ImportError:
+    __has_tqdm = False
 
 
 def ipython_info():
@@ -13,12 +18,10 @@ def ipython_info():
 
 
 def progress_bar(loopRange):
-    try:
+    if __has_tqdm:
         if ipython_info() == 'notebook':
-            from tqdm import tqdm_notebook
             return tqdm_notebook(loopRange)
         else:
-            from tqdm import tqdm
             return tqdm(loopRange)
-    except ImportError:
+    else:
         return loopRange
