@@ -66,15 +66,21 @@ def makeMTX(Pnm, dn, krIndex=1, Nviz=3, oversize=1):
 
     Parameters
     ----------
-    Pnm       Spatial Fourier Coefficients (from S/T/C)
-    dn        Modal Radial Filters (from M/F)
-    N         Order of the spatial fourier transform     [default = 3]
-    krIndex   Index of kr Vector                         [default = 1]
-    oversize  Integer Factor to increase the resolution. Set oversize = 1
-              (default) to use the mtxData matrix for visual3D(), map3D().
-    #Returns
+    Pnm : array_like
+       Spatial Fourier Coefficients (e.g. from S/T/C)
+    dn : array_like
+       Modal Radial Filters (e.g. from M/F)
+    krIndex : int
+       Index of kr to be computed [Default: 1]
+    Nviz : int, optional
+       Order of the spatial fourier transform [Default: 3]
+    oversize : int, optional
+       Integer Factor to increase the resolution. [Default: 1]
+
+    Returns
     -------
-    mtxData   3D-matrix-data in 1[deg] steps
+    mtxData : array_like
+       3D-matrix-data in 1[deg] steps
 
     Note
     ----
@@ -102,7 +108,7 @@ def makeFullMTX(Pnm, dn, kr, Nviz=3):
     Pnm : array_like
        Spatial Fourier Coefficients (e.g. from S/T/C)
     dn : array_like
-       Modal Radial Filters (from M/F)
+       Modal Radial Filters (e.g. from M/F)
     kr : array_like
        kr-vector
           ::
