@@ -6,13 +6,19 @@ spinner = cycle(['-', '/', '|', '\\'])
 
 
 def env_info():
-    ip = False
+    """ Guess environment based on sys.modules.
+
+    Returns
+    -------
+    env : string{'jupyter_notebook', 'ipython_terminal', 'terminal'}
+       Guesed environment
+    """
     if 'ipykernel' in sys.modules:
-        ip = 'jupyter_notebook'
+        return 'jupyter_notebook'
     elif 'IPython' in sys.modules:
-        ip = 'ipython_terminal'
+        return 'ipython_terminal'
     else:
-        ip = 'terminal'
+        return 'terminal'
     return ip
 __env = env_info()
 
