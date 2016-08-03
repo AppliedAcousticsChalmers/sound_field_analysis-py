@@ -111,10 +111,10 @@ def makeFullMTX(Pnm, dn, kr, Nviz=3):
        Modal Radial Filters (e.g. from M/F)
     kr : array_like
        kr-vector
-          ::
-             Can also be a matrix [krm; krs] for rigid sphere configurations:
-             [1,:] => krm referring to the microphone radius
-             [2,:] => krs referring to the sphere radius (scatterer)
+       ::
+          Can also be a matrix [krm; krs] for rigid sphere configurations:
+          [1,:] => krm referring to the microphone radius
+          [2,:] => krs referring to the sphere radius (scatterer)
     Nviz : int, optional
        Order of the spatial fourier transform [Default: 3]
 
