@@ -212,11 +212,11 @@ def itc(Pnm, angles, N=None, printInfo=True):
 
     ctr = 0
     for n in range(0, N + 1):
+        progress_bar(ctr, N ** 2)
         for m in range(-n, n + 1):
             SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
             OutputArray += _np.outer(SHresults, Pnm[ctr])
             ctr += 1
-            progress_bar(ctr)
     return OutputArray
 
 
