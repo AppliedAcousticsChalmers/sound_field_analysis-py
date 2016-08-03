@@ -16,7 +16,7 @@ from plotly.offline import iplot
 import plotly.graph_objs as go
 
 from .process import pdc
-from .utils import env_info
+from .utils import env_info, progress_bar
 
 pi = _np.pi
 
@@ -93,6 +93,36 @@ def makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1):
     Y = pdc(Nviz, angles, Pnm[:, krIndex], dn[:, krIndex], printInfo=False)
 
     return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
+
+
+def makeFullMTX(Pnm, dn, kr, Nviz=3):
+    """ Generates visualization matrix for a set of spatial fourier coefficients over all kr
+    Parameters
+    ----------
+    Pnm : array_like
+       Spatial Fourier Coefficients (e.g. from S/T/C)
+    dn : array_like
+       Modal Radial Filters (from M/F)
+    kr : array_like
+       kr-vector
+          ::
+             Can also be a matrix [krm; krs] for rigid sphere configurations:
+             [1,:] => krm referring to the microphone radius
+             [2,:] => krs referring to the sphere radius (scatterer)
+    Nviz : int, optional
+       Order of the spatial fourier transform [Default: 3]
+
+    Returns
+    -------
+    vizMtx : array_like
+       Computed visualization matrix over all kr
+    """
+    N = kr.size
+    vizMtx = [None] * N
+    for k in range(0, N):
+        progress_bar(k, N, 'Visual matrix generation')
+        vizMtx[k] = makeMTX(Pnm, dn, Nviz, k)
+    return vizMtx
 
 
 def normalizeMTX(MTX):
