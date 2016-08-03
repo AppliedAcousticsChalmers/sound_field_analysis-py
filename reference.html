@@ -925,23 +925,57 @@ And then visualize that:
 </dd></dl>
 
 <dl class="function">
+<dt id="sofia.plot.makeFullMTX">
+<code class="descclassname">sofia.plot.</code><code class="descname">makeFullMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>kr</em>, <em>Nviz=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#makeFullMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.makeFullMTX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates visualization matrix for a set of spatial fourier coefficients over all kr
+:param Pnm: Spatial Fourier Coefficients (e.g. from S/T/C)
+:type Pnm: array_like
+:param dn: Modal Radial Filters (e.g. from M/F)
+:type dn: array_like
+:param kr: kr-vector</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>::</dt>
+<dd>Can also be a matrix [krm; krs] for rigid sphere configurations:
+[1,:] =&gt; krm referring to the microphone radius
+[2,:] =&gt; krs referring to the sphere radius (scatterer)</dd>
+</dl>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Nviz</strong> (<em>int, optional</em>) &#8211; Order of the spatial fourier transform [Default: 3]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>vizMtx</strong> &#8211; Computed visualization matrix over all kr</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array_like</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="sofia.plot.makeMTX">
-<code class="descclassname">sofia.plot.</code><code class="descname">makeMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>Nviz=3</em>, <em>krIndex=1</em>, <em>oversize=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#makeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.makeMTX" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sofia.plot.</code><code class="descname">makeMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>krIndex=1</em>, <em>Nviz=3</em>, <em>oversize=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#makeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.makeMTX" title="Permalink to this definition">¶</a></dt>
 <dd><p>mtxData = makeMTX(Nviz=3, Pnm, dn, krIndex)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Spatial Fourier Coefficients (from S/T/C)</strong> (<em>Pnm</em>) &#8211; </li>
-<li><strong>Modal Radial Filters (from M/F)</strong> (<em>dn</em>) &#8211; </li>
-<li><strong>Order of the spatial fourier transform     [default = 3]</strong> (<em>N</em>) &#8211; </li>
-<li><strong>Index of kr Vector                         [default = 1]</strong> (<em>krIndex</em>) &#8211; </li>
-<li><strong>Integer Factor to increase the resolution. Set oversize = 1</strong> (<em>oversize</em>) &#8211; (default) to use the mtxData matrix for visual3D(), map3D().</li>
-<li><strong>#Returns</strong> &#8211; </li>
-<li><strong>-------</strong> &#8211; </li>
-<li><strong>3D-matrix-data in 1[deg] steps</strong> (<em>mtxData</em>) &#8211; </li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Pnm</strong> (<em>array_like</em>) &#8211; Spatial Fourier Coefficients (e.g. from S/T/C)</li>
+<li><strong>dn</strong> (<em>array_like</em>) &#8211; Modal Radial Filters (e.g. from M/F)</li>
+<li><strong>krIndex</strong> (<em>int</em>) &#8211; Index of kr to be computed [Default: 1]</li>
+<li><strong>Nviz</strong> (<em>int, optional</em>) &#8211; Order of the spatial fourier transform [Default: 3]</li>
+<li><strong>oversize</strong> (<em>int, optional</em>) &#8211; Integer Factor to increase the resolution. [Default: 1]</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>mtxData</strong> &#8211; 3D-matrix-data in 1[deg] steps</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array_like</p>
 </td>
 </tr>
 </tbody>

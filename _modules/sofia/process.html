@@ -165,6 +165,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">hann</span><span class="p">,</span> <span class="n">resample</span>
 <span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">sph_harm</span><span class="p">,</span> <span class="n">besselj</span><span class="p">,</span> <span class="n">besselh</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">progress_bar</span>
 
 <span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
 
@@ -337,18 +338,16 @@
     <span class="k">if</span> <span class="n">N</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">Nmax</span>
 
-    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA I/T/C - Inverse spatial Transform Core R13-0306&#39;</span><span class="p">)</span>
-
     <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">numberOfAngles</span><span class="p">,</span> <span class="n">FFTBlocklength</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
 
     <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
+            <span class="n">progress_bar</span><span class="p">(</span><span class="n">ctr</span><span class="p">,</span> <span class="n">N</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;I/T/C - Inverse spatial Transform&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">SHresults</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">AzimuthAngles</span><span class="p">,</span> <span class="n">ElevationAngles</span><span class="p">)</span>
             <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">SHresults</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">])</span>
             <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
-
     <span class="k">return</span> <span class="n">OutputArray</span></div>
 
 
