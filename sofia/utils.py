@@ -23,7 +23,7 @@ def env_info():
 __env = env_info()
 
 
-def progress_bar(curIDX, maxIDX=None):
+def progress_bar(curIDX, maxIDX=None, description='Progress'):
     """ Display a spinner or a progress bar
 
     Parameters
@@ -32,11 +32,13 @@ def progress_bar(curIDX, maxIDX=None):
        Current position in the loop
     maxIDX : int, optional
        Number of iterations. Will force a spinner if set to None. [Default: None]
+    description : string, optional
+       Clarify what's taking time
     """
     if maxIDX is None:
-        print('\r' + next(spinner), end='', flush=True)
+        print('\r' + description + ': ' + next(spinner), end='', flush=True)
     else:
         amount_done = curIDX / (int(maxIDX) - 1)
-        print('\rProgress: [{0:50s}] {1:.1f}%'.format('#' * int(amount_done * 50), amount_done * 100), end="", flush=True)
+        print('\r' + description + ': [{0:50s}] {1:.1f}%'.format('#' * int(amount_done * 50), amount_done * 100), end="", flush=True)
         if amount_done >= 1:
             print('\n')

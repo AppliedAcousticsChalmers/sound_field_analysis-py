@@ -205,14 +205,12 @@ def itc(Pnm, angles, N=None, printInfo=True):
     if N is None:
         N = Nmax
 
-    if printInfo:
-        print('SOFiA I/T/C - Inverse spatial Transform Core')
-
     OutputArray = _np.zeros([numberOfAngles, FFTBlocklength], dtype=_np.complex_)
 
     ctr = 0
     for n in range(0, N + 1):
-        progress_bar(ctr, N ** 2)
+        if printInfo:
+            progress_bar(ctr, N ** 2, 'I/T/C - Inverse spatial Transform')
         for m in range(-n, n + 1):
             SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
             OutputArray += _np.outer(SHresults, Pnm[ctr])
