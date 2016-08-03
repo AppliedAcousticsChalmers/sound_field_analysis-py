@@ -402,8 +402,10 @@ def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
     # index = 1
     # ctr = -1
     Pnm = _np.zeros([(Ng + 1) ** 2, int(NFFT / 2 + 1)], dtype=_np.complex_)
+    unique_orders = _np.unique(rqOrders)
 
-    for idx, order in progress_bar(enumerate(_np.unique(rqOrders))):
+    for idx, order in enumerate(unique_orders):
+        progress_bar(idx, _np.size(unique_orders))
         fOrders = _np.flatnonzero(rqOrders == order)
         Pnm += wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order, printInfo=False)[0]
     fftData = itc(Pnm, gridData)

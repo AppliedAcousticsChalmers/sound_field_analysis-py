@@ -16,7 +16,7 @@ from plotly.offline import iplot
 import plotly.graph_objs as go
 
 from .process import pdc
-from .utils import ipython_info
+from .utils import env_info
 
 pi = _np.pi
 
@@ -53,7 +53,7 @@ def showTrace(trace, layout=None, colorize=True):
     # if colorize:
     #    data[0].autocolorscale = False
     #    data[0].surfacecolor = [0, 0.5, 1]
-    if ipython_info() == 'notebook':
+    if env_info() == 'jupyter_notebook':
         iplot(fig)
     else:
         pltoff(fig)

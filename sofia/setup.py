@@ -24,8 +24,7 @@ setup(
         'examples': ['examples'],
     },
     extras_require={
-        'plotting': ["plotly"],
-        'progress_bars': ["tqdm"]
+        'plotting': ["plotly"]
     },
     packages=['gen', 'io', 'lebedev', 'plot', 'process', 'sph', 'utils']
 )
