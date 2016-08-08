@@ -1,43 +1,46 @@
-# SOFiA-py
-SOFiA-py is a Python port of the [Sound Field Analysis Toolbox (SOFiA) toolbox](http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html), originally by Benjamin Bernschütz[<sup>[1]</sup>](#references). The main goal of the SOFiA toolbox is to analyze, visualize and process soundfield data recorded by spherical microphone arrays. Furthermore, various types of testdata may be generated to evaluate the implemented functions.
+# Sound Field Analysis toolbox for Python
+The *sound_field_analysis* toolbox (short: *sfa*) is a Python port of the [Sound Field Analysis Toolbox (SOFiA) toolbox](http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html), originally by Benjamin Bernschütz[<sup>[1]</sup>](#references). The main goal of the *sfa* toolbox is to analyze, visualize and process sound field data recorded by spherical microphone arrays. Furthermore, various types of testdata may be generated to evaluate the implemented functions.
 
-The package is pure python and PEP8 compliant (except line-length). As the port is ongoing, no serious attempts at speed optimization have been made, please expect things to be slow for now.
+The package is pure python and PEP8 compliant (except line-length). Please expect things to be slow for now and for the API to break, as the development is still very much ongoing.
 
 ## Requirements
-The following external libraries are required to use most of the supplied functions:
+The following external libraries are required:
 - [NumPy](http://www.numpy.org)
 - [SciPy](http://www.scipy.org)
-- [matplotlib](http://matplotlib.org) (for 2D plotting)
-- [vispy](http://vispy.org) (for 3D plotting)
+- [Plotly](https://plot.ly/python/) (for plotting)
+
+## Installation
+We highly recommend the [Anaconda](https://www.continuum.io/downloads) python environment. Once installed, you can use the following steps to create a new environment with the *sfa* toolbox.
+
+1. Add the [conda-forge](https://conda-forge.github.io) channel:  
+  `conda config --add channels conda-forge`
+2. Create a new environment:
+  `create --name sfa numpy scipy plotly sound_field_analysis`
+3. Activate this environment:
+  `source activate sfa`
+ 
+Alternatively, you can simply *sfa* install it through pip (`pip install sound_field_analysis`).
 
 ## Documentation
 Please find the full documentation at https://qulab.github.io/sofia-py/!
 
-## Working examples
-## AE1: Ideal Plane Wave
-Ideal unity plane wave simulation and 3D plot.
-#### Colorized 3D scatter:
-![AE1_IdealPlaneWave colored scatter](examples/img/AE1_cscatter.png?raw=true "AE1_IdealPlaneWave colored scatter")
-#### Shape-based visualization:
-![AE1_IdealPlaneWave shape](examples/img/AE1_shape.png?raw=true "AE1_IdealPlaneWave shape")
+## Examples
+The following examples are available as Jupyter notebooks, either statically on [github](examples/) or interactivally on [nbviewer](http://nbviewer.jupyter.org). You can of course also simply download the examples and run them locally!
 
-## AE2: Sampled Plane Wave
+### AE1: Ideal Plane Wave
+Ideal unity plane wave simulation and 3D plot.
+
+### AE2: Sampled Plane Wave
 Sampled unity plane wave simulation for different kr
 
-![AE2_SampledPlaneWave](examples/img/AE2_grid.png?raw=true "AE2_SampledPlaneWave")
-
-### AE6: Impulse response of ideal plane wave
+#### AE6: Impulse response of ideal plane wave
 Impulse Response reconstruction on a simulated ideal unity plane wave
 
-![AE6_IdealPlaneWave_ImpResp result](examples/img/AE6_IdealPlaneWave_ImpResp.png?raw=true "AE6_IdealPlaneWave_ImpResp result")
-
-### AE7: Impulse response of sampled plane wave
+#### AE7: Impulse response of sampled plane wave
 Impulse response reconstruction on a simulated sampled unity plane wave
 
-![AE7_SampledPlaneWave_ImpResp result](examples/img/AE7_SampledPlaneWave_ImpResp.png?raw=true "AE7_SampledPlaneWave_ImpResp result")
-
 ## Contact
-SOFiA-py is under development by Christoph Hohnerlein (`firstname.lastname[at]qu.tu-berlin.de`) as part of the [Artificial Reverberation for Sound Field Synthesis](https://www.qu.tu-berlin.de/menue/forschung/laufende_projekte/artificial_reverberation_for_sound_field_synthesis_dfg/) project at the [Quality and Usability Lab](https://www.qu.tu-berlin.de) of the TU Berlin.
+SOFiA-py is under development by Christoph Hohnerlein (`christoph.hohnerlein[at]qu.tu-berlin.de`) as part of the [Artificial Reverberation for Sound Field Synthesis](https://www.qu.tu-berlin.de/menue/forschung/laufende_projekte/artificial_reverberation_for_sound_field_synthesis_dfg/) project at the [Quality and Usability Lab](https://www.qu.tu-berlin.de) of the TU Berlin.
 
 ## References
 SOFiA-py is based on the Matlab/C++ toolbox [SOFiA](https://github.com/fietew/sofia-toolbox) by Benjamin Bernschütz. For more information you may refer to the original publication:

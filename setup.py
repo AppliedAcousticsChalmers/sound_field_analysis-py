@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='sofia-py',
+    name='sound_field_analysis',
     version='0.0.3',
     description='Python port of the SOFiA toolbox for Matlab',
     url='https://qulab.github.io/sofia-py/',
@@ -15,10 +15,10 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Programming Language :: Python :: 3.5',
     ],
-    keywords='spherical microphone array analysis',
+    keywords='sound field analysis spherical microphone array',
     install_requires=[
-        'numpy',
-        'scipy'
+        'scipy',
+        'numpy'
     ],
     package_data={
         'examples': ['examples'],
@@ -26,5 +26,5 @@ setup(
     extras_require={
         'plotting': ["plotly"]
     },
-    packages=['gen', 'io', 'lebedev', 'plot', 'process', 'sph', 'utils']
+    packages=['sound_field_analysis']
 )
