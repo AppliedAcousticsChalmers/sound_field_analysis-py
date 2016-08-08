@@ -328,7 +328,7 @@ def plot2D(data, type=None, fs=44100):
     """
 
     # X vector: samples or time
-    x = _np.linspace(0, data.shape[0] - 1)
+    x = _np.arange(data.shape[0] - 1, dtype=_np.float_)
     layout = go.Layout(
         xaxis=dict(
             title='Samples'
