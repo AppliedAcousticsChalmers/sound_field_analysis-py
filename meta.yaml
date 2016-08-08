@@ -1,0 +1,20 @@
+package:
+  name: sound_field_analysis
+  version: "0.1dev"
+
+source:
+  path: sound_field_analysis
+  #git_url: https://github.com/QULab/sofia-py.git
+
+requirements:
+  build:
+    - python
+  run:
+    - python
+    - numpy
+    - scipy
+    - plotly
+
+test:
+  imports:
+    - sound_field_analysis as sfa
