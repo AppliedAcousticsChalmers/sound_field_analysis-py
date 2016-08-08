@@ -37,7 +37,13 @@ def showTrace(trace, layout=None, colorize=True):
        JSON representation of generated figure
     """
     if not layout:
-        layout = go.Layout()
+        layout = go.Layout(
+            scene=dict(
+                xaxis=dict(range=[0, 1]),
+                yaxis=dict(range=[0, 1]),
+                zaxis=dict(range=[0, 1])
+            )
+        )
 
     # Check wether we have one or multiple traces
     if isinstance(trace, list):
