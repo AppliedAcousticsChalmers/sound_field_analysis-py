@@ -3,4 +3,4 @@ Processing
 
 Processing explanation.
 
-.. automodule:: sofia.process
+.. automodule:: sound_field_analysis.process

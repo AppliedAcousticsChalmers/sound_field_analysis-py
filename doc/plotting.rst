@@ -3,4 +3,4 @@ Plotting
 
 Plotting explanation.
 
-.. automodule:: sofia.plot
+.. automodule:: sound_field_analysis.plot
