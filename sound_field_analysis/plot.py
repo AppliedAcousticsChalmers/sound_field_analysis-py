@@ -45,14 +45,8 @@ def showTrace(trace, layout=None, colorize=True):
             )
         )
 
-    # Check wether we have one or multiple traces
-    if isinstance(trace, list):
-        data = trace
-    else:
-        data = [trace]
-
     fig = go.Figure(
-        data=data,
+        data=trace,
         layout=layout
     )
 
@@ -327,8 +321,12 @@ def plot2D(data, type=None, fs=44100):
        Sampling rate in Hz. [Default: 44100]
     """
 
+    data = _np.atleast_2d(data)
+    N = data.shape[0]
+
     # X vector: samples or time
-    x = _np.arange(data.shape[0] - 1, dtype=_np.float_)
+    x = _np.arange(data.shape[1] - 1, dtype=_np.float_)
+
     layout = go.Layout(
         xaxis=dict(
             title='Samples'
@@ -350,9 +348,6 @@ def plot2D(data, type=None, fs=44100):
         layout.yaxis.title = 'Amplitude [dB]'
         layout.xaxis.title = 'Frequency [Hz]'
         layout.xaxis.type = 'log'
-
-    data = _np.atleast_2d(data)
-    N = data.shape[0]
 
     traces = [None] * N
 
