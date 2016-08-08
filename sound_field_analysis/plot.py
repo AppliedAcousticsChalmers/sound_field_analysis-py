@@ -321,10 +321,10 @@ def plot2D(data, type=None, fs=44100):
     ----------
     data : array_like
        Data to be plotted, separated along the first dimension (rows).
-    type : string{None, 'time'}
+    type : string{None, 'time', 'linFFT', 'logFFT'}
        Type of data to be displayed. [Default: None]
     fs : int
-       Sampling rate in Hz used to display time signals. [Default: 44100]
+       Sampling rate in Hz. [Default: 44100]
     """
 
     # X vector: samples or time
@@ -341,6 +341,15 @@ def plot2D(data, type=None, fs=44100):
     if type == 'time':
         x /= fs
         layout.xaxis.title = 'Time [s]'
+    elif type == 'linFFT':
+        x = _np.fft.rfftfreq(x.shape[0], 1 / fs)
+        layout.yaxis.title = 'Amplitude [dB]'
+        layout.xaxis.title = 'Frequency [Hz]'
+    elif type == 'logFFT':
+        x = _np.fft.rfftfreq(x.shape[0], 1 / fs)
+        layout.yaxis.title = 'Amplitude [dB]'
+        layout.xaxis.title = 'Frequency [Hz]'
+        layout.xaxis.type = 'log'
 
     data = _np.atleast_2d(data)
     N = data.shape[0]
