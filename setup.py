@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sound_field_analysis',
-    version='0.0.3',
+    version='0.1dev',
     description='Python port of the SOFiA toolbox for Matlab',
     url='https://qulab.github.io/sofia-py/',
     author='QU Lab / Christoph Hohnerlein',
