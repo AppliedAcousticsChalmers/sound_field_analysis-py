@@ -100,7 +100,7 @@ def gaussGrid(AZnodes=10, ELnodes=5, plot=False):
     return gridData
 
 
-def lebedev(degree, plot=False, printInfo=True):
+def lebedev(degree, printInfo=True):
     '''Compute Lebedev quadrature nodes and weigths.
 
     Parameters
@@ -116,8 +116,9 @@ def lebedev(degree, plot=False, printInfo=True):
        Lebedev quadrature positions and weigths: [AZ, EL, W]
     Nmax : int
        Highest stable grid order
+
     '''
-    from sofia import lebedev
+    from . import lebedev
 
     if printInfo:
         print('SOFiA Lebedev Grid')
@@ -136,35 +137,6 @@ def lebedev(degree, plot=False, printInfo=True):
 
     # TODO: turnover
     Nmax = _np.floor(_np.sqrt(degree / 1.3) - 1)
-
-    if plot:
-        import matplotlib.pyplot as plt
-        from mpl_toolkits.mplot3d import Axes3D
-
-        fig = plt.figure()
-        ax = fig.gca(projection='3d')
-        ax.set_zlim(-1.01, 1.01)
-
-        # Create sphere
-        u = _np.linspace(0, 2 * pi, 20)
-        v = _np.linspace(0, pi, 20)
-
-        X = _np.outer(_np.cos(u), _np.sin(v))
-        Y = _np.outer(_np.sin(u), _np.sin(v))
-        Z = _np.outer(_np.ones(_np.size(u)), _np.cos(v))
-
-        ax.plot_surface(X, Y, Z, rstride=1, cstride=1, linewidth=1,
-                        color='gray', alpha=0.6, antialiased=True)
-
-        # Scatter points
-        ax.scatter(leb.x, leb.y, leb.z, color='black', s=50)
-
-        # Finish up
-        plt.title('Lebedev configuration with ' + str(degree) + ' degrees')
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_zlabel('Z')
-        plt.show()
 
     return gridData, Nmax
 
