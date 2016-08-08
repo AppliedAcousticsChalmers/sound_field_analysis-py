@@ -22,7 +22,7 @@ We highly recommend the [Anaconda](https://www.continuum.io/downloads) python en
 Alternatively, you can simply *sfa* install it through pip (`pip install sound_field_analysis`).
 
 ## Documentation
-Please find the full documentation at https://qulab.github.io/sofia-py/!
+Please find the full documentation at https://qulab.github.io/sound_field_analysis-py/!
 
 ## Examples
 The following examples are available as Jupyter notebooks, either statically on [github](examples/) or interactivally on [nbviewer](http://nbviewer.jupyter.org). You can of course also simply download the examples and run them locally!
