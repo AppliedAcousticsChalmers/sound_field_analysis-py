@@ -4,6 +4,8 @@ The *sound_field_analysis* toolbox (short: *sfa*) is a Python port of the [Sound
 The package is pure python and PEP8 compliant (except line-length). Please expect things to be slow for now and for the API to break, as the development is still very much ongoing.
 
 ## Requirements
+We use Python 3.5 for development. Chances are that earlier version will work too but this is untested.
+
 The following external libraries are required:
 - [NumPy](http://www.numpy.org)
 - [SciPy](http://www.scipy.org)
