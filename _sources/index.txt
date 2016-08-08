@@ -1,10 +1,5 @@
-.. sofia-py documentation master file, created by
-   sphinx-quickstart on Mon Jul 25 12:05:52 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to sofia-py's documentation!
-====================================
+Welcome to the Readme of the Sound Field Analysis toolbox for Python!
+=====================================================================
 
 Contents:
 

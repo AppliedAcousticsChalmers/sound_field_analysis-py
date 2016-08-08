@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Reference &mdash; sofia-py 0.3 documentation</title>
+  <title>Reference &mdash; Sound Field Analysis toolbox for Python 0.1dev documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="sofia-py 0.3 documentation" href="index.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.1dev documentation" href="index.html"/>
         <link rel="prev" title="Plotting" href="plotting.html"/> 
 
   
@@ -49,7 +49,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> sofia-py
+            <a href="index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
           
 
           
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3
+                0.1
               </div>
             
           
@@ -86,12 +86,13 @@
 <li class="toctree-l1"><a class="reference internal" href="processing.html">Processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-sofia.gen">Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-sofia.process">Processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-sofia.plot">Plotting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-sofia.sph">Sphericals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-sofia.io">I/O</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-sofia.lebedev">lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sound_field_analysis.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sound_field_analysis.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sound_field_analysis.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sound_field_analysis.sph">Sphericals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sound_field_analysis.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sound_field_analysis.lebedev">lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-sound_field_analysis.utils">Utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -107,7 +108,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">sofia-py</a>
+        <a href="index.html">Sound Field Analysis toolbox for Python</a>
       </nav>
 
 
@@ -140,8 +141,8 @@
             
   <div class="section" id="reference">
 <h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-sofia.gen">
-<span id="generators"></span><h2>Generators<a class="headerlink" href="#module-sofia.gen" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sound_field_analysis.gen">
+<span id="generators"></span><h2>Generators<a class="headerlink" href="#module-sound_field_analysis.gen" title="Permalink to this headline">¶</a></h2>
 <p>Module contains various generator functions:</p>
 <dl class="docutils">
 <dt><cite>awgn</cite></dt>
@@ -158,8 +159,8 @@
 <dd>Wave Generator, returns spatial Fourier coefficients</dd>
 </dl>
 <dl class="function">
-<dt id="sofia.gen.awgn">
-<code class="descclassname">sofia.gen.</code><code class="descname">awgn</code><span class="sig-paren">(</span><em>fftData</em>, <em>noiseLevel=80</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#awgn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.awgn" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.awgn">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">awgn</code><span class="sig-paren">(</span><em>fftData</em>, <em>noiseLevel=80</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#awgn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.awgn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -183,8 +184,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.gen.gaussGrid">
-<code class="descclassname">sofia.gen.</code><code class="descname">gaussGrid</code><span class="sig-paren">(</span><em>AZnodes=10</em>, <em>ELnodes=5</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#gaussGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.gaussGrid" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.gaussGrid">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">gaussGrid</code><span class="sig-paren">(</span><em>AZnodes=10</em>, <em>ELnodes=5</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#gaussGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.gaussGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Gauss-Legendre quadrature nodes and weigths in the SOFiA/VariSphear data format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -217,8 +218,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.gen.lebedev">
-<code class="descclassname">sofia.gen.</code><code class="descname">lebedev</code><span class="sig-paren">(</span><em>degree</em>, <em>plot=False</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#lebedev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.lebedev" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.lebedev">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">lebedev</code><span class="sig-paren">(</span><em>degree</em>, <em>plot=False</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#lebedev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.lebedev" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Lebedev quadrature nodes and weigths.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -242,8 +243,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.gen.mf">
-<code class="descclassname">sofia.gen.</code><code class="descname">mf</code><span class="sig-paren">(</span><em>N</em>, <em>kr</em>, <em>ac</em>, <em>amp_maxdB=0</em>, <em>plc=0</em>, <em>fadeover=0</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#mf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.mf" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.mf">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">mf</code><span class="sig-paren">(</span><em>N</em>, <em>kr</em>, <em>ac</em>, <em>amp_maxdB=0</em>, <em>plc=0</em>, <em>fadeover=0</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#mf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.mf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate modal radial filters</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -295,8 +296,8 @@ gap of powerloss compensated filter and normal N0 filters.
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.gen.swg">
-<code class="descclassname">sofia.gen.</code><code class="descname">swg</code><span class="sig-paren">(</span><em>r=0.01</em>, <em>gridData=None</em>, <em>ac=0</em>, <em>FS=48000</em>, <em>NFFT=512</em>, <em>AZ=0</em>, <em>EL=1.5707963267948966</em>, <em>c=343</em>, <em>wavetype=0</em>, <em>ds=1</em>, <em>Nlim=120</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#swg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.swg" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.swg">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">swg</code><span class="sig-paren">(</span><em>r=0.01</em>, <em>gridData=None</em>, <em>ac=0</em>, <em>FS=48000</em>, <em>NFFT=512</em>, <em>AZ=0</em>, <em>EL=1.5707963267948966</em>, <em>c=343</em>, <em>wavetype=0</em>, <em>ds=1</em>, <em>Nlim=120</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#swg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.swg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sampled Wave Generator Wrapper</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -383,8 +384,8 @@ generator core and the I/T/C spatial transform core.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.gen.wgc">
-<code class="descclassname">sofia.gen.</code><code class="descname">wgc</code><span class="sig-paren">(</span><em>N</em>, <em>r</em>, <em>ac</em>, <em>fs</em>, <em>F_NFFT</em>, <em>az</em>, <em>el</em>, <em>t=0.0</em>, <em>c=343.0</em>, <em>wavetype=0</em>, <em>ds=1.0</em>, <em>lowerSegLim=0</em>, <em>SegN=None</em>, <em>upperSegLim=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/gen.html#wgc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.gen.wgc" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.wgc">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">wgc</code><span class="sig-paren">(</span><em>N</em>, <em>r</em>, <em>ac</em>, <em>fs</em>, <em>F_NFFT</em>, <em>az</em>, <em>el</em>, <em>t=0.0</em>, <em>c=343.0</em>, <em>wavetype=0</em>, <em>ds=1.0</em>, <em>lowerSegLim=0</em>, <em>SegN=None</em>, <em>upperSegLim=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#wgc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.wgc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wave Generator Core:
 Returns Spatial Fourier Coefficients <cite>Pnm</cite> and <cite>kr</cite> vector</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -465,8 +466,8 @@ response will by cyclically shifted (cyclic convolution).</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-sofia.process">
-<span id="processing"></span><h2>Processing<a class="headerlink" href="#module-sofia.process" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sound_field_analysis.process">
+<span id="processing"></span><h2>Processing<a class="headerlink" href="#module-sound_field_analysis.process" title="Permalink to this headline">¶</a></h2>
 <p>Functions that act on the Spatial Fourier Coefficients</p>
 <dl class="docutils">
 <dt><cite>fdt</cite></dt>
@@ -496,8 +497,8 @@ response will by cyclically shifted (cyclic convolution).</p>
 <p class="last">Use more descriptive function names</p>
 </div>
 <dl class="function">
-<dt id="sofia.process.bsa">
-<code class="descclassname">sofia.process.</code><code class="descname">bsa</code><span class="sig-paren">(</span><em>Pnm</em>, <em>ctSig</em>, <em>dn</em>, <em>transition</em>, <em>avgBandwidth</em>, <em>fade=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#bsa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.bsa" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.bsa">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">bsa</code><span class="sig-paren">(</span><em>Pnm</em>, <em>ctSig</em>, <em>dn</em>, <em>transition</em>, <em>avgBandwidth</em>, <em>fade=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#bsa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.bsa" title="Permalink to this definition">¶</a></dt>
 <dd><p>B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -536,8 +537,8 @@ AES Convention 2012, Convention Paper 8751, 2012. <a class="reference external" 
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.fdt">
-<code class="descclassname">sofia.process.</code><code class="descname">fdt</code><span class="sig-paren">(</span><em>timeData</em>, <em>FFToversize=1</em>, <em>firstSample=0</em>, <em>lastSample=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#fdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.fdt" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.fdt">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">fdt</code><span class="sig-paren">(</span><em>timeData</em>, <em>FFToversize=1</em>, <em>firstSample=0</em>, <em>lastSample=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#fdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.fdt" title="Permalink to this definition">¶</a></dt>
 <dd><p>F/D/T frequency domain transform</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -585,8 +586,8 @@ temporal information within the captured sound field.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.itc">
-<code class="descclassname">sofia.process.</code><code class="descname">itc</code><span class="sig-paren">(</span><em>Pnm</em>, <em>angles</em>, <em>N=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#itc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.itc" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.itc">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">itc</code><span class="sig-paren">(</span><em>Pnm</em>, <em>angles</em>, <em>N=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#itc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.itc" title="Permalink to this definition">¶</a></dt>
 <dd><p>I/T/C Fast Inverse spatial Fourier Transform Core</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -622,8 +623,8 @@ temporal information within the captured sound field.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.pdc">
-<code class="descclassname">sofia.process.</code><code class="descname">pdc</code><span class="sig-paren">(</span><em>N</em>, <em>OmegaL</em>, <em>Pnm</em>, <em>dn</em>, <em>cn=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#pdc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.pdc" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.pdc">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">pdc</code><span class="sig-paren">(</span><em>N</em>, <em>OmegaL</em>, <em>Pnm</em>, <em>dn</em>, <em>cn=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#pdc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.pdc" title="Permalink to this definition">¶</a></dt>
 <dd><p>P/D/C - Plane Wave Decomposition</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -657,8 +658,8 @@ or with kr bins in rows over N cols. [Default: None]</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.rfi">
-<code class="descclassname">sofia.process.</code><code class="descname">rfi</code><span class="sig-paren">(</span><em>dn</em>, <em>kernelDownScale=2</em>, <em>highPass=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#rfi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.rfi" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.rfi">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">rfi</code><span class="sig-paren">(</span><em>dn</em>, <em>kernelDownScale=2</em>, <em>highPass=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#rfi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.rfi" title="Permalink to this definition">¶</a></dt>
 <dd><p>R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -709,8 +710,8 @@ their spectra and impulse responses.
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.sfe">
-<code class="descclassname">sofia.process.</code><code class="descname">sfe</code><span class="sig-paren">(</span><em>Pnm_kra</em>, <em>kra</em>, <em>krb</em>, <em>problem='interior'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#sfe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.sfe" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.sfe">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">sfe</code><span class="sig-paren">(</span><em>Pnm_kra</em>, <em>kra</em>, <em>krb</em>, <em>problem='interior'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#sfe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.sfe" title="Permalink to this definition">¶</a></dt>
 <dd><p>S/F/E Sound Field Extrapolation. CURRENTLY WIP</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -728,8 +729,8 @@ their spectra and impulse responses.
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.stc">
-<code class="descclassname">sofia.process.</code><code class="descname">stc</code><span class="sig-paren">(</span><em>N</em>, <em>fftData</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#stc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.stc" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.stc">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">stc</code><span class="sig-paren">(</span><em>N</em>, <em>fftData</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#stc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.stc" title="Permalink to this definition">¶</a></dt>
 <dd><p>S/T/C Fast Spatial Fourier Transform</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -760,8 +761,8 @@ their spectra and impulse responses.
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.tdt">
-<code class="descclassname">sofia.process.</code><code class="descname">tdt</code><span class="sig-paren">(</span><em>Y</em>, <em>win=0</em>, <em>minPhase=False</em>, <em>resampleFactor=1</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#tdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.tdt" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.tdt">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">tdt</code><span class="sig-paren">(</span><em>Y</em>, <em>win=0</em>, <em>minPhase=False</em>, <em>resampleFactor=1</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#tdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.tdt" title="Permalink to this definition">¶</a></dt>
 <dd><p>T/D/T - Time Domain Transform</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -796,8 +797,8 @@ and the function returns [NumberOfChannels x resampleFactor*2^n] samples.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.process.wdr">
-<code class="descclassname">sofia.process.</code><code class="descname">wdr</code><span class="sig-paren">(</span><em>Pnm</em>, <em>xAngle</em>, <em>yAngle</em>, <em>zAngle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/process.html#wdr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.process.wdr" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.process.wdr">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">wdr</code><span class="sig-paren">(</span><em>Pnm</em>, <em>xAngle</em>, <em>yAngle</em>, <em>zAngle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#wdr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.wdr" title="Permalink to this definition">¶</a></dt>
 <dd><p>W/D/R Wigner-D Rotation - NOT YET IMPLEMENTED</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -820,8 +821,8 @@ and the function returns [NumberOfChannels x resampleFactor*2^n] samples.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-sofia.plot">
-<span id="plotting"></span><h2>Plotting<a class="headerlink" href="#module-sofia.plot" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sound_field_analysis.plot">
+<span id="plotting"></span><h2>Plotting<a class="headerlink" href="#module-sound_field_analysis.plot" title="Permalink to this headline">¶</a></h2>
 <p>Plotting functions
 Helps visualizing spherical microphone data.</p>
 <p>Generally, you probably want to first extract the amplitude information in spherical coordinates:
@@ -830,8 +831,8 @@ And then visualize that:
 &gt;&gt; plot3D(vizMTX, style=&#8217;shape&#8217;)</p>
 <p>Other valid styles are &#8216;sphere&#8217; and &#8216;flat&#8217;.</p>
 <dl class="function">
-<dt id="sofia.plot.genFlat">
-<code class="descclassname">sofia.plot.</code><code class="descname">genFlat</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genFlat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genFlat" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.genFlat">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genFlat</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genFlat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genFlat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns trace of flat surface with intensity as surface elevation and color</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -852,8 +853,8 @@ And then visualize that:
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.genShape">
-<code class="descclassname">sofia.plot.</code><code class="descname">genShape</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genShape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genShape" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.genShape">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genShape</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genShape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genShape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns trace of shape with intensity as radial extension</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -874,16 +875,16 @@ And then visualize that:
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.genSphCoords">
-<code class="descclassname">sofia.plot.</code><code class="descname">genSphCoords</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genSphCoords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genSphCoords" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.genSphCoords">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genSphCoords</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genSphCoords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genSphCoords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates cartesian (x,y,z) and spherical (theta, phi) coordinates of a sphere
 :returns: <strong>coords</strong> &#8211; holds cartesian (x,y,z) and spherical (theta, phi) coordinates
 :rtype: named tuple</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.genSphere">
-<code class="descclassname">sofia.plot.</code><code class="descname">genSphere</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genSphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genSphere" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.genSphere">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genSphere</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genSphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genSphere" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns trace of sphere with intensity as surface color</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -900,8 +901,8 @@ And then visualize that:
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.genVisual">
-<code class="descclassname">sofia.plot.</code><code class="descname">genVisual</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#genVisual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.genVisual" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.genVisual">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genVisual</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genVisual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genVisual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns desired trace after cleaning the data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -925,8 +926,8 @@ And then visualize that:
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.makeFullMTX">
-<code class="descclassname">sofia.plot.</code><code class="descname">makeFullMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>kr</em>, <em>Nviz=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#makeFullMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.makeFullMTX" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.makeFullMTX">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">makeFullMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>kr</em>, <em>Nviz=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#makeFullMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.makeFullMTX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates visualization matrix for a set of spatial fourier coefficients over all kr
 :param Pnm: Spatial Fourier Coefficients (e.g. from S/T/C)
 :type Pnm: array_like
@@ -956,8 +957,8 @@ And then visualize that:
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.makeMTX">
-<code class="descclassname">sofia.plot.</code><code class="descname">makeMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>krIndex=1</em>, <em>Nviz=3</em>, <em>oversize=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#makeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.makeMTX" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.makeMTX">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">makeMTX</code><span class="sig-paren">(</span><em>Pnm</em>, <em>dn</em>, <em>krIndex=1</em>, <em>Nviz=3</em>, <em>oversize=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#makeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.makeMTX" title="Permalink to this definition">¶</a></dt>
 <dd><p>mtxData = makeMTX(Nviz=3, Pnm, dn, krIndex)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -990,8 +991,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.normalizeMTX">
-<code class="descclassname">sofia.plot.</code><code class="descname">normalizeMTX</code><span class="sig-paren">(</span><em>MTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#normalizeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.normalizeMTX" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.normalizeMTX">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">normalizeMTX</code><span class="sig-paren">(</span><em>MTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#normalizeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.normalizeMTX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalizes a matrix to [-1 ... 1]</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1008,8 +1009,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.plot2D">
-<code class="descclassname">sofia.plot.</code><code class="descname">plot2D</code><span class="sig-paren">(</span><em>data</em>, <em>type=None</em>, <em>fs=44100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#plot2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.plot2D" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.plot2D">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">plot2D</code><span class="sig-paren">(</span><em>data</em>, <em>type=None</em>, <em>fs=44100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#plot2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.plot2D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize 2D data using plotly.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1027,8 +1028,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.plot3D">
-<code class="descclassname">sofia.plot.</code><code class="descname">plot3D</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#plot3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.plot3D" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.plot3D">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">plot3D</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#plot3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.plot3D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize matrix data, such as from makeMTX(Pnm, dn)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1050,8 +1051,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.showTrace">
-<code class="descclassname">sofia.plot.</code><code class="descname">showTrace</code><span class="sig-paren">(</span><em>trace</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#showTrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.showTrace" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.showTrace">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">showTrace</code><span class="sig-paren">(</span><em>trace</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#showTrace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.showTrace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper around plotlys offline .plot() function</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1074,8 +1075,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.plot.sph2cartMTX">
-<code class="descclassname">sofia.plot.</code><code class="descname">sph2cartMTX</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/plot.html#sph2cartMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.plot.sph2cartMTX" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.plot.sph2cartMTX">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">sph2cartMTX</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#sph2cartMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.sph2cartMTX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the spherical vizMTX data to named tuple contaibubg .xs/.ys/.zs</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1092,8 +1093,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 </div>
-<div class="section" id="module-sofia.sph">
-<span id="sphericals"></span><h2>Sphericals<a class="headerlink" href="#module-sofia.sph" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sound_field_analysis.sph">
+<span id="sphericals"></span><h2>Sphericals<a class="headerlink" href="#module-sound_field_analysis.sph" title="Permalink to this headline">¶</a></h2>
 <p>Collection of spherical helper functions:</p>
 <dl class="docutils">
 <dt><cite>sph_harm</cite></dt>
@@ -1108,8 +1109,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 <dd>Convert cartesion to spherical coordinates and vice versa</dd>
 </dl>
 <dl class="function">
-<dt id="sofia.sph.besselh">
-<code class="descclassname">sofia.sph.</code><code class="descname">besselh</code><span class="sig-paren">(</span><em>n</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#besselh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.besselh" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.besselh">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">besselh</code><span class="sig-paren">(</span><em>n</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#besselh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.besselh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bessel function of third kind (Hankel function). Wraps scipy.special.hankel1(n, z)
 :param n: Order (float)
 :type n: array_like
@@ -1128,8 +1129,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.besselj">
-<code class="descclassname">sofia.sph.</code><code class="descname">besselj</code><span class="sig-paren">(</span><em>n</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#besselj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.besselj" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.besselj">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">besselj</code><span class="sig-paren">(</span><em>n</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#besselj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.besselj" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bessel function of first kind. Wraps scipy.special.jn(n, z)
 :param n: Order (float)
 :type n: array_like
@@ -1148,18 +1149,18 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.bn">
-<code class="descclassname">sofia.sph.</code><code class="descname">bn</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em>, <em>ac</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.bn">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">bn</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em>, <em>ac</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#bn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.bn" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.bn_dualOpenP">
-<code class="descclassname">sofia.sph.</code><code class="descname">bn_dualOpenP</code><span class="sig-paren">(</span><em>n</em>, <em>kr1</em>, <em>kr2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_dualOpenP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_dualOpenP" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.bn_dualOpenP">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">bn_dualOpenP</code><span class="sig-paren">(</span><em>n</em>, <em>kr1</em>, <em>kr2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#bn_dualOpenP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.bn_dualOpenP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.bn_npf">
-<code class="descclassname">sofia.sph.</code><code class="descname">bn_npf</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em>, <em>ac</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_npf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_npf" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.bn_npf">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">bn_npf</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em>, <em>ac</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#bn_npf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.bn_npf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Microphone scaling</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1195,34 +1196,34 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.bn_openP">
-<code class="descclassname">sofia.sph.</code><code class="descname">bn_openP</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_openP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_openP" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.bn_openP">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">bn_openP</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#bn_openP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.bn_openP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.bn_openPG">
-<code class="descclassname">sofia.sph.</code><code class="descname">bn_openPG</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_openPG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_openPG" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.bn_openPG">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">bn_openPG</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#bn_openPG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.bn_openPG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.bn_rigidP">
-<code class="descclassname">sofia.sph.</code><code class="descname">bn_rigidP</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_rigidP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_rigidP" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.bn_rigidP">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">bn_rigidP</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#bn_rigidP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.bn_rigidP" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.bn_rigidPG">
-<code class="descclassname">sofia.sph.</code><code class="descname">bn_rigidPG</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#bn_rigidPG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.bn_rigidPG" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.bn_rigidPG">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">bn_rigidPG</code><span class="sig-paren">(</span><em>n</em>, <em>krm</em>, <em>krs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#bn_rigidPG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.bn_rigidPG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.cart2sph">
-<code class="descclassname">sofia.sph.</code><code class="descname">cart2sph</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#cart2sph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.cart2sph" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.cart2sph">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">cart2sph</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#cart2sph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.cart2sph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.dspbessel">
-<code class="descclassname">sofia.sph.</code><code class="descname">dspbessel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#dspbessel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.dspbessel" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.dspbessel">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">dspbessel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#dspbessel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.dspbessel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Derivative of spherical Bessel</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1245,8 +1246,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.dsphankel">
-<code class="descclassname">sofia.sph.</code><code class="descname">dsphankel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#dsphankel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.dsphankel" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.dsphankel">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">dsphankel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#dsphankel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.dsphankel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Derivative spherical Hankel function hn&#8217;</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1269,8 +1270,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.dspneumann">
-<code class="descclassname">sofia.sph.</code><code class="descname">dspneumann</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#dspneumann"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.dspneumann" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.dspneumann">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">dspneumann</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#dspneumann"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.dspneumann" title="Permalink to this definition">¶</a></dt>
 <dd><p>Derivative spherical Neumann (Bessel second kind) of order n</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1293,8 +1294,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.spbessel">
-<code class="descclassname">sofia.sph.</code><code class="descname">spbessel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#spbessel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.spbessel" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.spbessel">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">spbessel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#spbessel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.spbessel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spherical Bessel function</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1317,14 +1318,14 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.sph2cart">
-<code class="descclassname">sofia.sph.</code><code class="descname">sph2cart</code><span class="sig-paren">(</span><em>az</em>, <em>el</em>, <em>r</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#sph2cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.sph2cart" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.sph2cart">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">sph2cart</code><span class="sig-paren">(</span><em>az</em>, <em>el</em>, <em>r</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#sph2cart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.sph2cart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts spherical coordinates az, el, r to cartesian coordinates x, y, z.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.sph_harm">
-<code class="descclassname">sofia.sph.</code><code class="descname">sph_harm</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>az</em>, <em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#sph_harm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.sph_harm" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.sph_harm">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">sph_harm</code><span class="sig-paren">(</span><em>m</em>, <em>n</em>, <em>az</em>, <em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#sph_harm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.sph_harm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute sphercial harmonics</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1354,8 +1355,8 @@ sampled at theta = az, phi = el</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.sphankel">
-<code class="descclassname">sofia.sph.</code><code class="descname">sphankel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#sphankel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.sphankel" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.sphankel">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">sphankel</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#sphankel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.sphankel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spherical Hankel hn</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1378,8 +1379,8 @@ sampled at theta = az, phi = el</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="sofia.sph.spneumann">
-<code class="descclassname">sofia.sph.</code><code class="descname">spneumann</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/sph.html#spneumann"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.sph.spneumann" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.sph.spneumann">
+<code class="descclassname">sound_field_analysis.sph.</code><code class="descname">spneumann</code><span class="sig-paren">(</span><em>n</em>, <em>kr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/sph.html#spneumann"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.sph.spneumann" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spherical Neumann (Bessel second kind)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1402,12 +1403,12 @@ sampled at theta = az, phi = el</li>
 </dd></dl>
 
 </div>
-<div class="section" id="module-sofia.io">
-<span id="i-o"></span><h2>I/O<a class="headerlink" href="#module-sofia.io" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sound_field_analysis.io">
+<span id="i-o"></span><h2>I/O<a class="headerlink" href="#module-sound_field_analysis.io" title="Permalink to this headline">¶</a></h2>
 <p>Input-Output functions</p>
 <dl class="function">
-<dt id="sofia.io.readMiroStruct">
-<code class="descclassname">sofia.io.</code><code class="descname">readMiroStruct</code><span class="sig-paren">(</span><em>matFile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/io.html#readMiroStruct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.io.readMiroStruct" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.io.readMiroStruct">
+<code class="descclassname">sound_field_analysis.io.</code><code class="descname">readMiroStruct</code><span class="sig-paren">(</span><em>matFile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/io.html#readMiroStruct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.io.readMiroStruct" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads miro matlab files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1437,8 +1438,8 @@ sampled at theta = az, phi = el</li>
 </dd></dl>
 
 </div>
-<div class="section" id="module-sofia.lebedev">
-<span id="lebedev"></span><h2>lebedev<a class="headerlink" href="#module-sofia.lebedev" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sound_field_analysis.lebedev">
+<span id="lebedev"></span><h2>lebedev<a class="headerlink" href="#module-sound_field_analysis.lebedev" title="Permalink to this headline">¶</a></h2>
 <p>Generate Lebedev grid and coefficients
 This module only exposes the function  <cite>lebGrid = lebedev.genGrid(degree)</cite>.</p>
 <p>lebGrid is a named tuple containing the coordinates .x, .y, .z and the weights .w
@@ -1452,8 +1453,8 @@ and in the user- and programmers-manuals describing their codes.</p>
 &#8216;A quadrature formula for the sphere of the 131st algebraic order of accuracy&#8217;
 Doklady Mathematics, Vol. 59, No. 3, 1999, pp. 477-481.</p>
 <dl class="function">
-<dt id="sofia.lebedev.genGrid">
-<code class="descclassname">sofia.lebedev.</code><code class="descname">genGrid</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sofia/lebedev.html#genGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sofia.lebedev.genGrid" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.lebedev.genGrid">
+<code class="descclassname">sound_field_analysis.lebedev.</code><code class="descname">genGrid</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/lebedev.html#genGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.lebedev.genGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Lebedev coefficients of n&#8217;th degree</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1464,6 +1465,45 @@ Doklady Mathematics, Vol. 59, No. 3, 1999, pp. 477-481.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>lebGrid</strong> &#8211; lebGrid is a named tuple containing .x, .y, .z and .w</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">named tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sound_field_analysis.utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-sound_field_analysis.utils" title="Permalink to this headline">¶</a></h2>
+<p>Miscellenious utility functions</p>
+<dl class="function">
+<dt id="sound_field_analysis.utils.env_info">
+<code class="descclassname">sound_field_analysis.utils.</code><code class="descname">env_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/utils.html#env_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.utils.env_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guess environment based on sys.modules.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>env</strong> &#8211; Guesed environment</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string{&#8216;jupyter_notebook&#8217;, &#8216;ipython_terminal&#8217;, &#8216;terminal&#8217;}</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sound_field_analysis.utils.progress_bar">
+<code class="descclassname">sound_field_analysis.utils.</code><code class="descname">progress_bar</code><span class="sig-paren">(</span><em>curIDX</em>, <em>maxIDX=None</em>, <em>description='Progress'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/utils.html#progress_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.utils.progress_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a spinner or a progress bar</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>curIDX</strong> (<em>int</em>) &#8211; Current position in the loop</li>
+<li><strong>maxIDX</strong> (<em>int, optional</em>) &#8211; Number of iterations. Will force a spinner if set to None. [Default: None]</li>
+<li><strong>description</strong> (<em>string, optional</em>) &#8211; Clarify what&#8217;s taking time</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1511,7 +1551,7 @@ Doklady Mathematics, Vol. 59, No. 3, 1999, pp. 477-481.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3',
+            VERSION:'0.1dev',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

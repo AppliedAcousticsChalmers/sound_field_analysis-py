@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sofia.process &mdash; sofia-py 0.3 documentation</title>
+  <title>sound_field_analysis.process &mdash; Sound Field Analysis toolbox for Python 0.1dev documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="sofia-py 0.3 documentation" href="../../index.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.1dev documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -49,7 +49,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> sofia-py
+            <a href="../../index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
           
 
           
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3
+                0.1
               </div>
             
           
@@ -99,7 +99,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">sofia-py</a>
+        <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
       </nav>
 
 
@@ -118,7 +118,7 @@
       
           <li><a href="../index.html">Module code</a> &raquo;</li>
       
-    <li>sofia.process</li>
+    <li>sound_field_analysis.process</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -130,7 +130,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for sofia.process</h1><div class="highlight"><pre>
+  <h1>Source code for sound_field_analysis.process</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions that act on the Spatial Fourier Coefficients</span>
 
@@ -170,7 +170,7 @@
 <span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
 
 
-<div class="viewcode-block" id="bsa"><a class="viewcode-back" href="../../reference.html#sofia.process.bsa">[docs]</a><span class="k">def</span> <span class="nf">bsa</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">ctSig</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">avgBandwidth</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="bsa"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.bsa">[docs]</a><span class="k">def</span> <span class="nf">bsa</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">ctSig</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">avgBandwidth</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</span>
 
 <span class="sd">    Parameters</span>
@@ -207,7 +207,7 @@
     <span class="k">return</span> <span class="n">Pnm</span></div>
 
 
-<div class="viewcode-block" id="fdt"><a class="viewcode-back" href="../../reference.html#sofia.process.fdt">[docs]</a><span class="k">def</span> <span class="nf">fdt</span><span class="p">(</span><span class="n">timeData</span><span class="p">,</span> <span class="n">FFToversize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstSample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lastSample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="fdt"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.fdt">[docs]</a><span class="k">def</span> <span class="nf">fdt</span><span class="p">(</span><span class="n">timeData</span><span class="p">,</span> <span class="n">FFToversize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstSample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lastSample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;F/D/T frequency domain transform</span>
 
 <span class="sd">    Parameters</span>
@@ -289,7 +289,7 @@
     <span class="k">return</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">ctSig</span></div>
 
 
-<div class="viewcode-block" id="itc"><a class="viewcode-back" href="../../reference.html#sofia.process.itc">[docs]</a><span class="k">def</span> <span class="nf">itc</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="itc"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.itc">[docs]</a><span class="k">def</span> <span class="nf">itc</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;I/T/C Fast Inverse spatial Fourier Transform Core</span>
 
 <span class="sd">    Parameters</span>
@@ -351,7 +351,7 @@
     <span class="k">return</span> <span class="n">OutputArray</span></div>
 
 
-<div class="viewcode-block" id="pdc"><a class="viewcode-back" href="../../reference.html#sofia.process.pdc">[docs]</a><span class="k">def</span> <span class="nf">pdc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">OmegaL</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">cn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="pdc"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.pdc">[docs]</a><span class="k">def</span> <span class="nf">pdc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">OmegaL</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">cn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;P/D/C - Plane Wave Decomposition</span>
 
 <span class="sd">    Parameters</span>
@@ -456,7 +456,7 @@
     <span class="k">return</span> <span class="n">OutputArray</span> <span class="o">*</span> <span class="n">gaincorrection</span></div>
 
 
-<div class="viewcode-block" id="rfi"><a class="viewcode-back" href="../../reference.html#sofia.process.rfi">[docs]</a><span class="k">def</span> <span class="nf">rfi</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="n">kernelDownScale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">highPass</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<div class="viewcode-block" id="rfi"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.rfi">[docs]</a><span class="k">def</span> <span class="nf">rfi</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="n">kernelDownScale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">highPass</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]</span>
 
 <span class="sd">    Parameters</span>
@@ -506,7 +506,7 @@
     <span class="k">return</span> <span class="n">dn</span></div>
 
 
-<div class="viewcode-block" id="sfe"><a class="viewcode-back" href="../../reference.html#sofia.process.sfe">[docs]</a><span class="k">def</span> <span class="nf">sfe</span><span class="p">(</span><span class="n">Pnm_kra</span><span class="p">,</span> <span class="n">kra</span><span class="p">,</span> <span class="n">krb</span><span class="p">,</span> <span class="n">problem</span><span class="o">=</span><span class="s1">&#39;interior&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="sfe"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.sfe">[docs]</a><span class="k">def</span> <span class="nf">sfe</span><span class="p">(</span><span class="n">Pnm_kra</span><span class="p">,</span> <span class="n">kra</span><span class="p">,</span> <span class="n">krb</span><span class="p">,</span> <span class="n">problem</span><span class="o">=</span><span class="s1">&#39;interior&#39;</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; S/F/E Sound Field Extrapolation. CURRENTLY WIP</span>
 
 <span class="sd">    Parameters</span>
@@ -555,7 +555,7 @@
     <span class="k">return</span> <span class="n">Pnm_kra</span> <span class="o">*</span> <span class="n">exp</span><span class="o">.</span><span class="n">T</span></div>
 
 
-<div class="viewcode-block" id="stc"><a class="viewcode-back" href="../../reference.html#sofia.process.stc">[docs]</a><span class="k">def</span> <span class="nf">stc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+<div class="viewcode-block" id="stc"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.stc">[docs]</a><span class="k">def</span> <span class="nf">stc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;S/T/C Fast Spatial Fourier Transform</span>
 
 <span class="sd">    Parameters</span>
@@ -604,7 +604,7 @@
     <span class="k">return</span> <span class="n">OutputArray</span></div>
 
 
-<div class="viewcode-block" id="tdt"><a class="viewcode-back" href="../../reference.html#sofia.process.tdt">[docs]</a><span class="k">def</span> <span class="nf">tdt</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minPhase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resampleFactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="tdt"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.tdt">[docs]</a><span class="k">def</span> <span class="nf">tdt</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minPhase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resampleFactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; T/D/T - Time Domain Transform</span>
 
 <span class="sd">    Parameters</span>
@@ -663,7 +663,7 @@
     <span class="k">return</span> <span class="n">y</span></div>
 
 
-<div class="viewcode-block" id="wdr"><a class="viewcode-back" href="../../reference.html#sofia.process.wdr">[docs]</a><span class="k">def</span> <span class="nf">wdr</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">xAngle</span><span class="p">,</span> <span class="n">yAngle</span><span class="p">,</span> <span class="n">zAngle</span><span class="p">):</span>
+<div class="viewcode-block" id="wdr"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.wdr">[docs]</a><span class="k">def</span> <span class="nf">wdr</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">xAngle</span><span class="p">,</span> <span class="n">yAngle</span><span class="p">,</span> <span class="n">zAngle</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;W/D/R Wigner-D Rotation - NOT YET IMPLEMENTED</span>
 
 <span class="sd">    Parameters</span>
@@ -714,7 +714,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.3',
+            VERSION:'0.1dev',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
