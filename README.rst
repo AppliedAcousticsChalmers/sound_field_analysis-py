@@ -89,7 +89,7 @@ Impulse Response reconstruction on a simulated ideal unity plane wave
 
 |AE6_img|_
 
-.. |AE6_img| image:: examples/img/AE6_IdealPlaneWave_ImpResp?raw=true
+.. |AE6_img| image:: examples/img/AE6_IdealPlaneWave_ImpResp.png?raw=true
 .. _AE6_img: http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE6_IdealPlaneWave_ImpResp.ipynb
 
 
