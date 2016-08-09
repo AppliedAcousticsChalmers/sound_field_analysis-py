@@ -107,7 +107,7 @@ Impulse response reconstruction on a simulated sampled unity plane wave
 
 References
 ^^^^^^^^^^
-SOFiA-py is based on the Matlab/C++ toolbox [SOFiA](https://github.com/fietew/sofia-toolbox) by Benjamin Bernschütz. For more information you may refer to the original publication:
+The *sound_field_analysis* toolbox is based on the Matlab/C++ `Sound Field Analysis Toolbox (SOFiA) toolbox`_ by Benjamin Bernschütz. For more information you may refer to the original publication:
 
 [1] `Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio <http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/>`_
 
