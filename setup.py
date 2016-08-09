@@ -1,9 +1,11 @@
 from setuptools import setup
 
+version = open("sound_field_analysis/_version.py").readlines()[-1].split()[-1].strip("\"'")
+
 setup(
     name='sound_field_analysis',
-    version='0.1dev',
-    description='Python port of the SOFiA toolbox for Matlab',
+    version=version,
+    description='Analyze, visualize and process sound field data recorded by spherical microphone arrays.',
     url='https://qulab.github.io/sofia-py/',
     author='QU Lab / Christoph Hohnerlein',
     author_email='christoph.hohnerlein@qu.tu-berlin.de',
