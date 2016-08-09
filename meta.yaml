@@ -17,4 +17,11 @@ requirements:
 
 test:
   imports:
-    - sound_field_analysis as sfa
+    - sound_field_analysis
+
+about:
+  home: https://github.com/QULab/sound_field_analysis-py
+  license: GPLv3
+  license_file: LICENSE
+  summary: Analyze, visualize and process sound field data recorded by spherical microphone arrays
+
