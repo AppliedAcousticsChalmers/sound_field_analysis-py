@@ -16,7 +16,7 @@ Requirements
 ------------
 
 We use Python 3.5 for development. Chances are that earlier version will
-work too but this is untested.
+work too but this is currently untested.
 
 The following external libraries are required:
 
@@ -26,20 +26,21 @@ The following external libraries are required:
 
 Installation
 ------------
+You can simply install *sfa* through pip (``pip install sound_field_analysis``).
 
 We highly recommend the `Anaconda`_ python environment. Once installed,
 you can use the following steps to create a new environment with the
 *sfa* toolbox.
 
-#. Add the `conda-forge`_ channel:
-   ``conda config --add channels conda-forge``
 #. Create a new environment:
-   ``create --name sfa numpy scipy plotly sound_field_analysis``
+   ``conda create --name sfa numpy scipy plotly``
 #. Activate this environment:
    ``source activate sfa``
+#. Install from pypi:
+   ``pip install sound_field_analysis``
 
-Alternatively, you can simply install through pip
-(``pip install sound_field_analysis``).
+Soon, you may also install directly from the `conda-forge`_ channel using 
+``conda install -c conda-forge sound_field_analysis``.
 
 Documentation
 -------------
@@ -51,7 +52,7 @@ Examples
 --------
 
 The following examples are available as Jupyter notebooks, either
-statically on `github`_ or interactivally on `nbviewer`_. You can of
+statically on `github`_ or interactively on `nbviewer`_. You can of
 course also simply download the examples and run them locally!
 
 AE1: Ideal plane wave
