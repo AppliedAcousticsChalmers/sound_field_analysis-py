@@ -6,7 +6,7 @@ package:
 
 source:
   path: sound_field_analysis
-  #git_url: https://github.com/QULab/sofia-py.git
+  #git_url: https://github.com/QULab/sound_field_analysis-py.git
 
 requirements:
   build:
@@ -24,6 +24,5 @@ test:
 about:
   home: https://github.com/QULab/sound_field_analysis-py
   license: GPLv3
-  license_file: LICENSE
   summary: Analyze, visualize and process sound field data recorded by spherical microphone arrays
 
