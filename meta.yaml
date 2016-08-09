@@ -1,6 +1,8 @@
+{% set version = "0.1.dev0" %}
+
 package:
   name: sound_field_analysis
-  version: "0.1dev"
+  version: {{ version }}
 
 source:
   path: sound_field_analysis
