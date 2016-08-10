@@ -23,6 +23,6 @@ test:
 
 about:
   home: https://github.com/QULab/sound_field_analysis-py
-  license: GPLv3
-  summary: Analyze, visualize and process sound field data recorded by spherical microphone arrays
+  license: GPL-3.0
+  summary: 'Analyze, visualize and process sound field data recorded by spherical microphone arrays'
 
