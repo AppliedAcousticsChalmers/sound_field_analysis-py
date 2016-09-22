@@ -5,7 +5,7 @@ The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of
 the `Sound Field Analysis Toolbox (SOFiA) toolbox`_, originally by
 Benjamin Bernschütz\ `[1]`_. The main goal of the *sfa* toolbox is to
 analyze, visualize and process sound field data recorded by spherical
-microphone arrays. Furthermore, various types of testdata may be
+microphone arrays. Furthermore, various types of test-data may be
 generated to evaluate the implemented functions.
 
 The package is pure python and PEP8 compliant (except line-length).
@@ -39,7 +39,7 @@ you can use the following steps to create a new environment with the
 #. Install from pypi:
    ``pip install sound_field_analysis``
 
-Soon, you may also install directly from the `conda-forge`_ channel using 
+Soon, you may also install directly from the `conda-forge`_ channel using
 ``conda install -c conda-forge sound_field_analysis``.
 
 Documentation
@@ -112,7 +112,7 @@ The *sound_field_analysis* toolbox is based on the Matlab/C++ `Sound Field Analy
 
 [1] `Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio <http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/>`_
 
-The Lebedev grid generation was adapted from an implementaion by `Richard P. Muller <https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
+The Lebedev grid generation was adapted from an implementation by `Richard P. Muller <https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
 
 
 .. _Sound Field Analysis Toolbox (SOFiA) toolbox: http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html
