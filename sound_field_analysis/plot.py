@@ -268,9 +268,9 @@ def genFlat(vizMTX):
 
     trace = go.Surface(
         x=_np.r_[0:360],
-        y=_np.r_[0:180],
-        z=_np.abs(vizMTX).T,
-        surfacecolor=_np.abs(vizMTX.reshape((181, -1))).T,
+        y=_np.r_[0:181],
+        z=_np.abs(vizMTX),
+        surfacecolor=_np.abs(vizMTX.reshape((181, -1))),
         colorscale='Viridis',
         showscale=False,
         hoverinfo='none'
@@ -377,5 +377,12 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True):
     ----
     Colorization, contour plot
     """
+
+    if style == 'flat':
+        layout = go.Layout(
+            scene=dict(
+                xaxis=dict(range=[0, 360]),
+                yaxis=dict(range=[0, 181])            )
+        )
 
     showTrace(genVisual(vizMTX, style=style, normalize=True), layout=layout)
