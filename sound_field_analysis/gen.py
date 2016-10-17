@@ -141,7 +141,7 @@ def lebedev(degree, printInfo=True):
     return gridData, Nmax
 
 
-def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=True):
+def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
     """Generate modal radial filters
 
     Parameters
