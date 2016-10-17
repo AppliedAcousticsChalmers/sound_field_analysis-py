@@ -46,7 +46,7 @@ def showTrace(trace, layout=None, colorize=True):
         )
 
     fig = go.Figure(
-        data=trace,
+        data=[trace],
         layout=layout
     )
 
@@ -155,14 +155,15 @@ def genSphCoords():
     coords : named tuple
         holds cartesian (x,y,z) and spherical (theta, phi) coordinates
     """
-    coords = namedtuple('coords', ['x', 'y', 'z', 'theta', 'phi'])
-    theta = _np.linspace(0, 2 * pi, 360)
-    phi = _np.linspace(0, pi, 181)
-    coords.x = _np.outer(_np.cos(theta), _np.sin(phi))
-    coords.y = _np.outer(_np.sin(theta), _np.sin(phi))
-    coords.z = _np.outer(_np.ones(360), _np.cos(phi))
+    coords = namedtuple('coords', ['x', 'y', 'z', 'az', 'el'])
+    az = _np.linspace(0, 2 * pi, 360)
+    el = _np.linspace(0, pi, 181)
+    coords.x = _np.outer(_np.cos(az), _np.sin(el))
+    coords.y = _np.outer(_np.sin(az), _np.sin(el))
+    coords.z = _np.outer(_np.ones(360), _np.cos(el))
 
-    coords.theta, coords.phi = _np.meshgrid(_np.linspace(0, _np.pi, 181), _np.linspace(0, 2 * _np.pi, 360))
+    coords.el, coords.az = _np.meshgrid(_np.linspace(0, _np.pi, 181),
+                                        _np.linspace(0, 2 * _np.pi, 360))
     return coords
 
 
@@ -179,13 +180,13 @@ def sph2cartMTX(vizMTX):
     V : named_tuple
        Contains .xs, .ys, .zs cartesian coordinates
     """
-    rs = vizMTX.reshape((181, -1)).T
+    rs = _np.abs(vizMTX.reshape((181, -1)).T)
 
     coords = genSphCoords()
     V = namedtuple('V', ['xs', 'ys', 'zs'])
-    V.xs = rs * _np.sin(coords.theta) * _np.cos(coords.phi)
-    V.ys = rs * _np.sin(coords.theta) * _np.sin(coords.phi)
-    V.zs = rs * _np.cos(coords.theta)
+    V.xs = rs * _np.sin(coords.el) * _np.cos(coords.az)
+    V.ys = rs * _np.sin(coords.el) * _np.sin(coords.az)
+    V.zs = rs * _np.cos(coords.el)
     return V
 
 
@@ -209,9 +210,9 @@ def genShape(vizMTX):
     V = sph2cartMTX(vizMTX)
 
     trace = go.Surface(
-        x=_np.abs(V.xs),
-        y=_np.abs(V.ys),
-        z=_np.abs(V.zs),
+        x=V.xs,
+        y=V.ys,
+        z=V.zs,
         surfacecolor=_np.abs(vizMTX.reshape((181, -1))).T,
         colorscale='Viridis',
         showscale=False,
