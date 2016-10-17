@@ -2,7 +2,7 @@
 Functions that act on the Spatial Fourier Coefficients
 
 `fdt`
-   Frequency to time transform
+   Frequency domain transform
 `itc`
    Fast Inverse Spatial Fourier Transform
 `pdc`
