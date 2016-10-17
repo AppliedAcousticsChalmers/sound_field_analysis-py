@@ -25,10 +25,11 @@ def readMiroStruct(matFile):
     `timeData` tuple with following fields
     ::
        .impulseResponses [Channels X Samples]
-       .FS
-       .radius           Array radius
+       .FS               Sampling frequency in [Hz]
+       .radius           Array radius in [m]
+       .quadratureGrid   Az, EL, W of the Quadrature
        .averageAirTemp   Temperature in [C]
-       (.centerIR        [1 x Samples] )
+       .centerIR         Impulse response of center mic (if available)
     """
     # Import matlab struct
     mat = sio.loadmat(matFile)
