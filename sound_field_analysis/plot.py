@@ -39,9 +39,9 @@ def showTrace(trace, layout=None, colorize=True):
     if not layout:
         layout = go.Layout(
             scene=dict(
-                xaxis=dict(range=[0, 1]),
-                yaxis=dict(range=[0, 1]),
-                zaxis=dict(range=[0, 1])
+                xaxis=dict(range=[-1, 1]),
+                yaxis=dict(range=[-1, 1]),
+                zaxis=dict(range=[-1, 1])
             )
         )
 
