@@ -41,7 +41,10 @@ def showTrace(trace, layout=None, colorize=True):
             scene=dict(
                 xaxis=dict(range=[-1, 1]),
                 yaxis=dict(range=[-1, 1]),
-                zaxis=dict(range=[-1, 1])
+                zaxis=dict(range=[-1, 1]),
+                aspectmode = 'cube'
+                #aspectratio = dict( x=1, y=1, z=0.7 ),
+                
             )
         )
 
@@ -382,7 +385,10 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True):
         layout = go.Layout(
             scene=dict(
                 xaxis=dict(range=[0, 360]),
-                yaxis=dict(range=[0, 181])            )
+                yaxis=dict(range=[0, 181]),
+                aspectmode='manual',
+                aspectratio = dict( x=3.6, y=1.81, z=1 )
+            )
         )
 
     showTrace(genVisual(vizMTX, style=style, normalize=True), layout=layout)
