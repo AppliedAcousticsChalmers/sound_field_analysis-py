@@ -387,7 +387,7 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True):
                 xaxis=dict(range=[0, 360]),
                 yaxis=dict(range=[0, 181]),
                 aspectmode='manual',
-                aspectratio = dict( x=3.6, y=1.81, z=1 )
+                aspectratio=dict(x=3.6, y=1.81, z=1)
             )
         )
 
