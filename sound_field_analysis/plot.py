@@ -392,3 +392,23 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True):
         )
 
     showTrace(genVisual(vizMTX, style=style, normalize=True), layout=layout)
+
+
+def frqToKr(fTarget, fVec):
+    """Returns the kr bin closest  to the target frequency
+
+    Parameters
+    ----------
+    fTarget : float
+       Target frequency
+    fVec : array_like
+       Array containing the available frequencys
+
+    Returns
+    -------
+    krTarget : int
+       kr bin closest to target frequency
+    """
+
+    return (_np.abs(fVec - fTarget)).argmin()
+
