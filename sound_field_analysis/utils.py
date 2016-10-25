@@ -20,6 +20,8 @@ def env_info():
     else:
         return 'terminal'
     return ip
+
+
 __env = env_info()
 
 
