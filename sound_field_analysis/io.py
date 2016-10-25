@@ -27,9 +27,9 @@ def readMiroStruct(matFile):
        .impulseResponses [Channels X Samples]
        .FS               Sampling frequency in [Hz]
        .radius           Array radius in [m]
-       .quadratureGrid   Az, EL, W of the Quadrature
+       .quadratureGrid   Az, EL, W of the quadrature
        .averageAirTemp   Temperature in [C]
-       .centerIR         Impulse response of center mic (if available)
+       .centerIR         Impulse response of center mic (if available), zero otherwise
     """
     # Import matlab struct
     mat = sio.loadmat(matFile)
