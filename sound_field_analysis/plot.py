@@ -134,13 +134,15 @@ def makeFullMTX(Pnm, dn, kr, Nviz=3):
     return vizMtx
 
 
-def normalizeMTX(MTX):
-    """ Normalizes a matrix to [-1 ... 1]
+def normalizeMTX(MTX, logScale=False):
+    """ Normalizes a matrix to [0 ... 1]
 
     Parameters
     ----------
     MTX : array_like
        Matrix to be normalized
+    logScale : bool
+       Toggle conversion logScale [Default: False]
 
     Returns
     -------
@@ -148,7 +150,15 @@ def normalizeMTX(MTX):
        Normalized Matrix
     """
     MTX -= MTX.min()
-    return MTX / MTX.max()
+    MTX /= MTX.max()
+
+    if logScale:
+        MTX += 0.00001
+        MTX = _np.log10(_np.abs(MTX))
+        MTX += 5
+        MTX /= 5.000004343
+        # MTX = 20 * _np.log10(_np.abs(MTX))
+    return MTX
 
 
 def genSphCoords():
@@ -281,7 +291,7 @@ def genFlat(vizMTX):
     return trace
 
 
-def genVisual(vizMTX, style='shape', normalize=True):
+def genVisual(vizMTX, style='shape', normalize=True, logScale=False):
     """ Returns desired trace after cleaning the data
 
     Parameters
@@ -300,7 +310,7 @@ def genVisual(vizMTX, style='shape', normalize=True):
     """
     vizMTX = _np.abs(vizMTX)  # Can we be sure to only need the abs?
     if normalize:
-        vizMTX = normalizeMTX(vizMTX)
+        vizMTX = normalizeMTX(vizMTX, logScale=logScale)
 
     if style == 'shape':
         return genShape(vizMTX)
@@ -364,7 +374,7 @@ def plot2D(data, type=None, fs=44100):
     showTrace(traces, layout=layout)
 
 
-def plot3D(vizMTX, style='shape', layout=None, colorize=True):
+def plot3D(vizMTX, style='shape', layout=None, colorize=True, logScale=False):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
 
     Parameters
@@ -391,7 +401,7 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True):
             )
         )
 
-    showTrace(genVisual(vizMTX, style=style, normalize=True), layout=layout)
+    showTrace(genVisual(vizMTX, style=style, normalize=True, logScale=logScale), layout=layout)
 
 
 def frqToKr(fTarget, fVec):
