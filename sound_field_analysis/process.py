@@ -3,21 +3,22 @@ Functions that act on the Spatial Fourier Coefficients
 
 `FFT`
    (Fast) Fourier Transform
-`iSpatFT`
-   Fast Inverse Spatial Fourier Transform
-`PWDecomp`
-   Plane Wave Decomposition
-`rfi`
-   Radial filter Improvement
-`spatFT`
-   Spatial Fourier Transform
 `iFFT`
    Inverse (Fast) Fourier Transform
 
-Not yet implemented:
+`spatFT`
+   Spatial Fourier Transform
+`iSpatFT`
+   Fast Inverse Spatial Fourier Transform
 
+`PWDecomp`
+   Plane Wave Decomposition
+
+Not yet implemented:
 `BEMA`
    BEMA Spatial Anti-Aliasing
+`rfi`
+   Radial filter improvement
 `sfe`
    Sound field extrapolation
 `wdr`
