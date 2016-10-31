@@ -42,7 +42,7 @@ def showTrace(trace, layout=None, colorize=True):
                 xaxis=dict(range=[-1, 1]),
                 yaxis=dict(range=[-1, 1]),
                 zaxis=dict(range=[-1, 1]),
-                aspectmode = 'cube'
+                aspectmode='cube'
                 #aspectratio = dict( x=1, y=1, z=0.7 ),
                 
             )
