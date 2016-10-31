@@ -26,16 +26,16 @@ timeData = io.readMiroStruct('data/SOFiA_A4_struct.mat')
 
 # Frequency domain transform
 # Transform impulse responses from the time domain to the frequency domain with the corresponding kr and frequency vectors.
-fftData, kr, f, _ = process.fdt(timeData)
+fftData, kr, f, _ = process.FFT(timeData)
 
 # Spatial Fourier transform
 # Apply Spatial Fourier transform of the supplied order `Nsft` to the transfer functions, given their respective positions on the quadrature.
 # `Pnm` then holds the `N^2 - 1` rows (corresponding to `n0m0`, `n1m-1`, `n1m0`, `n1m1`, `n2m-2`, ... ,`nNmN`) with the coefficients.
-Pnm = process.stc(Nsft, fftData, timeData.quadratureGrid)
+Pnm = process.spatFT(Nsft, fftData, timeData.quadratureGrid)
 
 # Radial filters
 # Generate radial filters based on the array configuration `ac`, order `Nrf`, soft-limited at the `amp_maxdB`.
-dn, _ = gen.mf(Nrf, kr, ac, amp_maxdB=amp_maxdB)
+dn, _ = gen.radFilter(Nrf, kr, ac, amp_maxdB=amp_maxdB)
 
 # Plot
 # To plot a specific frequency, you can use the utility function frqToKr to convert to the closest kr bin.

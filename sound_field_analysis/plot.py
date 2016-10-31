@@ -15,7 +15,7 @@ from plotly.offline import plot as pltoff
 from plotly.offline import iplot
 import plotly.graph_objs as go
 
-from .process import pdc
+from .process import PWDecomp
 from .utils import env_info, progress_bar
 
 pi = _np.pi
@@ -99,7 +99,7 @@ def makeMTX(Pnm, dn, krIndex=1, Nviz=3, oversize=1):
     angles = _np.mgrid[0:360, 0:181].T.reshape((-1, 2)) * _np.pi / 180
 
     # Compute plane wave decomposition for all angles at given kr
-    Y = pdc(Nviz, angles, Pnm[:, krIndex], dn[:, krIndex], printInfo=False)
+    Y = PWDecomp(Nviz, angles, Pnm[:, krIndex], dn[:, krIndex], printInfo=False)
 
     return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
 

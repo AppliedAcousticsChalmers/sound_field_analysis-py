@@ -23,13 +23,13 @@ timeData = io.readMiroStruct(matFile)
 vizMtx = np.empty((K, 181, 360))
 for k in range(0, K):
     # Transform time domain data to frequency domain and generate kr-vector
-    fftData, kr, f, _ = process.fdt(timeData, FFToversize=FFToversize, firstSample=startSample[k], lastSample=startSample[k] + blockSize)
+    fftData, kr, f, _ = process.FFT(timeData, FFToversize=FFToversize, firstSample=startSample[k], lastSample=startSample[k] + blockSize)
 
     # Spatial Fourier transform
-    Pnm = process.stc(Nsft, fftData, timeData.quadratureGrid)
+    Pnm = process.spatFT(Nsft, fftData, timeData.quadratureGrid)
 
     # Radial filters
-    dn, _ = gen.mf(Nrf, kr, ac, amp_maxdB=amp_maxdB)
+    dn, _ = gen.radFilter(Nrf, kr, ac, amp_maxdB=amp_maxdB)
 
     # Generate data to visualize
     mtxData = plot.makeMTX(Pnm, dn, Nviz, krIndex)

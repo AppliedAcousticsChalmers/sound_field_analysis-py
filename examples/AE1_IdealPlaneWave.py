@@ -17,11 +17,11 @@ NFFT = 128   # FFT-Bins
 AZ = pi / 3  # Azimuth angle
 EL = pi / 3  # Elevation angle
 
-# Generate an ideal plane wave using W/G/C (Wave Generator Core)
-Pnm, kr = gen.wgc(N, r, ac, FS, NFFT, AZ, EL)
+# Generate an ideal plane wave
+Pnm, kr = gen.idealWave(N, r, ac, FS, NFFT, AZ, EL)
 
-# Make radial filters for the rigid sphere array
-dn, _ = gen.mf(Nrf, kr, ac)
+# Generate radial filters for the rigid sphere array
+dn, _ = gen.radFilter(Nrf, kr, ac)
 
 # Generate visualization data
 vizMTX = plot.makeMTX(Pnm, dn, Nviz, krViz)

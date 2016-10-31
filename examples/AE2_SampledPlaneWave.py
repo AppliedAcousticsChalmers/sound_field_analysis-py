@@ -19,13 +19,13 @@ krIDX = [15, 23, 29, 39]  # kr-bin for subfigures
 
 quadrature_grid, _ = gen.lebedev(110)
 
-fftData, kr = gen.swg(r=r, gridData=quadrature_grid, ac=ac, FS=FS, NFFT=NFFT, AZ=AZ, EL=EL)
+fftData, kr = gen.sampledWave(r=r, gridData=quadrature_grid, ac=ac, FS=FS, NFFT=NFFT, AZ=AZ, EL=EL)
 
 # Spatial Fourier Transform
-Pnm = process.stc(Nsft, fftData, quadrature_grid)
+Pnm = process.spatFT(Nsft, fftData, quadrature_grid)
 
 # Make radial filters
-dn, _ = gen.mf(Nrf, kr, ac)
+dn, _ = gen.radFilter(Nrf, kr, ac)
 
 # Generate data to visualize
 mtxDataLOW = plot.makeMTX(Pnm, dn, Nviz, krIDX[0])

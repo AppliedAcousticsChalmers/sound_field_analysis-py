@@ -1,28 +1,28 @@
 """
 Module contains various generator functions:
 
-`awgn`
+`whiteNoise`
    Generate additive White Gaussian noise
 `gaussGrid`
    Gauss-Legendre quadrature grid and weights
 `lebedev`
    Lebedev quadrature grid and weigths
-`mf`
+`radFilter`
    Modal Radial Filter
-`swg`
+`sampledWave`
    Sampled Wave Generator, emulating discrete sampling
-`wgc`
+`idealWave`
    Wave Generator, returns spatial Fourier coefficients
 """
 import numpy as _np
 from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph, sph2cart
-from .process import itc
+from .process import iSpatFT
 from .utils import progress_bar
 
 pi = _np.pi
 
 
-def awgn(fftData, noiseLevel=80, printInfo=True):
+def whiteNoise(fftData, noiseLevel=80, printInfo=True):
     '''Adds White Gaussian Noise of approx. 16dB crest to a FFT block.
 
     Parameters
@@ -40,7 +40,7 @@ def awgn(fftData, noiseLevel=80, printInfo=True):
        Output fftData block including white gaussian noise
     '''
     if printInfo:
-        print('SOFiA A/W/G/N - Additive White Gaussian Noise Generator')
+        print('Additive White Gaussian Noise Generator')
 
     dimFactor = 10**(noiseLevel / 20)
     fftData = _np.atleast_2d(fftData)
@@ -141,7 +141,7 @@ def lebedev(degree, printInfo=True):
     return gridData, Nmax
 
 
-def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
+def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
     """Generate modal radial filters
 
     Parameters
@@ -273,7 +273,7 @@ def mf(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
     return OutputArray, BeamResponse
 
 
-def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
+def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
         c=343, wavetype=0, ds=1, Nlim=120, printInfo=True):
     """Sampled Wave Generator Wrapper
 
@@ -337,10 +337,10 @@ def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
     ----
     This file is a wrapper generating the complex pressures at the
     positions given in 'gridData' for a full spectrum 0-FS/2 Hz (NFFT Bins)
-    wave impinging to an array. The wrapper involves the W/G/C wave
-    generator core and the I/T/C spatial transform core.
+    wave impinging to an array. The wrapper involves the idealWave 
+    generator and the spatFT spatial transform.
 
-    S/W/G emulates discrete sampling. You can observe alias artifacts.
+    sampledWave emulates discrete sampling. You can observe alias artifacts.
     """
 
     if gridData is None:
@@ -379,17 +379,15 @@ def swg(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
     for idx, order in enumerate(unique_orders):
         progress_bar(idx, _np.size(unique_orders), 'S/W/G - Sampled Wave Generator')
         fOrders = _np.flatnonzero(rqOrders == order)
-        Pnm += wgc(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order, printInfo=False)[0]
-    fftData = itc(Pnm, gridData)
+        Pnm += idealWave(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order, printInfo=False)[0]
+    fftData = iSpatFT(Pnm, gridData)
 
     return fftData, kr
 
 
-def wgc(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerSegLim=0,
+def idealWave(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerSegLim=0,
         SegN=None, upperSegLim=None, printInfo=True):
-    """
-    Wave Generator Core:
-    Returns Spatial Fourier Coefficients `Pnm` and `kr` vector
+    """Ideal wave Generator, returns spatial Fourier coefficients `Pnm` and `kr` vector
 
     Parameters
     ----------

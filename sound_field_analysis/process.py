@@ -1,32 +1,27 @@
 """
 Functions that act on the Spatial Fourier Coefficients
 
-`fdt`
-   Frequency domain transform
-`itc`
+`FFT`
+   (Fast) Fourier Transform
+`iSpatFT`
    Fast Inverse Spatial Fourier Transform
-`pdc`
+`PWDecomp`
    Plane Wave Decomposition
 `rfi`
    Radial filter Improvement
-`stc`
-   Fast Spatial Fourier Transform
-`tdt`
-   Time Domain Reconstruction
+`spatFT`
+   Spatial Fourier Transform
+`iFFT`
+   Inverse (Fast) Fourier Transform
 
 Not yet implemented:
 
-`bsa`
+`BEMA`
    BEMA Spatial Anti-Aliasing
 `sfe`
    Sound field extrapolation
 `wdr`
    Wigner-D Rotation
-
-TODO
-----
-Use more descriptive function names
-
 """
 
 import numpy as _np
@@ -37,8 +32,8 @@ from .utils import progress_bar
 pi = _np.pi
 
 
-def bsa(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
-    '''B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED
+def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
+    '''BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED
 
     Parameters
     ----------
@@ -70,12 +65,12 @@ def bsa(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
        AES Convention 2012, Convention Paper 8751, 2012. http://www.aes.org/e-lib/browse.cfm?elib=16493
     '''
 
-    print('!Warning, BSA is not yet implemented. Continuing with initial coefficients!')
+    print('!Warning, BEMA is not yet implemented. Continuing with initial coefficients!')
     return Pnm
 
 
-def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
-    '''F/D/T frequency domain transform
+def FFT(timeData, FFToversize=1, firstSample=0, lastSample=None):
+    '''(Fast) Fourier Transform
 
     Parameters
     ----------
@@ -156,13 +151,13 @@ def fdt(timeData, FFToversize=1, firstSample=0, lastSample=None):
     return fftData, kr, f, ctSig
 
 
-def itc(Pnm, angles, N=None, printInfo=True):
-    """I/T/C Fast Inverse spatial Fourier Transform Core
+def iSpatFT(Pnm, angles, N=None, printInfo=True):
+    """Inverse spatial Fourier Transform
 
     Parameters
     ----------
     Pnm : array_like
-       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)
+       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from spatFT)
     angles : array_like
        Target angles of shape
        ::
@@ -180,8 +175,7 @@ def itc(Pnm, angles, N=None, printInfo=True):
 
     Note
     ----
-    This is a pure ISFT core that does not involve extrapolation.
-    (=The pressures are referred to the original radius)
+    This transform does not involve extrapolation. (=The pressures are referred to the original radius)
     """
 
     if angles.ndim == 1 and angles.shape[0] == 2:
@@ -218,8 +212,8 @@ def itc(Pnm, angles, N=None, printInfo=True):
     return OutputArray
 
 
-def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
-    """P/D/C - Plane Wave Decomposition
+def PWDecomp(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
+    """Plane Wave Decomposition
 
     Parameters
     ----------
@@ -233,9 +227,9 @@ def pdc(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
              ...
            AZn, ELn]
     Pnm : matrix of complex floats
-       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)
+       Spatial Fourier Coefficients (e.g. from spatFT)
     dn : matrix of complex floats
-       Modal array filters (e.g. from SOFiA M/F)
+       Modal array filters (e.g. from radFilter)
     cn : array_like, optional
        Weighting Function. Either frequency invariant weights as 1xN array
        or with kr bins in rows over N cols. [Default: None]
@@ -422,15 +416,15 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
     return Pnm_kra * exp.T
 
 
-def stc(N, fftData, grid):
-    '''S/T/C Fast Spatial Fourier Transform
+def spatFT(N, fftData, grid):
+    ''' Fast Spatial Fourier Transform
 
     Parameters
     ----------
     N : int
        Maximum transform order
     fftData : array_like
-       Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows
+       Frequency domain soundfield data, (e.g. from FFT()) with spatial sampling positions in cols and FFT bins in rows
     grid : array_like
        Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape
        ::
@@ -471,8 +465,8 @@ def stc(N, fftData, grid):
     return OutputArray
 
 
-def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
-    """ T/D/T - Time Domain Transform
+def iFFT(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
+    """ Inverse (Fast) Fourier Transform
 
     Parameters
     ----------
@@ -483,7 +477,7 @@ def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
     resampleFactor int, optional
        Resampling factor (FS_target/FS_source)
     minPhase bool, optional
-    Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]
+       Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]
 
     Returns
     -------
@@ -504,7 +498,7 @@ def tdt(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
         raise ValueError('Argument window must be in range 0.0 ... 1.0!')
 
     if printInfo:
-        print('SOFiA T/D/T - Time Domain Transform')
+        print('iFFT - inverse Fourier Transform')
 
     # inverse real FFT
     y = _np.fft.irfft(Y)
