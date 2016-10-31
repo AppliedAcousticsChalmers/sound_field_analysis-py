@@ -205,7 +205,7 @@ def iSpatFT(Pnm, angles, N=None, printInfo=True):
     ctr = 0
     for n in range(0, N + 1):
         if printInfo:
-            progress_bar(ctr, N ** 2, 'I/T/C - Inverse spatial Transform')
+            progress_bar(ctr, N ** 2, 'iSpatFT - Inverse spatial Transform')
         for m in range(-n, n + 1):
             SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
             OutputArray += _np.outer(SHresults, Pnm[ctr])
@@ -242,7 +242,7 @@ def PWDecomp(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
     """
 
     if printInfo:
-        print('SOFiA P/D/C - Plane Wave Decomposition')
+        print('PWDecomp - Plane Wave Decomposition')
 
     if N < 0:
         N = 0
@@ -324,7 +324,7 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
     Parameters
     ----------
     dn : array_like
-       Analytical frequency domain radial filters (e.g. SOFiA M/F)
+       Analytical frequency domain radial filters (e.g. gen.radFilter())
     kernelDownScale : int, optional
        Downscale factor for the filter kernel [Default: 2]
     highPass : float, optional
@@ -341,7 +341,7 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
 
     Note
     ----
-    This function improves the FIR radial filters from SOFiA M/F. The filters
+    This function improves the FIR radial filters from gen.radFilter(). The filters
     are made causal and are windowed in time domain. The DC components are
     estimated. The R/F/I module should always be inserted to the filter
     path when treating measured data even if no use is made of the included
@@ -350,7 +350,7 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
     Do NOT use R/F/I for single open sphere filters (e.g.simulations).
 
     IMPORTANT
-       Remember to choose a fft-oversize factor (F/D/T) being large
+       Remember to choose a fft-oversize factor (.FFT()) being large
        enough to cover all filter latencies and reponse slopes.
        Otherwise undesired cyclic convolution artifacts may appear
        in the output signal.
@@ -374,7 +374,7 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
     Parameters
     ----------
     Pnm_kra : array_like
-       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)
+       Spatial Fourier Coefficients (e.g. from spatFT())
     kra,krb : array_like
        k * ra/rb vector
     problem : string{'interior', 'exterior'}

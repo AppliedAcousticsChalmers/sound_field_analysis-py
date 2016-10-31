@@ -121,7 +121,7 @@ def lebedev(degree, printInfo=True):
     from . import lebedev
 
     if printInfo:
-        print('SOFiA Lebedev Grid')
+        print('Lebedev Grid')
 
     deg_avail = _np.array([6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194])
 
@@ -189,7 +189,7 @@ def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
         limiteronflag = False
 
     if printInfo:
-        print('SOFiA M/F - Modal radial filter generator')
+        print('radFilter - Modal radial filter generator')
 
     if kr.ndim == 1:
         krN = kr.size
@@ -377,7 +377,7 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
     unique_orders = _np.unique(rqOrders)
 
     for idx, order in enumerate(unique_orders):
-        progress_bar(idx, _np.size(unique_orders), 'S/W/G - Sampled Wave Generator')
+        progress_bar(idx, _np.size(unique_orders), 'sampledWave - Sampled Wave Generator')
         fOrders = _np.flatnonzero(rqOrders == order)
         Pnm += idealWave(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order, printInfo=False)[0]
     fftData = iSpatFT(Pnm, gridData)
@@ -462,7 +462,7 @@ def idealWave(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, 
         upperSegLim = NFFT - 1
 
     if printInfo:
-        print('SOFiA W/G/C - Wave Generator')
+        print('IdealWave Generator')
 
     # SAFETY CHECKS
     if upperSegLim < lowerSegLim:
