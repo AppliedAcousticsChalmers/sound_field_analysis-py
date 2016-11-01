@@ -47,9 +47,12 @@ def showTrace(trace, layout=None, colorize=True):
                 
             )
         )
+    # Wrap trace in array if needed
+    if not isinstance(trace, list):
+        trace = [trace]
 
     fig = go.Figure(
-        data=[trace],
+        data=trace,
         layout=layout
     )
 
@@ -87,7 +90,7 @@ def makeMTX(Pnm, dn, krIndex=1, Nviz=3, oversize=1):
 
     Note
     ----
-    The file generates a SOFiA mtxData Matrix of 181x360 pixels for the
+    The file generates a Matrix of 181x360 pixels for the
     visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).
     The HD version generally allows to raise the resolution (oversize > 1).
     (visual3D(), map3D() admit 1[deg] data only, oversize = 1)
