@@ -1,9 +1,10 @@
-# SOFiA example 2: Sampled unity plane wave simulation for different kr
-# Generate a full audio spectrum plane wave using S/W/G
-# Additionally requires vispy, see http://vispy.org
+# SFA example 2: Sampled unity plane wave simulation for different kr
+# Generate a full audio spectrum plane wave using sampledWave
 
 import numpy as np
-from sofia import gen, process, plot
+import sys
+sys.path.insert(0, '../')
+from sound_field_analysis import gen, process, plot
 
 pi = np.pi
 r = 0.1      # Array radius
@@ -28,21 +29,16 @@ Pnm = process.spatFT(Nsft, fftData, quadrature_grid)
 dn, _ = gen.radFilter(Nrf, kr, ac)
 
 # Generate data to visualize
-mtxDataLOW = plot.makeMTX(Pnm, dn, Nviz, krIDX[0])
-mtxDataMID = plot.makeMTX(Pnm, dn, Nviz, krIDX[1])
-mtxDataHIGH = plot.makeMTX(Pnm, dn, Nviz, krIDX[2])
-mtxDataVHIGH = plot.makeMTX(Pnm, dn, Nviz, krIDX[3])
+mtxDataLOW = plot.makeMTX(Pnm, dn, krIDX[0], Nviz=Nviz)
+mtxDataMID = plot.makeMTX(Pnm, dn, krIDX[1], Nviz=Nviz)
+mtxDataHIGH = plot.makeMTX(Pnm, dn, krIDX[2], Nviz=Nviz)
+mtxDataVHIGH = plot.makeMTX(Pnm, dn, krIDX[3], Nviz=Nviz)
 
 vizMtx = [np.abs(mtxDataLOW),
           np.abs(mtxDataMID),
           np.abs(mtxDataHIGH),
           np.abs(mtxDataVHIGH)]
 
-plot.plotGrid(2, 2, vizMtx, style='shape', bgcolor='white', colorize=False, normalize=True)
+plot.plot3Dgrid(2, 2, vizMtx, style='shape', normalize=True)
 
-input("3D visualization opened in new window.\nUse mouse to look around, scroll to zoom and shift + drag do move around.\nPress any key in the console to exit.")
-
-# To export to png:
-# >> from vispy import io
-# >> img = canvas.render()
-# >> io.write_png("img/AE2_grid.png", img)
+print("3D visualization opened in browser window, exiting.")

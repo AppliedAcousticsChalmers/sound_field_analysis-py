@@ -1,7 +1,9 @@
-# SOFiA example 5: Spatiotemporal resolution
+# SFA example 5: Spatiotemporal resolution
 
-from sofia import io, gen, process, plot
 import numpy as np
+import sys
+sys.path.insert(0, '../')
+from sound_field_analysis import io, gen, process, plot
 
 matFile = 'data/SOFiA_A3_struct.mat'
 
@@ -32,8 +34,9 @@ for k in range(0, K):
     dn, _ = gen.radFilter(Nrf, kr, ac, amp_maxdB=amp_maxdB)
 
     # Generate data to visualize
-    mtxData = plot.makeMTX(Pnm, dn, Nviz, krIndex)
+    mtxData = plot.makeMTX(Pnm, dn, krIndex, Nviz=Nviz)
     vizMtx[k] = np.abs(mtxData)
 
-plot.plotGrid(2, 2, vizMtx, style='shape', bgcolor='white', colorize=False, normalize=True)
-input("3D visualization opened in new window.\nUse mouse to look around, scroll to zoom and shift + drag do move around.\nPress any key in the console to exit.")
+plot.plot3Dgrid(2, 2, vizMtx, style='shape', normalize=True)
+
+print("3D visualization opened in browser window, exiting.")

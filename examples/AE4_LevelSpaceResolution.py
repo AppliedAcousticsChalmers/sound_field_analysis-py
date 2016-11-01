@@ -1,6 +1,7 @@
-# SOFiA example 4: Level/Space Resolution
-
-from sofia import io, gen, process, plot
+# SFA example 4: Level/Space Resolution
+import sys
+sys.path.insert(0, '../')
+from sound_field_analysis import io, gen, process, plot
 
 matFile = 'data/SOFiA_A2_struct.mat'
 Nsft = 5        # Spatial Fourier Transform Order
@@ -24,6 +25,6 @@ dn, _ = gen.radFilter(Nrf, kr, ac, amp_maxdB=amp_maxdB)
 
 # Plot
 vizMTX = plot.makeMTX(Pnm, dn, Nviz=Nmtx, krIndex=krIndex)
-canvas = plot.visualize3D(vizMTX, style='shape', colorize=False)
+fig = plot.plot3D(vizMTX, style='shape', colorize=False)
 
-input("3D visualization opened in new window.\nUse mouse to look around, scroll to zoom and shift + drag do move around.\nPress any key in the console to exit.")
+print("3D visualization opened in browser window, exiting.")

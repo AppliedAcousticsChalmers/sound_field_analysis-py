@@ -1,4 +1,4 @@
-# SOFiA example 3
+# SFA example 3
 # Plotting a measured plane wave
 # The recording was done in an anechoic chamber using a cardioid mic, the plane wave was approximated by a speaker at `AZ=180°`, `EL=90°`.
 
@@ -44,3 +44,5 @@ fDraw = 1000
 krDraw = plot.frqToKr(fDraw, f)
 vizMTX = plot.makeMTX(Pnm, dn, Nviz=Nmtx, krIndex=krDraw)
 plot.plot3D(vizMTX, style='shape')  # Other styles: 'sphere', 'flat'
+
+print("3D visualization opened in browser window, exiting.")

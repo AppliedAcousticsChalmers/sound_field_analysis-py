@@ -1,8 +1,9 @@
-# SOFiA example 1: Ideal unity plane wave simulation
-# Additionally requires vispy, see http://vispy.org
+# SFA example 1: Ideal unity plane wave simulation
 
 import numpy as np
-from sofia import gen, plot
+import sys
+sys.path.insert(0, '../')
+from sound_field_analysis import gen, plot
 
 pi = np.pi
 N = 9        # Order
@@ -24,7 +25,7 @@ Pnm, kr = gen.idealWave(N, r, ac, FS, NFFT, AZ, EL)
 dn, _ = gen.radFilter(Nrf, kr, ac)
 
 # Generate visualization data
-vizMTX = plot.makeMTX(Pnm, dn, Nviz, krViz)
+vizMTX = plot.makeMTX(Pnm, dn, krIndex=krViz, Nviz=Nviz)
 
 # Visualize
 layout = {'title': 'Ideal unity plane wave',
