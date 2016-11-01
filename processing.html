@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Processing &mdash; Sound Field Analysis toolbox for Python 0.1dev documentation</title>
+  <title>Processing &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.1dev documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="index.html"/>
         <link rel="next" title="Plotting" href="plotting.html"/>
         <link rel="prev" title="Generators" href="generators.html"/> 
 
@@ -60,7 +63,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -136,32 +139,29 @@
 <p>Processing explanation.</p>
 <span class="target" id="module-sound_field_analysis.process"></span><p>Functions that act on the Spatial Fourier Coefficients</p>
 <dl class="docutils">
-<dt><cite>fdt</cite></dt>
-<dd>Frequency to time transform</dd>
-<dt><cite>itc</cite></dt>
+<dt><cite>FFT</cite></dt>
+<dd>(Fast) Fourier Transform</dd>
+<dt><cite>iFFT</cite></dt>
+<dd>Inverse (Fast) Fourier Transform</dd>
+<dt><cite>spatFT</cite></dt>
+<dd>Spatial Fourier Transform</dd>
+<dt><cite>iSpatFT</cite></dt>
 <dd>Fast Inverse Spatial Fourier Transform</dd>
-<dt><cite>pdc</cite></dt>
+<dt><cite>PWDecomp</cite></dt>
 <dd>Plane Wave Decomposition</dd>
-<dt><cite>rfi</cite></dt>
-<dd>Radial filter Improvement</dd>
-<dt><cite>stc</cite></dt>
-<dd>Fast Spatial Fourier Transform</dd>
-<dt><cite>tdt</cite></dt>
-<dd>Time Domain Reconstruction</dd>
 </dl>
-<p>Not yet implemented:</p>
+<p>Not yet implemented:
+<cite>BEMA</cite></p>
+<blockquote>
+<div>BEMA Spatial Anti-Aliasing</div></blockquote>
 <dl class="docutils">
-<dt><cite>bsa</cite></dt>
-<dd>BEMA Spatial Anti-Aliasing</dd>
+<dt><cite>rfi</cite></dt>
+<dd>Radial filter improvement</dd>
 <dt><cite>sfe</cite></dt>
 <dd>Sound field extrapolation</dd>
 <dt><cite>wdr</cite></dt>
 <dd>Wigner-D Rotation</dd>
 </dl>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Use more descriptive function names</p>
-</div>
 </div>
 
 
@@ -205,7 +205,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1dev',
+            VERSION:'0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

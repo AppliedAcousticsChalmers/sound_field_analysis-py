@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Reference &mdash; Sound Field Analysis toolbox for Python 0.1dev documentation</title>
+  <title>Reference &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.1dev documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="index.html"/>
         <link rel="prev" title="Plotting" href="plotting.html"/> 
 
   
@@ -59,7 +62,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -145,44 +148,19 @@
 <span id="generators"></span><h2>Generators<a class="headerlink" href="#module-sound_field_analysis.gen" title="Permalink to this headline">¶</a></h2>
 <p>Module contains various generator functions:</p>
 <dl class="docutils">
-<dt><cite>awgn</cite></dt>
+<dt><cite>whiteNoise</cite></dt>
 <dd>Generate additive White Gaussian noise</dd>
 <dt><cite>gaussGrid</cite></dt>
 <dd>Gauss-Legendre quadrature grid and weights</dd>
 <dt><cite>lebedev</cite></dt>
 <dd>Lebedev quadrature grid and weigths</dd>
-<dt><cite>mf</cite></dt>
+<dt><cite>radFilter</cite></dt>
 <dd>Modal Radial Filter</dd>
-<dt><cite>swg</cite></dt>
+<dt><cite>sampledWave</cite></dt>
 <dd>Sampled Wave Generator, emulating discrete sampling</dd>
-<dt><cite>wgc</cite></dt>
+<dt><cite>idealWave</cite></dt>
 <dd>Wave Generator, returns spatial Fourier coefficients</dd>
 </dl>
-<dl class="function">
-<dt id="sound_field_analysis.gen.awgn">
-<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">awgn</code><span class="sig-paren">(</span><em>fftData</em>, <em>noiseLevel=80</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#awgn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.awgn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fftData</strong> (<em>array of complex floats</em>) &#8211; Input fftData block (e.g. from F/D/T or S/W/G)</li>
-<li><strong>noiseLevel</strong> (<em>int, optional</em>) &#8211; Average noise Level in dB [Default: -80dB]</li>
-<li><strong>printInfo</strong> (<em>bool, optional</em>) &#8211; Toggle print statements [Default: True]</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>noisyData</strong> &#8211; Output fftData block including white gaussian noise</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of complex floats</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="function">
 <dt id="sound_field_analysis.gen.gaussGrid">
 <code class="descclassname">sound_field_analysis.gen.</code><code class="descname">gaussGrid</code><span class="sig-paren">(</span><em>AZnodes=10</em>, <em>ELnodes=5</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#gaussGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.gaussGrid" title="Permalink to this definition">¶</a></dt>
@@ -218,8 +196,89 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="sound_field_analysis.gen.idealWave">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">idealWave</code><span class="sig-paren">(</span><em>N</em>, <em>r</em>, <em>ac</em>, <em>fs</em>, <em>F_NFFT</em>, <em>az</em>, <em>el</em>, <em>t=0.0</em>, <em>c=343.0</em>, <em>wavetype=0</em>, <em>ds=1.0</em>, <em>lowerSegLim=0</em>, <em>SegN=None</em>, <em>upperSegLim=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#idealWave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.idealWave" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ideal wave Generator, returns spatial Fourier coefficients <cite>Pnm</cite> and <cite>kr</cite> vector</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>N</strong> (<em>int</em>) &#8211; Maximum transform order.</li>
+<li><strong>r</strong> (<em>list of ints</em>) &#8211; <p>Microphone radius</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>Can also be a vector for rigid/dual sphere configurations:
+[1,1] =&gt; rm  Microphone radius
+[2,1] =&gt; rs  Sphere or microphone radius
+! If only one radius (rm) is given using a rigid/dual sphere
+Configuration: rs = rm and only one kr-vector is returned!
+</pre></div>
+</div>
+</li>
+<li><strong>ac</strong> (<em>int {0, 1, 2, 3, 4}</em>) &#8211; <dl class="docutils">
+<dt>Array Configuration:</dt>
+<dd><ul class="first last">
+<li><cite>0</cite>:  Open Sphere with p Transducers (NO plc!)</li>
+<li><cite>1</cite>:  Open Sphere with pGrad Transducers</li>
+<li><cite>2</cite>:  Rigid Sphere with p Transducers</li>
+<li><cite>3</cite>:  Rigid Sphere with pGrad Transducers</li>
+<li><cite>4</cite>:  Dual Open Sphere with p Transducers</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>FS</strong> (<em>int</em>) &#8211; Sampling frequency</li>
+<li><strong>NFFT</strong> (<em>int</em>) &#8211; Order of FFT (number of bins), should be a power of 2.</li>
+<li><strong>AZ</strong> (<em>float</em>) &#8211; Azimuth angle in radians [0-2pi].</li>
+<li><strong>EL</strong> (<em>float</em>) &#8211; Elevation angle in in radians [0-pi].</li>
+<li><strong>t</strong> (<em>float, optional</em>) &#8211; Time Delay in s.</li>
+<li><strong>c</strong> (<em>float, optional</em>) &#8211; Speed of sound in [m/s] [Default: 343m/s]</li>
+<li><strong>wavetype</strong> (<em>int {0, 1}, optional</em>) &#8211; <dl class="docutils">
+<dt>Type of the Wave:</dt>
+<dd><ul class="first last">
+<li>0: Plane Wave [Default]</li>
+<li>1: Spherical Wave</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>ds</strong> (<em>float, optional</em>) &#8211; Distance of the source in [m] (For wavetype = 1 only)</li>
+<li><strong>lSegLim</strong> (<em>int, optional</em>) &#8211; (Lower Segment Limit) Used by the S/W/G wrapper</li>
+<li><strong>uSegLim</strong> (<em>int, optional</em>) &#8211; (Upper Segment Limit) Used by the S/W/G wrapper</li>
+<li><strong>SegN</strong> (<em>int, optional</em>) &#8211; (Sement Order) Used by the S/W/G wrapper</li>
+<li><strong>printInfo</strong> (<em>bool, optional</em>) &#8211; Toggle print statements</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If NFFT is smaller than the time the wavefront
+needs to travel from the source to the array, the impulse
+response will by cyclically shifted (cyclic convolution).</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul>
+<li><strong>Pnm</strong> (<em>array of complex floats</em>) &#8211; Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows</li>
+<li><strong>kr</strong> (<em>array_like</em>) &#8211; kr-vector<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Can</span> <span class="n">also</span> <span class="n">be</span> <span class="n">a</span> <span class="n">matrix</span> <span class="p">[</span><span class="n">krm</span><span class="p">;</span> <span class="n">krs</span><span class="p">]</span> <span class="k">for</span> <span class="n">rigid</span> <span class="n">sphere</span> <span class="n">configurations</span><span class="p">:</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krm</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">microphone</span> <span class="n">radius</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krs</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">sphere</span> <span class="n">radius</span> <span class="p">(</span><span class="n">scatterer</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="sound_field_analysis.gen.lebedev">
-<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">lebedev</code><span class="sig-paren">(</span><em>degree</em>, <em>plot=False</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#lebedev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.lebedev" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">lebedev</code><span class="sig-paren">(</span><em>degree</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#lebedev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.lebedev" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Lebedev quadrature nodes and weigths.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -243,8 +302,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="sound_field_analysis.gen.mf">
-<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">mf</code><span class="sig-paren">(</span><em>N</em>, <em>kr</em>, <em>ac</em>, <em>amp_maxdB=0</em>, <em>plc=0</em>, <em>fadeover=0</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#mf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.mf" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.radFilter">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">radFilter</code><span class="sig-paren">(</span><em>N</em>, <em>kr</em>, <em>ac</em>, <em>amp_maxdB=0</em>, <em>plc=0</em>, <em>fadeover=0</em>, <em>printInfo=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#radFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.radFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate modal radial filters</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -296,8 +355,8 @@ gap of powerloss compensated filter and normal N0 filters.
 </dd></dl>
 
 <dl class="function">
-<dt id="sound_field_analysis.gen.swg">
-<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">swg</code><span class="sig-paren">(</span><em>r=0.01</em>, <em>gridData=None</em>, <em>ac=0</em>, <em>FS=48000</em>, <em>NFFT=512</em>, <em>AZ=0</em>, <em>EL=1.5707963267948966</em>, <em>c=343</em>, <em>wavetype=0</em>, <em>ds=1</em>, <em>Nlim=120</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#swg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.swg" title="Permalink to this definition">¶</a></dt>
+<dt id="sound_field_analysis.gen.sampledWave">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">sampledWave</code><span class="sig-paren">(</span><em>r=0.01</em>, <em>gridData=None</em>, <em>ac=0</em>, <em>FS=48000</em>, <em>NFFT=512</em>, <em>AZ=0</em>, <em>EL=1.5707963267948966</em>, <em>c=343</em>, <em>wavetype=0</em>, <em>ds=1</em>, <em>Nlim=120</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#sampledWave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.sampledWave" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sampled Wave Generator Wrapper</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -377,88 +436,31 @@ response will by cyclically shifted (cyclic convolution).</p>
 <p class="first admonition-title">Note</p>
 <p>This file is a wrapper generating the complex pressures at the
 positions given in &#8216;gridData&#8217; for a full spectrum 0-FS/2 Hz (NFFT Bins)
-wave impinging to an array. The wrapper involves the W/G/C wave
-generator core and the I/T/C spatial transform core.</p>
-<p class="last">S/W/G emulates discrete sampling. You can observe alias artifacts.</p>
+wave impinging to an array. The wrapper involves the idealWave
+generator and the spatFT spatial transform.</p>
+<p class="last">sampledWave emulates discrete sampling. You can observe alias artifacts.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
-<dt id="sound_field_analysis.gen.wgc">
-<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">wgc</code><span class="sig-paren">(</span><em>N</em>, <em>r</em>, <em>ac</em>, <em>fs</em>, <em>F_NFFT</em>, <em>az</em>, <em>el</em>, <em>t=0.0</em>, <em>c=343.0</em>, <em>wavetype=0</em>, <em>ds=1.0</em>, <em>lowerSegLim=0</em>, <em>SegN=None</em>, <em>upperSegLim=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#wgc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.wgc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wave Generator Core:
-Returns Spatial Fourier Coefficients <cite>Pnm</cite> and <cite>kr</cite> vector</p>
+<dt id="sound_field_analysis.gen.whiteNoise">
+<code class="descclassname">sound_field_analysis.gen.</code><code class="descname">whiteNoise</code><span class="sig-paren">(</span><em>fftData</em>, <em>noiseLevel=80</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/gen.html#whiteNoise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.gen.whiteNoise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> (<em>int</em>) &#8211; Maximum transform order.</li>
-<li><strong>r</strong> (<em>list of ints</em>) &#8211; <p>Microphone radius</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>Can also be a vector for rigid/dual sphere configurations:
-[1,1] =&gt; rm  Microphone radius
-[2,1] =&gt; rs  Sphere or microphone radius
-! If only one radius (rm) is given using a rigid/dual sphere
-Configuration: rs = rm and only one kr-vector is returned!
-</pre></div>
-</div>
-</li>
-<li><strong>ac</strong> (<em>int {0, 1, 2, 3, 4}</em>) &#8211; <dl class="docutils">
-<dt>Array Configuration:</dt>
-<dd><ul class="first last">
-<li><cite>0</cite>:  Open Sphere with p Transducers (NO plc!)</li>
-<li><cite>1</cite>:  Open Sphere with pGrad Transducers</li>
-<li><cite>2</cite>:  Rigid Sphere with p Transducers</li>
-<li><cite>3</cite>:  Rigid Sphere with pGrad Transducers</li>
-<li><cite>4</cite>:  Dual Open Sphere with p Transducers</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><strong>FS</strong> (<em>int</em>) &#8211; Sampling frequency</li>
-<li><strong>NFFT</strong> (<em>int</em>) &#8211; Order of FFT (number of bins), should be a power of 2.</li>
-<li><strong>AZ</strong> (<em>float</em>) &#8211; Azimuth angle in radians [0-2pi].</li>
-<li><strong>EL</strong> (<em>float</em>) &#8211; Elevation angle in in radians [0-pi].</li>
-<li><strong>t</strong> (<em>float, optional</em>) &#8211; Time Delay in s.</li>
-<li><strong>c</strong> (<em>float, optional</em>) &#8211; Speed of sound in [m/s] [Default: 343m/s]</li>
-<li><strong>wavetype</strong> (<em>int {0, 1}, optional</em>) &#8211; <dl class="docutils">
-<dt>Type of the Wave:</dt>
-<dd><ul class="first last">
-<li>0: Plane Wave [Default]</li>
-<li>1: Spherical Wave</li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><strong>ds</strong> (<em>float, optional</em>) &#8211; Distance of the source in [m] (For wavetype = 1 only)</li>
-<li><strong>lSegLim</strong> (<em>int, optional</em>) &#8211; (Lower Segment Limit) Used by the S/W/G wrapper</li>
-<li><strong>uSegLim</strong> (<em>int, optional</em>) &#8211; (Upper Segment Limit) Used by the S/W/G wrapper</li>
-<li><strong>SegN</strong> (<em>int, optional</em>) &#8211; (Sement Order) Used by the S/W/G wrapper</li>
-<li><strong>printInfo</strong> (<em>bool, optional</em>) &#8211; Toggle print statements</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fftData</strong> (<em>array of complex floats</em>) &#8211; Input fftData block (e.g. from F/D/T or S/W/G)</li>
+<li><strong>noiseLevel</strong> (<em>int, optional</em>) &#8211; Average noise Level in dB [Default: -80dB]</li>
+<li><strong>printInfo</strong> (<em>bool, optional</em>) &#8211; Toggle print statements [Default: True]</li>
 </ul>
 </td>
 </tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If NFFT is smaller than the time the wavefront
-needs to travel from the source to the array, the impulse
-response will by cyclically shifted (cyclic convolution).</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul>
-<li><strong>Pnm</strong> (<em>array of complex floats</em>) &#8211; Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows</li>
-<li><strong>kr</strong> (<em>array_like</em>) &#8211; kr-vector<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Can</span> <span class="n">also</span> <span class="n">be</span> <span class="n">a</span> <span class="n">matrix</span> <span class="p">[</span><span class="n">krm</span><span class="p">;</span> <span class="n">krs</span><span class="p">]</span> <span class="k">for</span> <span class="n">rigid</span> <span class="n">sphere</span> <span class="n">configurations</span><span class="p">:</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krm</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">microphone</span> <span class="n">radius</span>
-<span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=&gt;</span> <span class="n">krs</span> <span class="n">referring</span> <span class="n">to</span> <span class="n">the</span> <span class="n">sphere</span> <span class="n">radius</span> <span class="p">(</span><span class="n">scatterer</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ul>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>noisyData</strong> &#8211; Output fftData block including white gaussian noise</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array of complex floats</p>
 </td>
 </tr>
 </tbody>
@@ -470,36 +472,33 @@ response will by cyclically shifted (cyclic convolution).</p>
 <span id="processing"></span><h2>Processing<a class="headerlink" href="#module-sound_field_analysis.process" title="Permalink to this headline">¶</a></h2>
 <p>Functions that act on the Spatial Fourier Coefficients</p>
 <dl class="docutils">
-<dt><cite>fdt</cite></dt>
-<dd>Frequency to time transform</dd>
-<dt><cite>itc</cite></dt>
+<dt><cite>FFT</cite></dt>
+<dd>(Fast) Fourier Transform</dd>
+<dt><cite>iFFT</cite></dt>
+<dd>Inverse (Fast) Fourier Transform</dd>
+<dt><cite>spatFT</cite></dt>
+<dd>Spatial Fourier Transform</dd>
+<dt><cite>iSpatFT</cite></dt>
 <dd>Fast Inverse Spatial Fourier Transform</dd>
-<dt><cite>pdc</cite></dt>
+<dt><cite>PWDecomp</cite></dt>
 <dd>Plane Wave Decomposition</dd>
-<dt><cite>rfi</cite></dt>
-<dd>Radial filter Improvement</dd>
-<dt><cite>stc</cite></dt>
-<dd>Fast Spatial Fourier Transform</dd>
-<dt><cite>tdt</cite></dt>
-<dd>Time Domain Reconstruction</dd>
 </dl>
-<p>Not yet implemented:</p>
+<p>Not yet implemented:
+<cite>BEMA</cite></p>
+<blockquote>
+<div>BEMA Spatial Anti-Aliasing</div></blockquote>
 <dl class="docutils">
-<dt><cite>bsa</cite></dt>
-<dd>BEMA Spatial Anti-Aliasing</dd>
+<dt><cite>rfi</cite></dt>
+<dd>Radial filter improvement</dd>
 <dt><cite>sfe</cite></dt>
 <dd>Sound field extrapolation</dd>
 <dt><cite>wdr</cite></dt>
 <dd>Wigner-D Rotation</dd>
 </dl>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Use more descriptive function names</p>
-</div>
 <dl class="function">
-<dt id="sound_field_analysis.process.bsa">
-<code class="descclassname">sound_field_analysis.process.</code><code class="descname">bsa</code><span class="sig-paren">(</span><em>Pnm</em>, <em>ctSig</em>, <em>dn</em>, <em>transition</em>, <em>avgBandwidth</em>, <em>fade=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#bsa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.bsa" title="Permalink to this definition">¶</a></dt>
-<dd><p>B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</p>
+<dt id="sound_field_analysis.process.BEMA">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">BEMA</code><span class="sig-paren">(</span><em>Pnm</em>, <em>ctSig</em>, <em>dn</em>, <em>transition</em>, <em>avgBandwidth</em>, <em>fade=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#BEMA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.BEMA" title="Permalink to this definition">¶</a></dt>
+<dd><p>BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -537,9 +536,9 @@ AES Convention 2012, Convention Paper 8751, 2012. <a class="reference external" 
 </dd></dl>
 
 <dl class="function">
-<dt id="sound_field_analysis.process.fdt">
-<code class="descclassname">sound_field_analysis.process.</code><code class="descname">fdt</code><span class="sig-paren">(</span><em>timeData</em>, <em>FFToversize=1</em>, <em>firstSample=0</em>, <em>lastSample=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#fdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.fdt" title="Permalink to this definition">¶</a></dt>
-<dd><p>F/D/T frequency domain transform</p>
+<dt id="sound_field_analysis.process.FFT">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">FFT</code><span class="sig-paren">(</span><em>timeData</em>, <em>FFToversize=1</em>, <em>firstSample=0</em>, <em>lastSample=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#FFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.FFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Fast) Fourier Transform</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -586,15 +585,85 @@ temporal information within the captured sound field.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sound_field_analysis.process.itc">
-<code class="descclassname">sound_field_analysis.process.</code><code class="descname">itc</code><span class="sig-paren">(</span><em>Pnm</em>, <em>angles</em>, <em>N=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#itc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.itc" title="Permalink to this definition">¶</a></dt>
-<dd><p>I/T/C Fast Inverse spatial Fourier Transform Core</p>
+<dt id="sound_field_analysis.process.PWDecomp">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">PWDecomp</code><span class="sig-paren">(</span><em>N</em>, <em>OmegaL</em>, <em>Pnm</em>, <em>dn</em>, <em>cn=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#PWDecomp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.PWDecomp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plane Wave Decomposition</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>Pnm</strong> (<em>array_like</em>) &#8211; Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)</li>
+<li><strong>N</strong> (<em>int</em>) &#8211; Decomposition order</li>
+<li><strong>OmegaL</strong> (<em>array_like</em>) &#8211; <p>Look directions of shape</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ1</span><span class="p">,</span> <span class="n">EL1</span><span class="p">;</span>
+ <span class="n">AZ2</span><span class="p">,</span> <span class="n">EL2</span><span class="p">;</span>
+   <span class="o">...</span>
+ <span class="n">AZn</span><span class="p">,</span> <span class="n">ELn</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><strong>Pnm</strong> (<em>matrix of complex floats</em>) &#8211; Spatial Fourier Coefficients (e.g. from spatFT)</li>
+<li><strong>dn</strong> (<em>matrix of complex floats</em>) &#8211; Modal array filters (e.g. from radFilter)</li>
+<li><strong>cn</strong> (<em>array_like, optional</em>) &#8211; Weighting Function. Either frequency invariant weights as 1xN array
+or with kr bins in rows over N cols. [Default: None]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Y</strong> &#8211; MxN Matrix of the decomposed wavefield with kr bins in rows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matrix of floats</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sound_field_analysis.process.iFFT">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">iFFT</code><span class="sig-paren">(</span><em>Y</em>, <em>win=0</em>, <em>minPhase=False</em>, <em>resampleFactor=1</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#iFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.iFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse (Fast) Fourier Transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Y</strong> (<em>array_like</em>) &#8211; Frequency domain data over multiple channels (cols) with FFT data in rows</li>
+<li><strong>float, optional</strong> (<em>win</em>) &#8211; Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED</li>
+<li><strong>int, optional</strong> (<em>resampleFactor</em>) &#8211; Resampling factor (FS_target/FS_source)</li>
+<li><strong>bool, optional</strong> (<em>minPhase</em>) &#8211; Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> &#8211; Reconstructed time-domain signal of channels in cols and impulse responses in rows</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array_like</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>This function recombines time domain signals for multiple channels from
+frequency domain data. It is made to work with half-sided spectrum FFT
+data.  The impulse responses can be windowed.  The IFFT blocklength is
+determined by the Y data itself:</p>
+<p class="last">Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]
+and the function returns [NumberOfChannels x resampleFactor*2^n] samples.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="sound_field_analysis.process.iSpatFT">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">iSpatFT</code><span class="sig-paren">(</span><em>Pnm</em>, <em>angles</em>, <em>N=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#iSpatFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.iSpatFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse spatial Fourier Transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Pnm</strong> (<em>array_like</em>) &#8211; Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from spatFT)</li>
 <li><strong>angles</strong> (<em>array_like</em>) &#8211; <p>Target angles of shape</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ1</span><span class="p">,</span> <span class="n">EL1</span><span class="p">;</span>
  <span class="n">AZ2</span><span class="p">,</span> <span class="n">EL2</span><span class="p">;</span>
@@ -617,44 +686,8 @@ temporal information within the captured sound field.</p>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is a pure ISFT core that does not involve extrapolation.
-(=The pressures are referred to the original radius)</p>
+<p class="last">This transform does not involve extrapolation. (=The pressures are referred to the original radius)</p>
 </div>
-</dd></dl>
-
-<dl class="function">
-<dt id="sound_field_analysis.process.pdc">
-<code class="descclassname">sound_field_analysis.process.</code><code class="descname">pdc</code><span class="sig-paren">(</span><em>N</em>, <em>OmegaL</em>, <em>Pnm</em>, <em>dn</em>, <em>cn=None</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#pdc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.pdc" title="Permalink to this definition">¶</a></dt>
-<dd><p>P/D/C - Plane Wave Decomposition</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>N</strong> (<em>int</em>) &#8211; Decomposition order</li>
-<li><strong>OmegaL</strong> (<em>array_like</em>) &#8211; <p>Look directions of shape</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ1</span><span class="p">,</span> <span class="n">EL1</span><span class="p">;</span>
- <span class="n">AZ2</span><span class="p">,</span> <span class="n">EL2</span><span class="p">;</span>
-   <span class="o">...</span>
- <span class="n">AZn</span><span class="p">,</span> <span class="n">ELn</span><span class="p">]</span>
-</pre></div>
-</div>
-</li>
-<li><strong>Pnm</strong> (<em>matrix of complex floats</em>) &#8211; Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</li>
-<li><strong>dn</strong> (<em>matrix of complex floats</em>) &#8211; Modal array filters (e.g. from SOFiA M/F)</li>
-<li><strong>cn</strong> (<em>array_like, optional</em>) &#8211; Weighting Function. Either frequency invariant weights as 1xN array
-or with kr bins in rows over N cols. [Default: None]</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Y</strong> &#8211; MxN Matrix of the decomposed wavefield with kr bins in rows</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">matrix of floats</p>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="function">
@@ -666,7 +699,7 @@ or with kr bins in rows over N cols. [Default: None]</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dn</strong> (<em>array_like</em>) &#8211; Analytical frequency domain radial filters (e.g. SOFiA M/F)</li>
+<li><strong>dn</strong> (<em>array_like</em>) &#8211; Analytical frequency domain radial filters (e.g. gen.radFilter())</li>
 <li><strong>kernelDownScale</strong> (<em>int, optional</em>) &#8211; Downscale factor for the filter kernel [Default: 2]</li>
 <li><strong>highPass</strong> (<em>float, optional</em>) &#8211; Highpass Filter from 0.0 (off) to 1.0 (maximum kr) [Default: 0.0]</li>
 </ul>
@@ -684,7 +717,7 @@ or with kr bins in rows over N cols. [Default: None]</li>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>This function improves the FIR radial filters from SOFiA M/F. The filters
+<p>This function improves the FIR radial filters from gen.radFilter(). The filters
 are made causal and are windowed in time domain. The DC components are
 estimated. The R/F/I module should always be inserted to the filter
 path when treating measured data even if no use is made of the included
@@ -692,7 +725,7 @@ kernel downscaling or highpass filters.</p>
 <p>Do NOT use R/F/I for single open sphere filters (e.g.simulations).</p>
 <dl class="last docutils">
 <dt>IMPORTANT</dt>
-<dd>Remember to choose a fft-oversize factor (F/D/T) being large
+<dd>Remember to choose a fft-oversize factor (.FFT()) being large
 enough to cover all filter latencies and reponse slopes.
 Otherwise undesired cyclic convolution artifacts may appear
 in the output signal.</dd>
@@ -718,7 +751,7 @@ their spectra and impulse responses.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Pnm_kra</strong> (<em>array_like</em>) &#8211; Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</li>
+<li><strong>Pnm_kra</strong> (<em>array_like</em>) &#8211; Spatial Fourier Coefficients (e.g. from spatFT())</li>
 <li><strong>kra,krb</strong> (<em>array_like</em>) &#8211; k * ra/rb vector</li>
 <li><strong>problem</strong> (<em>string{'interior', 'exterior'}</em>) &#8211; Select between interior and exterior problem [Default: interior]</li>
 </ul>
@@ -729,16 +762,16 @@ their spectra and impulse responses.
 </dd></dl>
 
 <dl class="function">
-<dt id="sound_field_analysis.process.stc">
-<code class="descclassname">sound_field_analysis.process.</code><code class="descname">stc</code><span class="sig-paren">(</span><em>N</em>, <em>fftData</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#stc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.stc" title="Permalink to this definition">¶</a></dt>
-<dd><p>S/T/C Fast Spatial Fourier Transform</p>
+<dt id="sound_field_analysis.process.spatFT">
+<code class="descclassname">sound_field_analysis.process.</code><code class="descname">spatFT</code><span class="sig-paren">(</span><em>N</em>, <em>fftData</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#spatFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.spatFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fast Spatial Fourier Transform</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>N</strong> (<em>int</em>) &#8211; Maximum transform order</li>
-<li><strong>fftData</strong> (<em>array_like</em>) &#8211; Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows</li>
+<li><strong>fftData</strong> (<em>array_like</em>) &#8211; Frequency domain soundfield data, (e.g. from FFT()) with spatial sampling positions in cols and FFT bins in rows</li>
 <li><strong>grid</strong> (<em>array_like</em>) &#8211; <p>Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">AZ1</span><span class="p">,</span> <span class="n">EL1</span><span class="p">,</span> <span class="n">W1</span><span class="p">;</span>
  <span class="n">AZ2</span><span class="p">,</span> <span class="n">EL2</span><span class="p">,</span> <span class="n">W2</span><span class="p">;</span>
@@ -758,42 +791,6 @@ their spectra and impulse responses.
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="sound_field_analysis.process.tdt">
-<code class="descclassname">sound_field_analysis.process.</code><code class="descname">tdt</code><span class="sig-paren">(</span><em>Y</em>, <em>win=0</em>, <em>minPhase=False</em>, <em>resampleFactor=1</em>, <em>printInfo=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/process.html#tdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.process.tdt" title="Permalink to this definition">¶</a></dt>
-<dd><p>T/D/T - Time Domain Transform</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>Y</strong> (<em>array_like</em>) &#8211; Frequency domain data over multiple channels (cols) with FFT data in rows</li>
-<li><strong>float, optional</strong> (<em>win</em>) &#8211; Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED</li>
-<li><strong>int, optional</strong> (<em>resampleFactor</em>) &#8211; Resampling factor (FS_target/FS_source)</li>
-<li><strong>bool, optional</strong> (<em>minPhase</em>) &#8211; </li>
-<li><strong>minimum phase reduction - NOT YET IMPLEMENTED [Default</strong> (<em>Ensure</em>) &#8211; </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> &#8211; Reconstructed time-domain signal of channels in cols and impulse responses in rows</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array_like</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>This function recombines time domain signals for multiple channels from
-frequency domain data. It is made to work with half-sided spectrum FFT
-data.  The impulse responses can be windowed.  The IFFT blocklength is
-determined by the Y data itself:</p>
-<p class="last">Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]
-and the function returns [NumberOfChannels x resampleFactor*2^n] samples.</p>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -831,6 +828,30 @@ And then visualize that:
 &gt;&gt; plot3D(vizMTX, style=&#8217;shape&#8217;)</p>
 <p>Other valid styles are &#8216;sphere&#8217; and &#8216;flat&#8217;.</p>
 <dl class="function">
+<dt id="sound_field_analysis.plot.frqToKr">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">frqToKr</code><span class="sig-paren">(</span><em>fTarget</em>, <em>fVec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#frqToKr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.frqToKr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the kr bin closest  to the target frequency</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fTarget</strong> (<em>float</em>) &#8211; Target frequency</li>
+<li><strong>fVec</strong> (<em>array_like</em>) &#8211; Array containing the available frequencys</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>krTarget</strong> &#8211; kr bin closest to target frequency</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="sound_field_analysis.plot.genFlat">
 <code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genFlat</code><span class="sig-paren">(</span><em>vizMTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genFlat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genFlat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns trace of flat surface with intensity as surface elevation and color</p>
@@ -846,7 +867,7 @@ And then visualize that:
 </tr>
 </tbody>
 </table>
-<div class="admonition-todo admonition" id="index-1">
+<div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
 <p class="last">Fix orientation and axis limits</p>
 </div>
@@ -868,7 +889,7 @@ And then visualize that:
 </tr>
 </tbody>
 </table>
-<div class="admonition-todo admonition" id="index-2">
+<div class="admonition-todo admonition" id="index-1">
 <p class="first admonition-title">Todo</p>
 <p class="last">Fix camera position</p>
 </div>
@@ -902,7 +923,7 @@ And then visualize that:
 
 <dl class="function">
 <dt id="sound_field_analysis.plot.genVisual">
-<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genVisual</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genVisual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genVisual" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">genVisual</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>normalize=True</em>, <em>logScale=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#genVisual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.genVisual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns desired trace after cleaning the data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -983,7 +1004,7 @@ And then visualize that:
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The file generates a SOFiA mtxData Matrix of 181x360 pixels for the
+<p class="last">The file generates a Matrix of 181x360 pixels for the
 visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).
 The HD version generally allows to raise the resolution (oversize &gt; 1).
 (visual3D(), map3D() admit 1[deg] data only, oversize = 1)</p>
@@ -992,17 +1013,23 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 
 <dl class="function">
 <dt id="sound_field_analysis.plot.normalizeMTX">
-<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">normalizeMTX</code><span class="sig-paren">(</span><em>MTX</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#normalizeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.normalizeMTX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Normalizes a matrix to [-1 ... 1]</p>
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">normalizeMTX</code><span class="sig-paren">(</span><em>MTX</em>, <em>logScale=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#normalizeMTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.normalizeMTX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes a matrix to [0 ... 1]</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>MTX</strong> (<em>array_like</em>) &#8211; Matrix to be normalized</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>MTX</strong> (<em>array_like</em>) &#8211; Matrix to be normalized</li>
+<li><strong>logScale</strong> (<em>bool</em>) &#8211; Toggle conversion logScale [Default: False]</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>MTX</strong> &#8211; Normalized Matrix</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>MTX</strong> &#8211; Normalized Matrix</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array_liked</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array_liked</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1018,8 +1045,8 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<em>array_like</em>) &#8211; Data to be plotted, separated along the first dimension (rows).</li>
-<li><strong>type</strong> (<em>string{None, 'time'}</em>) &#8211; Type of data to be displayed. [Default: None]</li>
-<li><strong>fs</strong> (<em>int</em>) &#8211; Sampling rate in Hz used to display time signals. [Default: 44100]</li>
+<li><strong>type</strong> (<em>string{None, 'time', 'linFFT', 'logFFT'}</em>) &#8211; Type of data to be displayed. [Default: None]</li>
+<li><strong>fs</strong> (<em>int</em>) &#8211; Sampling rate in Hz. [Default: 44100]</li>
 </ul>
 </td>
 </tr>
@@ -1029,7 +1056,7 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 
 <dl class="function">
 <dt id="sound_field_analysis.plot.plot3D">
-<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">plot3D</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>layout=None</em>, <em>colorize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#plot3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.plot3D" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">plot3D</code><span class="sig-paren">(</span><em>vizMTX</em>, <em>style='shape'</em>, <em>layout=None</em>, <em>colorize=True</em>, <em>logScale=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#plot3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.plot3D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Visualize matrix data, such as from makeMTX(Pnm, dn)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1044,11 +1071,16 @@ The HD version generally allows to raise the resolution (oversize &gt; 1).
 </tr>
 </tbody>
 </table>
-<div class="admonition-todo admonition" id="index-3">
+<div class="admonition-todo admonition" id="index-2">
 <p class="first admonition-title">Todo</p>
 <p class="last">Colorization, contour plot</p>
 </div>
 </dd></dl>
+
+<dl class="function">
+<dt id="sound_field_analysis.plot.plot3Dgrid">
+<code class="descclassname">sound_field_analysis.plot.</code><code class="descname">plot3Dgrid</code><span class="sig-paren">(</span><em>rows</em>, <em>cols</em>, <em>vizMTX</em>, <em>style</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sound_field_analysis/plot.html#plot3Dgrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sound_field_analysis.plot.plot3Dgrid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="sound_field_analysis.plot.showTrace">
@@ -1426,10 +1458,11 @@ sampled at theta = az, phi = el</li>
 <li><strong>timeData</strong> (<em>named tuple</em>)</li>
 <li><cite>timeData</cite> tuple with following fields</li>
 <li><em>:</em> &#8211; .impulseResponses [Channels X Samples]
-.FS
-.radius           Array radius
+.FS               Sampling frequency in [Hz]
+.radius           Array radius in [m]
+.quadratureGrid   Az, EL, W of the quadrature
 .averageAirTemp   Temperature in [C]
-(.centerIR        [1 x Samples] )</li>
+.centerIR         Impulse response of center mic (if available), zero otherwise</li>
 </ul>
 </td>
 </tr>
@@ -1551,7 +1584,7 @@ Doklady Mathematics, Vol. 59, No. 3, 1999, pp. 477-481.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1dev',
+            VERSION:'0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

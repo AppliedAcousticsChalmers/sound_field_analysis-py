@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sound_field_analysis.gen &mdash; Sound Field Analysis toolbox for Python 0.1dev documentation</title>
+  <title>sound_field_analysis.gen &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.1dev documentation" href="../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -59,7 +62,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -134,28 +137,28 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module contains various generator functions:</span>
 
-<span class="sd">`awgn`</span>
+<span class="sd">`whiteNoise`</span>
 <span class="sd">   Generate additive White Gaussian noise</span>
 <span class="sd">`gaussGrid`</span>
 <span class="sd">   Gauss-Legendre quadrature grid and weights</span>
 <span class="sd">`lebedev`</span>
 <span class="sd">   Lebedev quadrature grid and weigths</span>
-<span class="sd">`mf`</span>
+<span class="sd">`radFilter`</span>
 <span class="sd">   Modal Radial Filter</span>
-<span class="sd">`swg`</span>
+<span class="sd">`sampledWave`</span>
 <span class="sd">   Sampled Wave Generator, emulating discrete sampling</span>
-<span class="sd">`wgc`</span>
+<span class="sd">`idealWave`</span>
 <span class="sd">   Wave Generator, returns spatial Fourier coefficients</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
 <span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bn_npf</span><span class="p">,</span> <span class="n">sphankel</span><span class="p">,</span> <span class="n">sph_harm</span><span class="p">,</span> <span class="n">cart2sph</span><span class="p">,</span> <span class="n">sph2cart</span>
-<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">itc</span>
+<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">iSpatFT</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">progress_bar</span>
 
 <span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
 
 
-<div class="viewcode-block" id="awgn"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.awgn">[docs]</a><span class="k">def</span> <span class="nf">awgn</span><span class="p">(</span><span class="n">fftData</span><span class="p">,</span> <span class="n">noiseLevel</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="whiteNoise"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.whiteNoise">[docs]</a><span class="k">def</span> <span class="nf">whiteNoise</span><span class="p">(</span><span class="n">fftData</span><span class="p">,</span> <span class="n">noiseLevel</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</span>
 
 <span class="sd">    Parameters</span>
@@ -173,7 +176,7 @@
 <span class="sd">       Output fftData block including white gaussian noise</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA A/W/G/N - Additive White Gaussian Noise Generator&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Additive White Gaussian Noise Generator&#39;</span><span class="p">)</span>
 
     <span class="n">dimFactor</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">noiseLevel</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
     <span class="n">fftData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">fftData</span><span class="p">)</span>
@@ -254,7 +257,7 @@
     <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">lebedev</span>
 
     <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA Lebedev Grid&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lebedev Grid&#39;</span><span class="p">)</span>
 
     <span class="n">deg_avail</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">194</span><span class="p">])</span>
 
@@ -274,7 +277,7 @@
     <span class="k">return</span> <span class="n">gridData</span><span class="p">,</span> <span class="n">Nmax</span></div>
 
 
-<div class="viewcode-block" id="mf"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.mf">[docs]</a><span class="k">def</span> <span class="nf">mf</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fadeover</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="radFilter"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.radFilter">[docs]</a><span class="k">def</span> <span class="nf">radFilter</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fadeover</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate modal radial filters</span>
 
 <span class="sd">    Parameters</span>
@@ -322,7 +325,7 @@
         <span class="n">limiteronflag</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA M/F - Modal radial filter generator&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;radFilter - Modal radial filter generator&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">kr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">krN</span> <span class="o">=</span> <span class="n">kr</span><span class="o">.</span><span class="n">size</span>
@@ -406,7 +409,7 @@
     <span class="k">return</span> <span class="n">OutputArray</span><span class="p">,</span> <span class="n">BeamResponse</span></div>
 
 
-<div class="viewcode-block" id="swg"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.swg">[docs]</a><span class="k">def</span> <span class="nf">swg</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">gridData</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ac</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">FS</span><span class="o">=</span><span class="mi">48000</span><span class="p">,</span> <span class="n">NFFT</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">AZ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">EL</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<div class="viewcode-block" id="sampledWave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.sampledWave">[docs]</a><span class="k">def</span> <span class="nf">sampledWave</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">gridData</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ac</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">FS</span><span class="o">=</span><span class="mi">48000</span><span class="p">,</span> <span class="n">NFFT</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">AZ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">EL</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">c</span><span class="o">=</span><span class="mi">343</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nlim</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Sampled Wave Generator Wrapper</span>
 
@@ -470,10 +473,10 @@
 <span class="sd">    ----</span>
 <span class="sd">    This file is a wrapper generating the complex pressures at the</span>
 <span class="sd">    positions given in &#39;gridData&#39; for a full spectrum 0-FS/2 Hz (NFFT Bins)</span>
-<span class="sd">    wave impinging to an array. The wrapper involves the W/G/C wave</span>
-<span class="sd">    generator core and the I/T/C spatial transform core.</span>
+<span class="sd">    wave impinging to an array. The wrapper involves the idealWave </span>
+<span class="sd">    generator and the spatFT spatial transform.</span>
 
-<span class="sd">    S/W/G emulates discrete sampling. You can observe alias artifacts.</span>
+<span class="sd">    sampledWave emulates discrete sampling. You can observe alias artifacts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">gridData</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -510,19 +513,17 @@
     <span class="n">unique_orders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">rqOrders</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_orders</span><span class="p">):</span>
-        <span class="n">progress_bar</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">unique_orders</span><span class="p">),</span> <span class="s1">&#39;S/W/G - Sampled Wave Generator&#39;</span><span class="p">)</span>
+        <span class="n">progress_bar</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">unique_orders</span><span class="p">),</span> <span class="s1">&#39;sampledWave - Sampled Wave Generator&#39;</span><span class="p">)</span>
         <span class="n">fOrders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">rqOrders</span> <span class="o">==</span> <span class="n">order</span><span class="p">)</span>
-        <span class="n">Pnm</span> <span class="o">+=</span> <span class="n">wgc</span><span class="p">(</span><span class="n">Ng</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">FS</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">AZ</span><span class="p">,</span> <span class="n">EL</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="n">wavetype</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span> <span class="n">lowerSegLim</span><span class="o">=</span><span class="n">fOrders</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">upperSegLim</span><span class="o">=</span><span class="n">fOrders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">SegN</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">fftData</span> <span class="o">=</span> <span class="n">itc</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">gridData</span><span class="p">)</span>
+        <span class="n">Pnm</span> <span class="o">+=</span> <span class="n">idealWave</span><span class="p">(</span><span class="n">Ng</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">FS</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">AZ</span><span class="p">,</span> <span class="n">EL</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="n">wavetype</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span> <span class="n">lowerSegLim</span><span class="o">=</span><span class="n">fOrders</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">upperSegLim</span><span class="o">=</span><span class="n">fOrders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">SegN</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fftData</span> <span class="o">=</span> <span class="n">iSpatFT</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">gridData</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">kr</span></div>
 
 
-<div class="viewcode-block" id="wgc"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.wgc">[docs]</a><span class="k">def</span> <span class="nf">wgc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">F_NFFT</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">343.0</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">lowerSegLim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<div class="viewcode-block" id="idealWave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.idealWave">[docs]</a><span class="k">def</span> <span class="nf">idealWave</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">F_NFFT</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">343.0</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">lowerSegLim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">SegN</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upperSegLim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wave Generator Core:</span>
-<span class="sd">    Returns Spatial Fourier Coefficients `Pnm` and `kr` vector</span>
+    <span class="sd">&quot;&quot;&quot;Ideal wave Generator, returns spatial Fourier coefficients `Pnm` and `kr` vector</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -597,7 +598,7 @@
         <span class="n">upperSegLim</span> <span class="o">=</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA W/G/C - Wave Generator&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;IdealWave Generator&#39;</span><span class="p">)</span>
 
     <span class="c1"># SAFETY CHECKS</span>
     <span class="k">if</span> <span class="n">upperSegLim</span> <span class="o">&lt;</span> <span class="n">lowerSegLim</span><span class="p">:</span>
@@ -708,7 +709,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1dev',
+            VERSION:'0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

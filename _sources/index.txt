@@ -1,4 +1,4 @@
-Welcome to the Readme of the Sound Field Analysis toolbox for Python!
+Welcome to the Sound Field Analysis toolbox for Python!
 =====================================================================
 
 Contents:

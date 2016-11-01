@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sound_field_analysis.plot &mdash; Sound Field Analysis toolbox for Python 0.1dev documentation</title>
+  <title>sound_field_analysis.plot &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.1dev documentation" href="../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -59,7 +62,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -147,8 +150,9 @@
 <span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="k">import</span> <span class="n">plot</span> <span class="k">as</span> <span class="n">pltoff</span>
 <span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="k">import</span> <span class="n">iplot</span>
 <span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">from</span> <span class="nn">plotly</span> <span class="k">import</span> <span class="n">tools</span>
 
-<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">pdc</span>
+<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">PWDecomp</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">env_info</span><span class="p">,</span> <span class="n">progress_bar</span>
 
 <span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
@@ -172,11 +176,17 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">layout</span><span class="p">:</span>
         <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
             <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
-                <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
-                <span class="n">zaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+                <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+                <span class="n">zaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+                <span class="n">aspectmode</span><span class="o">=</span><span class="s1">&#39;cube&#39;</span>
+                <span class="c1">#aspectratio = dict( x=1, y=1, z=0.7 ),</span>
+                
             <span class="p">)</span>
         <span class="p">)</span>
+    <span class="c1"># Wrap trace in array if needed</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="p">[</span><span class="n">trace</span><span class="p">]</span>
 
     <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span>
         <span class="n">data</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span>
@@ -217,7 +227,7 @@
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    The file generates a SOFiA mtxData Matrix of 181x360 pixels for the</span>
+<span class="sd">    The file generates a Matrix of 181x360 pixels for the</span>
 <span class="sd">    visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).</span>
 <span class="sd">    The HD version generally allows to raise the resolution (oversize &gt; 1).</span>
 <span class="sd">    (visual3D(), map3D() admit 1[deg] data only, oversize = 1)</span>
@@ -229,7 +239,7 @@
     <span class="n">angles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">181</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
 
     <span class="c1"># Compute plane wave decomposition for all angles at given kr</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">pdc</span><span class="p">(</span><span class="n">Nviz</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[:,</span> <span class="n">krIndex</span><span class="p">],</span> <span class="n">dn</span><span class="p">[:,</span> <span class="n">krIndex</span><span class="p">],</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">PWDecomp</span><span class="p">(</span><span class="n">Nviz</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[:,</span> <span class="n">krIndex</span><span class="p">],</span> <span class="n">dn</span><span class="p">[:,</span> <span class="n">krIndex</span><span class="p">],</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Y</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">181</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># Return pwd data as [181, 360] matrix</span></div>
 
@@ -264,13 +274,15 @@
     <span class="k">return</span> <span class="n">vizMtx</span></div>
 
 
-<div class="viewcode-block" id="normalizeMTX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.normalizeMTX">[docs]</a><span class="k">def</span> <span class="nf">normalizeMTX</span><span class="p">(</span><span class="n">MTX</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Normalizes a matrix to [-1 ... 1]</span>
+<div class="viewcode-block" id="normalizeMTX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.normalizeMTX">[docs]</a><span class="k">def</span> <span class="nf">normalizeMTX</span><span class="p">(</span><span class="n">MTX</span><span class="p">,</span> <span class="n">logScale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Normalizes a matrix to [0 ... 1]</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    MTX : array_like</span>
 <span class="sd">       Matrix to be normalized</span>
+<span class="sd">    logScale : bool</span>
+<span class="sd">       Toggle conversion logScale [Default: False]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -278,7 +290,15 @@
 <span class="sd">       Normalized Matrix</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">MTX</span> <span class="o">-=</span> <span class="n">MTX</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">MTX</span> <span class="o">/</span> <span class="n">MTX</span><span class="o">.</span><span class="n">max</span><span class="p">()</span></div>
+    <span class="n">MTX</span> <span class="o">/=</span> <span class="n">MTX</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">logScale</span><span class="p">:</span>
+        <span class="n">MTX</span> <span class="o">+=</span> <span class="mf">0.00001</span>
+        <span class="n">MTX</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">MTX</span><span class="p">))</span>
+        <span class="n">MTX</span> <span class="o">+=</span> <span class="mi">5</span>
+        <span class="n">MTX</span> <span class="o">/=</span> <span class="mf">5.000004343</span>
+        <span class="c1"># MTX = 20 * _np.log10(_np.abs(MTX))</span>
+    <span class="k">return</span> <span class="n">MTX</span></div>
 
 
 <div class="viewcode-block" id="genSphCoords"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.genSphCoords">[docs]</a><span class="k">def</span> <span class="nf">genSphCoords</span><span class="p">():</span>
@@ -288,14 +308,15 @@
 <span class="sd">    coords : named tuple</span>
 <span class="sd">        holds cartesian (x,y,z) and spherical (theta, phi) coordinates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">coords</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;coords&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="s1">&#39;phi&#39;</span><span class="p">])</span>
-    <span class="n">theta</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">181</span><span class="p">)</span>
-    <span class="n">coords</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
-    <span class="n">coords</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
-    <span class="n">coords</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">360</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;coords&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;el&#39;</span><span class="p">])</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+    <span class="n">el</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">181</span><span class="p">)</span>
+    <span class="n">coords</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">az</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
+    <span class="n">coords</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
+    <span class="n">coords</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">360</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
 
-    <span class="n">coords</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="n">coords</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">181</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">360</span><span class="p">))</span>
+    <span class="n">coords</span><span class="o">.</span><span class="n">el</span><span class="p">,</span> <span class="n">coords</span><span class="o">.</span><span class="n">az</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">181</span><span class="p">),</span>
+                                        <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">360</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">coords</span></div>
 
 
@@ -312,13 +333,13 @@
 <span class="sd">    V : named_tuple</span>
 <span class="sd">       Contains .xs, .ys, .zs cartesian coordinates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rs</span> <span class="o">=</span> <span class="n">vizMTX</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">181</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">rs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vizMTX</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">181</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
     <span class="n">coords</span> <span class="o">=</span> <span class="n">genSphCoords</span><span class="p">()</span>
     <span class="n">V</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;xs&#39;</span><span class="p">,</span> <span class="s1">&#39;ys&#39;</span><span class="p">,</span> <span class="s1">&#39;zs&#39;</span><span class="p">])</span>
-    <span class="n">V</span><span class="o">.</span><span class="n">xs</span> <span class="o">=</span> <span class="n">rs</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
-    <span class="n">V</span><span class="o">.</span><span class="n">ys</span> <span class="o">=</span> <span class="n">rs</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
-    <span class="n">V</span><span class="o">.</span><span class="n">zs</span> <span class="o">=</span> <span class="n">rs</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">V</span><span class="o">.</span><span class="n">xs</span> <span class="o">=</span> <span class="n">rs</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">el</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">V</span><span class="o">.</span><span class="n">ys</span> <span class="o">=</span> <span class="n">rs</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">el</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">V</span><span class="o">.</span><span class="n">zs</span> <span class="o">=</span> <span class="n">rs</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">el</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">V</span></div>
 
 
@@ -342,9 +363,9 @@
     <span class="n">V</span> <span class="o">=</span> <span class="n">sph2cartMTX</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">)</span>
 
     <span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">xs</span><span class="p">),</span>
-        <span class="n">y</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">ys</span><span class="p">),</span>
-        <span class="n">z</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">zs</span><span class="p">),</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">xs</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">ys</span><span class="p">,</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">zs</span><span class="p">,</span>
         <span class="n">surfacecolor</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vizMTX</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">181</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
         <span class="n">colorscale</span><span class="o">=</span><span class="s1">&#39;Viridis&#39;</span><span class="p">,</span>
         <span class="n">showscale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -400,9 +421,9 @@
 
     <span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">360</span><span class="p">],</span>
-        <span class="n">y</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">180</span><span class="p">],</span>
-        <span class="n">z</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="n">surfacecolor</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vizMTX</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">181</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">181</span><span class="p">],</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">),</span>
+        <span class="n">surfacecolor</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vizMTX</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">181</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))),</span>
         <span class="n">colorscale</span><span class="o">=</span><span class="s1">&#39;Viridis&#39;</span><span class="p">,</span>
         <span class="n">showscale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">hoverinfo</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>
@@ -410,7 +431,7 @@
     <span class="k">return</span> <span class="n">trace</span></div>
 
 
-<div class="viewcode-block" id="genVisual"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.genVisual">[docs]</a><span class="k">def</span> <span class="nf">genVisual</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="genVisual"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.genVisual">[docs]</a><span class="k">def</span> <span class="nf">genVisual</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logScale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Returns desired trace after cleaning the data</span>
 
 <span class="sd">    Parameters</span>
@@ -429,7 +450,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">vizMTX</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">)</span>  <span class="c1"># Can we be sure to only need the abs?</span>
     <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
-        <span class="n">vizMTX</span> <span class="o">=</span> <span class="n">normalizeMTX</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">)</span>
+        <span class="n">vizMTX</span> <span class="o">=</span> <span class="n">normalizeMTX</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">logScale</span><span class="o">=</span><span class="n">logScale</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;shape&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">genShape</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">)</span>
@@ -493,7 +514,7 @@
     <span class="n">showTrace</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="plot3D"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot3D">[docs]</a><span class="k">def</span> <span class="nf">plot3D</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colorize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="plot3D"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot3D">[docs]</a><span class="k">def</span> <span class="nf">plot3D</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colorize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logScale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Visualize matrix data, such as from makeMTX(Pnm, dn)</span>
 
 <span class="sd">    Parameters</span>
@@ -510,7 +531,51 @@
 <span class="sd">    Colorization, contour plot</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">showTrace</span><span class="p">(</span><span class="n">genVisual</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;flat&#39;</span><span class="p">:</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+            <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">]),</span>
+                <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">181</span><span class="p">]),</span>
+                <span class="n">aspectmode</span><span class="o">=</span><span class="s1">&#39;manual&#39;</span><span class="p">,</span>
+                <span class="n">aspectratio</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">3.6</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.81</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">showTrace</span><span class="p">(</span><span class="n">genVisual</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logScale</span><span class="o">=</span><span class="n">logScale</span><span class="p">),</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="frqToKr"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.frqToKr">[docs]</a><span class="k">def</span> <span class="nf">frqToKr</span><span class="p">(</span><span class="n">fTarget</span><span class="p">,</span> <span class="n">fVec</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the kr bin closest  to the target frequency</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fTarget : float</span>
+<span class="sd">       Target frequency</span>
+<span class="sd">    fVec : array_like</span>
+<span class="sd">       Array containing the available frequencys</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    krTarget : int</span>
+<span class="sd">       kr bin closest to target frequency</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fVec</span> <span class="o">-</span> <span class="n">fTarget</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="plot3Dgrid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot3Dgrid">[docs]</a><span class="k">def</span> <span class="nf">plot3Dgrid</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span>
+                          <span class="n">specs</span><span class="o">=</span><span class="p">[[{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}],</span>
+                                 <span class="p">[{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}]])</span>
+
+    <span class="k">for</span> <span class="n">IDX</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">)):</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">append_trace</span><span class="p">(</span><span class="n">genVisual</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">[</span><span class="n">IDX</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">),</span><span class="n">IDX</span><span class="o">%</span><span class="n">rows</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">IDX</span><span class="o">//</span><span class="n">cols</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">env_info</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;jupyter_notebook&#39;</span><span class="p">:</span>
+        <span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pltoff</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span></div>
 </pre></div>
 
            </div>
@@ -544,7 +609,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1dev',
+            VERSION:'0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

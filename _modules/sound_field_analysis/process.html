@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sound_field_analysis.process &mdash; Sound Field Analysis toolbox for Python 0.1dev documentation</title>
+  <title>sound_field_analysis.process &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.1dev documentation" href="../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -59,7 +62,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -134,32 +137,28 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions that act on the Spatial Fourier Coefficients</span>
 
-<span class="sd">`fdt`</span>
-<span class="sd">   Frequency to time transform</span>
-<span class="sd">`itc`</span>
+<span class="sd">`FFT`</span>
+<span class="sd">   (Fast) Fourier Transform</span>
+<span class="sd">`iFFT`</span>
+<span class="sd">   Inverse (Fast) Fourier Transform</span>
+
+<span class="sd">`spatFT`</span>
+<span class="sd">   Spatial Fourier Transform</span>
+<span class="sd">`iSpatFT`</span>
 <span class="sd">   Fast Inverse Spatial Fourier Transform</span>
-<span class="sd">`pdc`</span>
+
+<span class="sd">`PWDecomp`</span>
 <span class="sd">   Plane Wave Decomposition</span>
-<span class="sd">`rfi`</span>
-<span class="sd">   Radial filter Improvement</span>
-<span class="sd">`stc`</span>
-<span class="sd">   Fast Spatial Fourier Transform</span>
-<span class="sd">`tdt`</span>
-<span class="sd">   Time Domain Reconstruction</span>
 
 <span class="sd">Not yet implemented:</span>
-
-<span class="sd">`bsa`</span>
+<span class="sd">`BEMA`</span>
 <span class="sd">   BEMA Spatial Anti-Aliasing</span>
+<span class="sd">`rfi`</span>
+<span class="sd">   Radial filter improvement</span>
 <span class="sd">`sfe`</span>
 <span class="sd">   Sound field extrapolation</span>
 <span class="sd">`wdr`</span>
 <span class="sd">   Wigner-D Rotation</span>
-
-<span class="sd">TODO</span>
-<span class="sd">----</span>
-<span class="sd">Use more descriptive function names</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
@@ -170,8 +169,8 @@
 <span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
 
 
-<div class="viewcode-block" id="bsa"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.bsa">[docs]</a><span class="k">def</span> <span class="nf">bsa</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">ctSig</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">avgBandwidth</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;B/S/A BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</span>
+<div class="viewcode-block" id="BEMA"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.BEMA">[docs]</a><span class="k">def</span> <span class="nf">BEMA</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">ctSig</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">avgBandwidth</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -203,12 +202,12 @@
 <span class="sd">       AES Convention 2012, Convention Paper 8751, 2012. http://www.aes.org/e-lib/browse.cfm?elib=16493</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!Warning, BSA is not yet implemented. Continuing with initial coefficients!&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!Warning, BEMA is not yet implemented. Continuing with initial coefficients!&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Pnm</span></div>
 
 
-<div class="viewcode-block" id="fdt"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.fdt">[docs]</a><span class="k">def</span> <span class="nf">fdt</span><span class="p">(</span><span class="n">timeData</span><span class="p">,</span> <span class="n">FFToversize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstSample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lastSample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;F/D/T frequency domain transform</span>
+<div class="viewcode-block" id="FFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.FFT">[docs]</a><span class="k">def</span> <span class="nf">FFT</span><span class="p">(</span><span class="n">timeData</span><span class="p">,</span> <span class="n">FFToversize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstSample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lastSample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;(Fast) Fourier Transform</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -289,13 +288,13 @@
     <span class="k">return</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">ctSig</span></div>
 
 
-<div class="viewcode-block" id="itc"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.itc">[docs]</a><span class="k">def</span> <span class="nf">itc</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;I/T/C Fast Inverse spatial Fourier Transform Core</span>
+<div class="viewcode-block" id="iSpatFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.iSpatFT">[docs]</a><span class="k">def</span> <span class="nf">iSpatFT</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inverse spatial Fourier Transform</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    Pnm : array_like</span>
-<span class="sd">       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from SOFiA S/T/C)</span>
+<span class="sd">       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from spatFT)</span>
 <span class="sd">    angles : array_like</span>
 <span class="sd">       Target angles of shape</span>
 <span class="sd">       ::</span>
@@ -313,8 +312,7 @@
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    This is a pure ISFT core that does not involve extrapolation.</span>
-<span class="sd">    (=The pressures are referred to the original radius)</span>
+<span class="sd">    This transform does not involve extrapolation. (=The pressures are referred to the original radius)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">angles</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -343,7 +341,7 @@
     <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-            <span class="n">progress_bar</span><span class="p">(</span><span class="n">ctr</span><span class="p">,</span> <span class="n">N</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;I/T/C - Inverse spatial Transform&#39;</span><span class="p">)</span>
+            <span class="n">progress_bar</span><span class="p">(</span><span class="n">ctr</span><span class="p">,</span> <span class="n">N</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;iSpatFT - Inverse spatial Transform&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">SHresults</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">AzimuthAngles</span><span class="p">,</span> <span class="n">ElevationAngles</span><span class="p">)</span>
             <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">SHresults</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">])</span>
@@ -351,8 +349,8 @@
     <span class="k">return</span> <span class="n">OutputArray</span></div>
 
 
-<div class="viewcode-block" id="pdc"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.pdc">[docs]</a><span class="k">def</span> <span class="nf">pdc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">OmegaL</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">cn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;P/D/C - Plane Wave Decomposition</span>
+<div class="viewcode-block" id="PWDecomp"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.PWDecomp">[docs]</a><span class="k">def</span> <span class="nf">PWDecomp</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">OmegaL</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">cn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plane Wave Decomposition</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -366,9 +364,9 @@
 <span class="sd">             ...</span>
 <span class="sd">           AZn, ELn]</span>
 <span class="sd">    Pnm : matrix of complex floats</span>
-<span class="sd">       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</span>
+<span class="sd">       Spatial Fourier Coefficients (e.g. from spatFT)</span>
 <span class="sd">    dn : matrix of complex floats</span>
-<span class="sd">       Modal array filters (e.g. from SOFiA M/F)</span>
+<span class="sd">       Modal array filters (e.g. from radFilter)</span>
 <span class="sd">    cn : array_like, optional</span>
 <span class="sd">       Weighting Function. Either frequency invariant weights as 1xN array</span>
 <span class="sd">       or with kr bins in rows over N cols. [Default: None]</span>
@@ -380,7 +378,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA P/D/C - Plane Wave Decomposition&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;PWDecomp - Plane Wave Decomposition&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
@@ -462,7 +460,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    dn : array_like</span>
-<span class="sd">       Analytical frequency domain radial filters (e.g. SOFiA M/F)</span>
+<span class="sd">       Analytical frequency domain radial filters (e.g. gen.radFilter())</span>
 <span class="sd">    kernelDownScale : int, optional</span>
 <span class="sd">       Downscale factor for the filter kernel [Default: 2]</span>
 <span class="sd">    highPass : float, optional</span>
@@ -479,7 +477,7 @@
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    This function improves the FIR radial filters from SOFiA M/F. The filters</span>
+<span class="sd">    This function improves the FIR radial filters from gen.radFilter(). The filters</span>
 <span class="sd">    are made causal and are windowed in time domain. The DC components are</span>
 <span class="sd">    estimated. The R/F/I module should always be inserted to the filter</span>
 <span class="sd">    path when treating measured data even if no use is made of the included</span>
@@ -488,7 +486,7 @@
 <span class="sd">    Do NOT use R/F/I for single open sphere filters (e.g.simulations).</span>
 
 <span class="sd">    IMPORTANT</span>
-<span class="sd">       Remember to choose a fft-oversize factor (F/D/T) being large</span>
+<span class="sd">       Remember to choose a fft-oversize factor (.FFT()) being large</span>
 <span class="sd">       enough to cover all filter latencies and reponse slopes.</span>
 <span class="sd">       Otherwise undesired cyclic convolution artifacts may appear</span>
 <span class="sd">       in the output signal.</span>
@@ -512,7 +510,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    Pnm_kra : array_like</span>
-<span class="sd">       Spatial Fourier Coefficients (e.g. from SOFiA S/T/C)</span>
+<span class="sd">       Spatial Fourier Coefficients (e.g. from spatFT())</span>
 <span class="sd">    kra,krb : array_like</span>
 <span class="sd">       k * ra/rb vector</span>
 <span class="sd">    problem : string{&#39;interior&#39;, &#39;exterior&#39;}</span>
@@ -555,15 +553,15 @@
     <span class="k">return</span> <span class="n">Pnm_kra</span> <span class="o">*</span> <span class="n">exp</span><span class="o">.</span><span class="n">T</span></div>
 
 
-<div class="viewcode-block" id="stc"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.stc">[docs]</a><span class="k">def</span> <span class="nf">stc</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;S/T/C Fast Spatial Fourier Transform</span>
+<div class="viewcode-block" id="spatFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.spatFT">[docs]</a><span class="k">def</span> <span class="nf">spatFT</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Fast Spatial Fourier Transform</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    N : int</span>
 <span class="sd">       Maximum transform order</span>
 <span class="sd">    fftData : array_like</span>
-<span class="sd">       Frequency domain sounfield data, (e.g. from SOFiA FDT) with spatial sampling positions in cols and FFT bins in rows</span>
+<span class="sd">       Frequency domain soundfield data, (e.g. from FFT()) with spatial sampling positions in cols and FFT bins in rows</span>
 <span class="sd">    grid : array_like</span>
 <span class="sd">       Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape</span>
 <span class="sd">       ::</span>
@@ -604,8 +602,8 @@
     <span class="k">return</span> <span class="n">OutputArray</span></div>
 
 
-<div class="viewcode-block" id="tdt"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.tdt">[docs]</a><span class="k">def</span> <span class="nf">tdt</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minPhase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resampleFactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; T/D/T - Time Domain Transform</span>
+<div class="viewcode-block" id="iFFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.iFFT">[docs]</a><span class="k">def</span> <span class="nf">iFFT</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minPhase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resampleFactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Inverse (Fast) Fourier Transform</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -616,7 +614,7 @@
 <span class="sd">    resampleFactor int, optional</span>
 <span class="sd">       Resampling factor (FS_target/FS_source)</span>
 <span class="sd">    minPhase bool, optional</span>
-<span class="sd">    Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]</span>
+<span class="sd">       Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -637,7 +635,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Argument window must be in range 0.0 ... 1.0!&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SOFiA T/D/T - Time Domain Transform&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;iFFT - inverse Fourier Transform&#39;</span><span class="p">)</span>
 
     <span class="c1"># inverse real FFT</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
@@ -714,7 +712,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1dev',
+            VERSION:'0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
