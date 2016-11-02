@@ -120,21 +120,21 @@ def FFT(timeData, FFToversize=1, firstSample=0, lastSample=None):
     temperature = timeData.averageAirTemp
     radius = timeData.radius
 
-    N = IR.shape[1]
+    N, IRLength = timeData.impulseResponse.shape
 
     if lastSample is None:  # assign lastSample to length of IR if not provided
-        lastSample = N
+        lastSample = IRLength
 
     if FFToversize < 1:
         raise ValueError('FFToversize must be >= 1.')
 
-    if lastSample < firstSample or lastSample > N:
-        raise ValueError('lastSample must be between firstSample and N (length of impulse response).')
+    if lastSample < firstSample or lastSample > IRLength:
+        raise ValueError('lastSample must be between firstSample and IRLength.')
 
     if firstSample < 0 or firstSample > lastSample:
         raise ValueError('firstSample must be between 0 and lastSample.')
 
-    totalSamples = lastSample - firstSample + 1
+    totalSamples = lastSample - firstSample
     IR = IR[:, firstSample:lastSample]
     NFFT = int(2**_np.ceil(_np.log2(totalSamples)))
     fftData = _np.fft.rfft(IR, NFFT * FFToversize, 1)
