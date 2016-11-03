@@ -426,13 +426,14 @@ def frqToKr(fTarget, fVec):
 
     return (_np.abs(fVec - fTarget)).argmin()
 
+
 def plot3Dgrid(rows, cols, vizMTX, style, normalize=True):
     fig = tools.make_subplots(rows=rows, cols=cols,
-                          specs=[[{'is_3d': True}, {'is_3d': True}],
-                                 [{'is_3d': True}, {'is_3d': True}]])
+                              specs=[[{'is_3d': True}, {'is_3d': True}],
+                                     [{'is_3d': True}, {'is_3d': True}]])
 
     for IDX in range(0, len(vizMTX)):
-        fig.append_trace(genVisual(vizMTX[IDX], style=style, normalize=normalize),IDX%rows+1, IDX//cols+1)
+        fig.append_trace(genVisual(vizMTX[IDX], style=style, normalize=normalize), IDX % rows + 1, IDX // cols + 1)
 
     if env_info() == 'jupyter_notebook':
         iplot(fig)
