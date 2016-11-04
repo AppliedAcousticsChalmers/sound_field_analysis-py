@@ -40,7 +40,11 @@ def progress_bar(curIDX, maxIDX=None, description='Progress'):
     if maxIDX is None:
         print('\r' + description + ': ' + next(spinner), end='', flush=True)
     else:
-        amount_done = curIDX / (int(maxIDX) - 1)
+        maxIDX = (int(maxIDX) - 1)
+        if maxIDX == 0:
+            amount_done = 1
+        else:
+            amount_done = curIDX / maxIDX
         print('\r' + description + ': [{0:50s}] {1:.1f}%'.format('#' * int(amount_done * 50), amount_done * 100), end="", flush=True)
         if amount_done >= 1:
             print('\n')
