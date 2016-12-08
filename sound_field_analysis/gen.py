@@ -344,7 +344,7 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
     """
 
     if gridData is None:
-        gridData = lebedev(110)
+        gridData = lebedev(110)[0]
 
     if not isinstance(r, list):  # r [1,1] => rm  Microphone Radius
         kr = _np.linspace(0, r * pi * FS / c, (NFFT / 2 + 1))
@@ -529,8 +529,7 @@ def idealWave(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, 
     ctr = 0
     for n in range(0, SegN + 1):
         for m in range(-n, n + 1):
-            SHarms = _np.conj(sph_harm(m, n, az, el))
-            Pnm[ctr] = SHarms * rfArray[n]
+            Pnm[ctr] = _np.conj(sph_harm(m, n, az, el)) * rfArray[n]
             ctr = ctr + 1
 
     if nor == 2:
