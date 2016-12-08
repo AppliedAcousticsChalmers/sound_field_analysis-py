@@ -9,7 +9,7 @@ Collection of spherical helper functions:
 `spneumann / dspneumann`
    Spherical Neumann (Bessel 2nd kind) and derivative
 `sphankel / dsphankel`
-   Spherical Hankel and derivative
+   Spherical Hankel (second kind) and derivative
 `cart2sph / sph2cart`
    Convert cartesion to spherical coordinates and vice versa
 """
@@ -68,9 +68,7 @@ def spbessel(n, kr):
     J : complex float
        Spherical Bessel
     """
-    # spb1 = scy.sph_jn(n, kr)  # returns j and j'
-    # return spb1[0][-1]
-    return _np.sqrt(_np.pi / (2 * kr)) * scy.jn(n + 0.5, kr)
+    return scy.spherical_jn(n, kr, derivative=False)
 
 
 def dspbessel(n, kr):
@@ -88,9 +86,7 @@ def dspbessel(n, kr):
     J' : complex float
        Derivative of spherical Bessel
     """
-    # spb1 = scy.sph_jn(n, kr)  # returns j and j'
-    # return spb1[1][-1]
-    return 1 / (2 * n + 1) * (n * spbessel(n - 1, kr) - (n + 1) * spbessel(n + 1, kr))
+    return scy.spherical_jn(n, kr, derivative=True)
 
 
 def spneumann(n, kr):
@@ -108,9 +104,7 @@ def spneumann(n, kr):
     Yv : complex float
        Spherical Neumann (Bessel second kind)
     """
-    # spb2 = scy.sph_yn(n, kr)
-    # return spb2[0][-1]
-    return _np.sqrt(_np.pi / (2 * kr)) * scy.yv(n + 0.5, kr)
+    return scy.spherical_yn(n, kr, derivative=False)
 
 
 def dspneumann(n, kr):
@@ -128,13 +122,11 @@ def dspneumann(n, kr):
     Yv' : complex float
        Derivative of spherical Neumann (Bessel second kind)
     """
-    # spb2 = scy.sph_yn(n, kr)
-    # return spb2[1][-1]
-    return 1 / (2 * n + 1) * (n * spneumann(n - 1, kr) - (n + 1) * spneumann(n + 1, kr))
+    return scy.spherical_yn(n, kr, derivative=True)
 
 
 def sphankel(n, kr):
-    """Spherical Hankel hn
+    """Spherical Hankel hn of the second kind
 
     Parameters
     ----------
@@ -146,13 +138,13 @@ def sphankel(n, kr):
     Returns
     -------
     hn : complex float
-       Spherical Hankel function hn
+       Spherical Hankel function hn (second kind)
     """
     return spbessel(n, kr) - 1j * spneumann(n, kr)
 
 
 def dsphankel(n, kr):
-    """Derivative spherical Hankel function hn'
+    """Derivative spherical Hankel function hn' (second kind)
 
     Parameters
     ----------
@@ -164,7 +156,7 @@ def dsphankel(n, kr):
     Returns
     -------
     hn' : complex float
-       Derivative of spherical Hankel function hn'
+       Derivative of spherical Hankel function hn' (second kind)
     """
     return 0.5 * (sphankel(n - 1, kr) - sphankel(n + 1, kr) - sphankel(n, kr) / kr)
 
