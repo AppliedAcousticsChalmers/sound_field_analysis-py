@@ -15,7 +15,7 @@ Module contains various generator functions:
    Wave Generator, returns spatial Fourier coefficients
 """
 import numpy as _np
-from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph, sph2cart
+from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph
 from .process import iSpatFT
 from .utils import progress_bar
 
@@ -274,7 +274,7 @@ def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
 
 
 def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
-        c=343, wavetype=0, ds=1, Nlim=120, printInfo=True):
+                c=343, wavetype=0, ds=1, Nlim=120, printInfo=True):
     """Sampled Wave Generator Wrapper
 
     Parameters
@@ -337,8 +337,8 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
     ----
     This file is a wrapper generating the complex pressures at the
     positions given in 'gridData' for a full spectrum 0-FS/2 Hz (NFFT Bins)
-    wave impinging to an array. The wrapper involves the idealWave 
-    generator and the spatFT spatial transform.
+    wave impinging to an array. The wrapper involves the idealWave generator
+    and the spatFT spatial transform.
 
     sampledWave emulates discrete sampling. You can observe alias artifacts.
     """
@@ -386,7 +386,7 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
 
 
 def idealWave(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, lowerSegLim=0,
-        SegN=None, upperSegLim=None, printInfo=True):
+              SegN=None, upperSegLim=None, printInfo=True):
     """Ideal wave Generator, returns spatial Fourier coefficients `Pnm` and `kr` vector
 
     Parameters
