@@ -315,6 +315,62 @@ def sph_harm_large(m, n, az, el):
             return Y
 
 
+def sph_harm_all(nMax, az, el):
+    '''Compute all sphercial harmonic coefficients up to degree nMax.
+
+    Parameters
+    ----------
+    nMax : (int)
+        Maximum degree of coefficients to be returned. n >= 0
+
+    az: (float), array_like
+        Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
+
+    el : (float), array_like
+        Elevation (colatitudinal) coordinate [0, pi], also called Phi.
+
+    Returns
+    -------
+    y_mn : (complex float), array_like
+        Complex spherical harmonics of degrees n [0 ... nMax] and all corresponding
+        orders m [-n ... n], sampled at [az, el]. dim1 corresponds to az/el pairs,
+        dim2 to oder/degree (m, n) pairs like 0/0, -1/1, 0/1, 1/1, -2/2, -1/2 ...
+    '''
+    m, n = mnArrays(nMax)
+    mA, azA = _np.meshgrid(m, az)
+    nA, elA = _np.meshgrid(n, el)
+    return sph_harm(mA, nA, azA, elA)
+
+
+def mnArrays(nMax):
+    '''Returns degrees n and orders m up to nMax.
+
+    Parameters
+    ----------
+    nMax : (int)
+        Maximum degree of coefficients to be returned. n >= 0
+
+    Returns
+    -------
+    m : (int), array_like
+        0, -1, 0, 1, -2, -1, 0, 1, 2, ... , -nMax ..., nMax
+    n : (int), array_like
+        0, 1, 1, 1, 2, 2, 2, 2, 2, ... nMax, nMax, nMax
+    '''
+
+    # Degree n = 0, 1, 1, 1, 2, 2, 2, 2, 2 ...
+    degs = _np.arange(nMax + 1)
+    n = _np.repeat(degs, degs * 2 + 1)
+
+    # Order m = 0, -1, 1, 1, -2, -1, 0, 1, 2 ...
+    # http://oeis.org/A196199
+    elementNumber = _np.arange((nMax + 1) ** 2) + 1
+    t = _np.floor(_np.sqrt(elementNumber - 1)).astype(int)
+    m = elementNumber - t * t - t - 1
+
+    return m, n
+
+
 def cart2sph(x, y, z):
     '''Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.'''
     hxy = _np.hypot(x, y)
