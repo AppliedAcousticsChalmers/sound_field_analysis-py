@@ -260,6 +260,32 @@ def sph_harm(m, n, az, el):
     y_mn : (complex float)
         Complex spherical harmonic of order m and degree n,
         sampled at theta = az, phi = el
+    '''
+    return scy.sph_harm(m, n, az, el)
+
+
+def sph_harm_large(m, n, az, el):
+    '''Compute sphercial harmonics for large orders > 84
+
+    Parameters
+    ----------
+    m : (int)
+        Order of the spherical harmonic. abs(m) <= n
+
+    n : (int)
+        Degree of the harmonic, sometimes called l. n >= 0
+
+    az: (float)
+        Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
+
+    el : (float)
+        Elevation (colatitudinal) coordinate [0, pi], also called Phi.
+
+    Returns
+    -------
+    y_mn : (complex float)
+        Complex spherical harmonic of order m and degree n,
+        sampled at theta = az, phi = el
 
     Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5 * exp(i m phi) * P_n^m(cos(theta))
     as per http://dlmf.nist.gov/14.30
@@ -268,7 +294,7 @@ def sph_harm(m, n, az, el):
     '''
     if _np.all(_np.abs(m) < 84):
         return scy.sph_harm(m, n, az, el)
-    else:  # built-in function fails for large orders
+    else:
         mAbs = _np.abs(m)
         if isinstance(el, _np.ndarray):
             P = _np.empty(el.size)
