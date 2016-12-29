@@ -440,9 +440,6 @@ def spatFT(N, fftData, grid):
        Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows
     '''
 
-    if not _np.max(_np.iscomplex(fftData)):
-        raise ValueError('FFTData: Complex Input Data expected.')
-
     numberOfSpatialPositionsInFFTBlock, FFTBlocklength = fftData.shape
     numberOfGridPoints, numberOfGridInfos = grid.shape
     if numberOfGridInfos < 3:
