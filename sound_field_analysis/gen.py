@@ -15,7 +15,7 @@ Module contains various generator functions:
    Wave Generator, returns spatial Fourier coefficients
 """
 import numpy as _np
-from .sph import bn, bn_npf, sphankel, sph_harm, cart2sph
+from .sph import bn, bn_npf, sphankel, sph_harm, sph_harm_all, cart2sph
 from .process import iSpatFT
 from .utils import progress_bar
 
@@ -539,3 +539,22 @@ def idealWave(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, 
     kr[0] = 0  # resubstitute kr = 0
 
     return Pnm, kr
+
+
+def spherical_noise(azimuth_grid, colatitude_grid, order_max=8):
+    ''' Returns band-limited random weights on a spherical surface
+
+    Parameters
+    ----------
+    azimuth_grid, colatitude_grid : array_like, float
+       Grids holding azimuthal and colatitudinal angles
+    order_max : int, optional
+        Spherical order limit [Default: 8]
+
+    Returns
+    -------
+    noisy_weights : array_like, complex
+       Noisy weigths
+    '''
+    spherical_harmonic_bases = sph_harm_all(order_max, azimuth_grid, colatitude_grid)
+    return _np.inner(spherical_harmonic_bases, _np.random.randn((order_max + 1) ** 2) + 1j * _np.random.randn((order_max + 1) ** 2))
