@@ -230,7 +230,7 @@ def PWDecomp(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
     Pnm : matrix of complex floats
        Spatial Fourier Coefficients (e.g. from spatFT)
     dn : matrix of complex floats
-       Modal array filters (e.g. from radFilter)
+       Radial filters (e.g. from radFilter)
     cn : array_like, optional
        Weighting Function. Either frequency invariant weights as 1xN array
        or with kr bins in rows over N cols. [Default: None]
