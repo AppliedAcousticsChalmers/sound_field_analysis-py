@@ -194,7 +194,7 @@ def iSpatFT(Pnm, angles, N=None, printInfo=True):
         PnmDataLength = Pnm.shape[0]
         FFTBlocklength = Pnm.shape[1]
     except:
-        print('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
+        raise ValueError('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
 
     Nmax = int(_np.sqrt(PnmDataLength - 1))
     if N is None:
