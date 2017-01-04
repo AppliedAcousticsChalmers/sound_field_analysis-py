@@ -15,6 +15,7 @@ Module contains various generator functions:
    Wave Generator, returns spatial Fourier coefficients
 """
 import numpy as _np
+from scipy.linalg import lstsq
 from .sph import bn, bn_npf, sphankel, sph_harm, sph_harm_all, cart2sph
 from .process import iSpatFT
 from .utils import progress_bar
@@ -541,7 +542,7 @@ def idealWave(N, r, ac, fs, F_NFFT, az, el, t=0.0, c=343.0, wavetype=0, ds=1.0, 
     return Pnm, kr
 
 
-def spherical_noise(azimuth_grid, colatitude_grid, order_max=8):
+def spherical_noise(azimuth_grid, colatitude_grid, order_max=8, spherical_harmonic_bases=None):
     ''' Returns band-limited random weights on a spherical surface
 
     Parameters
@@ -556,11 +557,12 @@ def spherical_noise(azimuth_grid, colatitude_grid, order_max=8):
     noisy_weights : array_like, complex
        Noisy weigths
     '''
-    spherical_harmonic_bases = sph_harm_all(order_max, azimuth_grid, colatitude_grid)
+    if spherical_harmonic_bases is None:
+        spherical_harmonic_bases = sph_harm_all(order_max, azimuth_grid, colatitude_grid)
     return _np.inner(spherical_harmonic_bases, _np.random.randn((order_max + 1) ** 2) + 1j * _np.random.randn((order_max + 1) ** 2))
 
 
-def spherical_harmonics_least_square_fit(data, azimuth_grid, colatitude_grid, order_max):
+def spherical_harmonics_least_square_fit(data, azimuth_grid, colatitude_grid, order_max, spherical_harmonic_bases=None):
     '''Returns spherical harmonics coefficients least square fitted to provided data
 
     Parameters
@@ -576,5 +578,6 @@ def spherical_harmonics_least_square_fit(data, azimuth_grid, colatitude_grid, or
     coefficients: array_like, float
        Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
     '''
-    spherical_harmonic_bases = sph_harm_all(order_max, azimuth_grid, colatitude_grid)
-    return _np.linalg.lstsq(spherical_harmonic_bases, data.T)[0]
+    if spherical_harmonic_bases is None:
+        spherical_harmonic_bases = sph_harm_all(order_max, azimuth_grid, colatitude_grid)
+    return lstsq(spherical_harmonic_bases, data)[0]
