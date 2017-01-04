@@ -21,39 +21,31 @@ def readMiroStruct(matFile):
 
     Returns
     -------
-    timeData : named tuple
-    `timeData` tuple with following fields
+    time_data : named tuple
+    `time_data` tuple with following fields
     ::
-       .impulseResponses [Channels X Samples]
-       .FS               Sampling frequency in [Hz]
+       .signals [Channels X Samples]
+       .fs               Sampling frequency in [Hz]
+       .azimuth          Azimuth of sampling points
+       .colatitude       Colatitude of sampling points
+       .grid_weights     Weights of quadrature
+       .air_temperature  Average temperature in [C]
        .radius           Array radius in [m]
-       .quadratureGrid   Az, EL, W of the quadrature
-       .averageAirTemp   Temperature in [C]
        .centerIR         Impulse response of center mic (if available), zero otherwise
     """
-    # Import matlab struct
+    # Scipy import of matlab struct
     mat = sio.loadmat(matFile)
     filename = Path(matFile).stem
     data = mat[filename]
 
-    # timeData tuple
-    timeData = namedtuple('timeData', 'FS, radius, quadratureGrid, downSample, averageAirTemp, irOverlay, centerIR, impulseResponse')
-    timeData.FS = data['fs'][0][0][0][0]
-    timeData.radius = data['radius'][0][0][0][0]
-    if data['resampleToFS'][0][0]:
-        timeData.downSample = timeData.FS / data['resampleToFS'][0][0]
-    else:
-        timeData.downSample = 1
-    timeData.quadratureGrid = _np.array([data['azimuth'][0][0][0],
-                                         data['elevation'][0][0][0],
-                                         data['quadWeight'][0][0][0]]).T
-    timeData.averageAirTemp = data['avgAirTemp'][0][0][0][0]
+    time_data = namedtuple('time_data', 'signals, fs, azimuth, colatitude, grid_weights, air_temperature, radius, centerIR')
+    time_data.signals = data['irChOne'][0][0].T
+    time_data.fs = data['fs'][0][0][0][0]
+    time_data.azimuth = data['azimuth'][0][0][0]
+    time_data.colatitude = data['elevation'][0][0][0]
+    time_data.grid_weights = data['quadWeight'][0][0][0]
+    time_data.air_temperature = data['avgAirTemp'][0][0][0][0]
+    time_data.radius = data['radius'][0][0][0][0]
+    time_data.centerIR = _np.array(data['irCenter'][0][0]).flatten()  # Flatten nested array
 
-    # TODO: hcomp, resample
-    timeData.centerIR = _np.array(data['irCenter'][0][0]).flatten()  # Flatten nested array
-    timeData.impulseResponse = data['irChOne'][0][0].T
-
-    timeData.irOverlay = _np.abs(_np.mean(timeData.impulseResponse, 0))
-    timeData.irOverlay /= _np.max(timeData.irOverlay)
-
-    return timeData
+    return time_data
