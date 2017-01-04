@@ -27,7 +27,7 @@ Not yet implemented:
 
 import numpy as _np
 from scipy.signal import hann, resample
-from .sph import sph_harm, besselj, besselh
+from .sph import sph_harm, besselj, besselh, sph_harm_all
 from .utils import progress_bar
 
 pi = _np.pi
@@ -152,65 +152,68 @@ def FFT(timeData, FFToversize=1, firstSample=0, lastSample=None):
     return fftData, kr, f, ctSig
 
 
-def iSpatFT(Pnm, angles, N=None, printInfo=True):
+def spatFT(data, azimuths, colatitudes, gridweights, order_max=10, spherical_harmonic_bases=None):
+    ''' Spatial Fourier Transform
+
+    Parameters
+    ----------
+    data : array_like
+       Data to be transformed, with signals in rows and frequency bins in columns
+    order_max : int, optional
+       Maximum transform order (Default: 10)
+    azimuths, colatitudes, gridweights : array_like
+       Azimuths/Colatitudes/Gridweights of spatial sampling points
+
+    Returns
+    -------
+    Pnm : array_like
+       Spatial Fourier Coefficients with nm coeffs in rows and FFT bins in columns
+    '''
+    data = _np.atleast_2d(data)
+    number_of_signals, FFTLength = data.shape
+
+    # Re-generate spherical harmonic bases if they were not provided or their order is too small
+    if (spherical_harmonic_bases is None or
+            spherical_harmonic_bases.shape[0] < number_of_signals or
+            spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2):
+        print('Regenerating spherical harmonic bases')
+        spherical_harmonic_bases = sph_harm_all(order_max, azimuths, colatitudes)
+
+    spherical_harmonic_bases = (_np.conj(spherical_harmonic_bases).T * (4 * pi * gridweights))
+    return _np.inner(spherical_harmonic_bases, data.T)
+
+
+def iSpatFT(spherical_coefficients, azimuths, colatitudes, order_max=None, spherical_harmonic_bases=None):
     """Inverse spatial Fourier Transform
 
     Parameters
     ----------
-    Pnm : array_like
-       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from spatFT)
-    angles : array_like
-       Target angles of shape
-       ::
-          [AZ1, EL1;
-           AZ2, EL2;
-             ...
-           AZn, ELn]
-    [N] : int, optional
+    spherical_coefficients : array_like
+       Spatial Fourier coefficients with columns representing frequncy bins
+    azimuths, colatitudes : array_like
+       Azimuth/Colatitude angles of spherical coefficients
+    order_max : int, optional
        Maximum transform order [Default: highest available order]
 
     Returns
     -------
-    p : array of complex floats
-       Sound pressures with FFT bins in cols and specified angles in rows
-
-    Note
-    ----
-    This transform does not involve extrapolation. (=The pressures are referred to the original radius)
+    P : array_like
+       Sound pressures with frequency bins in columnss and angles in rows
     """
 
-    if angles.ndim == 1 and angles.shape[0] == 2:
-        AzimuthAngles = _np.array([angles[0]])
-        ElevationAngles = _np.array([angles[1]])
-        numberOfAngles = 1
-    elif angles.ndim == 2 and angles.shape[1] > 1:
-        numberOfAngles = angles.shape[0]
-        AzimuthAngles = _np.asarray(angles[:, 0])
-        ElevationAngles = _np.asarray(angles[:, 1])
-    else:
-        raise ValueError('Error: Delivered angles are not valid. Must consist of [AZ1 EL1; AZ2 EL2; ...; AZn ELn] pairs.')
+    spherical_coefficients = _np.atleast_2d(spherical_coefficients)
+    number_of_coefficients, FFTLength = spherical_coefficients.shape
 
-    try:
-        PnmDataLength = Pnm.shape[0]
-        FFTBlocklength = Pnm.shape[1]
-    except:
-        raise ValueError('Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.')
+    # todo: check coeffs and bases length correspond with order_max
+    if order_max is None:
+        order_max = int(_np.sqrt(number_of_coefficients) - 1)
 
-    Nmax = int(_np.sqrt(PnmDataLength - 1))
-    if N is None:
-        N = Nmax
+    # Re-generate spherical harmonic bases if they were not provided or their order is too small
+    if spherical_harmonic_bases is None or spherical_harmonic_bases.shape[1] < number_of_coefficients or spherical_harmonic_bases.shape[1] == azimuths.size:
+        print('Regenerating spherical harmonic bases')
+        spherical_harmonic_bases = sph_harm_all(order_max, azimuths, colatitudes)
 
-    OutputArray = _np.zeros([numberOfAngles, FFTBlocklength], dtype=_np.complex_)
-
-    ctr = 0
-    for n in range(0, N + 1):
-        if printInfo:
-            progress_bar(ctr, N ** 2, 'iSpatFT - Inverse spatial Transform')
-        for m in range(-n, n + 1):
-            SHresults = sph_harm(m, n, AzimuthAngles, ElevationAngles)
-            OutputArray += _np.outer(SHresults, Pnm[ctr])
-            ctr += 1
-    return OutputArray
+    return _np.inner(spherical_harmonic_bases, spherical_coefficients.T)
 
 
 def PWDecomp(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
@@ -415,52 +418,6 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
         raise ValueError('Problem selector ' + problem + ' not recognized. Please either choose "interior" [Default] or "exterior".')
 
     return Pnm_kra * exp.T
-
-
-def spatFT(N, fftData, grid):
-    ''' Fast Spatial Fourier Transform
-
-    Parameters
-    ----------
-    N : int
-       Maximum transform order
-    fftData : array_like
-       Frequency domain soundfield data, (e.g. from FFT()) with spatial sampling positions in cols and FFT bins in rows
-    grid : array_like
-       Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape
-       ::
-          [AZ1, EL1, W1;
-           AZ2, EL2, W2;
-             ...
-           AZn, ELn, Wn]
-
-    Returns
-    -------
-    Pnm : array_like
-       Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows
-    '''
-
-    numberOfSpatialPositionsInFFTBlock, FFTBlocklength = fftData.shape
-    numberOfGridPoints, numberOfGridInfos = grid.shape
-    if numberOfGridInfos < 3:
-        raise ValueError('GRID: Invalid grid data, must contain [az, el, r].')
-
-    if numberOfSpatialPositionsInFFTBlock != numberOfGridPoints:
-        raise ValueError('Inconsistent spatial sampling points between fftData (' + str(numberOfSpatialPositionsInFFTBlock) + ') and supplied grid  (' + str(numberOfGridPoints) + ').')
-
-    AzimuthAngles = grid[:, 0]
-    ElevationAngles = grid[:, 1]
-    GridWeights = grid[:, 2]
-
-    OutputArray = _np.zeros([(N + 1) ** 2, FFTBlocklength], dtype=_np.complex_)
-
-    ctr = 0
-    for n in range(0, N + 1):
-        for m in range(-n, n + 1):
-            SHarm = 4 * pi * GridWeights * _np.conj(sph_harm(m, n, AzimuthAngles, ElevationAngles))
-            OutputArray[ctr] += _np.inner(SHarm, fftData.T)
-            ctr += 1
-    return OutputArray
 
 
 def iFFT(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
