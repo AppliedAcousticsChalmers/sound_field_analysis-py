@@ -23,6 +23,25 @@ from .utils import progress_bar
 pi = _np.pi
 
 
+def kr(f, radius, temperature=20):
+    '''Return kr vector for given f and array radius
+
+    Parameters
+    ----------
+    f : array_like
+       Frequencies to calculate the kr for
+    radius : float
+       Radius of array
+    temperature : float, optional
+       Room temperature in degree Celcius [Default: 20]
+
+    Returns
+    -------
+    kr : array_like
+       2 * pi * f / c(temperatur) * r
+    '''
+    return 2 * pi * f / (331.5 + 0.6 * temperature) * radius
+
 def whiteNoise(fftData, noiseLevel=80, printInfo=True):
     '''Adds White Gaussian Noise of approx. 16dB crest to a FFT block.
 
