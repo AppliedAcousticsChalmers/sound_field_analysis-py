@@ -70,21 +70,17 @@ def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
     return Pnm
 
 
-def FFT(timeData, FFToversize=1, firstSample=0, lastSample=None):
+def FFT(time_signals, fs=44100, temperature=20, oversampling=1, first_sample=0, last_sample=None):
     '''(Fast) Fourier Transform
 
     Parameters
     ----------
-    timeData : named tuple
-       timeData tuple with following fields
-       ::
-          .impulseResponses [Channels X Samples]
-          .FS
-          .radius           Array radius
-          .averageAirTemp   Temperature in [C]
-          (.centerIR        [1 x Samples] )
-    FFToversize : int, optional
-       FFToversize > 1 increase the FFT Blocksize. [Default: 1]
+    time_signals : array_like
+       Time domain signals to be transformed, with [nSig, nSamples]
+    fs : int, optional
+       Sampling frequency of the time data [Default: 44100]
+    oversampling : int, optional
+       oversampling > 1 increase the FFT Blocksize. [Default: 1]
     firstSample : int, optional
        First time domain sample to be included. [Default: 0]
     lastSample : int, optional
@@ -94,62 +90,39 @@ def FFT(timeData, FFToversize=1, firstSample=0, lastSample=None):
     -------
     fftData : array_like
        Frequency domain data ready for the Spatial Fourier Transform (stc)
-    kr : array_like
-       kr-Values of the delivered data
     f : array_like
        Absolute frequency scale
-    ctSig : array_like
-       Center signal, if available
 
     Note
     ----
-    A FFT of the blocksize (FFToversize*NFFT) is applied
-    to the time domain data,  where  NFFT is determinded
-    as the next power of two of the signalSize  which is
-    signalSize = (lastSample-firstSample).
-    The function will pick a window of (lastSample-firstSample)
-    for the FFT.
-
-    Call this function with a running window (firstSample+td->lastSample+td)
-    iteration increasing td to obtain time slices. This way you resolve the
-    temporal information within the captured sound field.
+    An oversampling*NFFT point Fourier Transform is applied to the time domain data,
+    where NFFT is the next power of two of the number of samples.
+    Time-windowing can be used by providing a first_sample and last_sample index.
     '''
 
-    IR = timeData.impulseResponse
-    FS = timeData.FS
-    temperature = timeData.averageAirTemp
-    radius = timeData.radius
+    time_signals = _np.atleast_2d(time_signals)
+    nSig, nSamples = time_signals.shape
 
-    N, IRLength = timeData.impulseResponse.shape
+    if last_sample is None:  # assign lastSample to length of IR if not provided
+        last_sample = nSamples
 
-    if lastSample is None:  # assign lastSample to length of IR if not provided
-        lastSample = IRLength
+    if oversampling < 1:
+        raise ValueError('oversampling must be >= 1.')
 
-    if FFToversize < 1:
-        raise ValueError('FFToversize must be >= 1.')
+    if last_sample < first_sample or last_sample > nSamples:
+        raise ValueError('lastSample must be between firstSample and nSamples.')
 
-    if lastSample < firstSample or lastSample > IRLength:
-        raise ValueError('lastSample must be between firstSample and IRLength.')
-
-    if firstSample < 0 or firstSample > lastSample:
+    if first_sample < 0 or first_sample > last_sample:
         raise ValueError('firstSample must be between 0 and lastSample.')
 
-    totalSamples = lastSample - firstSample
-    IR = IR[:, firstSample:lastSample]
-    NFFT = int(2**_np.ceil(_np.log2(totalSamples)))
-    fftData = _np.fft.rfft(IR, NFFT * FFToversize, 1)
+    total_samples = last_sample - first_sample
+    time_signals = time_signals[:, first_sample:last_sample]
+    NFFT = int(2**_np.ceil(_np.log2(total_samples)))
 
-    if timeData.centerIR.any():
-        centerIR = timeData.centerIR[:, firstSample:lastSample]
-        ctSig = _np.fft.rfft(centerIR, NFFT * FFToversize)
-    else:
-        ctSig = []
+    fftData = _np.fft.rfft(time_signals, NFFT * oversampling, 1)
+    f = _np.fft.rfftfreq(NFFT, d=1 / fs)
 
-    f = _np.fft.rfftfreq(NFFT, d=1 / FS)
-    c = 331.5 + 0.6 * temperature
-    kr = 2 * pi * f / c * radius
-
-    return fftData, kr, f, ctSig
+    return fftData, f
 
 
 def spatFT(data, azimuths, colatitudes, gridweights, order_max=10, spherical_harmonic_bases=None):
