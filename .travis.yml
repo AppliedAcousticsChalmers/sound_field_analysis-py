@@ -10,4 +10,4 @@ python:
 install:
   - pip install numpy scipy plotly
 
-script: pytest
+script: python -m pytest pytests.py
