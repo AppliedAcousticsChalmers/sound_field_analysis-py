@@ -7,7 +7,7 @@ python:
   - "3.5"
   - "3.6"
 
-  install:
-    - pip install numpy scipy plotly
+install:
+  - pip install numpy scipy plotly
 
-  script: pytest
+script: pytest
