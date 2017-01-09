@@ -32,8 +32,7 @@ install:
   - python -m pip install -U pip"
 
   # Install dependencies
-  - pip install --upgrade pip setuptools wheel pytest
-  - pip install --only-binary=numpy,scipy numpy scipy plotly 
+  - pip install --upgrade --only-binary=numpy pip setuptools wheel pytest numpy scipy plotly 
 
 build: none
 
