@@ -6,9 +6,8 @@ python:
   - "3.6"
 
 install:
-  - pip install --upgrade pip setuptools wheel
+  - pip install --upgrade pip setuptools wheel pytest
   - pip install --only-binary=numpy,scipy numpy scipy plotly 
-  - pip --upgrade pytest
 
 script:
   - py.test pytests.py  
