@@ -27,6 +27,7 @@ Not yet implemented:
 
 import numpy as _np
 from scipy.signal import hann, resample
+from scipy.linalg import lstsq
 from .sph import sph_harm, besselj, besselh, sph_harm_all
 from .utils import progress_bar
 
@@ -187,6 +188,27 @@ def iSpatFT(spherical_coefficients, azimuths, colatitudes, order_max=None, spher
         spherical_harmonic_bases = sph_harm_all(order_max, azimuths, colatitudes)
 
     return _np.inner(spherical_harmonic_bases, spherical_coefficients.T)
+
+
+def spatFT_LSF(data, azimuths, colatitudes, order_max, spherical_harmonic_bases=None):
+    '''Returns spherical harmonics coefficients least square fitted to provided data
+
+    Parameters
+    ----------
+    data : array_like, complex
+       Data to be fitted to
+    azimuth_grid, colatitude_grid : array_like, float
+       Azimuth / colatidunenal data locations
+    order_max: int
+       Maximum order N of fit
+
+    Returns
+    coefficients: array_like, float
+       Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
+    '''
+    if spherical_harmonic_bases is None:
+        spherical_harmonic_bases = sph_harm_all(order_max, azimuths, colatitudes)
+    return lstsq(spherical_harmonic_bases, data)[0]
 
 
 def PWDecomp(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
