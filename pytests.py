@@ -1,5 +1,5 @@
 from sound_field_analysis import sph
-from pytest import approx
+from py.test import approx
 
 
 def test_sph_harm():

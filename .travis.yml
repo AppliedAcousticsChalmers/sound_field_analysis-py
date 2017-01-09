@@ -9,6 +9,6 @@ python:
 
 install:
   - pip install --upgrade pip setuptools wheel
-  - pip install --only-binary=numpy,scipy numpy scipy plotly
+  - pip install --only-binary=numpy,scipy numpy scipy plotly pytest
 
 script: python -m pytest pytests.py
