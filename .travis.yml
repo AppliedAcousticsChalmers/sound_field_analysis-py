@@ -10,4 +10,4 @@ install:
   - pip install --only-binary=numpy,scipy numpy scipy plotly 
 
 script:
-  - py.test pytests.py  
+  - py.test pytests.py -v
