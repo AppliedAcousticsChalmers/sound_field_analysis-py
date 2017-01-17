@@ -2,6 +2,7 @@
 """
 import sys
 from itertools import cycle
+from numpy import log10, abs
 spinner = cycle(['-', '/', '|', '\\'])
 
 
@@ -48,3 +49,25 @@ def progress_bar(curIDX, maxIDX=None, description='Progress'):
         print('\r' + description + ': [{0:50s}] {1:.1f}%'.format('#' * int(amount_done * 50), amount_done * 100), end="", flush=True)
         if amount_done >= 1:
             print('\n')
+
+
+def db(data, power=False):
+    '''Convenience function to calculate the 20*log10(abs(x))
+
+    Parameters
+    ----------
+    data : array_like
+       signals to be converted to db
+    power : boolean
+       data is a power signal and only needs factor 10
+
+    Returns
+    -------
+    db : array_like
+       20 * log10(abs(data))
+    '''
+    if power:
+        factor = 10
+    else:
+        factor = 20
+    return factor * log10(abs(data))
