@@ -49,3 +49,60 @@ def readMiroStruct(matFile):
     time_data.centerIR = _np.array(data['irCenter'][0][0]).flatten()  # Flatten nested array
 
     return time_data
+
+
+def empty_time_signal(no_of_signals, signal_length):
+    """Returns an empty np rec array that has the proper data structure
+
+    Parameter
+    ---------
+    no_of_signals : int
+       Number of signals to be stored in the recarray
+    signal_length : int
+       Length of the signals to be stored in the recarray
+
+    Returns
+    -------
+    time_data : recarray
+       Structured array  with following fields:
+    ::
+       .IR               [Channels X Samples]
+       .fs               Sampling frequency in [Hz]
+       .azimuth          Azimuth of sampling points
+       .colatitude       Colatitude of sampling points
+       .radius           Array radius in [m]
+       .grid_weights     Weights of quadrature
+       .air_temperature  Average temperature in [C]
+    """
+    return _np.rec.array(_np.zeros(no_of_signals,
+                         dtype=[('IR', str(signal_length) + 'f8'),
+                                ('fs', 'f8'),
+                                ('azimuth', 'f8'),
+                                ('colatitude', 'f8'),
+                                ('radius', 'f8'),
+                                ('grid_weights', 'f8'),
+                                ('air_temperature', 'f8')]))
+
+
+def load_time_signal(filename):
+    """Convenience function to load saved np data structures
+
+    Parameter
+    ---------
+    filename : string
+       File to load
+    
+    Returns
+    -------
+    time_data : recarray
+       Structured array  with following fields:
+    ::
+       .IR               [Channels X Samples]
+       .fs               Sampling frequency in [Hz]
+       .azimuth          Azimuth of sampling points
+       .colatitude       Colatitude of sampling points
+       .radius           Array radius in [m]
+       .grid_weights     Weights of quadrature
+       .air_temperature  Average temperature in [C]
+    """
+    return _np.rec.array(_np.load(filename))
