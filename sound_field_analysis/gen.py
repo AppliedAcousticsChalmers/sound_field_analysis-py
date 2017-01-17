@@ -41,6 +41,7 @@ def kr(f, radius, temperature=20):
     '''
     return 2 * pi * f / (331.5 + 0.6 * temperature) * radius
 
+
 def whiteNoise(fftData, noiseLevel=80, printInfo=True):
     '''Adds White Gaussian Noise of approx. 16dB crest to a FFT block.
 
@@ -68,7 +69,6 @@ def whiteNoise(fftData, noiseLevel=80, printInfo=True):
     nNoise = _np.random.rand(channels, NFFT)
     nNoise = dimFactor * nNoise / _np.mean(_np.abs(nNoise))
     nNoiseSpectrum = _np.fft.rfft(nNoise, axis=1)
-
     return fftData + nNoiseSpectrum
 
 

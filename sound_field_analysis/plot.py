@@ -44,8 +44,6 @@ def showTrace(trace, layout=None, colorize=True):
                 yaxis=dict(range=[-1, 1]),
                 zaxis=dict(range=[-1, 1]),
                 aspectmode='cube'
-                #aspectratio = dict( x=1, y=1, z=0.7 ),
-                
             )
         )
     # Wrap trace in array if needed

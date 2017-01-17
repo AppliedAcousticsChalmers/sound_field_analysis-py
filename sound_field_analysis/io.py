@@ -91,7 +91,7 @@ def load_time_signal(filename):
     ---------
     filename : string
        File to load
-    
+
     Returns
     -------
     time_data : recarray
