@@ -361,11 +361,11 @@ def plot2D(data, title=None, type=None, fs=44100):
         x /= fs
         layout.xaxis.title = 'Time [s]'
     elif type == 'linFFT':
-        x = _np.fft.rfftfreq(x.shape[0], 1 / fs)
+        x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
         layout.yaxis.title = 'Amplitude [dB]'
         layout.xaxis.title = 'Frequency [Hz]'
     elif type == 'logFFT':
-        x = _np.fft.rfftfreq(x.shape[0], 1 / fs)
+        x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
         layout.yaxis.title = 'Amplitude [dB]'
         layout.xaxis.title = 'Frequency [Hz]'
         layout.xaxis.type = 'log'
