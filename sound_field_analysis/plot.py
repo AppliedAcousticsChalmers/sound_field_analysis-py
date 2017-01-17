@@ -326,13 +326,15 @@ def genVisual(vizMTX, style='shape', normalize=True, logScale=False):
         raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
 
 
-def plot2D(data, type=None, fs=44100):
+def plot2D(data, title=None, type=None, fs=44100):
     """Visualize 2D data using plotly.
 
     Parameters
     ----------
     data : array_like
        Data to be plotted, separated along the first dimension (rows).
+    title : string
+       Add title to be displayed on plot
     type : string{None, 'time', 'linFFT', 'logFFT'}
        Type of data to be displayed. [Default: None]
     fs : int
@@ -346,6 +348,7 @@ def plot2D(data, type=None, fs=44100):
     x = _np.arange(data.shape[1] - 1, dtype=_np.float_)
 
     layout = go.Layout(
+        title=title,
         xaxis=dict(
             title='Samples'
         ),
