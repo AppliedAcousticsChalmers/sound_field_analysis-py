@@ -2,7 +2,8 @@
 """
 import sys
 from itertools import cycle
-from numpy import log10, abs
+from numpy import log10, abs, repeat
+from scipy.signal import resample
 spinner = cycle(['-', '/', '|', '\\'])
 
 
@@ -71,3 +72,37 @@ def db(data, power=False):
     else:
         factor = 20
     return factor * log10(abs(data))
+
+
+def nearest_to_value(array, value):
+    """Returns nearest value inside an array
+    """
+    return array[(abs(array - value)).argmin()]
+
+
+def logical_IDX_of_nearest(array, value):
+    """Returns logical indices of nearest values inside array
+    """
+    return array == nearest_to_value(array, value)
+
+
+def interleave_channels(left_channel, right_channel, style=None):
+    """Interleave left and right channels. Style == 'SSR' checks if we total 360 channels
+    """
+    if not left_channel.shape == right_channel.shape:
+        raise ValueError('left_channel and right_channel have to be of same dimensions!')
+
+    if style == 'SSR':
+        if not (left_channel.shape[0] == 360):
+            raise ValueError('Provided arrays to have 360 channels (Nchannel x Nsamples).')
+
+    output_data = repeat(left_channel, 2, axis=0)
+    output_data[1::2, :] = right_channel
+
+    return output_data
+
+
+def simple_resample(data, original_fs, target_fs):
+    """Wrap scipy.signal.resample with a simpler API
+    """
+    return resample(data, num=int(data.shape[1] * target_fs / original_fs))
