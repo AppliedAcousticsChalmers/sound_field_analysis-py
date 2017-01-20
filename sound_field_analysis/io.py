@@ -1,13 +1,11 @@
 '''Input-Output functions
 '''
 
-from pathlib import Path
 from scipy import io as sio
-from collections import namedtuple
 import numpy as _np
 
 
-def readMiroStruct(matFile):
+def read_miro_struct(file_name):
     """ Reads miro matlab files.
 
     Parameters
@@ -17,38 +15,36 @@ def readMiroStruct(matFile):
        ::
          load SOFiA_A1;
          SOFiA_A1_struct = struct(SOFiA_A1);
-         save('SOFiA_A1_struct.mat', 'SOFiA_A1_struct');
+         save('SOFiA_A1_struct.mat', , '-struct', 'SOFiA_A1_struct');
 
     Returns
     -------
-    time_data : named tuple
-    `time_data` tuple with following fields
+    td : recarray
+    `time_data` array with fields from empty_time_signal()
     ::
-       .signals [Channels X Samples]
+       .signal           [Channels X Samples]
        .fs               Sampling frequency in [Hz]
        .azimuth          Azimuth of sampling points
        .colatitude       Colatitude of sampling points
+       .radius           Array radius in [m]
        .grid_weights     Weights of quadrature
        .air_temperature  Average temperature in [C]
-       .radius           Array radius in [m]
-       .centerIR         Impulse response of center mic (if available), zero otherwise
     """
-    # Scipy import of matlab struct
-    mat = sio.loadmat(matFile)
-    filename = Path(matFile).stem
-    data = mat[filename]
+    current_data = sio.loadmat(file_name)
+    no_of_signals = int(_np.squeeze(current_data['nIr']))
+    signal_length = int(_np.squeeze(current_data['taps']))
 
-    time_data = namedtuple('time_data', 'signals, fs, azimuth, colatitude, grid_weights, air_temperature, radius, centerIR')
-    time_data.signals = data['irChOne'][0][0].T
-    time_data.fs = data['fs'][0][0][0][0]
-    time_data.azimuth = data['azimuth'][0][0][0]
-    time_data.colatitude = data['elevation'][0][0][0]
-    time_data.grid_weights = data['quadWeight'][0][0][0]
-    time_data.air_temperature = data['avgAirTemp'][0][0][0][0]
-    time_data.radius = data['radius'][0][0][0][0]
-    time_data.centerIR = _np.array(data['irCenter'][0][0]).flatten()  # Flatten nested array
+    td = empty_time_signal(no_of_signals, signal_length)
 
-    return time_data
+    td.azimuth = _np.squeeze(current_data['azimuth'])
+    td.colatitude = _np.pi / 2 - _np.squeeze(current_data['elevation'])
+    td.airtemperature = _np.squeeze(current_data['avgAirTemp'])
+    td.grid_weights = _np.squeeze(current_data['quadWeight'])
+    td.radius = _np.squeeze(current_data['radius'])
+    td.fs = _np.squeeze(current_data['fs'])
+    td.signal = _np.squeeze(current_data['irChOne']).T
+
+    return td
 
 
 def empty_time_signal(no_of_signals, signal_length):
@@ -66,7 +62,7 @@ def empty_time_signal(no_of_signals, signal_length):
     time_data : recarray
        Structured array  with following fields:
     ::
-       .IR               [Channels X Samples]
+       .signal           [Channels X Samples]
        .fs               Sampling frequency in [Hz]
        .azimuth          Azimuth of sampling points
        .colatitude       Colatitude of sampling points
@@ -75,7 +71,7 @@ def empty_time_signal(no_of_signals, signal_length):
        .air_temperature  Average temperature in [C]
     """
     return _np.rec.array(_np.zeros(no_of_signals,
-                         dtype=[('IR', str(signal_length) + 'f8'),
+                         dtype=[('signal', str(signal_length) + 'f8'),
                                 ('fs', 'f8'),
                                 ('azimuth', 'f8'),
                                 ('colatitude', 'f8'),
