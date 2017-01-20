@@ -105,4 +105,4 @@ def interleave_channels(left_channel, right_channel, style=None):
 def simple_resample(data, original_fs, target_fs):
     """Wrap scipy.signal.resample with a simpler API
     """
-    return resample(data, num=int(data.shape[1] * target_fs / original_fs))
+    return resample(data, num=int(data.shape[1] * target_fs / original_fs), axis=1)
