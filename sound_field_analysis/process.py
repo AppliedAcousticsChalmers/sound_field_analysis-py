@@ -26,7 +26,7 @@ Not yet implemented:
 """
 
 import numpy as _np
-from scipy.signal import hann, resample
+from scipy.signal import hann, resample, fftconvolve
 from scipy.linalg import lstsq
 from .sph import sph_harm, besselj, besselh, sph_harm_all
 from .utils import progress_bar
@@ -492,3 +492,48 @@ def wdr(Pnm, xAngle, yAngle, zAngle):
     print('!WARNING. Wigner-D Rotation is not yet implemented. Continuing with un-rotated coefficients!')
 
     return Pnm
+
+
+def convolve(A, B, FFT=None):
+    """ Convolve two arrrays A & B row-wise. One or both can be one-dimensional for SIMO/SISO convolution
+
+    Parameters
+    ----------
+    A, B: array_like
+       Data to perform the convolution on of shape [Nsignals x NSamples]
+    FFT: bool, optional
+       Selects wether time or frequency domain convolution is applied. Default: On if Nsamples > 500 for both
+
+    Returns
+    -------
+    out: array
+       Array containing row-wise, linear convolution of A and B
+    """
+    A = _np.atleast_2d(A)
+    B = _np.atleast_2d(B)
+
+    N_sigA, L_sigA = A.shape
+    N_sigB, L_sigB = B.shape
+
+    if FFT is None and (L_sigA > 500 and L_sigB > 500):
+        FFT = True
+    else:
+        FFT = False
+
+    if (N_sigA != N_sigB) and not (N_sigA == 1 or N_sigB == 1):
+        raise ValueError('Number of rows must either match or at least one must be one-dimensional.')
+
+    if N_sigA == 1 and N_sigB != 1:
+        A = _np.broadcast_to(A, (N_sigB, L_sigA))
+    elif N_sigA != 1 and N_sigB == 1:
+        B = _np.broadcast_to(B, (N_sigA, L_sigB))
+
+    out = []
+
+    for IDX, cur_row in enumerate(A):
+        if FFT:
+            out.append(fftconvolve(cur_row, B[IDX]))
+        else:
+            out.append(_np.convolve(cur_row, B[IDX]))
+
+    return _np.array(out)
