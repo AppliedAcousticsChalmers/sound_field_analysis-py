@@ -5,17 +5,19 @@ from scipy import io as sio
 import numpy as _np
 
 
-def read_miro_struct(file_name):
+def read_miro_struct(file_name, channel='irChOne'):
     """ Reads miro matlab files.
 
     Parameters
     ----------
     matFile : filepath
-       .miro file that has been exported as a struct like so
+       Path to file that has been exported as a struct like so
        ::
          load SOFiA_A1;
          SOFiA_A1_struct = struct(SOFiA_A1);
          save('SOFiA_A1_struct.mat', , '-struct', 'SOFiA_A1_struct');
+    channel : string, optional
+       Channel that holds required signals. Default: 'irChOne'
 
     Returns
     -------
@@ -42,7 +44,7 @@ def read_miro_struct(file_name):
     td.grid_weights = _np.squeeze(current_data['quadWeight'])
     td.radius = _np.squeeze(current_data['radius'])
     td.fs = _np.squeeze(current_data['fs'])
-    td.signal = _np.squeeze(current_data['irChOne']).T
+    td.signal = _np.squeeze(current_data[channel]).T
 
     return td
 
