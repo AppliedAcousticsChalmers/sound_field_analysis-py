@@ -106,3 +106,22 @@ def load_time_signal(filename):
        .air_temperature  Average temperature in [C]
     """
     return _np.rec.array(_np.load(filename))
+
+
+def read_wavefile(filename):
+    """ Reads in wavefiles and returns data [Nsig x Nsamples] and fs
+    Parameter
+    ---------
+    filename, string
+       Filename of wave file to be read
+
+    Returns
+    -------
+    data, array_like
+       Data of dim [Nsig x Nsamples]
+
+    fs, int
+       Sampling frequency of read data
+    """
+    fs, data = sio.wavfile.read(filename)
+    return data.T, fs
