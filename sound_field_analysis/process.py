@@ -121,7 +121,7 @@ def FFT(time_signals, fs=44100, temperature=20, oversampling=1, first_sample=0, 
     NFFT = int(2**_np.ceil(_np.log2(total_samples)))
 
     fftData = _np.fft.rfft(time_signals, NFFT * oversampling, 1)
-    f = _np.fft.rfftfreq(NFFT, d=1 / fs)
+    f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs)
 
     return fftData, f
 
