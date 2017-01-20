@@ -3,6 +3,7 @@
 
 from scipy import io as sio
 import numpy as _np
+from . import utils
 
 
 def read_miro_struct(file_name, channel='irChOne'):
@@ -123,3 +124,33 @@ def read_wavefile(filename):
     """
     fs, data = sio.wavfile.read(filename)
     return data.T, fs
+
+
+def write_SSR_IRs(filename, time_data_l, time_data_r):
+    """Takes two time signals and interprets them as left/right HRIRs for the SoundScapeRenderer
+
+    Parameters
+    ----------
+    filename : string
+       filename to write to
+    time_data_l, time_data_l : time_data recarrays
+       time_data arrays for left/right channel.
+    """
+    equator_IDX_left = utils.logical_IDX_of_nearest(time_data_l.colatitude, _np.pi / 2)
+    equator_IDX_right = utils.logical_IDX_of_nearest(time_data_r.colatitude, _np.pi / 2)
+
+    IRs_left = time_data_l.signal[equator_IDX_left]
+    IRs_right = time_data_r.signal[equator_IDX_right]
+
+    if IRs_left.shape[0] == 180:
+        IRs_left = _np.repeat(IRs_left, 2, axis=0)
+        IRs_right = _np.repeat(IRs_right, 2, axis=0)
+
+    IRs_to_write = utils.interleave_channels(IRs_left, IRs_right, style="SSR")
+    data_to_write = utils.simple_resample(IRs_to_write, original_fs=time_data_l.fs[0], target_fs=44100)
+
+    # Fix SSR IR alignment stuff: left<>right flipped and 90 degree rotation
+    data_to_write = _np.flipud(data_to_write)
+    data_to_write = _np.roll(data_to_write, -90, axis=0)
+
+    sio.wavfile.write(filename, 44100, data_to_write.T)  # wavfile.write expects [Nsamples x Nsignals]
