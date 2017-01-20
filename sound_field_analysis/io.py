@@ -127,7 +127,7 @@ def read_wavefile(filename):
 
 
 def write_SSR_IRs(filename, time_data_l, time_data_r):
-    """Takes two time signals and interprets them as left/right HRIRs for the SoundScapeRenderer
+    """Takes two time signals and writes out the horizontal plane as HRIRs for the SoundScapeRenderer
 
     Parameters
     ----------
