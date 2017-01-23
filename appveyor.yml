@@ -1,38 +1,68 @@
 environment:
-  matrix:
-    - PYTHON: "C:\\Python36"
-      PYTHON_VERSION: 3.6
-      PYTHON_ARCH: 32
+    matrix:
+    - TARGET_ARCH: x86
+      CONDA_PY: 27
+      CONDA_INSTALL_LOCN: C:\\Miniconda
 
-    - PYTHON: "C:\\Python35"
-      PYTHON_VERSION: 3.5
-      PYTHON_ARCH: 32
+    - TARGET_ARCH: x64
+      CONDA_PY: 27
+      CONDA_INSTALL_LOCN: C:\\Miniconda-x64
 
-    - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: 3.4
-      PYTHON_ARCH: 32
+    - TARGET_ARCH: x86
+      CONDA_PY: 34
+      CONDA_INSTALL_LOCN: C:\\Miniconda3
 
-    - PYTHON: "C:\\Python33"
-      PYTHON_VERSION: 3.3
-      PYTHON_ARCH: 32
+    - TARGET_ARCH: x64
+      CONDA_PY: 34
+      CONDA_INSTALL_LOCN: C:\\Miniconda3-x64
+
+    - TARGET_ARCH: x86
+      CONDA_PY: 35
+      CONDA_INSTALL_LOCN: C:\\Miniconda35
+
+    - TARGET_ARCH: x64
+      CONDA_PY: 35
+      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+
+    - TARGET_ARCH: x86
+      CONDA_PY: 36
+      CONDA_INSTALL_LOCN: C:\\Miniconda
+
+    - TARGET_ARCH: x64
+      CONDA_PY: 36
+      CONDA_INSTALL_LOCN: C:\\Miniconda-x64
+
 init:
   - ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
 
 install:
-  # Prepend newly installed Python to the PATH of this build (this cannot be
-  # done from inside the powershell script as it would require to restart
-  # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  # Set up conda forge
+  - cmd: set "OLDPATH=%PATH%"
+  - cmd: set "PATH=%CONDA_INSTALL_LOCN%\\Scripts;%CONDA_INSTALL_LOCN%\\Library\\bin;%PATH%"
+  - cmd: conda config --set show_channel_urls true
+  - cmd: conda config --add channels conda-forge
+
+  # Add a hack to switch to `conda` version `4.1.12` before activating.
+  # This is required to handle a long path activation issue.
+  # Please see PR ( https://github.com/conda/conda/pull/3349 ).
+  - cmd: conda install --yes --quiet conda=4.1.12
+  - cmd: set "PATH=%OLDPATH%"
+  - cmd: set "OLDPATH="
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
+  # Actually activate `conda`.
+  - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
+  - cmd: set PYTHONUNBUFFERED=1
+
   # Upgrade to the latest pip.
   - python -m pip install -U pip"
 
   # Install dependencies
-  - pip install --upgrade --only-binary=numpy pip setuptools wheel pytest numpy scipy plotly 
+  #- pip install --upgrade --only-binary=numpy pip setuptools wheel pytest numpy scipy plotly 
+  - conda install setuptools numpy scipy plotly pytest
 
 build: none
 
