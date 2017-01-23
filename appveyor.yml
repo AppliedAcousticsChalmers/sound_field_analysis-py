@@ -1,0 +1,70 @@
+environment:
+    matrix:
+    - TARGET_ARCH: x86
+      CONDA_PY: 27
+      CONDA_INSTALL_LOCN: C:\\Miniconda
+
+    - TARGET_ARCH: x64
+      CONDA_PY: 27
+      CONDA_INSTALL_LOCN: C:\\Miniconda-x64
+
+    - TARGET_ARCH: x86
+      CONDA_PY: 34
+      CONDA_INSTALL_LOCN: C:\\Miniconda3
+
+    - TARGET_ARCH: x64
+      CONDA_PY: 34
+      CONDA_INSTALL_LOCN: C:\\Miniconda3-x64
+
+    - TARGET_ARCH: x86
+      CONDA_PY: 35
+      CONDA_INSTALL_LOCN: C:\\Miniconda35
+
+    - TARGET_ARCH: x64
+      CONDA_PY: 35
+      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+
+    - TARGET_ARCH: x86
+      CONDA_PY: 36
+      CONDA_INSTALL_LOCN: C:\\Miniconda
+
+    - TARGET_ARCH: x64
+      CONDA_PY: 36
+      CONDA_INSTALL_LOCN: C:\\Miniconda-x64
+
+init:
+  - ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
+
+install:
+  # Set up conda forge
+  - cmd: set "OLDPATH=%PATH%"
+  - cmd: set "PATH=%CONDA_INSTALL_LOCN%\\Scripts;%CONDA_INSTALL_LOCN%\\Library\\bin;%PATH%"
+  - cmd: conda config --prepend channels conda-forge
+  - cmd: conda config --set channel_priority false
+
+  # Add a hack to switch to `conda` version `4.1.12` before activating.
+  # This is required to handle a long path activation issue.
+  # Please see PR ( https://github.com/conda/conda/pull/3349 ).
+  - cmd: conda install --yes --quiet conda=4.1.12
+  - cmd: set "PATH=%OLDPATH%"
+  - cmd: set "OLDPATH="
+
+  # Check that we have the expected version and architecture for Python
+  - "python --version"
+  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+
+  # Actually activate `conda`.
+  - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
+  - cmd: set PYTHONUNBUFFERED=1
+
+  # Upgrade to the latest pip.
+  # - python -m pip install -U pip"
+
+  # Install dependencies
+  #- pip install --upgrade --only-binary=numpy pip setuptools wheel pytest numpy scipy plotly 
+  - cmd: conda install numpy scipy plotly pytest -y
+
+build: off
+
+test_script:
+  - py.test pytests.py -v
