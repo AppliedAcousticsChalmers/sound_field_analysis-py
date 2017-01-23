@@ -58,13 +58,13 @@ install:
   - cmd: set PYTHONUNBUFFERED=1
 
   # Upgrade to the latest pip.
-  - python -m pip install -U pip"
+  # - python -m pip install -U pip"
 
   # Install dependencies
   #- pip install --upgrade --only-binary=numpy pip setuptools wheel pytest numpy scipy plotly 
-  - conda install setuptools numpy scipy plotly pytest
+  - conda install numpy scipy plotly pytest -y
 
-build: none
+build: off
 
 test_script:
   - py.test pytests.py -v
