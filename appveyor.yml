@@ -39,8 +39,8 @@ install:
   # Set up conda forge
   - cmd: set "OLDPATH=%PATH%"
   - cmd: set "PATH=%CONDA_INSTALL_LOCN%\\Scripts;%CONDA_INSTALL_LOCN%\\Library\\bin;%PATH%"
-  - cmd: conda config --set show_channel_urls true
-  - cmd: conda config --add channels conda-forge
+  - cmd: conda config --prepend channels conda-forge
+  - cmd: conda config --set channel_priority false
 
   # Add a hack to switch to `conda` version `4.1.12` before activating.
   # This is required to handle a long path activation issue.
@@ -62,7 +62,7 @@ install:
 
   # Install dependencies
   #- pip install --upgrade --only-binary=numpy pip setuptools wheel pytest numpy scipy plotly 
-  - conda install numpy scipy plotly pytest -y
+  - cmd: conda install numpy scipy plotly pytest -y
 
 build: off
 
