@@ -39,6 +39,7 @@ install:
   # Set up conda forge
   - cmd: set "OLDPATH=%PATH%"
   - cmd: set "PATH=%CONDA_INSTALL_LOCN%\\Scripts;%CONDA_INSTALL_LOCN%\\Library\\bin;%PATH%"
+  - cmd: conda update conda
   - cmd: conda config --prepend channels conda-forge
   - cmd: conda config --set channel_priority false
 
@@ -67,4 +68,4 @@ install:
 build: off
 
 test_script:
-  - py.test pytests.py -v
+  - py.test test/* -v
