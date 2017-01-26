@@ -2,7 +2,7 @@
 """
 import sys
 from itertools import cycle
-from numpy import log10, abs, repeat
+from numpy import log10, abs, repeat, atleast_1d, broadcast_to
 from scipy.signal import resample
 spinner = cycle(['-', '/', '|', '\\'])
 
@@ -106,3 +106,14 @@ def simple_resample(data, original_fs, target_fs):
     """Wrap scipy.signal.resample with a simpler API
     """
     return resample(data, num=int(data.shape[1] * target_fs / original_fs), axis=1)
+
+
+def scalar_broadcast_match(a, b):
+    """ Returns arguments as np.array, if one is a scalar it will broadcast the other one's shape.
+    """
+    a, b = atleast_1d(a, b)
+    if a.size == 1 and b.size != 1:
+        a = broadcast_to(a, b.shape)
+    elif b.size == 1 and a.size != 1:
+        b = broadcast_to(b, a.shape)
+    return a, b
