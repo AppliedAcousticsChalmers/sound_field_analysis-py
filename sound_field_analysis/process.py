@@ -28,7 +28,7 @@ Not yet implemented:
 import numpy as _np
 from scipy.signal import hann, resample, fftconvolve
 from scipy.linalg import lstsq
-from .sph import sph_harm, besselj, hankel, sph_harm_all
+from .sph import sph_harm, besselj, hankel1, sph_harm_all
 from .utils import progress_bar
 
 pi = _np.pi
@@ -406,8 +406,8 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
             print('WARNING: Extrapolation might be unstable for one or more frequencies/orders!')
 
     elif problem == 'exterior':
-        hn_kra = _np.sqrt(pi / (2 * kra)) * hankel(nvector + 0.5, 1, kra)
-        hn_krb = _np.sqrt(pi / (2 * krb)) * hankel(nvector + 0.5, 1, krb)
+        hn_kra = _np.sqrt(pi / (2 * kra)) * hankel1(nvector + 0.5, 1, kra)
+        hn_krb = _np.sqrt(pi / (2 * krb)) * hankel1(nvector + 0.5, 1, krb)
         exp = hn_krb / hn_kra
     else:
         raise ValueError('Problem selector ' + problem + ' not recognized. Please either choose "interior" [Default] or "exterior".')
