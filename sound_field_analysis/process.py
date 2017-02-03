@@ -211,7 +211,7 @@ def spatFT_LSF(data, azimuths, colatitudes, order_max, spherical_harmonic_bases=
     return lstsq(spherical_harmonic_bases, data)[0]
 
 
-def PWDecomp(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
+def PWDecomp(N, OmegaL, Pnm, dn, cn=None):
     """Plane Wave Decomposition
 
     Parameters
@@ -238,10 +238,6 @@ def PWDecomp(N, OmegaL, Pnm, dn, cn=None, printInfo=True):
     Y : matrix of floats
        MxN Matrix of the decomposed wavefield with kr bins in rows
     """
-
-    if printInfo:
-        print('PWDecomp - Plane Wave Decomposition')
-
     if N < 0:
         N = 0
 
@@ -415,7 +411,7 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
     return Pnm_kra * exp.T
 
 
-def iFFT(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
+def iFFT(Y, win=0, minPhase=False, resampleFactor=1):
     """ Inverse (Fast) Fourier Transform
 
     Parameters
@@ -447,10 +443,6 @@ def iFFT(Y, win=0, minPhase=False, resampleFactor=1, printInfo=True):
     if win > 1:
         raise ValueError('Argument window must be in range 0.0 ... 1.0!')
 
-    if printInfo:
-        print('iFFT - inverse Fourier Transform')
-
-    # inverse real FFT
     y = _np.fft.irfft(Y)
 
     # TODO: minphase

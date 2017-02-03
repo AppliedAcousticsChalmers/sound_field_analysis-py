@@ -22,7 +22,7 @@ from .utils import progress_bar
 pi = _np.pi
 
 
-def whiteNoise(fftData, noiseLevel=80, printInfo=True):
+def whiteNoise(fftData, noiseLevel=80):
     '''Adds White Gaussian Noise of approx. 16dB crest to a FFT block.
 
     Parameters
@@ -31,17 +31,12 @@ def whiteNoise(fftData, noiseLevel=80, printInfo=True):
        Input fftData block (e.g. from F/D/T or S/W/G)
     noiseLevel : int, optional
        Average noise Level in dB [Default: -80dB]
-    printInfo : bool, optional
-       Toggle print statements [Default: True]
 
     Returns
     -------
     noisyData : array of complex floats
        Output fftData block including white gaussian noise
     '''
-    if printInfo:
-        print('Additive White Gaussian Noise Generator')
-
     dimFactor = 10**(noiseLevel / 20)
     fftData = _np.atleast_2d(fftData)
     channels = fftData.shape[0]
@@ -99,15 +94,13 @@ def gaussGrid(AZnodes=10, ELnodes=5, plot=False):
     return gridData
 
 
-def lebedev(degree, printInfo=True):
+def lebedev(degree):
     '''Compute Lebedev quadrature nodes and weigths.
 
     Parameters
     ----------
     Degree : int
        Lebedev Degree. Currently available: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194
-    plot : bool, optional
-       Plot selected Lebedev grid [Default: False]
 
     Returns
     -------
@@ -118,9 +111,6 @@ def lebedev(degree, printInfo=True):
 
     '''
     from . import lebedev
-
-    if printInfo:
-        print('Lebedev Grid')
 
     deg_avail = _np.array([6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194])
 
@@ -140,7 +130,7 @@ def lebedev(degree, printInfo=True):
     return gridData, Nmax
 
 
-def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
+def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0):
     """Generate modal radial filters
 
     Parameters
@@ -187,9 +177,6 @@ def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
     else:
         limiteronflag = False
 
-    if printInfo:
-        print('radFilter - Modal radial filter generator')
-
     if kr.ndim == 1:
         krN = kr.size
         krM = 1
@@ -235,16 +222,12 @@ def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
         minDis = _np.abs(OutputArray[0][minDisIDX] - xi[minDisIDX])
 
         filtergap = 20 * _np.log10(1 / _np.abs(OutputArray[0][minDisIDX] / xi[minDisIDX]))
-        if printInfo:
-            print("Filter fade gap: ", filtergap)
+        print("Filter fade gap: ", filtergap)
         if _np.abs(filtergap) > 20:
             print("Filter fade gap too large, no powerloss compensation applied.")
             noplcflag = 1
 
         if not noplcflag:
-            if abs(filtergap) > 5:
-                print("Filtergap is large (> 5 dB).")
-
             if fadeover == 0:
                 fadeover = krN / 100
                 if amp_maxdB > 0:
@@ -255,8 +238,6 @@ def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
                     fadeover = minDisIDX
                 else:
                     fadeover = krN - minDisIDX
-            if printInfo:
-                print("Auto filter size of length: ", fadeover)
         # TODO: Auto reduce filter length
     elif plc == 2:  # Full spectrum
         OutputArray[0] = xi
@@ -273,7 +254,7 @@ def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0, printInfo=False):
 
 
 def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
-                c=343, wavetype=0, ds=1, Nlim=120, printInfo=True):
+                c=343, wavetype=0, ds=1, Nlim=120):
     """Sampled Wave Generator Wrapper
 
     Parameters
@@ -362,12 +343,8 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
 
     if maxReqOrder > Ng:
         print('WARNING: Requested wave needs a minimum order of ' + str(maxReqOrder) + ' but only order ' + str(Ng) + 'can be delivered.')
-    elif minOrderLim == Ng:
-        if printInfo:
-            print('Full spectrum generator order: ' + str(Ng))
     else:
-        if printInfo:
-            print('Segmented generator orders: ' + str(minOrderLim) + ' to ' + str(Ng))
+        print('Segmented generator orders: ' + str(minOrderLim) + ' to ' + str(Ng))
 
     # SEGMENTATION
     # index = 1
@@ -378,7 +355,7 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
     for idx, order in enumerate(unique_orders):
         progress_bar(idx, _np.size(unique_orders), 'sampledWave - Sampled Wave Generator')
         fOrders = _np.flatnonzero(rqOrders == order)
-        Pnm += ideal_wave(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order, printInfo=False)[0]
+        Pnm += ideal_wave(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order)[0]
     fftData = iSpatFT(Pnm, gridData)
 
     return fftData, kr
