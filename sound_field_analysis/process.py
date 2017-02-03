@@ -71,17 +71,19 @@ def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
     return Pnm
 
 
-def FFT(time_signals, fs=44100, temperature=20, oversampling=1, first_sample=0, last_sample=None):
-    '''(Fast) Fourier Transform
+def FFT(time_signals, fs, NFFT=None, oversampling=1, first_sample=0, last_sample=None):
+    '''Real-valued Fast Fourier Transform.
 
     Parameters
     ----------
     time_signals : array_like
-       Time domain signals to be transformed, with [nSig, nSamples]
-    fs : int, optional
-       Sampling frequency of the time data [Default: 44100]
+       Time-domain signals to be transformed, of shapeb [nSig x nSamples]
+    fs : int
+       Sampling frequency of the time data
+    NFFT : int, optional
+       Number of frequency bins. Resulting array will have size NFFT//2+1 Default: Next power of 2
     oversampling : int, optional
-       oversampling > 1 increase the FFT Blocksize. [Default: 1]
+       Oversamples the incoming signal to increase frequency resolution [Default: 1]
     firstSample : int, optional
        First time domain sample to be included. [Default: 0]
     lastSample : int, optional
@@ -89,10 +91,10 @@ def FFT(time_signals, fs=44100, temperature=20, oversampling=1, first_sample=0, 
 
     Returns
     -------
-    fftData : array_like
-       Frequency domain data ready for the Spatial Fourier Transform (stc)
-    f : array_like
-       Absolute frequency scale
+    fftData : ndarray
+       Frequency-domain data
+    f : ndarray
+       Frequency scale
 
     Note
     ----
@@ -104,7 +106,7 @@ def FFT(time_signals, fs=44100, temperature=20, oversampling=1, first_sample=0, 
     time_signals = _np.atleast_2d(time_signals)
     nSig, nSamples = time_signals.shape
 
-    if last_sample is None:  # assign lastSample to length of IR if not provided
+    if last_sample is None:  # assign lastSample to length of signals if not provided
         last_sample = nSamples
 
     if oversampling < 1:
@@ -118,7 +120,9 @@ def FFT(time_signals, fs=44100, temperature=20, oversampling=1, first_sample=0, 
 
     total_samples = last_sample - first_sample
     time_signals = time_signals[:, first_sample:last_sample]
-    NFFT = int(2**_np.ceil(_np.log2(total_samples)))
+
+    if not NFFT:
+        NFFT = int(2**_np.ceil(_np.log2(total_samples)))
 
     fftData = _np.fft.rfft(time_signals, NFFT * oversampling, 1)
     f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs)
@@ -433,7 +437,7 @@ def iFFT(Y, output_length=None, window=False):
 
     if window:
         if window not in {'hann', 'hamming', 'blackman', 'kaiser'}:
-            raise ValueError('Argument window must be in range 0.0 ... 1.0!')
+            raise ValueError('Selected window must be one of hann, hamming, blackman or kaiser')
         no_of_signals, no_of_samples = y.shape
 
         if window == 'hann':
