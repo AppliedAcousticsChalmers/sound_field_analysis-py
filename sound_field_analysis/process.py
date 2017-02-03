@@ -26,7 +26,7 @@ Not yet implemented:
 """
 
 import numpy as _np
-from scipy.signal import hann, resample, fftconvolve
+from scipy.signal import hann, fftconvolve
 from scipy.linalg import lstsq
 from .sph import sph_harm, besselj, hankel1, sph_harm_all
 from .utils import progress_bar
@@ -411,58 +411,40 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
     return Pnm_kra * exp.T
 
 
-def iFFT(Y, win=0, minPhase=False, resampleFactor=1):
-    """ Inverse (Fast) Fourier Transform
+def iFFT(Y, output_length=None, window=False):
+    """ Inverse real-valued Fourier Transform
 
     Parameters
     ----------
     Y : array_like
-       Frequency domain data over multiple channels (cols) with FFT data in rows
-    win float, optional
-       Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED
-    resampleFactor int, optional
-       Resampling factor (FS_target/FS_source)
-    minPhase bool, optional
-       Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]
+       Frequency domain data [Nsignals x Nbins]
+    output_length : int, optional
+       Lenght of returned time-domain signal (Default: 2 x len(Y) + 1)
+    win : boolean, optional
+       Weights the resulting time-domain signal with a Hann
 
     Returns
     -------
     y : array_like
-       Reconstructed time-domain signal of channels in cols and impulse responses in rows
-
-    Note
-    ----
-    This function recombines time domain signals for multiple channels from
-    frequency domain data. It is made to work with half-sided spectrum FFT
-    data.  The impulse responses can be windowed.  The IFFT blocklength is
-    determined by the Y data itself:
-
-    Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]
-    and the function returns [NumberOfChannels x resampleFactor*2^n] samples.
+       Reconstructed time-domain signal
     """
-    if win > 1:
-        raise ValueError('Argument window must be in range 0.0 ... 1.0!')
+    Y = _np.atleast_2d(Y)
+    y = _np.fft.irfft(Y, n=output_length)
 
-    y = _np.fft.irfft(Y)
+    if window:
+        if window not in {'hann', 'hamming', 'blackman', 'kaiser'}:
+            raise ValueError('Argument window must be in range 0.0 ... 1.0!')
+        no_of_signals, no_of_samples = y.shape
 
-    # TODO: minphase
-    if minPhase != 0:
-        # y    = [y, zeros(size(y))]';
-        # Y    = fft(y);
-        # Y(Y == 0) = 1e-21;
-        # img  = imag(hilbert(log(abs(Y))));
-        # y    = real(ifft(abs(Y) .* exp(-1i*img)));
-        # y    = y(1:end/2,:)';
-        pass
-
-    # TODO: percentage(?) windowing
-    if win != 0:
-        winfkt = hann(y.shape[1])
-        y = winfkt * y
-
-    if resampleFactor != 1:
-        y = resample(y, _np.round(y.shape[1] / resampleFactor), axis=1)
-
+        if window == 'hann':
+            window_array = _np.hanning(no_of_samples)
+        elif window == 'hamming':
+            window_array = _np.hamming(no_of_samples)
+        elif window == 'blackman':
+            window_array = _np.blackman(no_of_samples)
+        elif window == 'kaiser':
+            window_array = _np.kaiser(no_of_samples, 3)
+        y = window_array * y
     return y
 
 
