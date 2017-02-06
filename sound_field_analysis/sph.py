@@ -371,6 +371,12 @@ def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_c
         if scatter_radius is None:
             scatter_radius = array_radius
         k_scatter = kr(freqs, scatter_radius)
+
+        # Replace leading k==0 with the next element to avoid nan
+        if _np.any(k_mic[:, 0] == 0):
+            k_mic[:, 0] = k_mic[:, 1]
+        if _np.any(k_scatter[:, 0] == 0):
+            k_scatter[:, 0] = k_scatter[:, 1]
     elif array_configuration is 'dual':
         if dual_radius is None:
             dual_radius = array_radius
