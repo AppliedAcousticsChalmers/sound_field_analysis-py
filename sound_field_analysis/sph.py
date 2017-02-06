@@ -343,6 +343,7 @@ def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_c
     Returns
     -------
     b : array, complex
+       Coefficients of shape [nOrder x nFreqs]
     """
 
     if array_configuration not in {'open', 'rigid', 'dual'}:
@@ -354,13 +355,13 @@ def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_c
     if array_configuration is 'dual' and transducer_type is not 'pressure':
         raise ValueError('Only pressure transducers are allowed for dual sphere configuration.')
 
-    freqs = _np.array(freqs)
+    freqs, order = _np.meshgrid(freqs, order)
     k_mic = kr(freqs, array_radius)
     k_scatter = None
     k_dual = None
 
     if normalize:
-        scale_factor = 4 * _np.pi * 1j ** order
+        scale_factor = _np.squeeze(4 * _np.pi * 1j ** order)
     else:
         scale_factor = 1
 
