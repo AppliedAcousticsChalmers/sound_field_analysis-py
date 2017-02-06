@@ -605,6 +605,28 @@ def kr(f, radius, temperature=20):
     return 2 * _np.pi * f / (331.5 + 0.6 * temperature) * radius
 
 
+def kr_full_spec(fs, radius, NFFT, temperature=20):
+    """Returns full spectrum kr
+
+    Parameters
+    ----------
+    fs : int
+       Sampling rate in Hertz
+    radius : float
+       Radius
+    NFFT : int
+       Number of frequency bins
+    temperature : float, optional
+       Temperature in degree Celcius (Default: 20 C)
+
+    Returns
+    -------
+    kr : array_like
+       kr vector of length NFFT/2 + 1 spanning the frequencies of 0:fs/2
+    """
+    freqs = _np.linspace(0, fs / 2, NFFT / 2 + 1)
+    return kr(freqs, radius, temperature)
+
 # DEBUG
 def _print_bessel_functions(n, k):
     print(' '.join(('bessel:', str(besselj(n, k)))))
