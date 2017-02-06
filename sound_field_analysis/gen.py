@@ -361,13 +361,13 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
     return fftData, kr
 
 
-def ideal_wave(N, azimuth, colatitude, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None,
-               wavetype='plane', distance=1.0, fs=44100, F_NFFT=512, delay=0.0, c=343.0, SegN=None, lowerSegLim=0, upperSegLim=None):
+def ideal_wave(order, azimuth, colatitude, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None,
+               wavetype='plane', distance=1.0, fs=44100, F_NFFT=512, delay=0.0, c=343.0, segment_order=None, lowerSegLim=0, upperSegLim=None):
     """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an ideal wave front hitting a specified array
 
     Parameters
     ----------
-    N : int
+    order : int
         Maximum transform order.
     array_radius  : float
        Microphone array radius
@@ -410,10 +410,10 @@ def ideal_wave(N, azimuth, colatitude, array_radius, array_configuration='open',
     """
 
     NFFT = int(F_NFFT / 2 + 1)
-    NMLocatorSize = (N + 1) ** 2
+    NMLocatorSize = (order + 1) ** 2
 
-    if SegN is None:
-        SegN = N
+    if segment_order is None:
+        segment_order = order
     if upperSegLim is None:
         upperSegLim = NFFT - 1
 
@@ -426,7 +426,7 @@ def ideal_wave(N, azimuth, colatitude, array_radius, array_configuration='open',
         raise ValueError('Upper segment limit needs to be between 0 and NFFT - 1.')
     if lowerSegLim > NFFT - 1 or lowerSegLim < 0:
         raise ValueError('Lower segment limit needs to be between 0 and NFFT - 1.')
-    if SegN > N:
+    if segment_order > order:
         raise ValueError("Segment order needs to be smaller than N.")
     if wavetype not in {'plane', 'spherical'}:
         raise ValueError('Invalid wavetype: Choose either plane or spherical.')
@@ -447,7 +447,7 @@ def ideal_wave(N, azimuth, colatitude, array_radius, array_configuration='open',
     radial_filters = _np.zeros([NMLocatorSize, NFFT], dtype=_np.complex_)
     time_shift = _np.exp(-1j * w * delay)
 
-    for n in range(0, SegN + 1):
+    for n in range(0, segment_order + 1):
         if wavetype is 'plane':
             radial_filters[n] = time_shift * array_extrapolation(n, freqs, array_radius, scatter_radius=array_radius, array_configuration=array_configuration, transducer_type=transducer_type)
         elif wavetype is 'spherical':
@@ -456,9 +456,9 @@ def ideal_wave(N, azimuth, colatitude, array_radius, array_configuration='open',
 
     # GENERATOR CORE
     Pnm = _np.empty([NMLocatorSize, NFFT], dtype=_np.complex_)
-    m, n = mnArrays(SegN + 1)
+    m, n = mnArrays(segment_order + 1)
     ctr = 0
-    for n in range(0, SegN + 1):
+    for n in range(0, segment_order + 1):
         for m in range(-n, n + 1):
             Pnm[ctr] = _np.conj(sph_harm(m, n, azimuth, colatitude)) * radial_filters[n]
             ctr = ctr + 1
