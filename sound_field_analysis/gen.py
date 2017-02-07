@@ -7,12 +7,14 @@ Module contains various generator functions:
    Gauss-Legendre quadrature grid and weights
 `lebedev`
    Lebedev quadrature grid and weigths
-`radFilter`
-   Modal Radial Filter
+`radial_filter`
+   Modal radial filter
+`radial_filter_fullspec`
+   Modal radial filter over the full spectrum
 `sampledWave`
-   Sampled Wave Generator, emulating discrete sampling
+   Sampled Wave generator, emulating discrete sampling
 `ideal_wave`
-   Wave Generator, returns spatial Fourier coefficients
+   Ideal wave generator, returns spatial fourier coefficients
 """
 import numpy as _np
 from .sph import sph_harm, sph_harm_all, cart2sph, mnArrays, array_extrapolation, kr, sphankel2
@@ -130,127 +132,60 @@ def lebedev(degree):
     return gridData, Nmax
 
 
-def radFilter(N, kr, ac, amp_maxdB=0, plc=0, fadeover=0):
-    """Generate modal radial filters
+def radial_filter_fullspec(max_order, NFFT, fs, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None, amp_maxdB=40):
+    """Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for frequencies 0:fs/2, wraps radial_filter()
 
     Parameters
     ----------
-    N : int
+    max_order : int
        Maximum Order
-    kr : array_like
-       Vector or Matrix of kr values
-       ::
-          First Row  (M=1) N: kr values microphone radius
-          Second Row (M=2) N: kr values sphere/microphone radius
-          [kr_mic;kr_sphere] for rigid/dual sphere configurations
-          ! If only one kr-vector is given using a rigid/dual sphere
-          Configuration: kr_sphere = kr_mic
-    ac : int {0, 1, 2, 3, 4}
-       Array configuration
-         - `0`:  Open Sphere with p Transducers (NO plc!)
-         - `1`:  Open Sphere with pGrad Transducers
-         - `2`:  Rigid Sphere with p Transducers
-         - `3`:  Rigid Sphere with pGrad Transducers
-         - `4`:  Dual Open Sphere with p Transducers
+    array_configuration : string {open, rigid, dual}
+       Array configuration [Default: open]
+    transducer_type: string {pressure, velocity}
+       Transducer type [Default: pressure]
     amp_maxdB : int, optional
-       Maximum modal amplification limit in dB [Default: 0]
-    plc : int {0, 1, 2}, optional
-        OnAxis powerloss-compensation:
-        - `0`:  Off [Default]
-        - `1`:  Full kr-spectrum plc
-        - `2`:  Low kr only -> set fadeover
-    fadeover : int, optional
-       Number of kr values to fade over +/- around min-distance
-       gap of powerloss compensated filter and normal N0 filters.
-       0 is auto fadeover [Default]
+       Maximum modal amplification limit in dB [Default: 40]
 
     Returns
     -------
     dn : array_like
-       Vector of modal 0-N frequency domain filters
-    beam : array_like
-       Expected free field on-axis kr-response
+       Vector of modal frequency domain filter of shape [max_order + 1 x NFFT / 2 + 1]
     """
-    a_max = pow(10, (amp_maxdB / 20))
-    if amp_maxdB != 0:
-        limiteronflag = True
-    else:
-        limiteronflag = False
 
-    if kr.ndim == 1:
-        krN = kr.size
-        krM = 1
-    else:
-        krM, krN = kr.shape
+    freqs = _np.linspace(0, fs / 2, NFFT / 2 + 1)
+    orders = _np.r_[0:max_order + 1]
+    return radial_filter(orders, freqs, array_radius, array_configuration, transducer_type, scatter_radius=scatter_radius, amp_maxdB=amp_maxdB)
 
-    # TODO: check input
 
-    # TODO: correct krm, krs?
-    # TODO: check / replace zeros in krm/krs
-    if kr[0] == 0:
-        kr[0] = kr[1]
-    krm = kr
-    krs = kr
+def radial_filter(order, freq, array_radius, array_configuration, transducer_type, scatter_radius=None, amp_maxdB=40):
+    """Generate modal radial filter of specified order and frequency
 
-    OutputArray = _np.empty((N + 1, krN), dtype=_np.complex_)
+    Parameters
+    ----------
+    order : array_like
+       order of filter
+    freq : array_like
+       Frequency of modal filter
+    array_configuration : string {open, rigid, dual}
+       Array configuration [Default: open]
+    transducer_type: string {pressure, velocity}
+       Transducer type [Default: pressure]
+    amp_maxdB : int, optional
+       Maximum modal amplification limit in dB [Default: 40]
 
-    # BN filter calculation
-    amplicalc = 1
-    ctrb = _np.array(range(0, krN))
-    for ctr in range(0, N + 1):
-        bnval = array_extrapolation(ctr, krm[ctrb], krs[ctrb], ac)
-        if limiteronflag:
-            amplicalc = 2 * a_max / pi * abs(bnval) * _np.arctan(pi / (2 * a_max * abs(bnval)))
-        OutputArray[ctr] = amplicalc / bnval
+    Returns
+    -------
+    dn : array_like
+       Vector of modal frequency domain filter of shape [nOrders x nFreq]
+    """
 
-    if(krN < 32 & plc != 0):
-        plc = 0
-        print("Not enough kr values for PLC fading. PLC disabled.")
+    extrapolation_coeffs = array_extrapolation(order, freq, array_radius, scatter_radius=scatter_radius, array_configuration=array_configuration, transducer_type=transducer_type)
+    extrapolation_coeffs[extrapolation_coeffs == 0] = 1e-12
 
-    # Powerloss Compensation Filter (PLC)
-    noplcflag = 0
-    if not plc:
-        xi = _np.zeros(krN)
-        for ctr in range(0, krN):
-            for ctrb in range(0, N + 1):
-                xi = xi + (2 * ctrb + 1) * (1 - OutputArray[ctrb][ctr] * array_extrapolation(ctrb, krm[ctr], krs[ctr], ac))
-            xi[ctr] = xi[ctr] * 1 / array_extrapolation(0, krm[ctr], krs[ctr], ac)
-            xi[ctr] = xi[ctr] + OutputArray[0][ctr]
+    a_max = 10 ** (amp_maxdB / 20)
+    limiting_factor = 2 * a_max / _np.pi * _np.abs(extrapolation_coeffs) * _np.arctan(_np.pi / (2 * a_max * _np.abs(extrapolation_coeffs)))
 
-    if plc == 1:  # low kr only
-        minDisIDX = _np.argmin(_np.abs(OutputArray[0] - xi))
-        minDis = _np.abs(OutputArray[0][minDisIDX] - xi[minDisIDX])
-
-        filtergap = 20 * _np.log10(1 / _np.abs(OutputArray[0][minDisIDX] / xi[minDisIDX]))
-        print("Filter fade gap: ", filtergap)
-        if _np.abs(filtergap) > 20:
-            print("Filter fade gap too large, no powerloss compensation applied.")
-            noplcflag = 1
-
-        if not noplcflag:
-            if fadeover == 0:
-                fadeover = krN / 100
-                if amp_maxdB > 0:
-                    fadeover = fadeover / _np.ceil(a_max / 4)
-
-            if fadeover > minDis | (minDis + fadeover) > krN:
-                if minDisIDX - fadeover < krN - minDisIDX + fadeover:
-                    fadeover = minDisIDX
-                else:
-                    fadeover = krN - minDisIDX
-        # TODO: Auto reduce filter length
-    elif plc == 2:  # Full spectrum
-        OutputArray[0] = xi
-
-    normalizeBeam = pow(N + 1, 2)
-
-    BeamResponse = _np.zeros((krN), dtype=_np.complex_)
-    for ctrb in range(0, N + 1):             # ctrb = n
-        # m = 2 * ctrb + 1
-        BeamResponse += (2 * ctrb + 1) * array_extrapolation(ctrb, krm, krs, ac) * OutputArray[ctrb]
-    BeamResponse /= normalizeBeam
-
-    return OutputArray, BeamResponse
+    return limiting_factor / extrapolation_coeffs
 
 
 def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
