@@ -2,7 +2,7 @@
 """
 import sys
 from itertools import cycle
-from numpy import log10, abs, repeat, atleast_1d, broadcast_to
+from numpy import log10, abs, repeat, atleast_1d, broadcast_to, pi
 from scipy.signal import resample
 spinner = cycle(['-', '/', '|', '\\'])
 
@@ -72,6 +72,18 @@ def db(data, power=False):
     else:
         factor = 20
     return factor * log10(abs(data))
+
+
+def deg2rad(deg):
+    """Converts from degree [0 ... 360] to radiant [0 ... 2 pi]
+    """
+    return deg % 360 / 180 * pi
+
+
+def rad2deg(rad):
+    """Converts from radiant [0 ... 2 pi] to degree [0 ... 360]
+    """
+    return rad / pi * 180 % 360
 
 
 def nearest_to_value(array, value):
