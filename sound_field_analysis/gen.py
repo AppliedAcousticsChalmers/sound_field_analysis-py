@@ -296,8 +296,8 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
     return fftData, kr
 
 
-def ideal_wave(order, azimuth, colatitude, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None,
-               wavetype='plane', distance=1.0, fs=44100, F_NFFT=512, delay=0.0, c=343.0, segment_order=None, lowerSegLim=0, upperSegLim=None):
+def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None,
+               wavetype='plane', distance=1.0, NFFT=128, delay=0.0, c=343.0, segment_order=None, lowerSegLim=0, upperSegLim=None):
     """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an ideal wave front hitting a specified array
 
     Parameters
@@ -315,9 +315,9 @@ def ideal_wave(order, azimuth, colatitude, array_radius, array_configuration='op
     FS : int, optional
        Sampling frequency (Default: 44100)
     NFFT : int, optional
-       Order of FFT (number of bins), should be a power of 2. (Default: 512)
+       Order of FFT (number of bins), should be a power of 2. (Default: 128)
     azimuth, colatitude : float
-       Azimuth/Colatitude  angle in [RAD].
+       Azimuth/Colatitude angle in [RAD].
     delay : float, optional
        Time Delay in s.
     c : float, optional
@@ -344,7 +344,7 @@ def ideal_wave(order, azimuth, colatitude, array_radius, array_configuration='op
        Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows
     """
 
-    NFFT = int(F_NFFT / 2 + 1)
+    NFFT = int(NFFT / 2 + 1)
     NMLocatorSize = (order + 1) ** 2
 
     if segment_order is None:
@@ -371,7 +371,7 @@ def ideal_wave(order, azimuth, colatitude, array_radius, array_configuration='op
         raise ValueError('Transducer type has to be either pressure (default) or velocity.')
     if array_configuration is 'dual' and transducer_type is not 'pressure':
         raise ValueError('For dual sphere configuration, only pressure transducers are allowed.')
-    if (delay * fs > F_NFFT / 2):
+    if (delay * fs > NFFT - 1):
         raise ValueError('Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).')
     if wavetype is 'plane' and distance <= array_radius:
         raise ValueError('Invalid source distance, source must be outside the microphone radius.')
