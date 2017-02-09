@@ -96,29 +96,38 @@ def gaussGrid(AZnodes=10, ELnodes=5, plot=False):
     return gridData
 
 
-def lebedev(degree):
-    '''Compute Lebedev quadrature nodes and weigths.
+def lebedev(max_order=None, degree=None):
+    '''Compute Lebedev quadrature nodes and weigths given a maximum stable order. Alternatively, a degree may be supplied.
 
     Parameters
     ----------
-    Degree : int
-       Lebedev Degree. Currently available: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194
+    max_order : int
+       Maximum stable order of the Lebedev grid, [0 ... 11]
+    degree : int, optional
+       Lebedev Degree, one of {6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}
 
     Returns
     -------
     gridData : array_like
        Lebedev quadrature positions and weigths: [AZ, EL, W]
-    Nmax : int
-       Highest stable grid order
-
     '''
+    if max_order is None and not degree:
+        raise ValueError('Either a maximum order or a degree have to be given.')
+
+    if max_order is 0:
+        max_order = 1
+
+    allowed_degrees = [6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194]
+
+    if max_order and 0 <= max_order <= 11:
+        degree = allowed_degrees[int(max_order) - 1]
+    elif max_order:
+        raise ValueError('Maximum order can only be between 0 and 11.')
+
+    if degree not in allowed_degrees:
+        raise ValueError(str(degree) + ' is an invalid quadrature degree. Choose one of the following: ' + str(allowed_degrees))
+
     from . import lebedev
-
-    deg_avail = _np.array([6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194])
-
-    if degree not in deg_avail:
-        raise ValueError('WARNING: Invalid quadrature degree', degree, '[deg] supplied. Choose one of the following:\n', deg_avail)
-
     leb = lebedev.genGrid(degree)
     theta, phi, _ = cart2sph(leb.x, leb.y, leb.z)
     theta = theta % (2 * pi)
@@ -126,10 +135,7 @@ def lebedev(degree):
     gridData = gridData[gridData[:, 1].argsort()]  # ugly double sorting that keeps rows together
     gridData = gridData[gridData[:, 0].argsort()]
 
-    # TODO: turnover
-    Nmax = _np.floor(_np.sqrt(degree / 1.3) - 1)
-
-    return gridData, Nmax
+    return gridData
 
 
 def radial_filter_fullspec(max_order, NFFT, fs, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None, amp_maxdB=40):
