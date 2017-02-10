@@ -288,10 +288,8 @@ def PWDecomp(N, OmegaL, Pnm, dn, cn=None):
 
     NMLocatorSize = pow(N + 1, 2)
     # TODO: Implement all other warnings
-    if NMLocatorSize > NMDeliveredSize:  # Maybe throw proper warning?
-        print('WARNING: The requested order N=', N, 'cannot be achieved.\n'
-              'The Pnm coefficients deliver a maximum of', int(_np.sqrt(NMDeliveredSize) - 1), '\n'
-              'Will decompose on maximum available order.\n\n')
+    if NMLocatorSize > NMDeliveredSize:
+        raise ValueError('The provided coefficients deliver a maximum order of ' + str(int(_np.ceil(_np.sqrt(NMDeliveredSize) - 1))) + ' but order ' + str(N) + ' was requested.')
 
     gaincorrection = 4 * pi / pow(N + 1, 2)
 
