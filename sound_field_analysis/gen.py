@@ -194,48 +194,41 @@ def radial_filter(order, freq, array_radius, array_configuration, transducer_typ
     return limiting_factor / extrapolation_coeffs
 
 
-def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi / 2,
-                c=343, wavetype=0, ds=1, Nlim=120):
-    """Sampled Wave Generator Wrapper
+def sampled_wave(fs, NFFT, array_radius, array_configuration, transducer_type,
+                 gridData, wave_azimuth, wave_colatitude, wavetype='plane', c=343, distance=1.0, scatter_radius=None, dual_radius=None, limit_order=85):
+    """Returns the frequency domain data of an ideal wave as recorded by a provided array.
 
     Parameters
     ----------
-    r : array_like, optional
-       Microphone Radius [Default: 0.01]
-       ::
-          Can also be a vector for rigid sphere configurations:
-          [1,1] => rm  Microphone Radius
-          [2,1] => rs  Sphere Radius (Scatterer)
+    array_radius  : float
+       Microphone array radius
+    array_configuration : string {open, rigid, dual}
+       Array configuration [Default: Open]
+    transducer_type: string {pressure, velocity}
+       Transducer type [Default: pressure]
     gridData : array_like
-       Quadrature grid [Default: 110 Lebebdev grid]
+       Quadrature grid
        ::
           Columns : Position Number 1...M
           Rows    : [AZ EL Weight]
-    ac : int {0, 1, 2, 3, 4}
-       Array Configuration:
-        - `0`:  Open Sphere with p Transducers (NO plc!) [Default]
-        - `1`:  Open Sphere with pGrad Transducers
-        - `2`:  Rigid Sphere with p Transducers
-        - `3`:  Rigid Sphere with pGrad Transducers
-        - `4`:  Dual Open Sphere with p Transducers
     FS : int, optional
        Sampling frequency [Default: 48000 Hz]
     NFFT : int, optional
        Order of FFT (number of bins), should be a power of 2. [Default: 512]
-    AZ : float, optional
-       Azimuth angle in radians [0-2pi]. [Default: 0]
-    EL : float, optional
-       Elevation angle in in radians [0-pi]. [Default: pi / 2]
+    wave_azimuth, wave_colatitude : float, optional
+       Direction of incoming wave in radians [0-2pi].
     c : float, optional
        Speed of sound in [m/s] [Default: 343 m/s]
-    wavetype : int {0, 1}, optional
-       Type of the wave:
-        - 0: Plane wave [Default]
-        - 1: Spherical wave
-    ds : float, optional
-       Distance of the source in [m] (For wavetype = 1 only)
-    Nlim : int, optional
-       Internal generator transform order limit [Default: 120]
+    wavetype : {'plane', 'spherical'}, optional
+       Type of the wave. [Default: plane]
+    distance : float, optional
+       Distance of the source in [m] (For spherical waves only)
+    scatter_radius : float, optional
+       Radius of scatter (for rigid configuration)
+    dual_radius : float, optional
+       Radius  of second microphone array (for dual configuration)
+    limit_order : int, optional
+       Sets the limit for wave generation
 
     Warning
     -------
@@ -247,63 +240,31 @@ def sampledWave(r=0.01, gridData=None, ac=0, FS=48000, NFFT=512, AZ=0, EL=_np.pi
     -------
     fftData : array_like
         Complex sound pressures of size [(N+1)^2 x NFFT]
-    kr : array_like
-       kr-vector
-       ::
-          Can also be a matrix [krm; krs] for rigid sphere configurations:
-          [1,:] => krm referring to the microphone radius
-          [2,:] => krs referring to the sphere radius (scatterer)
 
     Note
     ----
-    This file is a wrapper generating the complex pressures at the
-    positions given in 'gridData' for a full spectrum 0-FS/2 Hz (NFFT Bins)
-    wave impinging to an array. The wrapper involves the ideal_wave generator
-    and the spatFT spatial transform.
-
-    sampledWave emulates discrete sampling. You can observe alias artifacts.
+    This file is a wrapper generating the complex pressures at the positions given in 'gridData'
+    for a full spectrum 0-FS/2 Hz (NFFT Bins) wave impinging on the array, emulating discrete sampling.
     """
 
-    if gridData is None:
-        gridData = lebedev(110)[0]
+    freqs = _np.linspace(0, fs / 2, NFFT)
+    kr_mic = kr(freqs, array_radius)
 
-    if not isinstance(r, list):  # r [1,1] => rm  Microphone Radius
-        kr = _np.linspace(0, r * pi * FS / c, (NFFT / 2 + 1))
-        krRef = kr
-    else:  # r [2,1] => rs  Sphere Radius (Scatterer)
-        kr = _np.array([_np.linspace(0, r[0] * pi * FS / c, NFFT / 2 + 1),
-                        _np.linspace(0, r[1] * pi * FS / c, NFFT / 2 + 1)])
-        krRef = kr[0] if r[0] > r[1] else kr[1]
+    max_order_fullspec = _np.ceil(_np.max(kr_mic) * 2)
 
-    minOrderLim = 70
-    rqOrders = _np.ceil(krRef * 2).astype('int')
-    maxReqOrder = _np.max(rqOrders)
-    rqOrders[rqOrders <= minOrderLim] = minOrderLim
-    rqOrders[rqOrders > Nlim] = Nlim
-    Ng = _np.max(rqOrders)
+    if max_order_fullspec > limit_order:
+        print('Requested wave front needs a minimum order of ' + str(int(max_order_fullspec)) + ' but was limited to order ' + str(limit_order))
 
-    if maxReqOrder > Ng:
-        print('WARNING: Requested wave needs a minimum order of ' + str(maxReqOrder) + ' but only order ' + str(Ng) + 'can be delivered.')
-    else:
-        print('Segmented generator orders: ' + str(minOrderLim) + ' to ' + str(Ng))
+    Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth, wave_colatitude, array_radius, array_configuration, transducer_type, scatter_radius, wavetype, distance, NFFT)
+    azimuth_grid = gridData[:, 0]
+    colatitude_grid = gridData[:, 1]
+    fftData = iSpatFT(Pnm, azimuth_grid, colatitude_grid)
 
-    # SEGMENTATION
-    # index = 1
-    # ctr = -1
-    Pnm = _np.zeros([(Ng + 1) ** 2, int(NFFT / 2 + 1)], dtype=_np.complex_)
-    unique_orders = _np.unique(rqOrders)
-
-    for idx, order in enumerate(unique_orders):
-        progress_bar(idx, _np.size(unique_orders), 'sampledWave - Sampled Wave Generator')
-        fOrders = _np.flatnonzero(rqOrders == order)
-        Pnm += ideal_wave(Ng, r, ac, FS, NFFT, AZ, EL, wavetype=wavetype, ds=ds, lowerSegLim=fOrders[0], upperSegLim=fOrders[-1], SegN=order)[0]
-    fftData = iSpatFT(Pnm, gridData)
-
-    return fftData, kr
+    return fftData, Pnm
 
 
 def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None,
-               wavetype='plane', distance=1.0, NFFT=128, delay=0.0, c=343.0, segment_order=None, lowerSegLim=0, upperSegLim=None):
+               wavetype='plane', distance=1.0, NFFT=128, delay=0.0, c=343.0):
     """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an ideal wave front hitting a specified array
 
     Parameters
@@ -332,12 +293,6 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
        Select between plane or spherical wave [Default: Plane wave]
     distance : float, optional
        Distance of the source in [m] (for spherical waves only)
-    lSegLim : int, optional
-       Lower Segment Limit (Used by sampledWave())
-    uSegLim : int, optional
-       Upper Segment Limit (Used by sampledWave())
-    SegN : int, optional
-        Segment Order (Used by sampledWave())
 
     Warning
     -------
@@ -349,26 +304,10 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
     Pnm : array of complex floats
        Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows
     """
-
     NFFT = int(NFFT / 2 + 1)
     NMLocatorSize = (order + 1) ** 2
 
-    if segment_order is None:
-        segment_order = order
-    if upperSegLim is None:
-        upperSegLim = NFFT - 1
-
     # SAFETY CHECKS
-    if upperSegLim < lowerSegLim:
-        raise ValueError('Upper segment limit needs to be below lower limit.')
-    if upperSegLim > NFFT - 1:
-        raise ValueError('Upper segment limit needs to be below NFFT - 1.')
-    if upperSegLim > NFFT - 1 or upperSegLim < 0:
-        raise ValueError('Upper segment limit needs to be between 0 and NFFT - 1.')
-    if lowerSegLim > NFFT - 1 or lowerSegLim < 0:
-        raise ValueError('Lower segment limit needs to be between 0 and NFFT - 1.')
-    if segment_order > order:
-        raise ValueError("Segment order needs to be smaller than N.")
     if wavetype not in {'plane', 'spherical'}:
         raise ValueError('Invalid wavetype: Choose either plane or spherical.')
     if array_configuration not in {'open', 'rigid', 'dual'}:
@@ -388,7 +327,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
     radial_filters = _np.zeros([NMLocatorSize, NFFT], dtype=_np.complex_)
     time_shift = _np.exp(-1j * w * delay)
 
-    for n in range(0, segment_order + 1):
+    for n in range(0, order + 1):
         if wavetype is 'plane':
             radial_filters[n] = time_shift * array_extrapolation(n, freqs, array_radius, scatter_radius=array_radius, array_configuration=array_configuration, transducer_type=transducer_type)
         elif wavetype is 'spherical':
@@ -397,9 +336,9 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
 
     # GENERATOR CORE
     Pnm = _np.empty([NMLocatorSize, NFFT], dtype=_np.complex_)
-    m, n = mnArrays(segment_order + 1)
+    m, n = mnArrays(order + 1)
     ctr = 0
-    for n in range(0, segment_order + 1):
+    for n in range(0, order + 1):
         for m in range(-n, n + 1):
             Pnm[ctr] = _np.conj(sph_harm(m, n, azimuth, colatitude)) * radial_filters[n]
             ctr = ctr + 1
