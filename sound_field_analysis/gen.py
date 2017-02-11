@@ -145,11 +145,13 @@ def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=4
     Parameters
     ----------
     max_order : int
-       Maximum Order
-    array_configuration : string {open, rigid, dual}
-       Array configuration [Default: open]
-    transducer_type: string {pressure, velocity}
-       Transducer type [Default: pressure]
+       Maximum order
+    NFFT : int
+       Order of FFT (number of bins), should be a power of 2.
+    fs : int
+       Sampling frequency
+    array_configuration : ArrayConfiguration
+       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     amp_maxdB : int, optional
        Maximum modal amplification limit in dB [Default: 40]
 
@@ -173,10 +175,8 @@ def radial_filter(order, freq, array_configuration, amp_maxdB=40):
        order of filter
     freq : array_like
        Frequency of modal filter
-    array_configuration : string {open, rigid, dual}
-       Array configuration [Default: open]
-    transducer_type: string {pressure, velocity}
-       Transducer type [Default: pressure]
+    array_configuration : ArrayConfiguration
+       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     amp_maxdB : int, optional
        Maximum modal amplification limit in dB [Default: 40]
 
@@ -202,33 +202,25 @@ def sampled_wave(fs, NFFT, array_configuration,
 
     Parameters
     ----------
-    array_radius  : float
-       Microphone array radius
-    array_configuration : string {open, rigid, dual}
-       Array configuration [Default: Open]
-    transducer_type: string {pressure, velocity}
-       Transducer type [Default: pressure]
+    fs : int
+       Sampling frequency
+    NFFT : int
+       Order of FFT (number of bins), should be a power of 2.
+    array_configuration : ArrayConfiguration
+       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     gridData : array_like
        Quadrature grid
        ::
           Columns : Position Number 1...M
           Rows    : [AZ EL Weight]
-    FS : int, optional
-       Sampling frequency [Default: 48000 Hz]
-    NFFT : int, optional
-       Order of FFT (number of bins), should be a power of 2. [Default: 512]
     wave_azimuth, wave_colatitude : float, optional
        Direction of incoming wave in radians [0-2pi].
-    c : float, optional
-       Speed of sound in [m/s] [Default: 343 m/s]
     wavetype : {'plane', 'spherical'}, optional
        Type of the wave. [Default: plane]
+    c : float, optional
+       Speed of sound in [m/s] [Default: 343 m/s]
     distance : float, optional
        Distance of the source in [m] (For spherical waves only)
-    scatter_radius : float, optional
-       Radius of scatter (for rigid configuration)
-    dual_radius : float, optional
-       Radius  of second microphone array (for dual configuration)
     limit_order : int, optional
        Sets the limit for wave generation
 
@@ -275,28 +267,22 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     ----------
     order : int
         Maximum transform order.
-    array_radius  : float
-       Microphone array radius
-    array_configuration : string {open, rigid, dual}
-       Array configuration [Default: Open]
-    transducer_type: string {pressure, velocity}
-       Transducer type [Default: pressure]
-    scatter_radius : float, optional
-       Radius of scatter (for rigid configuration) or of second microphone array (for dual configuration)
-    FS : int, optional
-       Sampling frequency (Default: 44100)
-    NFFT : int, optional
-       Order of FFT (number of bins), should be a power of 2. (Default: 128)
+    fs : int
+       Sampling frequency
+    NFFT : int
+       Order of FFT (number of bins), should be a power of 2
+    array_configuration : ArrayConfiguration
+       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     azimuth, colatitude : float
-       Azimuth/Colatitude angle in [RAD].
-    delay : float, optional
-       Time Delay in s.
-    c : float, optional
-       Propagation veolcity in m/s [Default: 343m/s]
-    wavetype : string {'plane', 'spherical'}, optional
+       Azimuth/Colatitude angle of the wave in [RAD]
+    wavetype : {'plane', 'spherical'}, optional
        Select between plane or spherical wave [Default: Plane wave]
     distance : float, optional
        Distance of the source in [m] (for spherical waves only)
+    delay : float, optional
+       Time Delay in s [default: 0]
+    c : float, optional
+       Propagation veolcity in m/s [Default: 343m/s]
 
     Warning
     -------
