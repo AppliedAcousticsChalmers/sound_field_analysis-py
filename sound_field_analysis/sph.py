@@ -444,7 +444,7 @@ def sph_harm(m, n, az, el, type='complex'):
             return (-1) ** m * _np.sqrt(factor_1 * factor_2) * Lnm * _np.cos(m * az)
     else:
         # For the correct Condon–Shortley phase, all m>0 need to be increased by 1
-        return (-1) ** (m - (m < 0) * (m % 2)) * scy.sph_harm(m, n, az, el)
+        return (-1) ** _np.float_(m - (m < 0) * (m % 2)) * scy.sph_harm(m, n, az, el)
 
 
 def sph_harm_large(m, n, az, el):
