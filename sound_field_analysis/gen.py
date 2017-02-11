@@ -252,6 +252,7 @@ def sampled_wave(fs, NFFT, array_radius, array_configuration, transducer_type,
 
     max_order_fullspec = _np.ceil(_np.max(kr_mic) * 2)
 
+    # TODO : Investigate if limit_order works as intended
     if max_order_fullspec > limit_order:
         print('Requested wave front needs a minimum order of ' + str(int(max_order_fullspec)) + ' but was limited to order ' + str(limit_order))
 
@@ -260,7 +261,7 @@ def sampled_wave(fs, NFFT, array_radius, array_configuration, transducer_type,
     colatitude_grid = gridData[:, 1]
     fftData = iSpatFT(Pnm, azimuth_grid, colatitude_grid)
 
-    return fftData, Pnm
+    return fftData
 
 
 def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None,
@@ -304,6 +305,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
     Pnm : array of complex floats
        Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows
     """
+    order = _np.int_(order)
     NFFT = int(NFFT / 2 + 1)
     NMLocatorSize = (order + 1) ** 2
 
