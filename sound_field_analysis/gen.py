@@ -18,6 +18,7 @@ Module contains various generator functions:
 """
 import numpy as _np
 from .sph import sph_harm, sph_harm_all, cart2sph, mnArrays, array_extrapolation, kr, sphankel2
+from .io import ArrayConfiguration
 from .process import iSpatFT
 from .utils import progress_bar
 
@@ -138,7 +139,7 @@ def lebedev(max_order=None, degree=None):
     return gridData
 
 
-def radial_filter_fullspec(max_order, NFFT, fs, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None, amp_maxdB=40):
+def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=40):
     """Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for frequencies 0:fs/2, wraps radial_filter()
 
     Parameters
@@ -160,10 +161,10 @@ def radial_filter_fullspec(max_order, NFFT, fs, array_radius, array_configuratio
 
     freqs = _np.linspace(0, fs / 2, NFFT / 2 + 1)
     orders = _np.r_[0:max_order + 1]
-    return radial_filter(orders, freqs, array_radius, array_configuration, transducer_type, scatter_radius=scatter_radius, amp_maxdB=amp_maxdB)
+    return radial_filter(orders, freqs, array_configuration, amp_maxdB=amp_maxdB)
 
 
-def radial_filter(order, freq, array_radius, array_configuration, transducer_type, scatter_radius=None, amp_maxdB=40):
+def radial_filter(order, freq, array_configuration, amp_maxdB=40):
     """Generate modal radial filter of specified order and frequency
 
     Parameters
@@ -184,8 +185,9 @@ def radial_filter(order, freq, array_radius, array_configuration, transducer_typ
     dn : array_like
        Vector of modal frequency domain filter of shape [nOrders x nFreq]
     """
+    array_configuration = ArrayConfiguration(*array_configuration)
 
-    extrapolation_coeffs = array_extrapolation(order, freq, array_radius, scatter_radius=scatter_radius, array_configuration=array_configuration, transducer_type=transducer_type)
+    extrapolation_coeffs = array_extrapolation(order, freq, array_configuration)
     extrapolation_coeffs[extrapolation_coeffs == 0] = 1e-12
 
     a_max = 10 ** (amp_maxdB / 20)
@@ -194,8 +196,8 @@ def radial_filter(order, freq, array_radius, array_configuration, transducer_typ
     return limiting_factor / extrapolation_coeffs
 
 
-def sampled_wave(fs, NFFT, array_radius, array_configuration, transducer_type,
-                 gridData, wave_azimuth, wave_colatitude, wavetype='plane', c=343, distance=1.0, scatter_radius=None, dual_radius=None, limit_order=85):
+def sampled_wave(fs, NFFT, array_configuration,
+                 gridData, wave_azimuth, wave_colatitude, wavetype='plane', c=343, distance=1.0, limit_order=85):
     """Returns the frequency domain data of an ideal wave as recorded by a provided array.
 
     Parameters
@@ -246,9 +248,10 @@ def sampled_wave(fs, NFFT, array_radius, array_configuration, transducer_type,
     This file is a wrapper generating the complex pressures at the positions given in 'gridData'
     for a full spectrum 0-FS/2 Hz (NFFT Bins) wave impinging on the array, emulating discrete sampling.
     """
+    array_configuration = ArrayConfiguration(*array_configuration)
 
     freqs = _np.linspace(0, fs / 2, NFFT)
-    kr_mic = kr(freqs, array_radius)
+    kr_mic = kr(freqs, array_configuration.array_radius)
 
     max_order_fullspec = _np.ceil(_np.max(kr_mic) * 2)
 
@@ -256,7 +259,7 @@ def sampled_wave(fs, NFFT, array_radius, array_configuration, transducer_type,
     if max_order_fullspec > limit_order:
         print('Requested wave front needs a minimum order of ' + str(int(max_order_fullspec)) + ' but was limited to order ' + str(limit_order))
 
-    Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth, wave_colatitude, array_radius, array_configuration, transducer_type, scatter_radius, wavetype, distance, NFFT)
+    Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth, wave_colatitude, array_configuration, wavetype, distance, NFFT)
     azimuth_grid = gridData[:, 0]
     colatitude_grid = gridData[:, 1]
     fftData = iSpatFT(Pnm, azimuth_grid, colatitude_grid)
@@ -264,7 +267,7 @@ def sampled_wave(fs, NFFT, array_radius, array_configuration, transducer_type,
     return fftData
 
 
-def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration='open', transducer_type='pressure', scatter_radius=None,
+def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
                wavetype='plane', distance=1.0, NFFT=128, delay=0.0, c=343.0):
     """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an ideal wave front hitting a specified array
 
@@ -305,6 +308,8 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
     Pnm : array of complex floats
        Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows
     """
+    array_configuration = ArrayConfiguration(*array_configuration)
+
     order = _np.int_(order)
     NFFT = int(NFFT / 2 + 1)
     NMLocatorSize = (order + 1) ** 2
@@ -312,16 +317,8 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
     # SAFETY CHECKS
     if wavetype not in {'plane', 'spherical'}:
         raise ValueError('Invalid wavetype: Choose either plane or spherical.')
-    if array_configuration not in {'open', 'rigid', 'dual'}:
-        raise ValueError('Sphere configuration has to be either open (default), rigid, or dual.')
-    if transducer_type not in {'pressure', 'velocity'}:
-        raise ValueError('Transducer type has to be either pressure (default) or velocity.')
-    if array_configuration is 'dual' and transducer_type is not 'pressure':
-        raise ValueError('For dual sphere configuration, only pressure transducers are allowed.')
     if (delay * fs > NFFT - 1):
         raise ValueError('Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).')
-    if wavetype is 'plane' and distance <= array_radius:
-        raise ValueError('Invalid source distance, source must be outside the microphone radius.')
 
     w = _np.linspace(0, pi * fs, NFFT)
     freqs = _np.linspace(0, fs / 2, NFFT)
@@ -331,10 +328,10 @@ def ideal_wave(order, fs, azimuth, colatitude, array_radius, array_configuration
 
     for n in range(0, order + 1):
         if wavetype is 'plane':
-            radial_filters[n] = time_shift * array_extrapolation(n, freqs, array_radius, scatter_radius=array_radius, array_configuration=array_configuration, transducer_type=transducer_type)
+            radial_filters[n] = time_shift * array_extrapolation(n, freqs, array_configuration)
         elif wavetype is 'spherical':
             k_dist = kr(freqs, distance)
-            radial_filters[n] = 4 * pi * -1j * w / c * time_shift * sphankel2(n, k_dist) * array_extrapolation(n, freqs, array_radius, scatter_radius=array_radius, array_configuration=array_configuration, transducer_type=transducer_type)
+            radial_filters[n] = 4 * pi * -1j * w / c * time_shift * sphankel2(n, k_dist) * array_extrapolation(n, freqs, array_configuration)
 
     # GENERATOR CORE
     Pnm = _np.empty([NMLocatorSize, NFFT], dtype=_np.complex_)

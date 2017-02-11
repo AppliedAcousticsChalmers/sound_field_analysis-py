@@ -19,6 +19,7 @@ import numpy as _np
 from scipy import special as scy
 from math import factorial as fact
 from .utils import scalar_broadcast_match
+from .io import ArrayConfiguration
 
 
 def besselj(n, z):
@@ -282,19 +283,19 @@ def dsphankel2(n, kr):
     return dhn2
 
 
-def spherical_extrapolation(order, k_mic, array_configuration, transducer_type, k_scatter=None, k_dual=None):
+def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None, k_dual=None):
     """ Factor that relate signals recorded on a sphere to it's center.
 
     Parameters
     ----------
     order : int
        Order
+    array_configuration : ArrayConfiguration
+       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     k_mic : array_like
        K vector for microphone array
     k_scatter: array_like, optional
        K vector for scatterer  (Default: same as k_mic)
-    array_configuration : string {open, rigid, dual}
-       Array configuration [Default: Open]
     transducer_type: string {pressure, velocity}
        Transducer type [Default: pressure]
 
@@ -302,22 +303,23 @@ def spherical_extrapolation(order, k_mic, array_configuration, transducer_type, 
     -------
     b : array, complex
     """
-    if array_configuration is 'open':
-        if transducer_type is 'pressure':
+    array_configuration = ArrayConfiguration(*array_configuration)
+
+    if array_configuration.array_type is 'open':
+        if array_configuration.transducer_type is 'pressure':
             return bn_open_pressure(order, k_mic)
-        elif transducer_type is 'velocity':
+        elif array_configuration.transducer_type is 'velocity':
             return bn_open_velocity(order, k_mic)
-    else:
-        if array_configuration is 'rigid':
-            if transducer_type is 'pressure':
-                return bn_rigid_pressure(order, k_mic, k_scatter)
-            elif transducer_type is 'velocity':
-                return bn_rigid_velocity(order, k_mic, k_scatter)
-        elif array_configuration is 'dual':
-            return bn_dual_open_pressure(order, k_mic, k_dual)
+    elif array_configuration.array_type is 'rigid':
+        if array_configuration.transducer_type is 'pressure':
+            return bn_rigid_pressure(order, k_mic, k_scatter)
+        elif array_configuration.transducer_type is 'velocity':
+            return bn_rigid_velocity(order, k_mic, k_scatter)
+    elif array_configuration.array_type is 'dual':
+        return bn_dual_open_pressure(order, k_mic, k_dual)
 
 
-def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_configuration='open', transducer_type='pressure', dual_radius=None, normalize=True):
+def array_extrapolation(order, freqs, array_configuration, normalize=True):
     """ Factor that relate signals recorded on a sphere to it's center.
     In the rigid configuration, a scatter_radius that is different to the array radius may be set.
 
@@ -327,16 +329,8 @@ def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_c
        Order
     freqs : array_like
        Frequencies
-    array_radius: array_like
-       Sphere radius
-    scatter_radius: array_like, optional
-       Scatter radius. Default: array_radius
-    array_configuration : string {open, rigid, dual}
-       Array configuration [Default: Open]
-    transducer_type: string {pressure, velocity}
-       Transducer type [Default: pressure]
-    dual_radius: array_like, optional
-        Array of the second array (only needed for dual array configuration)
+    array_configuration : ArrayConfiguration
+       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     normalize: Bool, optional
         Normalize by 4 * pi * 1j ** order (Default: True)
 
@@ -346,17 +340,10 @@ def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_c
        Coefficients of shape [nOrder x nFreqs]
     """
 
-    if array_configuration not in {'open', 'rigid', 'dual'}:
-        raise ValueError('Sphere configuration has to be either open (default), rigid, or dual.')
-    if transducer_type not in {'pressure', 'velocity'}:
-        raise ValueError('Transducer type has to be either pressure (default) or velocity.')
-    if array_configuration in {'dual'} and (dual_radius is None):
-        raise ValueError('For dual array configuration, dual_radius has to be provided.')
-    if array_configuration is 'dual' and transducer_type is not 'pressure':
-        raise ValueError('Only pressure transducers are allowed for dual sphere configuration.')
+    array_configuration = ArrayConfiguration(*array_configuration)
 
     freqs, order = _np.meshgrid(freqs, order)
-    k_mic = kr(freqs, array_radius)
+    k_mic = kr(freqs, array_configuration.array_radius)
     k_scatter = None
     k_dual = None
 
@@ -365,11 +352,13 @@ def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_c
     else:
         scale_factor = 1
 
-    if array_configuration is 'open':
+    if array_configuration.array_type is 'open':
         k_scatter = None
-    elif array_configuration is 'rigid':
-        if scatter_radius is None:
-            scatter_radius = array_radius
+    elif array_configuration.array_type is 'rigid':
+        if array_configuration.scatter_radius is None:
+            scatter_radius = array_configuration.array_radius
+        else:
+            scatter_radius = array_configuration.scatter_radius
         k_scatter = kr(freqs, scatter_radius)
 
         # Replace leading k==0 with the next element to avoid nan
@@ -377,12 +366,10 @@ def array_extrapolation(order, freqs, array_radius, scatter_radius=None, array_c
             k_mic[:, 0] = k_mic[:, 1]
         if _np.any(k_scatter[:, 0] == 0):
             k_scatter[:, 0] = k_scatter[:, 1]
-    elif array_configuration is 'dual':
-        if dual_radius is None:
-            dual_radius = array_radius
-        k_dual = kr(freqs, dual_radius)
+    elif array_configuration.array_type is 'dual':
+        k_dual = kr(freqs, array_configuration.dual_radius)
 
-    return scale_factor * spherical_extrapolation(order, k_mic, k_scatter=k_scatter, array_configuration=array_configuration, transducer_type=transducer_type, k_dual=k_dual)
+    return scale_factor * spherical_extrapolation(order, array_configuration, k_mic, k_scatter, k_dual)
 
 
 def bn_open_pressure(n, krm):
@@ -644,11 +631,11 @@ def _print_mic_scaling(N, freqs, array_radius, scatter_radius=None, dual_radius=
         scatter_radius = array_radius
     if not dual_radius:
         dual_radius = array_radius
-    print(' '.join(('bn_open_pressure:', str(array_extrapolation(N, freqs, array_radius, array_configuration='open', transducer_type='pressure')))))
-    print(' '.join(('bn_open_velocity:', str(array_extrapolation(N, freqs, array_radius, array_configuration='open', transducer_type='velocity')))))
-    print(' '.join(('bn_rigid_pressure:', str(array_extrapolation(N, freqs, array_radius, scatter_radius=scatter_radius, array_configuration='rigid', transducer_type='pressure')))))
-    print(' '.join(('bn_rigid_velocity:', str(array_extrapolation(N, freqs, array_radius, scatter_radius=scatter_radius, array_configuration='rigid', transducer_type='velocity')))))
-    print(' '.join(('bn_dual_open_pressure:', str(array_extrapolation(N, freqs, array_radius, scatter_radius=scatter_radius, array_configuration='dual', transducer_type='pressure', dual_radius=dual_radius)))))
+    print(' '.join(('bn_open_pressure:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'pressure'])))))
+    print(' '.join(('bn_open_velocity:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'velocity'])))))
+    print(' '.join(('bn_rigid_pressure:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'pressure', scatter_radius])))))
+    print(' '.join(('bn_rigid_velocity:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'velocity', scatter_radius])))))
+    print(' '.join(('bn_dual_open_pressure:', str(array_extrapolation(N, freqs, [array_radius, 'dual', 'pressure', None, dual_radius])))))
 
 
 def _print_bns(N, k_mic, k_scatter):

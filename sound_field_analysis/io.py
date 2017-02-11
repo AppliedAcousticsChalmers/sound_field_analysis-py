@@ -3,7 +3,140 @@
 
 from scipy import io as sio
 import numpy as _np
+from collections import namedtuple
 from . import utils
+
+
+class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_type transducer_type scatter_radius dual_radius')):
+    """ Tuple of type ArrayConfiguration
+
+    Parameters
+    ----------
+    array_radius : float
+       Radius of array
+    array_type : {'open', 'rigid'}
+       Type array
+    transducer_type: {'pressure', 'velocity'}
+       Type of transducer,
+    scatter_radius : float, optional
+       Radius of scatterer, required for `array_type` == 'rigid'
+    dual_radius : float, optional
+       Radius of second array, required for `array_type` == 'dual'
+    """
+    __slots__ = ()
+
+    def __new__(cls, array_radius, array_type, transducer_type, scatter_radius=None, dual_radius=None):
+        if array_type not in {'open', 'rigid', 'dual'}:
+            raise ValueError('Sphere configuration has to be either open, rigid, or dual.')
+        if transducer_type not in {'pressure', 'velocity'}:
+            raise ValueError('Transducer type has to be either pressure or velocity.')
+        if array_type == 'rigid' and not scatter_radius:
+            raise ValueError('For a rigid array, scatter_radius has to be provided.')
+        if array_type == 'dual' and not dual_radius:
+            raise ValueError('For a dual array configuration, dual_radius must be provided.')
+        if array_type == 'dual' and transducer_type == 'velocity':
+            raise ValueError('For a dual array configuration, velocity transducers are not supported.')
+
+        self = super(ArrayConfiguration, cls).__new__(cls, array_radius, array_type, transducer_type, scatter_radius, dual_radius)
+        return self
+
+    def __repr__(self):
+        return 'ArrayConfiguration(\n' + ',\n'.join(
+            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
+            for name, data in zip(['array_radius', 'array_type', 'transducer_type', 'scatter_radius', 'dual_radius'], self)) + ')'
+
+
+class TimeSignal(namedtuple('TimeSignal', 'signal fs delay')):
+    """ Tuple of type SphericalGrid
+
+    Parameters
+    ----------
+    signal : array_like
+       Array of signals of shape [nSignals x nSamples]
+    fs : int
+       Sampling frequency
+    delay : float
+
+    """
+    __slots__ = ()
+
+    def __new__(cls, signal, fs, delay=None):
+        signal = _np.atleast_2d(signal)
+        no_of_signals = signal.shape[1]
+        fs = _np.asarray(fs)
+        delay = _np.asarray(delay)
+
+        if (fs.size != 1) and (fs.size != no_of_signals):
+            raise ValueError('fs can either be a scalar or an array with one element per signal.')
+        if (delay.size != 1) and (delay.size != no_of_signals):
+            raise ValueError('delay can either be a scalar or an array with one element per signal.')
+
+        self = super(TimeSignal, cls).__new__(cls, signal, fs, delay)
+        return self
+
+    def __repr__(self):
+        return 'TimeSignal(\n' + ',\n'.join(
+            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
+            for name, data in zip(['signal', 'fs', 'delay'], self)) + ')'
+
+
+class SphericalGrid(namedtuple('SphericalGrid', 'azimuth colatitude radius weight')):
+    """ Tuple of type SphericalGrid
+
+    Parameters
+    ----------
+    Azimuth, Colatitude, Radius : float
+    Weights : float, optional
+    """
+    __slots__ = ()
+
+    def __new__(cls, azimuth, colatitude, radius, weight=None):
+        azimuth = _np.asarray(azimuth)
+        colatitude = _np.asarray(colatitude)
+        radius = _np.asarray(radius)
+        if weight is not None:
+            weight = _np.asarray(weight)
+        if azimuth.size != colatitude.size:
+            raise ValueError('Azimuth and colatitude have to contain the same number of elements.')
+        if (radius.size != 1) and (radius.size != azimuth.size):
+            raise ValueError('Radius can either be a scalar or an array of same size as azimuth/colatitude.')
+
+        self = super(SphericalGrid, cls).__new__(cls, azimuth, colatitude, radius, weight)
+        return self
+
+    def __repr__(self):
+        return 'SphericalGrid(\n' + ',\n'.join(
+            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
+            for name, data in zip(['azimuth', 'colatitude', 'radius', 'weight'], self)) + ')'
+
+
+class ArraySignal(namedtuple('ArraySignal', 'signal grid configuration temperature')):
+    """ Tuple of type ArraySignal
+
+    Parameters
+    ----------
+    signals : TimeSignal
+       Holds time domain signals and sampling frequency fs
+    grid : SphericalGrid
+       Location grid of all time domain signals
+    configuration : ArrayConfiguration
+       Information on array configuration
+    temperature : array_like, optional
+       Temperature in room or at each sampling position
+    """
+    __slots__ = ()
+
+    def __new__(cls, signal, grid, configuration, temperature=None):
+        signal = TimeSignal(*signal)
+        grid = SphericalGrid(*grid)
+        configuration = ArrayConfiguration(*configuration)
+        self = super(ArraySignal, cls).__new__(cls, signal, grid, configuration, temperature)
+        return self
+
+    def __repr__(self):
+        return 'ArraySignal(\n' + ',\n'.join(
+            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
+            for name, data in zip(['signal', 'grid', 'configuration', 'temperature'], self)) + ')'
 
 
 def read_miro_struct(file_name, channel='irChOne'):
