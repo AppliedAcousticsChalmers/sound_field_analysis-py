@@ -85,21 +85,24 @@ class SphericalGrid(namedtuple('SphericalGrid', 'azimuth colatitude radius weigh
 
     Parameters
     ----------
-    Azimuth, Colatitude, Radius : float
-    Weights : float, optional
+    Azimuth, Colatitude : float
+    Radius, Weights : float, optional
     """
     __slots__ = ()
 
-    def __new__(cls, azimuth, colatitude, radius, weight=None):
+    def __new__(cls, azimuth, colatitude, radius=None, weight=None):
         azimuth = _np.asarray(azimuth)
         colatitude = _np.asarray(colatitude)
-        radius = _np.asarray(radius)
+        if radius is not None:
+            radius = _np.asarray(radius)
         if weight is not None:
             weight = _np.asarray(weight)
         if azimuth.size != colatitude.size:
             raise ValueError('Azimuth and colatitude have to contain the same number of elements.')
-        if (radius.size != 1) and (radius.size != azimuth.size):
+        if (radius is not None) and (radius.size != 1) and (radius.size != azimuth.size):
             raise ValueError('Radius can either be a scalar or an array of same size as azimuth/colatitude.')
+        if (weight is not None) and (weight.size != 1) and (weight.size != azimuth.size):
+            raise ValueError('Weight can either be a scalar or an array of same size as azimuth/colatitude.')
 
         self = super(SphericalGrid, cls).__new__(cls, azimuth, colatitude, radius, weight)
         return self
