@@ -294,7 +294,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     """
     array_configuration = ArrayConfiguration(*array_configuration)
 
-    order = _np.int_(order)
+    order = _np.int(order)
     NFFT = int(NFFT / 2 + 1)
     NMLocatorSize = (order + 1) ** 2
 
