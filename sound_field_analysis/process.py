@@ -131,7 +131,7 @@ def FFT(time_signals, fs, NFFT=None, oversampling=1, first_sample=0, last_sample
     return fftData, f
 
 
-def spatFT(data, azimuths, colatitudes, gridweights, order_max=10, spherical_harmonic_bases=None):
+def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
     ''' Spatial Fourier Transform
 
     Parameters
@@ -140,7 +140,7 @@ def spatFT(data, azimuths, colatitudes, gridweights, order_max=10, spherical_har
        Data to be transformed, with signals in rows and frequency bins in columns
     order_max : int, optional
        Maximum transform order (Default: 10)
-    azimuths, colatitudes, gridweights : array_like
+    position_grid : array_like or io.SphericalGrid
        Azimuths/Colatitudes/Gridweights of spatial sampling points
 
     Returns
@@ -151,25 +151,27 @@ def spatFT(data, azimuths, colatitudes, gridweights, order_max=10, spherical_har
     data = _np.atleast_2d(data)
     number_of_signals, FFTLength = data.shape
 
+    position_grid = SphericalGrid(*position_grid)
+
     # Re-generate spherical harmonic bases if they were not provided or their order is too small
     if (spherical_harmonic_bases is None or
             spherical_harmonic_bases.shape[0] < number_of_signals or
             spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2):
         print('Regenerating spherical harmonic bases')
-        spherical_harmonic_bases = sph_harm_all(order_max, azimuths, colatitudes)
+        spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
 
-    spherical_harmonic_bases = (_np.conj(spherical_harmonic_bases).T * (4 * pi * gridweights))
+    spherical_harmonic_bases = (_np.conj(spherical_harmonic_bases).T * (4 * pi * position_grid.weight))
     return _np.inner(spherical_harmonic_bases, data.T)
 
 
-def iSpatFT(spherical_coefficients, azimuths, colatitudes, order_max=None, spherical_harmonic_bases=None):
+def iSpatFT(spherical_coefficients, position_grid, order_max=None, spherical_harmonic_bases=None):
     """Inverse spatial Fourier Transform
 
     Parameters
     ----------
     spherical_coefficients : array_like
        Spatial Fourier coefficients with columns representing frequncy bins
-    azimuths, colatitudes : array_like
+    position_grid : array_like or io.SphericalGrid
        Azimuth/Colatitude angles of spherical coefficients
     order_max : int, optional
        Maximum transform order [Default: highest available order]
@@ -179,7 +181,7 @@ def iSpatFT(spherical_coefficients, azimuths, colatitudes, order_max=None, spher
     P : array_like
        Sound pressures with frequency bins in columnss and angles in rows
     """
-
+    position_grid = SphericalGrid(*position_grid)
     spherical_coefficients = _np.atleast_2d(spherical_coefficients)
     number_of_coefficients, FFTLength = spherical_coefficients.shape
 
@@ -188,31 +190,33 @@ def iSpatFT(spherical_coefficients, azimuths, colatitudes, order_max=None, spher
         order_max = int(_np.sqrt(number_of_coefficients) - 1)
 
     # Re-generate spherical harmonic bases if they were not provided or their order is too small
-    if spherical_harmonic_bases is None or spherical_harmonic_bases.shape[1] < number_of_coefficients or spherical_harmonic_bases.shape[1] == azimuths.size:
+    if spherical_harmonic_bases is None or spherical_harmonic_bases.shape[1] < number_of_coefficients or spherical_harmonic_bases.shape[1] == position_grid.azimuths.size:
         print('Regenerating spherical harmonic bases')
-        spherical_harmonic_bases = sph_harm_all(order_max, azimuths, colatitudes)
+        spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
 
     return _np.inner(spherical_harmonic_bases, spherical_coefficients.T)
 
 
-def spatFT_LSF(data, azimuths, colatitudes, order_max, spherical_harmonic_bases=None):
+def spatFT_LSF(data, position_grid, order_max, spherical_harmonic_bases=None):
     '''Returns spherical harmonics coefficients least square fitted to provided data
 
     Parameters
     ----------
     data : array_like, complex
        Data to be fitted to
-    azimuth_grid, colatitude_grid : array_like, float
-       Azimuth / colatidunenal data locations
+    position_grid : array_like, or io.SphericalGrid
+       Azimuth / colatitude data locations
     order_max: int
        Maximum order N of fit
 
     Returns
+    -------
     coefficients: array_like, float
        Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
     '''
+    position_grid = SphericalGrid(*position_grid)
     if spherical_harmonic_bases is None:
-        spherical_harmonic_bases = sph_harm_all(order_max, azimuths, colatitudes)
+        spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
     return lstsq(spherical_harmonic_bases, data)[0]
 
 

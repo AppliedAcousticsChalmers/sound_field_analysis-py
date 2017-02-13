@@ -18,7 +18,7 @@ Module contains various generator functions:
 """
 import numpy as _np
 from .sph import sph_harm, sph_harm_all, cart2sph, mnArrays, array_extrapolation, kr, sphankel2
-from .io import ArrayConfiguration
+from .io import ArrayConfiguration, SphericalGrid
 from .process import iSpatFT
 from .utils import progress_bar
 
@@ -128,13 +128,13 @@ def lebedev(max_order=None, degree=None):
 
     from . import lebedev
     leb = lebedev.genGrid(degree)
-    theta, phi, _ = cart2sph(leb.x, leb.y, leb.z)
-    theta = theta % (2 * pi)
-    gridData = _np.array([theta, phi + pi / 2, leb.w]).T
-    gridData = gridData[gridData[:, 1].argsort()]  # ugly double sorting that keeps rows together
+    azimuth, elevation, radius = cart2sph(leb.x, leb.y, leb.z)
+
+    gridData = _np.array([azimuth % (2 * pi), (pi / 2 - elevation) % (2 * pi), radius, leb.w]).T
+    gridData = gridData[gridData[:, 1].argsort()]
     gridData = gridData[gridData[:, 0].argsort()]
 
-    return gridData
+    return SphericalGrid(*gridData.T)
 
 
 def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=40):
@@ -238,6 +238,7 @@ def sampled_wave(fs, NFFT, array_configuration,
     This file is a wrapper generating the complex pressures at the positions given in 'gridData'
     for a full spectrum 0-FS/2 Hz (NFFT Bins) wave impinging on the array, emulating discrete sampling.
     """
+    gridData = SphericalGrid(*gridData)
     array_configuration = ArrayConfiguration(*array_configuration)
 
     freqs = _np.linspace(0, fs / 2, NFFT)
@@ -250,9 +251,7 @@ def sampled_wave(fs, NFFT, array_configuration,
         print('Requested wave front needs a minimum order of ' + str(int(max_order_fullspec)) + ' but was limited to order ' + str(limit_order))
 
     Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth, wave_colatitude, array_configuration, wavetype, distance, NFFT)
-    azimuth_grid = gridData[:, 0]
-    colatitude_grid = gridData[:, 1]
-    fftData = iSpatFT(Pnm, azimuth_grid, colatitude_grid)
+    fftData = iSpatFT(Pnm, gridData)
 
     return fftData
 
