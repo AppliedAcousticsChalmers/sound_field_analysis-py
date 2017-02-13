@@ -50,15 +50,13 @@ def whiteNoise(fftData, noiseLevel=80):
     return fftData + nNoiseSpectrum
 
 
-def gaussGrid(AZnodes=10, ELnodes=5, plot=False):
+def gaussGrid(AZnodes=10, ELnodes=5):
     '''Compute Gauss-Legendre quadrature nodes and weigths in the SOFiA/VariSphear data format.
 
     Parameters
     ----------
     AZnodes, ELnodes : int, optional
        Number of azimutal / elevation nodes  [Default: 10 / 5]
-    plot : bool, optional
-        Show a globe plot of the selected grid [Default: False]
 
     Returns
     -------
