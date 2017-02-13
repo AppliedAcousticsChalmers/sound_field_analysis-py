@@ -19,7 +19,7 @@ Module contains various generator functions:
 import numpy as _np
 from .sph import sph_harm, sph_harm_all, cart2sph, mnArrays, array_extrapolation, kr, sphankel2
 from .io import ArrayConfiguration, SphericalGrid
-from .process import iSpatFT
+from .process import spatFT, iSpatFT
 from .utils import progress_bar
 
 pi = _np.pi
@@ -194,7 +194,7 @@ def radial_filter(order, freq, array_configuration, amp_maxdB=40):
     return limiting_factor / extrapolation_coeffs
 
 
-def sampled_wave(fs, NFFT, array_configuration,
+def sampled_wave(order, fs, NFFT, array_configuration,
                  gridData, wave_azimuth, wave_colatitude, wavetype='plane', c=343, distance=1.0, limit_order=85):
     """Returns the frequency domain data of an ideal wave as recorded by a provided array.
 
@@ -230,13 +230,8 @@ def sampled_wave(fs, NFFT, array_configuration,
 
     Returns
     -------
-    fftData : array_like
-        Complex sound pressures of size [(N+1)^2 x NFFT]
-
-    Note
-    ----
-    This file is a wrapper generating the complex pressures at the positions given in 'gridData'
-    for a full spectrum 0-FS/2 Hz (NFFT Bins) wave impinging on the array, emulating discrete sampling.
+    Pnm : array_like
+        Spatial fourier coefficients of resampled sound field
     """
     gridData = SphericalGrid(*gridData)
     array_configuration = ArrayConfiguration(*array_configuration)
@@ -249,11 +244,9 @@ def sampled_wave(fs, NFFT, array_configuration,
     # TODO : Investigate if limit_order works as intended
     if max_order_fullspec > limit_order:
         print('Requested wave front needs a minimum order of ' + str(int(max_order_fullspec)) + ' but was limited to order ' + str(limit_order))
-
     Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth, wave_colatitude, array_configuration, wavetype, distance, NFFT)
-    fftData = iSpatFT(Pnm, gridData)
-
-    return fftData
+    Pnm_resampled = spatFT(iSpatFT(Pnm, gridData), gridData, order_max=order)
+    return Pnm_resampled
 
 
 def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
