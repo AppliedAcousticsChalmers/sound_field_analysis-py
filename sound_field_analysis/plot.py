@@ -124,6 +124,7 @@ def makeFullMTX(Pnm, dn, kr, viz_order=None):
     vizMtx : array_like
        Computed visualization matrix over all kr
     """
+    kr = _np.asarray(kr)
     if not viz_order:
         viz_order = _np.int(_np.ceil(_np.sqrt(Pnm.shape[0]) - 1))
 
