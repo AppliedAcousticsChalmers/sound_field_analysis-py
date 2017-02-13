@@ -1,6 +1,6 @@
 Generators
-========
+==========
 
 Generators explanation.
 
-.. automodule:: sofia.gen
+.. automodule:: sound_field_analysis.gen

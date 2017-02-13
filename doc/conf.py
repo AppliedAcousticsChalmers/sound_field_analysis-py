@@ -281,7 +281,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'sfa_readme.tex', 'Sound Field Analysis Toolbox Readme',
-     'Christoph Hohnerlein (QU Lab)', 'manual'),
+     'Christoph Hohnerlein (QU Lab)', 'manual', True),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

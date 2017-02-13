@@ -186,8 +186,8 @@ def read_miro_struct(file_name, channel='irChOne'):
 def empty_time_signal(no_of_signals, signal_length):
     """Returns an empty np rec array that has the proper data structure
 
-    Parameter
-    ---------
+    Parameters
+    ----------
     no_of_signals : int
        Number of signals to be stored in the recarray
     signal_length : int
@@ -219,8 +219,8 @@ def empty_time_signal(no_of_signals, signal_length):
 def load_time_signal(filename):
     """Convenience function to load saved np data structures
 
-    Parameter
-    ---------
+    Parameters
+    ----------
     filename : string
        File to load
 
@@ -242,8 +242,8 @@ def load_time_signal(filename):
 
 def read_wavefile(filename):
     """ Reads in wavefiles and returns data [Nsig x Nsamples] and fs
-    Parameter
-    ---------
+    Parameters
+    ----------
     filename, string
        Filename of wave file to be read
 
