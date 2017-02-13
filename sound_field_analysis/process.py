@@ -223,25 +223,19 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
     ----------
     order : int
        Decomposition order
-    OmegaL : array_like
-       Look directions of shape
-       ::
-          [AZ1, EL1;
-           AZ2, EL2;
-             ...
-           AZn, ELn]
+    wave_direction : array_like
+       Direction of plane wave as [azimuth, colatitude] pair. io.SphericalGrid is used internally
     field_coeffs : array_like
        Spatial fourier coefficients
     radial_filter : array_like
        Radial filters
     weights : array_like, optional
-       Weighting function. Either frequency invariant weights as 1xN array
-       or with kr bins in rows over N cols. [Default: None]
+       Weighting function. Either scalar, one per directions or of dimension (nKR_bins x  nDirections). [Default: None]
 
     Returns
     -------
     Y : matrix of floats
-       MxN Matrix of the decomposed wavefield with kr bins in rows
+       Matrix of the decomposed wavefield with kr bins in rows
     """
 
     wave_direction = SphericalGrid(*wave_direction)
