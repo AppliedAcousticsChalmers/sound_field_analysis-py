@@ -157,7 +157,6 @@ def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
     if (spherical_harmonic_bases is None or
             spherical_harmonic_bases.shape[0] < number_of_signals or
             spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2):
-        print('Regenerating spherical harmonic bases')
         spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
 
     spherical_harmonic_bases = (_np.conj(spherical_harmonic_bases).T * (4 * pi * position_grid.weight))
@@ -191,7 +190,6 @@ def iSpatFT(spherical_coefficients, position_grid, order_max=None, spherical_har
 
     # Re-generate spherical harmonic bases if they were not provided or their order is too small
     if spherical_harmonic_bases is None or spherical_harmonic_bases.shape[1] < number_of_coefficients or spherical_harmonic_bases.shape[1] == position_grid.azimuths.size:
-        print('Regenerating spherical harmonic bases')
         spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
 
     return _np.inner(spherical_harmonic_bases, spherical_coefficients.T)
