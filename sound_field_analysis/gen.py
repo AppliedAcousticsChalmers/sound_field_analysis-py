@@ -20,9 +20,6 @@ import numpy as _np
 from .sph import sph_harm, sph_harm_all, cart2sph, mnArrays, array_extrapolation, kr, sphankel2
 from .io import ArrayConfiguration, SphericalGrid
 from .process import spatFT, iSpatFT
-from .utils import progress_bar
-
-pi = _np.pi
 
 
 def whiteNoise(fftData, noiseLevel=80):
@@ -73,8 +70,8 @@ def gaussGrid(AZnodes=10, ELnodes=5):
     '''
 
     # Azimuth: Gauss
-    AZ = _np.linspace(0, AZnodes - 1, AZnodes) * 2 * pi / AZnodes
-    AZw = _np.ones(AZnodes) * 2 * pi / AZnodes
+    AZ = _np.linspace(0, AZnodes - 1, AZnodes) * 2 * _np.pi / AZnodes
+    AZw = _np.ones(AZnodes) * 2 * _np.pi / AZnodes
 
     # Elevation: Legendre
     EL, ELw = _np.polynomial.legendre.leggauss(ELnodes)
@@ -130,7 +127,7 @@ def lebedev(max_order=None, degree=None):
     leb = lebedev.genGrid(degree)
     azimuth, elevation, radius = cart2sph(leb.x, leb.y, leb.z)
 
-    gridData = _np.array([azimuth % (2 * pi), (pi / 2 - elevation) % (2 * pi), radius, leb.w]).T
+    gridData = _np.array([azimuth % (2 * _np.pi), (_np.pi / 2 - elevation) % (2 * _np.pi), radius, leb.w]).T
     gridData = gridData[gridData[:, 1].argsort()]
     gridData = gridData[gridData[:, 0].argsort()]
 
@@ -296,7 +293,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     if (delay * fs > NFFT - 1):
         raise ValueError('Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).')
 
-    w = _np.linspace(0, pi * fs, NFFT)
+    w = _np.linspace(0, _np.pi * fs, NFFT)
     freqs = _np.linspace(0, fs / 2, NFFT)
 
     radial_filters = _np.zeros([NMLocatorSize, NFFT], dtype=_np.complex_)
@@ -307,7 +304,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
             radial_filters[n] = time_shift * array_extrapolation(n, freqs, array_configuration)
         elif wavetype is 'spherical':
             k_dist = kr(freqs, distance)
-            radial_filters[n] = 4 * pi * -1j * w / c * time_shift * sphankel2(n, k_dist) * array_extrapolation(n, freqs, array_configuration)
+            radial_filters[n] = 4 * _np.pi * -1j * w / c * time_shift * sphankel2(n, k_dist) * array_extrapolation(n, freqs, array_configuration)
 
     # GENERATOR CORE
     Pnm = _np.empty([NMLocatorSize, NFFT], dtype=_np.complex_)

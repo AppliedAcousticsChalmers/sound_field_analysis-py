@@ -19,8 +19,6 @@ from plotly import tools
 from .process import plane_wave_decomp
 from .utils import env_info, progress_bar
 
-pi = _np.pi
-
 
 def showTrace(trace, layout=None, colorize=True):
     """ Wrapper around plotlys offline .plot() function
@@ -171,8 +169,8 @@ def genSphCoords():
         holds cartesian (x,y,z) and spherical (theta, phi) coordinates
     """
     coords = namedtuple('coords', ['x', 'y', 'z', 'az', 'el'])
-    az = _np.linspace(0, 2 * pi, 360)
-    el = _np.linspace(0, pi, 181)
+    az = _np.linspace(0, 2 * _np.pi, 360)
+    el = _np.linspace(0, _np.pi, 181)
     coords.x = _np.outer(_np.cos(az), _np.sin(el))
     coords.y = _np.outer(_np.sin(az), _np.sin(el))
     coords.z = _np.outer(_np.ones(360), _np.cos(el))

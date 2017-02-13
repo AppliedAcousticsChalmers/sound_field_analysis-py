@@ -26,13 +26,10 @@ Not yet implemented:
 """
 
 import numpy as _np
-from scipy.signal import hann, fftconvolve
+from scipy.signal import fftconvolve
 from scipy.linalg import lstsq
-from .sph import sph_harm, besselj, hankel1, sph_harm_all
-from .utils import progress_bar
+from .sph import besselj, hankel1, sph_harm_all
 from .io import SphericalGrid
-
-pi = _np.pi
 
 
 def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
@@ -159,7 +156,7 @@ def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
             spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2):
         spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
 
-    spherical_harmonic_bases = (_np.conj(spherical_harmonic_bases).T * (4 * pi * position_grid.weight))
+    spherical_harmonic_bases = (_np.conj(spherical_harmonic_bases).T * (4 * _np.pi * position_grid.weight))
     return _np.inner(spherical_harmonic_bases, data.T)
 
 
@@ -260,7 +257,7 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
     if order > max_order:
         raise ValueError('The provided coefficients deliver a maximum order of ' + str(max_order) + ' but order ' + str(order) + ' was requested.')
 
-    gaincorrection = 4 * pi / ((order + 1) ** 2)
+    gaincorrection = 4 * _np.pi / ((order + 1) ** 2)
 
     if weights is not None:
         weights = _np.asarray(weights)
@@ -365,16 +362,16 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
     krb = _np.tile(krb, (FCoeff, 1))
 
     if problem == 'interior':
-        jn_kra = _np.sqrt(pi / (2 * kra)) * besselj(n + 5, kra)
-        jn_krb = _np.sqrt(pi / (2 * krb)) * besselj(n + 5, krb)
+        jn_kra = _np.sqrt(_np.pi / (2 * kra)) * besselj(n + 5, kra)
+        jn_krb = _np.sqrt(_np.pi / (2 * krb)) * besselj(n + 5, krb)
         exp = jn_krb / jn_kra
 
         if _np.any(_np.abs(exp) > 1e2):  # 40dB
             print('WARNING: Extrapolation might be unstable for one or more frequencies/orders!')
 
     elif problem == 'exterior':
-        hn_kra = _np.sqrt(pi / (2 * kra)) * hankel1(nvector + 0.5, 1, kra)
-        hn_krb = _np.sqrt(pi / (2 * krb)) * hankel1(nvector + 0.5, 1, krb)
+        hn_kra = _np.sqrt(_np.pi / (2 * kra)) * hankel1(nvector + 0.5, 1, kra)
+        hn_krb = _np.sqrt(_np.pi / (2 * krb)) * hankel1(nvector + 0.5, 1, krb)
         exp = hn_krb / hn_kra
     else:
         raise ValueError('Problem selector ' + problem + ' not recognized. Please either choose "interior" [Default] or "exterior".')
