@@ -16,7 +16,7 @@ from plotly.offline import iplot
 import plotly.graph_objs as go
 from plotly import tools
 
-from .process import PWDecomp
+from .process import plane_wave_decomp
 from .utils import env_info, progress_bar
 
 pi = _np.pi
@@ -66,47 +66,43 @@ def showTrace(trace, layout=None, colorize=True):
     return fig
 
 
-def makeMTX(Pnm, dn, krIndex=1, Nviz=3, oversize=1):
-    """mtxData = makeMTX(Nviz=3, Pnm, dn, krIndex)
+def makeMTX(spat_coeffs, radial_filter, kr_IDX, viz_order=None, stepsize_deg=1):
+    """Returns a plane wave decomposition over a full sphere
 
     Parameters
     ----------
-    Pnm : array_like
-       Spatial Fourier Coefficients (e.g. from S/T/C)
-    dn : array_like
-       Modal Radial Filters (e.g. from M/F)
-    krIndex : int
-       Index of kr to be computed [Default: 1]
-    Nviz : int, optional
-       Order of the spatial fourier transform [Default: 3]
-    oversize : int, optional
+    spat_coeffs : array_like
+       Spatial fourier coefficients
+    radial_filter : array_like
+       Modal radial filters
+    kr_IDX : int
+       Index of kr to be computed
+    viz_order : int, optional
+       Order of the spatial fourier transform [Default: Highest available]
+    stepsize_deg : float, optional
        Integer Factor to increase the resolution. [Default: 1]
 
     Returns
     -------
     mtxData : array_like
-       3D-matrix-data in 1[deg] steps
+       Plane wave decomposition (frequency domain)
 
     Note
     ----
     The file generates a Matrix of 181x360 pixels for the
     visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).
-    The HD version generally allows to raise the resolution (oversize > 1).
-    (visual3D(), map3D() admit 1[deg] data only, oversize = 1)
     """
-    if oversize < 1:
-        raise ValueError('Oversize parameter must be >= 1')
 
-    # Generate angles for sphere with 1[deg] spacing
-    angles = _np.mgrid[0:360, 0:181].T.reshape((-1, 2)) * _np.pi / 180
+    if not viz_order:
+        viz_order = _np.int(_np.ceil(_np.sqrt(spat_coeffs.shape[0]) - 1))
 
-    # Compute plane wave decomposition for all angles at given kr
-    Y = PWDecomp(Nviz, angles, Pnm[:, krIndex], dn[:, krIndex])
+    angles = _np.mgrid[0:360:stepsize_deg, 0:181:stepsize_deg].reshape((2, -1)) * _np.pi / 180
+    Y = plane_wave_decomp(viz_order, angles, spat_coeffs[:, kr_IDX], radial_filter[:, kr_IDX])
 
-    return Y.reshape((181, -1))  # Return pwd data as [181, 360] matrix
+    return Y.reshape((360, -1)).T  # Return pwd data as [181, 360] matrix
 
 
-def makeFullMTX(Pnm, dn, kr, Nviz=3):
+def makeFullMTX(Pnm, dn, kr, viz_order=None):
     """ Generates visualization matrix for a set of spatial fourier coefficients over all kr
     Parameters
     ----------
@@ -120,19 +116,22 @@ def makeFullMTX(Pnm, dn, kr, Nviz=3):
           Can also be a matrix [krm; krs] for rigid sphere configurations:
           [1,:] => krm referring to the microphone radius
           [2,:] => krs referring to the sphere radius (scatterer)
-    Nviz : int, optional
-       Order of the spatial fourier transform [Default: 3]
+    viz_order : int, optional
+       Order of the spatial fourier tplane_wave_decompransform [Default: Highest available]
 
     Returns
     -------
     vizMtx : array_like
        Computed visualization matrix over all kr
     """
+    if not viz_order:
+        viz_order = _np.int(_np.ceil(_np.sqrt(Pnm.shape[0]) - 1))
+
     N = kr.size
     vizMtx = [None] * N
     for k in range(0, N):
         progress_bar(k, N, 'Visual matrix generation')
-        vizMtx[k] = makeMTX(Pnm, dn, k, Nviz)
+        vizMtx[k] = makeMTX(Pnm, dn, k, viz_order)
     return vizMtx
 
 

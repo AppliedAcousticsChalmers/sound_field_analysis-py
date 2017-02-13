@@ -30,6 +30,7 @@ from scipy.signal import hann, fftconvolve
 from scipy.linalg import lstsq
 from .sph import sph_harm, besselj, hankel1, sph_harm_all
 from .utils import progress_bar
+from .io import SphericalGrid
 
 pi = _np.pi
 
@@ -215,12 +216,12 @@ def spatFT_LSF(data, azimuths, colatitudes, order_max, spherical_harmonic_bases=
     return lstsq(spherical_harmonic_bases, data)[0]
 
 
-def PWDecomp(N, OmegaL, Pnm, dn, cn=None):
-    """Plane Wave Decomposition
+def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weights=None):
+    """Plane wave decomposition
 
     Parameters
     ----------
-    N : int
+    order : int
        Decomposition order
     OmegaL : array_like
        Look directions of shape
@@ -229,12 +230,12 @@ def PWDecomp(N, OmegaL, Pnm, dn, cn=None):
            AZ2, EL2;
              ...
            AZn, ELn]
-    Pnm : matrix of complex floats
-       Spatial Fourier Coefficients (e.g. from spatFT)
-    dn : matrix of complex floats
-       Radial filters (e.g. from radFilter)
-    cn : array_like, optional
-       Weighting Function. Either frequency invariant weights as 1xN array
+    field_coeffs : array_like
+       Spatial fourier coefficients
+    radial_filter : array_like
+       Radial filters
+    weights : array_like, optional
+       Weighting function. Either frequency invariant weights as 1xN array
        or with kr bins in rows over N cols. [Default: None]
 
     Returns
@@ -242,75 +243,47 @@ def PWDecomp(N, OmegaL, Pnm, dn, cn=None):
     Y : matrix of floats
        MxN Matrix of the decomposed wavefield with kr bins in rows
     """
-    if N < 0:
-        N = 0
 
-    # Check shape of supplied look directions
-    OmegaL = _np.asarray(OmegaL)
-    if OmegaL.ndim == 1:  # only one dimension -> one AE/EL pair
-        if OmegaL.size != 2:
-            raise ValueError('Angle Matrix OmegaL is not valid. Must consist of AZ/EL pairs in one column [AZ1 EL1; AZ2 EL2; ... ; AZn ELn].\nRemember: All angles are in RAD.')
-        numberOfAngles = 1
-    else:                 # else: two or more AE/EL pairs
-        if OmegaL.shape[1] != 2:
-            raise ValueError('Angle Matrix OmegaL is not valid. Must consist of AZ/EL pairs in one column [AZ1 EL1; AZ2 EL2; ... ; AZn ELn].\nRemember: All angles are in RAD.')
-        numberOfAngles = OmegaL.shape[0]
+    wave_direction = SphericalGrid(*wave_direction)
+    number_of_angles = wave_direction.azimuth.size
+    field_coeffs = _np.atleast_2d(field_coeffs)
+    radial_filter = _np.atleast_2d(radial_filter)
 
-    Azimut = OmegaL[:, 0]
-    Elevation = OmegaL[:, 1]
+    if field_coeffs.shape[0] == 1:
+        field_coeffs = field_coeffs.T
+    if radial_filter.shape[0] == 1:
+        radial_filter = radial_filter.T
 
-    # Expand Pnm and dn dims to 2D if necessary
-    if Pnm.ndim == 1:
-        Pnm = _np.expand_dims(Pnm, 1)
+    NMDeliveredSize, FFTBlocklengthPnm = field_coeffs.shape
+    Ndn, FFTBlocklengthdn = radial_filter.shape
 
-    NMDeliveredSize = Pnm.shape[0]
-    FFTBlocklengthPnm = Pnm.shape[1]
-
-    if dn.ndim == 1:
-        dn = _np.expand_dims(dn, 1)
-    Ndn = dn.shape[0]
-    FFTBlocklengthdn = dn.shape[1]
-
-    if cn is not None:
-        pwdflag = 0
-        Ncn = cn.shape[0]
-        FFTBlocklengthcn = cn.shape[1]
-        cnnofreqflag = 0 if _np.asarray(cn).ndim == 1 else 1
-    else:
-        pwdflag = 1
-
-    # Check blocksizes
     if FFTBlocklengthdn != FFTBlocklengthPnm:
-        raise ValueError('FFT Blocksizes of Pnm and dn are not consistent.')
-    if cn is not None:
-        if FFTBlocklengthcn != FFTBlocklengthPnm and FFTBlocklengthcn != 1:
-            raise ValueError('FFT Blocksize of cn is not consistent to Pnm and dn.')
+        raise ValueError('FFT Blocksizes of field coefficients (Pnm) and radial filter (dn) are not consistent.')
 
-    NMLocatorSize = pow(N + 1, 2)
-    # TODO: Implement all other warnings
-    if NMLocatorSize > NMDeliveredSize:
-        raise ValueError('The provided coefficients deliver a maximum order of ' + str(int(_np.ceil(_np.sqrt(NMDeliveredSize) - 1))) + ' but order ' + str(N) + ' was requested.')
+    max_order = int(_np.floor(_np.sqrt(NMDeliveredSize) - 1))
+    if order > max_order:
+        raise ValueError('The provided coefficients deliver a maximum order of ' + str(max_order) + ' but order ' + str(order) + ' was requested.')
 
-    gaincorrection = 4 * pi / pow(N + 1, 2)
+    gaincorrection = 4 * pi / ((order + 1) ** 2)
 
-    OutputArray = _np.squeeze(_np.zeros((numberOfAngles, FFTBlocklengthPnm), dtype=_np.complex_))
+    if weights is not None:
+        weights = _np.asarray(weights)
+        if weights.ndim == 1:
+            number_of_weights = weights.size
+            if (number_of_weights != FFTBlocklengthPnm) and (number_of_weights != number_of_angles) and (number_of_weights != 1):
+                raise ValueError('Weights is not a scalar nor consistent with shape of the field coefficients (Pnm).')
+            if number_of_weights == number_of_angles:
+                weights = _np.broadcast_to(weights, (FFTBlocklengthPnm, number_of_angles)).T
+        else:
+            if weights.shape != (number_of_angles, FFTBlocklengthPnm):
+                raise ValueError('Weights is not a scalar nor consistent with shape of field coefficients (Pnm) and radial filter (dn).')
+    else:
+        weights = 1
 
-    ctr = 0
-
-    # TODO: clean up for loops
-    if pwdflag == 1:  # PWD CORE
-        for n in range(0, N + 1):
-            for m in range(-n, n + 1):
-                Ynm = sph_harm(m, n, Azimut, Elevation)
-                OutputArray += _np.squeeze(_np.outer(Ynm, Pnm[ctr] * dn[n]))
-                ctr = ctr + 1
-    else:  # BEAMFORMING CORE
-        for n in range(0, N + 1):
-            for m in range(-n, n + 1):
-                Ynm = sph_harm(m, n, Azimut, Elevation)
-                OutputArray += _np.squeeze(_np.outer(Ynm, Pnm[ctr] * dn[n] * cn[n]))
-                ctr = ctr + 1
-    # RETURN
+    sph_harms = sph_harm_all(order, wave_direction.azimuth, wave_direction.colatitude)
+    filtered_coeffs = field_coeffs * _np.repeat(radial_filter, _np.r_[:order + 1] * 2 + 1, axis=0)
+    OutputArray = _np.dot(sph_harms, filtered_coeffs)
+    OutputArray = _np.multiply(OutputArray, weights)
     return OutputArray * gaincorrection
 
 
