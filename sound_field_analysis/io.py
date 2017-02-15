@@ -19,7 +19,7 @@ class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_ty
     transducer_type: {'pressure', 'velocity'}
        Type of transducer,
     scatter_radius : float, optional
-       Radius of scatterer, required for `array_type` == 'rigid'
+       Radius of scatterer, required for `array_type` == 'rigid'. (Default: equal to array_radius)
     dual_radius : float, optional
        Radius of second array, required for `array_type` == 'dual'
     """
@@ -31,7 +31,7 @@ class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_ty
         if transducer_type not in {'pressure', 'velocity'}:
             raise ValueError('Transducer type has to be either pressure or velocity.')
         if array_type == 'rigid' and not scatter_radius:
-            raise ValueError('For a rigid array, scatter_radius has to be provided.')
+            scatter_radius = array_radius
         if array_type == 'dual' and not dual_radius:
             raise ValueError('For a dual array configuration, dual_radius must be provided.')
         if array_type == 'dual' and transducer_type == 'velocity':
