@@ -270,8 +270,8 @@ def write_SSR_IRs(filename, time_data_l, time_data_r):
     time_data_l, time_data_l : time_data recarrays
        time_data arrays for left/right channel.
     """
-    equator_IDX_left = utils.logical_IDX_of_nearest(time_data_l.colatitude, _np.pi / 2)
-    equator_IDX_right = utils.logical_IDX_of_nearest(time_data_r.colatitude, _np.pi / 2)
+    equator_IDX_left = utils.nearest_to_value_logical_IDX(time_data_l.colatitude, _np.pi / 2)
+    equator_IDX_right = utils.nearest_to_value_logical_IDX(time_data_r.colatitude, _np.pi / 2)
 
     IRs_left = time_data_l.signal[equator_IDX_left]
     IRs_right = time_data_r.signal[equator_IDX_right]

@@ -86,16 +86,22 @@ def rad2deg(rad):
     return rad / pi * 180 % 360
 
 
-def nearest_to_value(array, value):
+def nearest_to_value_IDX(array, target_val):
     """Returns nearest value inside an array
     """
-    return array[(abs(array - value)).argmin()]
+    return (abs(array - target_val)).argmin()
 
 
-def logical_IDX_of_nearest(array, value):
+def nearest_to_value(array, target_val):
+    """Returns nearest value inside an array
+    """
+    return array[nearest_to_value_IDX(array, target_val)]
+
+
+def nearest_to_value_logical_IDX(array, target_val):
     """Returns logical indices of nearest values inside array
     """
-    return array == nearest_to_value(array, value)
+    return array == nearest_to_value(array, target_val)
 
 
 def interleave_channels(left_channel, right_channel, style=None):
@@ -129,3 +135,22 @@ def scalar_broadcast_match(a, b):
     elif b.size == 1 and a.size != 1:
         b = broadcast_to(b, a.shape)
     return a, b
+
+
+def frq2kr(target_frequency, freq_vector):
+    """Returns the kr bin closest  to the target frequency
+
+    Parameters
+    ----------
+    fTarget : float
+       Target frequency
+    fVec : array_like
+       Array containing the available frequencys
+
+    Returns
+    -------
+    krTarget : int
+       kr bin closest to target frequency
+    """
+
+    return (_np.abs(fVec - fTarget)).argmin()
