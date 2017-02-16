@@ -69,15 +69,15 @@ def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
     return Pnm
 
 
-def FFT(time_signals, fs, NFFT=None, oversampling=1, first_sample=0, last_sample=None):
+def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_sample=None):
     '''Real-valued Fast Fourier Transform.
 
     Parameters
     ----------
-    time_signals : array_like
-       Time-domain signals to be transformed, of shapeb [nSig x nSamples]
-    fs : int
-       Sampling frequency of the time data
+    time_signals : TimeSignal/tuple/object
+       Time-domain signals to be transformed. If of length 2, fs is assumened as the second element, otherwise fs has to be specified.
+    fs : int, optional
+       Sampling frequency - only optional if a TimeSignal or tuple/array containing fs is passed
     NFFT : int, optional
        Number of frequency bins. Resulting array will have size NFFT//2+1 Default: Next power of 2
     oversampling : int, optional
@@ -100,9 +100,21 @@ def FFT(time_signals, fs, NFFT=None, oversampling=1, first_sample=0, last_sample
     where NFFT is the next power of two of the number of samples.
     Time-windowing can be used by providing a first_sample and last_sample index.
     '''
+    try:
+        signals = time_signals.signal
+        fs = time_signals.fs
+    except AttributeError:
+        if len(time_signals) == 2:
+            signals = time_signals[0]
+            fs = time_signals[1]
+        else:
+            if fs is not None:
+                signals = time_signals
+            else:
+                raise ValueError('No valid signal found. Either pass an io.TimeSignal, a tuple/array containg the signal and the sampling frequecy or use the fs argument.')
 
-    time_signals = _np.atleast_2d(time_signals)
-    nSig, nSamples = time_signals.shape
+    signals = _np.atleast_2d(signals)
+    nSig, nSamples = signals.shape
 
     if last_sample is None:  # assign lastSample to length of signals if not provided
         last_sample = nSamples
@@ -117,12 +129,12 @@ def FFT(time_signals, fs, NFFT=None, oversampling=1, first_sample=0, last_sample
         raise ValueError('firstSample must be between 0 and lastSample.')
 
     total_samples = last_sample - first_sample
-    time_signals = time_signals[:, first_sample:last_sample]
+    signals = signals[:, first_sample:last_sample]
 
     if not NFFT:
         NFFT = int(2**_np.ceil(_np.log2(total_samples)))
 
-    fftData = _np.fft.rfft(time_signals, NFFT * oversampling, 1)
+    fftData = _np.fft.rfft(signals, NFFT * oversampling, 1)
     f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs)
 
     return fftData, f
