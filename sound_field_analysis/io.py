@@ -142,7 +142,7 @@ class ArraySignal(namedtuple('ArraySignal', 'signal grid configuration temperatu
             for name, data in zip(['signal', 'grid', 'configuration', 'temperature'], self)) + ')'
 
 
-def read_miro_struct(file_name, channel='irChOne'):
+def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatter_radius=None):
     """ Reads miro matlab files.
 
     Parameters
@@ -155,35 +155,33 @@ def read_miro_struct(file_name, channel='irChOne'):
          save('SOFiA_A1_struct.mat', , '-struct', 'SOFiA_A1_struct');
     channel : string, optional
        Channel that holds required signals. Default: 'irChOne'
+    transducer_type : {omni, cardoid}, optional
+       Sets the type of transducer used in the recording. Default: omni
+    scatter_radius : float, option
+       Radius of the scatterer. Default: None
 
     Returns
     -------
-    td : recarray
-    `time_data` array with fields from empty_time_signal()
-    ::
-       .signal           [Channels X Samples]
-       .fs               Sampling frequency in [Hz]
-       .azimuth          Azimuth of sampling points
-       .colatitude       Colatitude of sampling points
-       .radius           Array radius in [m]
-       .grid_weights     Weights of quadrature
-       .air_temperature  Average temperature in [C]
+    array_signal : ArraySignal
+       Tuple containing a TimeSignal `signal`, SphericalGrid `grid`, ArrayConfiguration `configuration` and the air temperature
     """
     current_data = sio.loadmat(file_name)
-    no_of_signals = int(_np.squeeze(current_data['nIr']))
-    signal_length = int(_np.squeeze(current_data['taps']))
 
-    td = empty_time_signal(no_of_signals, signal_length)
+    time_signal = TimeSignal(signal=_np.squeeze(current_data[channel]).T,
+                             fs=_np.squeeze(current_data['fs']))
 
-    td.azimuth = _np.squeeze(current_data['azimuth'])
-    td.colatitude = _np.pi / 2 - _np.squeeze(current_data['elevation'])
-    td.airtemperature = _np.squeeze(current_data['avgAirTemp'])
-    td.grid_weights = _np.squeeze(current_data['quadWeight'])
-    td.radius = _np.squeeze(current_data['radius'])
-    td.fs = _np.squeeze(current_data['fs'])
-    td.signal = _np.squeeze(current_data[channel]).T
+    mic_grid = SphericalGrid(azimuth=_np.squeeze(current_data['azimuth']),
+                             colatitude=_np.pi / 2 - _np.squeeze(current_data['elevation']),
+                             radius=_np.squeeze(current_data['radius']),
+                             weight=_np.squeeze(current_data['quadWeight']))
 
-    return td
+    if _np.squeeze(current_data['scatterer']):
+        sphere_config = 'rigid'
+    else:
+        sphere_config = 'open'
+    array_config = ArrayConfiguration(mic_grid.radius, sphere_config, transducer_type, scatter_radius)
+
+    return ArraySignal(time_signal, mic_grid, array_config, _np.squeeze(current_data['avgAirTemp']))
 
 
 def empty_time_signal(no_of_signals, signal_length):
