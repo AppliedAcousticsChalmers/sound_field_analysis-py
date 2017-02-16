@@ -16,7 +16,7 @@ class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_ty
        Radius of array
     array_type : {'open', 'rigid'}
        Type array
-    transducer_type: {'pressure', 'velocity'}
+    transducer_type: {'omni', 'cardioid'}
        Type of transducer,
     scatter_radius : float, optional
        Radius of scatterer, required for `array_type` == 'rigid'. (Default: equal to array_radius)
@@ -28,14 +28,14 @@ class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_ty
     def __new__(cls, array_radius, array_type, transducer_type, scatter_radius=None, dual_radius=None):
         if array_type not in {'open', 'rigid', 'dual'}:
             raise ValueError('Sphere configuration has to be either open, rigid, or dual.')
-        if transducer_type not in {'pressure', 'velocity'}:
-            raise ValueError('Transducer type has to be either pressure or velocity.')
+        if transducer_type not in {'omni', 'cardioid'}:
+            raise ValueError('Transducer type has to be either omni or cardioid.')
         if array_type == 'rigid' and not scatter_radius:
             scatter_radius = array_radius
         if array_type == 'dual' and not dual_radius:
             raise ValueError('For a dual array configuration, dual_radius must be provided.')
-        if array_type == 'dual' and transducer_type == 'velocity':
-            raise ValueError('For a dual array configuration, velocity transducers are not supported.')
+        if array_type == 'dual' and transducer_type == 'cardioid':
+            raise ValueError('For a dual array configuration, cardioid transducers are not supported.')
 
         self = super(ArrayConfiguration, cls).__new__(cls, array_radius, array_type, transducer_type, scatter_radius, dual_radius)
         return self

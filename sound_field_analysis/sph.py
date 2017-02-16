@@ -296,8 +296,6 @@ def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None, k
        K vector for microphone array
     k_scatter: array_like, optional
        K vector for scatterer  (Default: same as k_mic)
-    transducer_type: string {pressure, velocity}
-       Transducer type [Default: pressure]
 
     Returns
     -------
@@ -306,17 +304,17 @@ def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None, k
     array_configuration = ArrayConfiguration(*array_configuration)
 
     if array_configuration.array_type is 'open':
-        if array_configuration.transducer_type is 'pressure':
-            return bn_open_pressure(order, k_mic)
-        elif array_configuration.transducer_type is 'velocity':
-            return bn_open_velocity(order, k_mic)
+        if array_configuration.transducer_type is 'omni':
+            return bn_open_omni(order, k_mic)
+        elif array_configuration.transducer_type is 'cardioid':
+            return bn_open_cardioid(order, k_mic)
     elif array_configuration.array_type is 'rigid':
-        if array_configuration.transducer_type is 'pressure':
-            return bn_rigid_pressure(order, k_mic, k_scatter)
-        elif array_configuration.transducer_type is 'velocity':
-            return bn_rigid_velocity(order, k_mic, k_scatter)
+        if array_configuration.transducer_type is 'omni':
+            return bn_rigid_omni(order, k_mic, k_scatter)
+        elif array_configuration.transducer_type is 'cardioid':
+            return bn_rigid_cardioid(order, k_mic, k_scatter)
     elif array_configuration.array_type is 'dual':
-        return bn_dual_open_pressure(order, k_mic, k_dual)
+        return bn_dual_open_omni(order, k_mic, k_dual)
 
 
 def array_extrapolation(order, freqs, array_configuration, normalize=True):
@@ -372,20 +370,20 @@ def array_extrapolation(order, freqs, array_configuration, normalize=True):
     return scale_factor * spherical_extrapolation(order, array_configuration, k_mic, k_scatter, k_dual)
 
 
-def bn_open_pressure(n, krm):
+def bn_open_omni(n, krm):
     return spbessel(n, krm)
 
 
-def bn_open_velocity(n, krm):
+def bn_open_cardioid(n, krm):
     return 0.5 * (spbessel(n, krm) - 1j * dspbessel(n, krm))
 
 
-def bn_rigid_pressure(n, krm, krs):
+def bn_rigid_omni(n, krm, krs):
     krm, krs = scalar_broadcast_match(krm, krs)
     return spbessel(n, krm) - (dspbessel(n, krs) / dsphankel2(n, krs)) * sphankel2(n, krm)
 
 
-def bn_rigid_velocity(n, krm, krs):
+def bn_rigid_cardioid(n, krm, krs):
     #  Rerence for Filter design for rigid sphere with cardioid microphones:
     #  P. Plessas, F. Zotter: Microphone arrays around rigid spheres for spatial recording and holography, DAGA 2010
     #  krm: for mic radius, krs: for sphere radius
@@ -393,14 +391,14 @@ def bn_rigid_velocity(n, krm, krs):
     return spbessel(n, krm) - 1j * dspbessel(n, krm) + (1j * dsphankel2(n, krm) - sphankel2(n, krm)) * (dspbessel(n, krs) / dsphankel2(n, krs))
 
 
-def bn_dual_open_pressure(n, kr1, kr2):
+def bn_dual_open_omni(n, kr1, kr2):
     # Reference: Rafaely et al,
     #  High-resolution plane-wave decomposition in an auditorium using a dual-radius scanning spherical microphone array
     #  JASA, 122(5), 2007
     # kr1, kr2 are the kr values of the two different microphone spheres
     # Implementation by Nils Peters, November 2011*/
-    bn1 = bn_open_pressure(n, kr1)
-    bn2 = bn_open_pressure(n, kr2)
+    bn1 = bn_open_omni(n, kr1)
+    bn2 = bn_open_omni(n, kr2)
     return _np.where(_np.abs(bn1) >= _np.abs(bn2), bn1, bn2)
 
 
@@ -631,16 +629,16 @@ def _print_mic_scaling(N, freqs, array_radius, scatter_radius=None, dual_radius=
         scatter_radius = array_radius
     if not dual_radius:
         dual_radius = array_radius
-    print(' '.join(('bn_open_pressure:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'pressure'])))))
-    print(' '.join(('bn_open_velocity:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'velocity'])))))
-    print(' '.join(('bn_rigid_pressure:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'pressure', scatter_radius])))))
-    print(' '.join(('bn_rigid_velocity:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'velocity', scatter_radius])))))
-    print(' '.join(('bn_dual_open_pressure:', str(array_extrapolation(N, freqs, [array_radius, 'dual', 'pressure', None, dual_radius])))))
+    print(' '.join(('bn_open_omni:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'omni'])))))
+    print(' '.join(('bn_open_cardioid:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'cardioid'])))))
+    print(' '.join(('bn_rigid_omni:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'omni', scatter_radius])))))
+    print(' '.join(('bn_rigid_cardioid:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'cardioid', scatter_radius])))))
+    print(' '.join(('bn_dual_open_omni:', str(array_extrapolation(N, freqs, [array_radius, 'dual', 'omni', None, dual_radius])))))
 
 
 def _print_bns(N, k_mic, k_scatter):
-    print(' '.join(('bn_open_pressure:', str(bn_open_pressure(N, k_mic) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_open_velocity:', str(bn_open_velocity(N, k_mic) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_rigid_pressure:', str(bn_rigid_pressure(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_rigid_velocity:', str(bn_rigid_velocity(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_dual_open_pressure:', str(bn_dual_open_pressure(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
+    print(' '.join(('bn_open_omni:', str(bn_open_omni(N, k_mic) * 4 * _np.pi * 1j**N))))
+    print(' '.join(('bn_open_cardioid:', str(bn_open_cardioid(N, k_mic) * 4 * _np.pi * 1j**N))))
+    print(' '.join(('bn_rigid_omni:', str(bn_rigid_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
+    print(' '.join(('bn_rigid_cardioid:', str(bn_rigid_cardioid(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
+    print(' '.join(('bn_dual_open_omni:', str(bn_dual_open_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
