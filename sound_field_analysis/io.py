@@ -47,7 +47,7 @@ class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_ty
 
 
 class TimeSignal(namedtuple('TimeSignal', 'signal fs delay')):
-    """ Tuple of type SphericalGrid
+    """ Tuple of type TimeSignal
 
     Parameters
     ----------
