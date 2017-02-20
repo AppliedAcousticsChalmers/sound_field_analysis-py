@@ -11,16 +11,16 @@ Other valid styles are 'sphere' and 'flat'.
 import numpy as _np
 from collections import namedtuple
 
-from plotly.offline import plot as pltoff
+from plotly.offline import plot as plt_offline
 from plotly.offline import iplot
 import plotly.graph_objs as go
 from plotly import tools
 
 from .process import plane_wave_decomp
-from .utils import env_info, progress_bar
+from .utils import env_info, progress_bar, current_time
 
 
-def showTrace(trace, layout=None, colorize=True):
+def showTrace(trace, layout=None, title=None):
     """ Wrapper around plotlys offline .plot() function
 
     Parameters
@@ -59,7 +59,9 @@ def showTrace(trace, layout=None, colorize=True):
     if env_info() == 'jupyter_notebook':
         iplot(fig)
     else:
-        pltoff(fig)
+        if title is None:
+            title = str(current_time())
+        plt_offline(fig, filename=title + '.html')
 
     return fig
 
@@ -397,7 +399,7 @@ def plot2D(data, title=None, viz_type=None, fs=None):
     layout = layout_2D(viz_type, title)
     traces = prepare_2D_traces(data, viz_type, fs)
 
-    showTrace(traces, layout=layout)
+    showTrace(traces, layout=layout, title=title)
 
 
 def plot3D(vizMTX, style='shape', layout=None, colorize=True, logScale=False):
@@ -454,4 +456,4 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True):
     if env_info() == 'jupyter_notebook':
         iplot(fig)
     else:
-        pltoff(fig)
+        plt_offline(fig, filename=str(current_time()) + '.html')
