@@ -3,7 +3,7 @@ Module contains various generator functions:
 
 `whiteNoise`
    Generate additive White Gaussian noise
-`gaussGrid`
+`gauss_grid`
    Gauss-Legendre quadrature grid and weights
 `lebedev`
    Lebedev quadrature grid and weigths
@@ -47,34 +47,26 @@ def whiteNoise(fftData, noiseLevel=80):
     return fftData + nNoiseSpectrum
 
 
-def gaussGrid(AZnodes=10, ELnodes=5):
+def gauss_grid(azimuth_nodes=10, colatitude_nodes=5):
     '''Compute Gauss-Legendre quadrature nodes and weigths in the SOFiA/VariSphear data format.
 
     Parameters
     ----------
-    AZnodes, ELnodes : int, optional
-       Number of azimutal / elevation nodes  [Default: 10 / 5]
+    AZnodes, ELnodes :
+       Number of azimutal / elevation nodes
 
     Returns
     -------
-    gridData : matrix of floats
-       Gauss-Legendre quadrature positions and weigths
-       ::
-          [AZ_0, EL_0, W_0
-               ...
-          AZ_n, EL_n, W_n]
-    Npoints : int
-       Total number of nodes
-    Nmax : int
-       Highest stable grid order
+    gridData : io.SphericalGrid
+       SphericalGrid containing azimuth, colatitude and weights
     '''
 
     # Azimuth: Gauss
-    AZ = _np.linspace(0, AZnodes - 1, AZnodes) * 2 * _np.pi / AZnodes
-    AZw = _np.ones(AZnodes) * 2 * _np.pi / AZnodes
+    AZ = _np.linspace(0, azimuth_nodes - 1, azimuth_nodes) * 2 * _np.pi / azimuth_nodes
+    AZw = _np.ones(azimuth_nodes) * 2 * _np.pi / azimuth_nodes
 
     # Elevation: Legendre
-    EL, ELw = _np.polynomial.legendre.leggauss(ELnodes)
+    EL, ELw = _np.polynomial.legendre.leggauss(colatitude_nodes)
     EL = _np.arccos(EL)
 
     # Weights
@@ -82,13 +74,14 @@ def gaussGrid(AZnodes=10, ELnodes=5):
     W /= W.sum()
 
     # VariSphere order: AZ increasing, EL alternating
-    gridData = _np.empty((ELnodes * AZnodes, 3))
-    for k in range(0, AZnodes):
-        curIDX = k * ELnodes
-        gridData[curIDX:curIDX + ELnodes, 0] = AZ[k].repeat(ELnodes)
-        gridData[curIDX:curIDX + ELnodes, 1] = EL[::-1 + k % 2 * 2]  # flip EL every second iteration
-        gridData[curIDX:curIDX + ELnodes, 2] = W[k][::-1 + k % 2 * 2]  # flip W every second iteration
+    gridData = _np.empty((colatitude_nodes * azimuth_nodes, 3))
+    for k in range(0, azimuth_nodes):
+        curIDX = k * colatitude_nodes
+        gridData[curIDX:curIDX + colatitude_nodes, 0] = AZ[k].repeat(colatitude_nodes)
+        gridData[curIDX:curIDX + colatitude_nodes, 1] = EL[::-1 + k % 2 * 2]  # flip EL every second iteration
+        gridData[curIDX:curIDX + colatitude_nodes, 2] = W[k][::-1 + k % 2 * 2]  # flip W every second iteration
 
+    gridData = SphericalGrid(gridData[:, 0], gridData[:, 1], None, gridData[:, 2])
     return gridData
 
 
