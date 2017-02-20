@@ -322,7 +322,64 @@ def genVisual(vizMTX, style='shape', normalize=True, logScale=False):
         raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
 
 
-def plot2D(data, title=None, type=None, fs=44100):
+def layout_2D(type=None, title=None):
+    layout = go.Layout(
+        title=title,
+        xaxis=dict(
+            title='Samples'
+        ),
+        yaxis=dict(
+            title='Amplitude'
+        )
+    )
+
+    if type == 'time':
+        layout.title = 'Time domain plot'
+        layout.xaxis.title = 'Time [s]'
+    elif type == 'linFFT':
+        layout.title = 'Frequency domain plot (linear)'
+        layout.yaxis.title = 'Amplitude [dB]'
+        layout.xaxis.title = 'Frequency [Hz]'
+    elif type == 'logFFT':
+        layout.title = 'Frequency domain plot (logarithmic)'
+        layout.yaxis.title = 'Amplitude [dB]'
+        layout.xaxis.title = 'Frequency [Hz]'
+        layout.xaxis.type = 'log'
+    return layout
+
+
+def prepare_2D_x(L, viz_type=None, fs=None):
+    # X vector: samples or time
+    x = _np.arange(L - 1, dtype=_np.float_)
+
+    if viz_type == 'time':
+        x /= fs
+    elif viz_type == 'linFFT':
+        x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
+    elif viz_type == 'logFFT':
+        x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
+
+    return x
+
+
+def prepare_2D_traces(data, viz_type=None, fs=None):
+    data = _np.atleast_2d(data)
+    N, L = data.shape
+
+    x = prepare_2D_x(L, viz_type, fs)
+
+    traces = [None] * N
+
+    for k in range(0, N):
+        traces[k] = go.Scatter(
+            x=x,
+            y=data[k]
+        )
+
+    return traces
+
+
+def plot2D(data, title=None, viz_type=None, fs=None):
     """Visualize 2D data using plotly.
 
     Parameters
@@ -337,42 +394,8 @@ def plot2D(data, title=None, type=None, fs=44100):
        Sampling rate in Hz. [Default: 44100]
     """
 
-    data = _np.atleast_2d(data)
-    N = data.shape[0]
-
-    # X vector: samples or time
-    x = _np.arange(data.shape[1] - 1, dtype=_np.float_)
-
-    layout = go.Layout(
-        title=title,
-        xaxis=dict(
-            title='Samples'
-        ),
-        yaxis=dict(
-            title='Amplitude'
-        )
-    )
-
-    if type == 'time':
-        x /= fs
-        layout.xaxis.title = 'Time [s]'
-    elif type == 'linFFT':
-        x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
-        layout.yaxis.title = 'Amplitude [dB]'
-        layout.xaxis.title = 'Frequency [Hz]'
-    elif type == 'logFFT':
-        x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
-        layout.yaxis.title = 'Amplitude [dB]'
-        layout.xaxis.title = 'Frequency [Hz]'
-        layout.xaxis.type = 'log'
-
-    traces = [None] * N
-
-    for k in range(0, N):
-        traces[k] = go.Scatter(
-            x=x,
-            y=data[k]
-        )
+    layout = layout_2D(viz_type, title)
+    traces = prepare_2D_traces(data, viz_type, fs)
 
     showTrace(traces, layout=layout)
 
@@ -432,5 +455,3 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True):
         iplot(fig)
     else:
         pltoff(fig)
-
-    return fig
