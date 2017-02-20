@@ -407,13 +407,26 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True, logScale=False):
     showTrace(genVisual(vizMTX, style=style, normalize=True, logScale=logScale), layout=layout)
 
 
-def plot3Dgrid(rows, cols, vizMTX, style, normalize=True):
-    fig = tools.make_subplots(rows=rows, cols=cols,
-                              specs=[[{'is_3d': True}, {'is_3d': True}],
-                                     [{'is_3d': True}, {'is_3d': True}]])
+def plot3Dgrid(rows, cols, viz_data, style, normalize=True):
+    if len(viz_data) > rows * cols:
+        raise ValueError('Number of plot data is more than the specified rows and columns.')
+    fig = tools.make_subplots(rows, cols, specs=[[{'is_3d': True}] * cols] * rows, print_grid=False)
 
-    for IDX in range(0, len(vizMTX)):
-        fig.append_trace(genVisual(vizMTX[IDX], style=style, normalize=normalize), IDX % rows + 1, IDX // cols + 1)
+    layout_3D = dict(
+        xaxis=dict(range=[-1, 1]),
+        yaxis=dict(range=[-1, 1]),
+        zaxis=dict(range=[-1, 1]),
+        aspectmode='cube'
+    )
+
+    rows, cols = _np.mgrid[1:rows + 1, 1: cols + 1]
+    rows = rows.flatten()
+    cols = cols.flatten()
+    for IDX in range(0, len(viz_data)):
+        cur_row = rows[IDX]
+        cur_col = cols[IDX]
+        fig.append_trace(genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col)
+        fig.layout['scene' + str(IDX + 1)].update(layout_3D)
 
     if env_info() == 'jupyter_notebook':
         iplot(fig)
