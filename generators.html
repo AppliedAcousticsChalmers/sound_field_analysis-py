@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Generators &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
+  <title>Generators &mdash; Sound Field Analysis toolbox for Python 0.3 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="index.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.3 documentation" href="index.html"/>
         <link rel="next" title="Processing" href="processing.html"/>
         <link rel="prev" title="Usage" href="usage.html"/> 
 
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.2
+                0.3
               </div>
             
           
@@ -124,7 +124,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/generators.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/generators.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -137,6 +137,26 @@
   <div class="section" id="generators">
 <h1>Generators<a class="headerlink" href="#generators" title="Permalink to this headline">¶</a></h1>
 <p>Generators explanation.</p>
+<span class="target" id="module-sound_field_analysis.gen"></span><p>Module contains various generator functions:</p>
+<dl class="docutils">
+<dt><cite>whiteNoise</cite></dt>
+<dd>Generate additive White Gaussian noise</dd>
+<dt><cite>gauss_grid</cite></dt>
+<dd>Gauss-Legendre quadrature grid and weights</dd>
+<dt><cite>lebedev</cite></dt>
+<dd>Lebedev quadrature grid and weigths</dd>
+<dt><cite>radial_filter</cite></dt>
+<dd>Modal radial filter</dd>
+<dt><cite>radial_filter_fullspec</cite></dt>
+<dd>Modal radial filter over the full spectrum</dd>
+<dt><cite>sampledWave</cite></dt>
+<dd>Sampled Wave generator, emulating discrete sampling</dd>
+<dt><cite>ideal_wave</cite></dt>
+<dd>Ideal wave generator, returns spatial fourier coefficients</dd>
+</dl>
+<p>sampled_wave
+This file is a wrapper generating the complex pressures at the positions given in &#8216;gridData&#8217;
+for a full spectrum 0-FS/2 Hz (NFFT Bins) wave impinging on the array, emulating discrete sampling.</p>
 </div>
 
 
@@ -180,7 +200,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2',
+            VERSION:'0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

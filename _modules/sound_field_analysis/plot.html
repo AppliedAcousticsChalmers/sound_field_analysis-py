@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sound_field_analysis.plot &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
+  <title>sound_field_analysis.plot &mdash; Sound Field Analysis toolbox for Python 0.3 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="../../index.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.3 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.2
+                0.3
               </div>
             
           
@@ -136,29 +136,20 @@
   <h1>Source code for sound_field_analysis.plot</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Plotting functions</span>
 <span class="sd">Helps visualizing spherical microphone data.</span>
-
-<span class="sd">Generally, you probably want to first extract the amplitude information in spherical coordinates:</span>
-<span class="sd">&gt;&gt; plot.makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1)</span>
-<span class="sd">And then visualize that:</span>
-<span class="sd">&gt;&gt; plot3D(vizMTX, style=&#39;shape&#39;)</span>
-
-<span class="sd">Other valid styles are &#39;sphere&#39; and &#39;flat&#39;.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 
-<span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="k">import</span> <span class="n">plot</span> <span class="k">as</span> <span class="n">pltoff</span>
+<span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="k">import</span> <span class="n">plot</span> <span class="k">as</span> <span class="n">plt_offline</span>
 <span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="k">import</span> <span class="n">iplot</span>
 <span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
 <span class="kn">from</span> <span class="nn">plotly</span> <span class="k">import</span> <span class="n">tools</span>
 
-<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">PWDecomp</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">env_info</span><span class="p">,</span> <span class="n">progress_bar</span>
-
-<span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">plane_wave_decomp</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">env_info</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">,</span> <span class="n">current_time</span>
 
 
-<div class="viewcode-block" id="showTrace"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.showTrace">[docs]</a><span class="k">def</span> <span class="nf">showTrace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colorize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="showTrace"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.showTrace">[docs]</a><span class="k">def</span> <span class="nf">showTrace</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Wrapper around plotlys offline .plot() function</span>
 
 <span class="sd">    Parameters</span>
@@ -180,8 +171,6 @@
                 <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
                 <span class="n">zaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
                 <span class="n">aspectmode</span><span class="o">=</span><span class="s1">&#39;cube&#39;</span>
-                <span class="c1">#aspectratio = dict( x=1, y=1, z=0.7 ),</span>
-                
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="c1"># Wrap trace in array if needed</span>
@@ -199,52 +188,50 @@
     <span class="k">if</span> <span class="n">env_info</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;jupyter_notebook&#39;</span><span class="p">:</span>
         <span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">pltoff</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_time</span><span class="p">())</span>
+        <span class="n">plt_offline</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fig</span></div>
 
 
-<div class="viewcode-block" id="makeMTX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.makeMTX">[docs]</a><span class="k">def</span> <span class="nf">makeMTX</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">krIndex</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nviz</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">oversize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;mtxData = makeMTX(Nviz=3, Pnm, dn, krIndex)</span>
+<div class="viewcode-block" id="makeMTX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.makeMTX">[docs]</a><span class="k">def</span> <span class="nf">makeMTX</span><span class="p">(</span><span class="n">spat_coeffs</span><span class="p">,</span> <span class="n">radial_filter</span><span class="p">,</span> <span class="n">kr_IDX</span><span class="p">,</span> <span class="n">viz_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stepsize_deg</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a plane wave decomposition over a full sphere</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Pnm : array_like</span>
-<span class="sd">       Spatial Fourier Coefficients (e.g. from S/T/C)</span>
-<span class="sd">    dn : array_like</span>
-<span class="sd">       Modal Radial Filters (e.g. from M/F)</span>
-<span class="sd">    krIndex : int</span>
-<span class="sd">       Index of kr to be computed [Default: 1]</span>
-<span class="sd">    Nviz : int, optional</span>
-<span class="sd">       Order of the spatial fourier transform [Default: 3]</span>
-<span class="sd">    oversize : int, optional</span>
+<span class="sd">    spat_coeffs : array_like</span>
+<span class="sd">       Spatial fourier coefficients</span>
+<span class="sd">    radial_filter : array_like</span>
+<span class="sd">       Modal radial filters</span>
+<span class="sd">    kr_IDX : int</span>
+<span class="sd">       Index of kr to be computed</span>
+<span class="sd">    viz_order : int, optional</span>
+<span class="sd">       Order of the spatial fourier transform [Default: Highest available]</span>
+<span class="sd">    stepsize_deg : float, optional</span>
 <span class="sd">       Integer Factor to increase the resolution. [Default: 1]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    mtxData : array_like</span>
-<span class="sd">       3D-matrix-data in 1[deg] steps</span>
+<span class="sd">       Plane wave decomposition (frequency domain)</span>
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
 <span class="sd">    The file generates a Matrix of 181x360 pixels for the</span>
 <span class="sd">    visualisation with visualize3D() in 1[deg] Steps (65160 plane waves).</span>
-<span class="sd">    The HD version generally allows to raise the resolution (oversize &gt; 1).</span>
-<span class="sd">    (visual3D(), map3D() admit 1[deg] data only, oversize = 1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">oversize</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Oversize parameter must be &gt;= 1&#39;</span><span class="p">)</span>
 
-    <span class="c1"># Generate angles for sphere with 1[deg] spacing</span>
-    <span class="n">angles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">181</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">viz_order</span><span class="p">:</span>
+        <span class="n">viz_order</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spat_coeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 
-    <span class="c1"># Compute plane wave decomposition for all angles at given kr</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">PWDecomp</span><span class="p">(</span><span class="n">Nviz</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[:,</span> <span class="n">krIndex</span><span class="p">],</span> <span class="n">dn</span><span class="p">[:,</span> <span class="n">krIndex</span><span class="p">],</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">360</span><span class="p">:</span><span class="n">stepsize_deg</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">181</span><span class="p">:</span><span class="n">stepsize_deg</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">plane_wave_decomp</span><span class="p">(</span><span class="n">viz_order</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">spat_coeffs</span><span class="p">[:,</span> <span class="n">kr_IDX</span><span class="p">],</span> <span class="n">radial_filter</span><span class="p">[:,</span> <span class="n">kr_IDX</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">Y</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">181</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># Return pwd data as [181, 360] matrix</span></div>
+    <span class="k">return</span> <span class="n">Y</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">360</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Return pwd data as [181, 360] matrix</span></div>
 
 
-<div class="viewcode-block" id="makeFullMTX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.makeFullMTX">[docs]</a><span class="k">def</span> <span class="nf">makeFullMTX</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">Nviz</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<div class="viewcode-block" id="makeFullMTX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.makeFullMTX">[docs]</a><span class="k">def</span> <span class="nf">makeFullMTX</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">viz_order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Generates visualization matrix for a set of spatial fourier coefficients over all kr</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -254,23 +241,23 @@
 <span class="sd">       Modal Radial Filters (e.g. from M/F)</span>
 <span class="sd">    kr : array_like</span>
 <span class="sd">       kr-vector</span>
-<span class="sd">       ::</span>
-<span class="sd">          Can also be a matrix [krm; krs] for rigid sphere configurations:</span>
-<span class="sd">          [1,:] =&gt; krm referring to the microphone radius</span>
-<span class="sd">          [2,:] =&gt; krs referring to the sphere radius (scatterer)</span>
-<span class="sd">    Nviz : int, optional</span>
-<span class="sd">       Order of the spatial fourier transform [Default: 3]</span>
+<span class="sd">    viz_order : int, optional</span>
+<span class="sd">       Order of the spatial fourier tplane_wave_decompransform [Default: Highest available]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    vizMtx : array_like</span>
 <span class="sd">       Computed visualization matrix over all kr</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kr</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">kr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">viz_order</span><span class="p">:</span>
+        <span class="n">viz_order</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
     <span class="n">N</span> <span class="o">=</span> <span class="n">kr</span><span class="o">.</span><span class="n">size</span>
     <span class="n">vizMtx</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
         <span class="n">progress_bar</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;Visual matrix generation&#39;</span><span class="p">)</span>
-        <span class="n">vizMtx</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">makeMTX</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">Nviz</span><span class="p">)</span>
+        <span class="n">vizMtx</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">makeMTX</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">viz_order</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vizMtx</span></div>
 
 
@@ -309,8 +296,8 @@
 <span class="sd">        holds cartesian (x,y,z) and spherical (theta, phi) coordinates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;coords&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;el&#39;</span><span class="p">])</span>
-    <span class="n">az</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
-    <span class="n">el</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">181</span><span class="p">)</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+    <span class="n">el</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">181</span><span class="p">)</span>
     <span class="n">coords</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">az</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
     <span class="n">coords</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
     <span class="n">coords</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">360</span><span class="p">),</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">))</span>
@@ -462,26 +449,9 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Provided style &quot;&#39;</span> <span class="o">+</span> <span class="n">style</span> <span class="o">+</span> <span class="s1">&#39;&quot; not available. Try sphere, shape or flat.&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="plot2D"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot2D">[docs]</a><span class="k">def</span> <span class="nf">plot2D</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Visualize 2D data using plotly.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    data : array_like</span>
-<span class="sd">       Data to be plotted, separated along the first dimension (rows).</span>
-<span class="sd">    type : string{None, &#39;time&#39;, &#39;linFFT&#39;, &#39;logFFT&#39;}</span>
-<span class="sd">       Type of data to be displayed. [Default: None]</span>
-<span class="sd">    fs : int</span>
-<span class="sd">       Sampling rate in Hz. [Default: 44100]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># X vector: samples or time</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">float_</span><span class="p">)</span>
-
+<div class="viewcode-block" id="layout_2D"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.layout_2D">[docs]</a><span class="k">def</span> <span class="nf">layout_2D</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
         <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Samples&#39;</span>
         <span class="p">),</span>
@@ -491,17 +461,39 @@
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">/=</span> <span class="n">fs</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Time domain plot&#39;</span>
         <span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Time [s]&#39;</span>
     <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;linFFT&#39;</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Frequency domain plot (linear)&#39;</span>
         <span class="n">layout</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Amplitude [dB]&#39;</span>
         <span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Frequency [Hz]&#39;</span>
     <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;logFFT&#39;</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Frequency domain plot (logarithmic)&#39;</span>
         <span class="n">layout</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Amplitude [dB]&#39;</span>
         <span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Frequency [Hz]&#39;</span>
         <span class="n">layout</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;log&#39;</span>
+    <span class="k">return</span> <span class="n">layout</span></div>
+
+
+<div class="viewcode-block" id="prepare_2D_x"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.prepare_2D_x">[docs]</a><span class="k">def</span> <span class="nf">prepare_2D_x</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">viz_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># X vector: samples or time</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">L</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">float_</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">viz_type</span> <span class="o">==</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">/=</span> <span class="n">fs</span>
+    <span class="k">elif</span> <span class="n">viz_type</span> <span class="o">==</span> <span class="s1">&#39;linFFT&#39;</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">viz_type</span> <span class="o">==</span> <span class="s1">&#39;logFFT&#39;</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="prepare_2D_traces"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.prepare_2D_traces">[docs]</a><span class="k">def</span> <span class="nf">prepare_2D_traces</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">viz_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">prepare_2D_x</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">viz_type</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
 
     <span class="n">traces</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span>
 
@@ -511,7 +503,28 @@
             <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
         <span class="p">)</span>
 
-    <span class="n">showTrace</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">traces</span></div>
+
+
+<div class="viewcode-block" id="plot2D"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot2D">[docs]</a><span class="k">def</span> <span class="nf">plot2D</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">viz_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Visualize 2D data using plotly.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : array_like</span>
+<span class="sd">       Data to be plotted, separated along the first dimension (rows).</span>
+<span class="sd">    title : string</span>
+<span class="sd">       Add title to be displayed on plot</span>
+<span class="sd">    type : string{None, &#39;time&#39;, &#39;linFFT&#39;, &#39;logFFT&#39;}</span>
+<span class="sd">       Type of data to be displayed. [Default: None]</span>
+<span class="sd">    fs : int</span>
+<span class="sd">       Sampling rate in Hz. [Default: 44100]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">layout</span> <span class="o">=</span> <span class="n">layout_2D</span><span class="p">(</span><span class="n">viz_type</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+    <span class="n">traces</span> <span class="o">=</span> <span class="n">prepare_2D_traces</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">viz_type</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+
+    <span class="n">showTrace</span><span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="plot3D"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot3D">[docs]</a><span class="k">def</span> <span class="nf">plot3D</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;shape&#39;</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colorize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logScale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -544,38 +557,31 @@
     <span class="n">showTrace</span><span class="p">(</span><span class="n">genVisual</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logScale</span><span class="o">=</span><span class="n">logScale</span><span class="p">),</span> <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="frqToKr"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.frqToKr">[docs]</a><span class="k">def</span> <span class="nf">frqToKr</span><span class="p">(</span><span class="n">fTarget</span><span class="p">,</span> <span class="n">fVec</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the kr bin closest  to the target frequency</span>
+<div class="viewcode-block" id="plot3Dgrid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot3Dgrid">[docs]</a><span class="k">def</span> <span class="nf">plot3Dgrid</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">viz_data</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">viz_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">rows</span> <span class="o">*</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Number of plot data is more than the specified rows and columns.&#39;</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">specs</span><span class="o">=</span><span class="p">[[{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}]</span> <span class="o">*</span> <span class="n">cols</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span><span class="p">,</span> <span class="n">print_grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    fTarget : float</span>
-<span class="sd">       Target frequency</span>
-<span class="sd">    fVec : array_like</span>
-<span class="sd">       Array containing the available frequencys</span>
+    <span class="n">layout_3D</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">zaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">aspectmode</span><span class="o">=</span><span class="s1">&#39;cube&#39;</span>
+    <span class="p">)</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    krTarget : int</span>
-<span class="sd">       kr bin closest to target frequency</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">return</span> <span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fVec</span> <span class="o">-</span> <span class="n">fTarget</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="plot3Dgrid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.plot.plot3Dgrid">[docs]</a><span class="k">def</span> <span class="nf">plot3Dgrid</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">vizMTX</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">make_subplots</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span>
-                          <span class="n">specs</span><span class="o">=</span><span class="p">[[{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}],</span>
-                                 <span class="p">[{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;is_3d&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}]])</span>
-
-    <span class="k">for</span> <span class="n">IDX</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">)):</span>
-        <span class="n">fig</span><span class="o">.</span><span class="n">append_trace</span><span class="p">(</span><span class="n">genVisual</span><span class="p">(</span><span class="n">vizMTX</span><span class="p">[</span><span class="n">IDX</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">),</span><span class="n">IDX</span><span class="o">%</span><span class="n">rows</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">IDX</span><span class="o">//</span><span class="n">cols</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">cols</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">IDX</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">viz_data</span><span class="p">)):</span>
+        <span class="n">cur_row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="n">IDX</span><span class="p">]</span>
+        <span class="n">cur_col</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="n">IDX</span><span class="p">]</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">append_trace</span><span class="p">(</span><span class="n">genVisual</span><span class="p">(</span><span class="n">viz_data</span><span class="p">[</span><span class="n">IDX</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">),</span> <span class="n">cur_row</span><span class="p">,</span> <span class="n">cur_col</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="s1">&#39;scene&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">IDX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">layout_3D</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">env_info</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;jupyter_notebook&#39;</span><span class="p">:</span>
         <span class="n">iplot</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">pltoff</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">fig</span></div>
+        <span class="n">plt_offline</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">current_time</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -609,7 +615,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.2',
+            VERSION:'0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

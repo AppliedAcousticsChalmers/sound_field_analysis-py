@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sound_field_analysis.gen &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
+  <title>sound_field_analysis.gen &mdash; Sound Field Analysis toolbox for Python 0.3 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="../../index.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.3 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.2
+                0.3
               </div>
             
           
@@ -139,26 +139,26 @@
 
 <span class="sd">`whiteNoise`</span>
 <span class="sd">   Generate additive White Gaussian noise</span>
-<span class="sd">`gaussGrid`</span>
+<span class="sd">`gauss_grid`</span>
 <span class="sd">   Gauss-Legendre quadrature grid and weights</span>
 <span class="sd">`lebedev`</span>
 <span class="sd">   Lebedev quadrature grid and weigths</span>
-<span class="sd">`radFilter`</span>
-<span class="sd">   Modal Radial Filter</span>
+<span class="sd">`radial_filter`</span>
+<span class="sd">   Modal radial filter</span>
+<span class="sd">`radial_filter_fullspec`</span>
+<span class="sd">   Modal radial filter over the full spectrum</span>
 <span class="sd">`sampledWave`</span>
-<span class="sd">   Sampled Wave Generator, emulating discrete sampling</span>
-<span class="sd">`idealWave`</span>
-<span class="sd">   Wave Generator, returns spatial Fourier coefficients</span>
+<span class="sd">   Sampled Wave generator, emulating discrete sampling</span>
+<span class="sd">`ideal_wave`</span>
+<span class="sd">   Ideal wave generator, returns spatial fourier coefficients</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
-<span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">bn</span><span class="p">,</span> <span class="n">bn_npf</span><span class="p">,</span> <span class="n">sphankel</span><span class="p">,</span> <span class="n">sph_harm</span><span class="p">,</span> <span class="n">cart2sph</span><span class="p">,</span> <span class="n">sph2cart</span>
-<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">iSpatFT</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">progress_bar</span>
-
-<span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">sph_harm</span><span class="p">,</span> <span class="n">sph_harm_all</span><span class="p">,</span> <span class="n">cart2sph</span><span class="p">,</span> <span class="n">mnArrays</span><span class="p">,</span> <span class="n">array_extrapolation</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">sphankel2</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="n">ArrayConfiguration</span><span class="p">,</span> <span class="n">SphericalGrid</span>
+<span class="kn">from</span> <span class="nn">.process</span> <span class="k">import</span> <span class="n">spatFT</span><span class="p">,</span> <span class="n">iSpatFT</span>
 
 
-<div class="viewcode-block" id="whiteNoise"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.whiteNoise">[docs]</a><span class="k">def</span> <span class="nf">whiteNoise</span><span class="p">(</span><span class="n">fftData</span><span class="p">,</span> <span class="n">noiseLevel</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="whiteNoise"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.whiteNoise">[docs]</a><span class="k">def</span> <span class="nf">whiteNoise</span><span class="p">(</span><span class="n">fftData</span><span class="p">,</span> <span class="n">noiseLevel</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</span>
 
 <span class="sd">    Parameters</span>
@@ -167,17 +167,12 @@
 <span class="sd">       Input fftData block (e.g. from F/D/T or S/W/G)</span>
 <span class="sd">    noiseLevel : int, optional</span>
 <span class="sd">       Average noise Level in dB [Default: -80dB]</span>
-<span class="sd">    printInfo : bool, optional</span>
-<span class="sd">       Toggle print statements [Default: True]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    noisyData : array of complex floats</span>
 <span class="sd">       Output fftData block including white gaussian noise</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Additive White Gaussian Noise Generator&#39;</span><span class="p">)</span>
-
     <span class="n">dimFactor</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">noiseLevel</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
     <span class="n">fftData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">fftData</span><span class="p">)</span>
     <span class="n">channels</span> <span class="o">=</span> <span class="n">fftData</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -185,40 +180,29 @@
     <span class="n">nNoise</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
     <span class="n">nNoise</span> <span class="o">=</span> <span class="n">dimFactor</span> <span class="o">*</span> <span class="n">nNoise</span> <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nNoise</span><span class="p">))</span>
     <span class="n">nNoiseSpectrum</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">nNoise</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">fftData</span> <span class="o">+</span> <span class="n">nNoiseSpectrum</span></div>
 
 
-<div class="viewcode-block" id="gaussGrid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.gaussGrid">[docs]</a><span class="k">def</span> <span class="nf">gaussGrid</span><span class="p">(</span><span class="n">AZnodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ELnodes</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="gauss_grid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.gauss_grid">[docs]</a><span class="k">def</span> <span class="nf">gauss_grid</span><span class="p">(</span><span class="n">azimuth_nodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">colatitude_nodes</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Compute Gauss-Legendre quadrature nodes and weigths in the SOFiA/VariSphear data format.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    AZnodes, ELnodes : int, optional</span>
-<span class="sd">       Number of azimutal / elevation nodes  [Default: 10 / 5]</span>
-<span class="sd">    plot : bool, optional</span>
-<span class="sd">        Show a globe plot of the selected grid [Default: False]</span>
+<span class="sd">    AZnodes, ELnodes :</span>
+<span class="sd">       Number of azimutal / elevation nodes</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    gridData : matrix of floats</span>
-<span class="sd">       Gauss-Legendre quadrature positions and weigths</span>
-<span class="sd">       ::</span>
-<span class="sd">          [AZ_0, EL_0, W_0</span>
-<span class="sd">               ...</span>
-<span class="sd">          AZ_n, EL_n, W_n]</span>
-<span class="sd">    Npoints : int</span>
-<span class="sd">       Total number of nodes</span>
-<span class="sd">    Nmax : int</span>
-<span class="sd">       Highest stable grid order</span>
+<span class="sd">    gridData : io.SphericalGrid</span>
+<span class="sd">       SphericalGrid containing azimuth, colatitude and weights</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Azimuth: Gauss</span>
-    <span class="n">AZ</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">AZnodes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">AZnodes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">AZnodes</span>
-    <span class="n">AZw</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">AZnodes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">AZnodes</span>
+    <span class="n">AZ</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">azimuth_nodes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">azimuth_nodes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">azimuth_nodes</span>
+    <span class="n">AZw</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">azimuth_nodes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">azimuth_nodes</span>
 
     <span class="c1"># Elevation: Legendre</span>
-    <span class="n">EL</span><span class="p">,</span> <span class="n">ELw</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">ELnodes</span><span class="p">)</span>
+    <span class="n">EL</span><span class="p">,</span> <span class="n">ELw</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">colatitude_nodes</span><span class="p">)</span>
     <span class="n">EL</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">EL</span><span class="p">)</span>
 
     <span class="c1"># Weights</span>
@@ -226,231 +210,140 @@
     <span class="n">W</span> <span class="o">/=</span> <span class="n">W</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
     <span class="c1"># VariSphere order: AZ increasing, EL alternating</span>
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">ELnodes</span> <span class="o">*</span> <span class="n">AZnodes</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">AZnodes</span><span class="p">):</span>
-        <span class="n">curIDX</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">ELnodes</span>
-        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span class="n">ELnodes</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">AZ</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ELnodes</span><span class="p">)</span>
-        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span class="n">ELnodes</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">EL</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># flip EL every second iteration</span>
-        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span class="n">ELnodes</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># flip W every second iteration</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">colatitude_nodes</span> <span class="o">*</span> <span class="n">azimuth_nodes</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">azimuth_nodes</span><span class="p">):</span>
+        <span class="n">curIDX</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">colatitude_nodes</span>
+        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">AZ</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">colatitude_nodes</span><span class="p">)</span>
+        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">EL</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># flip EL every second iteration</span>
+        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># flip W every second iteration</span>
 
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">gridData</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">gridData</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">gridData</span></div>
 
 
-<div class="viewcode-block" id="lebedev"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.lebedev">[docs]</a><span class="k">def</span> <span class="nf">lebedev</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Compute Lebedev quadrature nodes and weigths.</span>
+<div class="viewcode-block" id="lebedev"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.lebedev">[docs]</a><span class="k">def</span> <span class="nf">lebedev</span><span class="p">(</span><span class="n">max_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Compute Lebedev quadrature nodes and weigths given a maximum stable order. Alternatively, a degree may be supplied.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Degree : int</span>
-<span class="sd">       Lebedev Degree. Currently available: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194</span>
-<span class="sd">    plot : bool, optional</span>
-<span class="sd">       Plot selected Lebedev grid [Default: False]</span>
+<span class="sd">    max_order : int</span>
+<span class="sd">       Maximum stable order of the Lebedev grid, [0 ... 11]</span>
+<span class="sd">    degree : int, optional</span>
+<span class="sd">       Lebedev Degree, one of {6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    gridData : array_like</span>
 <span class="sd">       Lebedev quadrature positions and weigths: [AZ, EL, W]</span>
-<span class="sd">    Nmax : int</span>
-<span class="sd">       Highest stable grid order</span>
-
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">degree</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either a maximum order or a degree have to be given.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">max_order</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">allowed_degrees</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">194</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">max_order</span> <span class="o">&lt;=</span> <span class="mi">11</span><span class="p">:</span>
+        <span class="n">degree</span> <span class="o">=</span> <span class="n">allowed_degrees</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">max_order</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Maximum order can only be between 0 and 11.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">degree</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_degrees</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; is an invalid quadrature degree. Choose one of the following: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">allowed_degrees</span><span class="p">))</span>
+
     <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">lebedev</span>
-
-    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lebedev Grid&#39;</span><span class="p">)</span>
-
-    <span class="n">deg_avail</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">194</span><span class="p">])</span>
-
-    <span class="k">if</span> <span class="n">degree</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">deg_avail</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;WARNING: Invalid quadrature degree&#39;</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="s1">&#39;[deg] supplied. Choose one of the following:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">deg_avail</span><span class="p">)</span>
-
     <span class="n">leb</span> <span class="o">=</span> <span class="n">lebedev</span><span class="o">.</span><span class="n">genGrid</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
-    <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cart2sph</span><span class="p">(</span><span class="n">leb</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
-    <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span><span class="p">)</span>
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span> <span class="o">+</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">w</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">gridData</span><span class="p">[</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>  <span class="c1"># ugly double sorting that keeps rows together</span>
+    <span class="n">azimuth</span><span class="p">,</span> <span class="n">elevation</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">cart2sph</span><span class="p">(</span><span class="n">leb</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">azimuth</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">elevation</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">w</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">gridData</span><span class="p">[</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
     <span class="n">gridData</span> <span class="o">=</span> <span class="n">gridData</span><span class="p">[</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
 
-    <span class="c1"># TODO: turnover</span>
-    <span class="n">Nmax</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">degree</span> <span class="o">/</span> <span class="mf">1.3</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">gridData</span><span class="p">,</span> <span class="n">Nmax</span></div>
+    <span class="k">return</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">gridData</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="radFilter"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.radFilter">[docs]</a><span class="k">def</span> <span class="nf">radFilter</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">plc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fadeover</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate modal radial filters</span>
+<div class="viewcode-block" id="radial_filter_fullspec"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.radial_filter_fullspec">[docs]</a><span class="k">def</span> <span class="nf">radial_filter_fullspec</span><span class="p">(</span><span class="n">max_order</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for frequencies 0:fs/2, wraps radial_filter()</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    N : int</span>
-<span class="sd">       Maximum Order</span>
-<span class="sd">    kr : array_like</span>
-<span class="sd">       Vector or Matrix of kr values</span>
-<span class="sd">       ::</span>
-<span class="sd">          First Row  (M=1) N: kr values microphone radius</span>
-<span class="sd">          Second Row (M=2) N: kr values sphere/microphone radius</span>
-<span class="sd">          [kr_mic;kr_sphere] for rigid/dual sphere configurations</span>
-<span class="sd">          ! If only one kr-vector is given using a rigid/dual sphere</span>
-<span class="sd">          Configuration: kr_sphere = kr_mic</span>
-<span class="sd">    ac : int {0, 1, 2, 3, 4}</span>
-<span class="sd">       Array configuration</span>
-<span class="sd">         - `0`:  Open Sphere with p Transducers (NO plc!)</span>
-<span class="sd">         - `1`:  Open Sphere with pGrad Transducers</span>
-<span class="sd">         - `2`:  Rigid Sphere with p Transducers</span>
-<span class="sd">         - `3`:  Rigid Sphere with pGrad Transducers</span>
-<span class="sd">         - `4`:  Dual Open Sphere with p Transducers</span>
+<span class="sd">    max_order : int</span>
+<span class="sd">       Maximum order</span>
+<span class="sd">    NFFT : int</span>
+<span class="sd">       Order of FFT (number of bins), should be a power of 2.</span>
+<span class="sd">    fs : int</span>
+<span class="sd">       Sampling frequency</span>
+<span class="sd">    array_configuration : ArrayConfiguration</span>
+<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
 <span class="sd">    amp_maxdB : int, optional</span>
-<span class="sd">       Maximum modal amplification limit in dB [Default: 0]</span>
-<span class="sd">    plc : int {0, 1, 2}, optional</span>
-<span class="sd">        OnAxis powerloss-compensation:</span>
-<span class="sd">        - `0`:  Off [Default]</span>
-<span class="sd">        - `1`:  Full kr-spectrum plc</span>
-<span class="sd">        - `2`:  Low kr only -&gt; set fadeover</span>
-<span class="sd">    fadeover : int, optional</span>
-<span class="sd">       Number of kr values to fade over +/- around min-distance</span>
-<span class="sd">       gap of powerloss compensated filter and normal N0 filters.</span>
-<span class="sd">       0 is auto fadeover [Default]</span>
+<span class="sd">       Maximum modal amplification limit in dB [Default: 40]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    dn : array_like</span>
-<span class="sd">       Vector of modal 0-N frequency domain filters</span>
-<span class="sd">    beam : array_like</span>
-<span class="sd">       Expected free field on-axis kr-response</span>
+<span class="sd">       Vector of modal frequency domain filter of shape [max_order + 1 x NFFT / 2 + 1]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a_max</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="n">amp_maxdB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">amp_maxdB</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">limiteronflag</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">limiteronflag</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;radFilter - Modal radial filter generator&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">kr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">krN</span> <span class="o">=</span> <span class="n">kr</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">krM</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">krM</span><span class="p">,</span> <span class="n">krN</span> <span class="o">=</span> <span class="n">kr</span><span class="o">.</span><span class="n">shape</span>
-
-    <span class="c1"># TODO: check input</span>
-
-    <span class="c1"># TODO: correct krm, krs?</span>
-    <span class="c1"># TODO: check / replace zeros in krm/krs</span>
-    <span class="k">if</span> <span class="n">kr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">kr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">kr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">krm</span> <span class="o">=</span> <span class="n">kr</span>
-    <span class="n">krs</span> <span class="o">=</span> <span class="n">kr</span>
-
-    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">krN</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-
-    <span class="c1"># BN filter calculation</span>
-    <span class="n">amplicalc</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">ctrb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">krN</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">ctr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">bnval</span> <span class="o">=</span> <span class="n">bn</span><span class="p">(</span><span class="n">ctr</span><span class="p">,</span> <span class="n">krm</span><span class="p">[</span><span class="n">ctrb</span><span class="p">],</span> <span class="n">krs</span><span class="p">[</span><span class="n">ctrb</span><span class="p">],</span> <span class="n">ac</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">limiteronflag</span><span class="p">:</span>
-            <span class="n">amplicalc</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a_max</span> <span class="o">/</span> <span class="n">pi</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bnval</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a_max</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">bnval</span><span class="p">)))</span>
-        <span class="n">OutputArray</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">=</span> <span class="n">amplicalc</span> <span class="o">/</span> <span class="n">bnval</span>
-
-    <span class="k">if</span><span class="p">(</span><span class="n">krN</span> <span class="o">&lt;</span> <span class="mi">32</span> <span class="o">&amp;</span> <span class="n">plc</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">plc</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not enough kr values for PLC fading. PLC disabled.&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Powerloss Compensation Filter (PLC)</span>
-    <span class="n">noplcflag</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">plc</span><span class="p">:</span>
-        <span class="n">xi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">krN</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">ctr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">krN</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">ctrb</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">xi</span> <span class="o">=</span> <span class="n">xi</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ctrb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">OutputArray</span><span class="p">[</span><span class="n">ctrb</span><span class="p">][</span><span class="n">ctr</span><span class="p">]</span> <span class="o">*</span> <span class="n">bn</span><span class="p">(</span><span class="n">ctrb</span><span class="p">,</span> <span class="n">krm</span><span class="p">[</span><span class="n">ctr</span><span class="p">],</span> <span class="n">krs</span><span class="p">[</span><span class="n">ctr</span><span class="p">],</span> <span class="n">ac</span><span class="p">))</span>
-            <span class="n">xi</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">=</span> <span class="n">xi</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">bn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">krm</span><span class="p">[</span><span class="n">ctr</span><span class="p">],</span> <span class="n">krs</span><span class="p">[</span><span class="n">ctr</span><span class="p">],</span> <span class="n">ac</span><span class="p">)</span>
-            <span class="n">xi</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">=</span> <span class="n">xi</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">+</span> <span class="n">OutputArray</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">ctr</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">plc</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># low kr only</span>
-        <span class="n">minDisIDX</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">OutputArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">xi</span><span class="p">))</span>
-        <span class="n">minDis</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">OutputArray</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">minDisIDX</span><span class="p">]</span> <span class="o">-</span> <span class="n">xi</span><span class="p">[</span><span class="n">minDisIDX</span><span class="p">])</span>
-
-        <span class="n">filtergap</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">OutputArray</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">minDisIDX</span><span class="p">]</span> <span class="o">/</span> <span class="n">xi</span><span class="p">[</span><span class="n">minDisIDX</span><span class="p">]))</span>
-        <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filter fade gap: &quot;</span><span class="p">,</span> <span class="n">filtergap</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">filtergap</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filter fade gap too large, no powerloss compensation applied.&quot;</span><span class="p">)</span>
-            <span class="n">noplcflag</span> <span class="o">=</span> <span class="mi">1</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">noplcflag</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">filtergap</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filtergap is large (&gt; 5 dB).&quot;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">fadeover</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">fadeover</span> <span class="o">=</span> <span class="n">krN</span> <span class="o">/</span> <span class="mi">100</span>
-                <span class="k">if</span> <span class="n">amp_maxdB</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">fadeover</span> <span class="o">=</span> <span class="n">fadeover</span> <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">a_max</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">fadeover</span> <span class="o">&gt;</span> <span class="n">minDis</span> <span class="o">|</span> <span class="p">(</span><span class="n">minDis</span> <span class="o">+</span> <span class="n">fadeover</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">krN</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">minDisIDX</span> <span class="o">-</span> <span class="n">fadeover</span> <span class="o">&lt;</span> <span class="n">krN</span> <span class="o">-</span> <span class="n">minDisIDX</span> <span class="o">+</span> <span class="n">fadeover</span><span class="p">:</span>
-                    <span class="n">fadeover</span> <span class="o">=</span> <span class="n">minDisIDX</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">fadeover</span> <span class="o">=</span> <span class="n">krN</span> <span class="o">-</span> <span class="n">minDisIDX</span>
-            <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Auto filter size of length: &quot;</span><span class="p">,</span> <span class="n">fadeover</span><span class="p">)</span>
-        <span class="c1"># TODO: Auto reduce filter length</span>
-    <span class="k">elif</span> <span class="n">plc</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Full spectrum</span>
-        <span class="n">OutputArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">xi</span>
-
-    <span class="n">normalizeBeam</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="n">BeamResponse</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">krN</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">ctrb</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>             <span class="c1"># ctrb = n</span>
-        <span class="c1"># m = 2 * ctrb + 1</span>
-        <span class="n">BeamResponse</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ctrb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">bn</span><span class="p">(</span><span class="n">ctrb</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">,</span> <span class="n">ac</span><span class="p">)</span> <span class="o">*</span> <span class="n">OutputArray</span><span class="p">[</span><span class="n">ctrb</span><span class="p">]</span>
-    <span class="n">BeamResponse</span> <span class="o">/=</span> <span class="n">normalizeBeam</span>
-
-    <span class="k">return</span> <span class="n">OutputArray</span><span class="p">,</span> <span class="n">BeamResponse</span></div>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">orders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">radial_filter</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="n">amp_maxdB</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="sampledWave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.sampledWave">[docs]</a><span class="k">def</span> <span class="nf">sampledWave</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">gridData</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ac</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">FS</span><span class="o">=</span><span class="mi">48000</span><span class="p">,</span> <span class="n">NFFT</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">AZ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">EL</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="n">c</span><span class="o">=</span><span class="mi">343</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Nlim</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Sampled Wave Generator Wrapper</span>
+<div class="viewcode-block" id="radial_filter"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.radial_filter">[docs]</a><span class="k">def</span> <span class="nf">radial_filter</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate modal radial filter of specified order and frequency</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    r : array_like, optional</span>
-<span class="sd">       Microphone Radius [Default: 0.01]</span>
-<span class="sd">       ::</span>
-<span class="sd">          Can also be a vector for rigid sphere configurations:</span>
-<span class="sd">          [1,1] =&gt; rm  Microphone Radius</span>
-<span class="sd">          [2,1] =&gt; rs  Sphere Radius (Scatterer)</span>
-<span class="sd">    gridData : array_like</span>
-<span class="sd">       Quadrature grid [Default: 110 Lebebdev grid]</span>
-<span class="sd">       ::</span>
-<span class="sd">          Columns : Position Number 1...M</span>
-<span class="sd">          Rows    : [AZ EL Weight]</span>
-<span class="sd">    ac : int {0, 1, 2, 3, 4}</span>
-<span class="sd">       Array Configuration:</span>
-<span class="sd">        - `0`:  Open Sphere with p Transducers (NO plc!) [Default]</span>
-<span class="sd">        - `1`:  Open Sphere with pGrad Transducers</span>
-<span class="sd">        - `2`:  Rigid Sphere with p Transducers</span>
-<span class="sd">        - `3`:  Rigid Sphere with pGrad Transducers</span>
-<span class="sd">        - `4`:  Dual Open Sphere with p Transducers</span>
-<span class="sd">    FS : int, optional</span>
-<span class="sd">       Sampling frequency [Default: 48000 Hz]</span>
-<span class="sd">    NFFT : int, optional</span>
-<span class="sd">       Order of FFT (number of bins), should be a power of 2. [Default: 512]</span>
-<span class="sd">    AZ : float, optional</span>
-<span class="sd">       Azimuth angle in radians [0-2pi]. [Default: 0]</span>
-<span class="sd">    EL : float, optional</span>
-<span class="sd">       Elevation angle in in radians [0-pi]. [Default: pi / 2]</span>
+<span class="sd">    order : array_like</span>
+<span class="sd">       order of filter</span>
+<span class="sd">    freq : array_like</span>
+<span class="sd">       Frequency of modal filter</span>
+<span class="sd">    array_configuration : ArrayConfiguration</span>
+<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">    amp_maxdB : int, optional</span>
+<span class="sd">       Maximum modal amplification limit in dB [Default: 40]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dn : array_like</span>
+<span class="sd">       Vector of modal frequency domain filter of shape [nOrders x nFreq]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
+
+    <span class="n">extrapolation_coeffs</span> <span class="o">=</span> <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">)</span>
+    <span class="n">extrapolation_coeffs</span><span class="p">[</span><span class="n">extrapolation_coeffs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-12</span>
+
+    <span class="n">a_max</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">amp_maxdB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">limiting_factor</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a_max</span> <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">extrapolation_coeffs</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a_max</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">extrapolation_coeffs</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">limiting_factor</span> <span class="o">/</span> <span class="n">extrapolation_coeffs</span></div>
+
+
+<div class="viewcode-block" id="sampled_wave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.sampled_wave">[docs]</a><span class="k">def</span> <span class="nf">sampled_wave</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span>
+                 <span class="n">gridData</span><span class="p">,</span> <span class="n">wave_azimuth</span><span class="p">,</span> <span class="n">wave_colatitude</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="s1">&#39;plane&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">343</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">limit_order</span><span class="o">=</span><span class="mi">85</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the frequency domain data of an ideal wave as recorded by a provided array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fs : int</span>
+<span class="sd">       Sampling frequency</span>
+<span class="sd">    NFFT : int</span>
+<span class="sd">       Order of FFT (number of bins), should be a power of 2.</span>
+<span class="sd">    array_configuration : ArrayConfiguration</span>
+<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">    gridData : SphericalGrid</span>
+<span class="sd">       List/Tuple/gauss_grid, see io.SphericalGrid</span>
+<span class="sd">    wave_azimuth, wave_colatitude : float, optional</span>
+<span class="sd">       Direction of incoming wave in radians [0-2pi].</span>
+<span class="sd">    wavetype : {&#39;plane&#39;, &#39;spherical&#39;}, optional</span>
+<span class="sd">       Type of the wave. [Default: plane]</span>
 <span class="sd">    c : float, optional</span>
 <span class="sd">       Speed of sound in [m/s] [Default: 343 m/s]</span>
-<span class="sd">    wavetype : int {0, 1}, optional</span>
-<span class="sd">       Type of the wave:</span>
-<span class="sd">        - 0: Plane wave [Default]</span>
-<span class="sd">        - 1: Spherical wave</span>
-<span class="sd">    ds : float, optional</span>
-<span class="sd">       Distance of the source in [m] (For wavetype = 1 only)</span>
-<span class="sd">    Nlim : int, optional</span>
-<span class="sd">       Internal generator transform order limit [Default: 120]</span>
+<span class="sd">    distance : float, optional</span>
+<span class="sd">       Distance of the source in [m] (For spherical waves only)</span>
+<span class="sd">    limit_order : int, optional</span>
+<span class="sd">       Sets the limit for wave generation</span>
 
 <span class="sd">    Warning</span>
 <span class="sd">    -------</span>
@@ -460,222 +353,115 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    fftData : array_like</span>
-<span class="sd">        Complex sound pressures of size [(N+1)^2 x NFFT]</span>
-<span class="sd">    kr : array_like</span>
-<span class="sd">       kr-vector</span>
-<span class="sd">       ::</span>
-<span class="sd">          Can also be a matrix [krm; krs] for rigid sphere configurations:</span>
-<span class="sd">          [1,:] =&gt; krm referring to the microphone radius</span>
-<span class="sd">          [2,:] =&gt; krs referring to the sphere radius (scatterer)</span>
-
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    This file is a wrapper generating the complex pressures at the</span>
-<span class="sd">    positions given in &#39;gridData&#39; for a full spectrum 0-FS/2 Hz (NFFT Bins)</span>
-<span class="sd">    wave impinging to an array. The wrapper involves the idealWave </span>
-<span class="sd">    generator and the spatFT spatial transform.</span>
-
-<span class="sd">    sampledWave emulates discrete sampling. You can observe alias artifacts.</span>
+<span class="sd">    Pnm : array_like</span>
+<span class="sd">        Spatial fourier coefficients of resampled sound field</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">gridData</span><span class="p">)</span>
+    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">gridData</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">gridData</span> <span class="o">=</span> <span class="n">lebedev</span><span class="p">(</span><span class="mi">110</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
+    <span class="n">kr_mic</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_radius</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>  <span class="c1"># r [1,1] =&gt; rm  Microphone Radius</span>
-        <span class="n">kr</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">FS</span> <span class="o">/</span> <span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">krRef</span> <span class="o">=</span> <span class="n">kr</span>
-    <span class="k">else</span><span class="p">:</span>  <span class="c1"># r [2,1] =&gt; rs  Sphere Radius (Scatterer)</span>
-        <span class="n">kr</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">FS</span> <span class="o">/</span> <span class="n">c</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-                        <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">FS</span> <span class="o">/</span> <span class="n">c</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
-        <span class="n">krRef</span> <span class="o">=</span> <span class="n">kr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="n">kr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">max_order_fullspec</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">kr_mic</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="n">minOrderLim</span> <span class="o">=</span> <span class="mi">70</span>
-    <span class="n">rqOrders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">krRef</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
-    <span class="n">maxReqOrder</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">rqOrders</span><span class="p">)</span>
-    <span class="n">rqOrders</span><span class="p">[</span><span class="n">rqOrders</span> <span class="o">&lt;=</span> <span class="n">minOrderLim</span><span class="p">]</span> <span class="o">=</span> <span class="n">minOrderLim</span>
-    <span class="n">rqOrders</span><span class="p">[</span><span class="n">rqOrders</span> <span class="o">&gt;</span> <span class="n">Nlim</span><span class="p">]</span> <span class="o">=</span> <span class="n">Nlim</span>
-    <span class="n">Ng</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">rqOrders</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">maxReqOrder</span> <span class="o">&gt;</span> <span class="n">Ng</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: Requested wave needs a minimum order of &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxReqOrder</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; but only order &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Ng</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;can be delivered.&#39;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">minOrderLim</span> <span class="o">==</span> <span class="n">Ng</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Full spectrum generator order: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Ng</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Segmented generator orders: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">minOrderLim</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; to &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Ng</span><span class="p">))</span>
-
-    <span class="c1"># SEGMENTATION</span>
-    <span class="c1"># index = 1</span>
-    <span class="c1"># ctr = -1</span>
-    <span class="n">Pnm</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([(</span><span class="n">Ng</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="n">unique_orders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">rqOrders</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_orders</span><span class="p">):</span>
-        <span class="n">progress_bar</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">unique_orders</span><span class="p">),</span> <span class="s1">&#39;sampledWave - Sampled Wave Generator&#39;</span><span class="p">)</span>
-        <span class="n">fOrders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">rqOrders</span> <span class="o">==</span> <span class="n">order</span><span class="p">)</span>
-        <span class="n">Pnm</span> <span class="o">+=</span> <span class="n">idealWave</span><span class="p">(</span><span class="n">Ng</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">FS</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">AZ</span><span class="p">,</span> <span class="n">EL</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="n">wavetype</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span> <span class="n">lowerSegLim</span><span class="o">=</span><span class="n">fOrders</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">upperSegLim</span><span class="o">=</span><span class="n">fOrders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">SegN</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">fftData</span> <span class="o">=</span> <span class="n">iSpatFT</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">gridData</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">kr</span></div>
+    <span class="c1"># TODO : Investigate if limit_order works as intended</span>
+    <span class="k">if</span> <span class="n">max_order_fullspec</span> <span class="o">&gt;</span> <span class="n">limit_order</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Requested wave front needs a minimum order of &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">max_order_fullspec</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; but was limited to order &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">limit_order</span><span class="p">))</span>
+    <span class="n">Pnm</span> <span class="o">=</span> <span class="n">ideal_wave</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">max_order_fullspec</span><span class="p">,</span> <span class="n">limit_order</span><span class="p">),</span> <span class="n">fs</span><span class="p">,</span> <span class="n">wave_azimuth</span><span class="p">,</span> <span class="n">wave_colatitude</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">wavetype</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
+    <span class="n">Pnm_resampled</span> <span class="o">=</span> <span class="n">spatFT</span><span class="p">(</span><span class="n">iSpatFT</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">gridData</span><span class="p">),</span> <span class="n">gridData</span><span class="p">,</span> <span class="n">order_max</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Pnm_resampled</span></div>
 
 
-<div class="viewcode-block" id="idealWave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.idealWave">[docs]</a><span class="k">def</span> <span class="nf">idealWave</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">F_NFFT</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">343.0</span><span class="p">,</span> <span class="n">wavetype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ds</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">lowerSegLim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">SegN</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upperSegLim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Ideal wave Generator, returns spatial Fourier coefficients `Pnm` and `kr` vector</span>
+<div class="viewcode-block" id="ideal_wave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.ideal_wave">[docs]</a><span class="k">def</span> <span class="nf">ideal_wave</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">colatitude</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span>
+               <span class="n">wavetype</span><span class="o">=</span><span class="s1">&#39;plane&#39;</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">NFFT</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">343.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an ideal wave front hitting a specified array</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    N : int</span>
+<span class="sd">    order : int</span>
 <span class="sd">        Maximum transform order.</span>
-<span class="sd">    r  : list of ints</span>
-<span class="sd">       Microphone radius</span>
-<span class="sd">       ::</span>
-<span class="sd">          Can also be a vector for rigid/dual sphere configurations:</span>
-<span class="sd">          [1,1] =&gt; rm  Microphone radius</span>
-<span class="sd">          [2,1] =&gt; rs  Sphere or microphone radius</span>
-<span class="sd">          ! If only one radius (rm) is given using a rigid/dual sphere</span>
-<span class="sd">          Configuration: rs = rm and only one kr-vector is returned!</span>
-<span class="sd">    ac : int {0, 1, 2, 3, 4}</span>
-<span class="sd">       Array Configuration:</span>
-<span class="sd">        - `0`:  Open Sphere with p Transducers (NO plc!)</span>
-<span class="sd">        - `1`:  Open Sphere with pGrad Transducers</span>
-<span class="sd">        - `2`:  Rigid Sphere with p Transducers</span>
-<span class="sd">        - `3`:  Rigid Sphere with pGrad Transducers</span>
-<span class="sd">        - `4`:  Dual Open Sphere with p Transducers</span>
-<span class="sd">    FS : int</span>
+<span class="sd">    fs : int</span>
 <span class="sd">       Sampling frequency</span>
 <span class="sd">    NFFT : int</span>
-<span class="sd">       Order of FFT (number of bins), should be a power of 2.</span>
-<span class="sd">    AZ : float</span>
-<span class="sd">       Azimuth angle in radians [0-2pi].</span>
-<span class="sd">    EL : float</span>
-<span class="sd">       Elevation angle in in radians [0-pi].</span>
-<span class="sd">    t : float, optional</span>
-<span class="sd">       Time Delay in s.</span>
+<span class="sd">       Order of FFT (number of bins), should be a power of 2</span>
+<span class="sd">    array_configuration : ArrayConfiguration</span>
+<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">    azimuth, colatitude : float</span>
+<span class="sd">       Azimuth/Colatitude angle of the wave in [RAD]</span>
+<span class="sd">    wavetype : {&#39;plane&#39;, &#39;spherical&#39;}, optional</span>
+<span class="sd">       Select between plane or spherical wave [Default: Plane wave]</span>
+<span class="sd">    distance : float, optional</span>
+<span class="sd">       Distance of the source in [m] (for spherical waves only)</span>
+<span class="sd">    delay : float, optional</span>
+<span class="sd">       Time Delay in s [default: 0]</span>
 <span class="sd">    c : float, optional</span>
-<span class="sd">       Speed of sound in [m/s] [Default: 343m/s]</span>
-<span class="sd">    wavetype : int {0, 1}, optional</span>
-<span class="sd">       Type of the Wave:</span>
-<span class="sd">        - 0: Plane Wave [Default]</span>
-<span class="sd">        - 1: Spherical Wave</span>
-<span class="sd">    ds : float, optional</span>
-<span class="sd">       Distance of the source in [m] (For wavetype = 1 only)</span>
-<span class="sd">    lSegLim : int, optional</span>
-<span class="sd">       (Lower Segment Limit) Used by the S/W/G wrapper</span>
-<span class="sd">    uSegLim : int, optional</span>
-<span class="sd">       (Upper Segment Limit) Used by the S/W/G wrapper</span>
-<span class="sd">    SegN : int, optional</span>
-<span class="sd">        (Sement Order) Used by the S/W/G wrapper</span>
-<span class="sd">    printInfo: bool, optional</span>
-<span class="sd">       Toggle print statements</span>
+<span class="sd">       Propagation veolcity in m/s [Default: 343m/s]</span>
 
 <span class="sd">    Warning</span>
 <span class="sd">    -------</span>
-<span class="sd">    If NFFT is smaller than the time the wavefront</span>
-<span class="sd">    needs to travel from the source to the array, the impulse</span>
-<span class="sd">    response will by cyclically shifted (cyclic convolution).</span>
+<span class="sd">    If NFFT is smaller than the time the wavefront needs to travel from the source to the array,</span>
+<span class="sd">    the impulse response will by cyclically shifted.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Pnm : array of complex floats</span>
 <span class="sd">       Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows</span>
-<span class="sd">    kr : array_like</span>
-<span class="sd">       kr-vector</span>
-<span class="sd">       ::</span>
-<span class="sd">          Can also be a matrix [krm; krs] for rigid sphere configurations:</span>
-<span class="sd">          [1,:] =&gt; krm referring to the microphone radius</span>
-<span class="sd">          [2,:] =&gt; krs referring to the sphere radius (scatterer)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
 
-    <span class="n">NFFT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">F_NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">NMLocatorSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-
-    <span class="k">if</span> <span class="n">SegN</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">SegN</span> <span class="o">=</span> <span class="n">N</span>
-    <span class="k">if</span> <span class="n">upperSegLim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">upperSegLim</span> <span class="o">=</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span>
-
-    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;IdealWave Generator&#39;</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">NFFT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">NMLocatorSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 
     <span class="c1"># SAFETY CHECKS</span>
-    <span class="k">if</span> <span class="n">upperSegLim</span> <span class="o">&lt;</span> <span class="n">lowerSegLim</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Upper segment limit needs to be below lower limit.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">upperSegLim</span> <span class="o">&gt;</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Upper segment limit needs to be below NFFT - 1.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">upperSegLim</span> <span class="o">&gt;</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">upperSegLim</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Upper segment limit needs to be between 0 and NFFT - 1.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">lowerSegLim</span> <span class="o">&gt;</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">lowerSegLim</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Lower segment limit needs to be between 0 and NFFT - 1.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">SegN</span> <span class="o">&gt;</span> <span class="n">N</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Segment order needs to be smaller than N.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">wavetype</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">wavetype</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid wavetype: Either 0 (plane wave) or 1 (spherical wave).&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ac</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">ac</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ac</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">ac</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">ac</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid sphere array configuration: Either 0 (open), 1 (open, pGrad), 2 (rigid), 3 (rigid, pGrad), 4 (dual open)&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="n">fs</span> <span class="o">&gt;</span> <span class="n">F_NFFT</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">wavetype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;plane&#39;</span><span class="p">,</span> <span class="s1">&#39;spherical&#39;</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid wavetype: Choose either plane or spherical.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">delay</span> <span class="o">*</span> <span class="n">fs</span> <span class="o">&gt;</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Delay t is large for provided NFFT. Choose t &lt; NFFT/(2*FS).&#39;</span><span class="p">)</span>
 
-    <span class="c1"># Check source distance</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fs</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">rm</span> <span class="o">=</span> <span class="n">r</span>
-        <span class="n">rs</span> <span class="o">=</span> <span class="n">r</span>
-        <span class="n">nor</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>  <span class="c1"># r is matrix</span>
-        <span class="n">rm</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">shape</span>
-        <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">|</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">rs</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">nor</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">rs</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">nor</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">radial_filters</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">NMLocatorSize</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="n">time_shift</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">w</span> <span class="o">*</span> <span class="n">delay</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">nor</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ac</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ac</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">nor</span> <span class="o">=</span> <span class="mi">1</span>
-
-    <span class="k">if</span> <span class="n">wavetype</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ds</span> <span class="o">&lt;=</span> <span class="n">rm</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid source distance, source must be outside the microphone radius.&#39;</span><span class="p">)</span>
-
-    <span class="n">w</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">fs</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
-    <span class="c1"># w = 0 breaks stuff ?</span>
-    <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="n">c</span>
-    <span class="n">krm</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">rm</span>
-    <span class="n">krs</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">rs</span>
-    <span class="n">kds</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">ds</span>
-
-    <span class="n">f</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">lowerSegLim</span><span class="p">,</span> <span class="n">upperSegLim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-
-    <span class="c1"># RADIAL FILTERS</span>
-    <span class="n">rfArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">NMLocatorSize</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="n">timeShift</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">w</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">SegN</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">wavetype</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>    <span class="c1"># Plane wave</span>
-            <span class="n">rfArray</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">bn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">krs</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">ac</span><span class="p">)</span> <span class="o">*</span> <span class="n">timeShift</span>
-        <span class="k">elif</span> <span class="n">wavetype</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Spherical wave</span>
-            <span class="n">rfArray</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">k</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">*</span> <span class="n">timeShift</span> <span class="o">*</span> <span class="n">sphankel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kds</span><span class="p">[</span><span class="n">f</span><span class="p">])</span> <span class="o">*</span> <span class="n">bn_npf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">krs</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">ac</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">wavetype</span> <span class="ow">is</span> <span class="s1">&#39;plane&#39;</span><span class="p">:</span>
+            <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_shift</span> <span class="o">*</span> <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">wavetype</span> <span class="ow">is</span> <span class="s1">&#39;spherical&#39;</span><span class="p">:</span>
+            <span class="n">k_dist</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+            <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">w</span> <span class="o">/</span> <span class="n">c</span> <span class="o">*</span> <span class="n">time_shift</span> <span class="o">*</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k_dist</span><span class="p">)</span> <span class="o">*</span> <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">)</span>
 
     <span class="c1"># GENERATOR CORE</span>
     <span class="n">Pnm</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="n">NMLocatorSize</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">mnArrays</span><span class="p">(</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">SegN</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">SHarms</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">))</span>
-            <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">=</span> <span class="n">SHarms</span> <span class="o">*</span> <span class="n">rfArray</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">colatitude</span><span class="p">))</span> <span class="o">*</span> <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
             <span class="n">ctr</span> <span class="o">=</span> <span class="n">ctr</span> <span class="o">+</span> <span class="mi">1</span>
 
-    <span class="k">if</span> <span class="n">nor</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">kr</span> <span class="o">=</span> <span class="n">krs</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">kr</span> <span class="o">=</span> <span class="n">krm</span>
-    <span class="n">kr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># resubstitute kr = 0</span>
+    <span class="k">return</span> <span class="n">Pnm</span></div>
 
-    <span class="k">return</span> <span class="n">Pnm</span><span class="p">,</span> <span class="n">kr</span></div>
+
+<div class="viewcode-block" id="spherical_noise"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.spherical_noise">[docs]</a><span class="k">def</span> <span class="nf">spherical_noise</span><span class="p">(</span><span class="n">azimuth_grid</span><span class="p">,</span> <span class="n">colatitude_grid</span><span class="p">,</span> <span class="n">order_max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">spherical_harmonic_bases</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Returns band-limited random weights on a spherical surface</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    azimuth_grid, colatitude_grid : array_like, float</span>
+<span class="sd">       Grids holding azimuthal and colatitudinal angles</span>
+<span class="sd">    order_max : int, optional</span>
+<span class="sd">        Spherical order limit [Default: 8]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    noisy_weights : array_like, complex</span>
+<span class="sd">       Noisy weigths</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">spherical_harmonic_bases</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">spherical_harmonic_bases</span> <span class="o">=</span> <span class="n">sph_harm_all</span><span class="p">(</span><span class="n">order_max</span><span class="p">,</span> <span class="n">azimuth_grid</span><span class="p">,</span> <span class="n">colatitude_grid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">spherical_harmonic_bases</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="n">order_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="n">order_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
 </pre></div>
 
            </div>
@@ -709,7 +495,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.2',
+            VERSION:'0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

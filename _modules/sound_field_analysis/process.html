@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sound_field_analysis.process &mdash; Sound Field Analysis toolbox for Python 0.2 documentation</title>
+  <title>sound_field_analysis.process &mdash; Sound Field Analysis toolbox for Python 0.3 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Sound Field Analysis toolbox for Python 0.2 documentation" href="../../index.html"/>
+    <link rel="top" title="Sound Field Analysis toolbox for Python 0.3 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.2
+                0.3
               </div>
             
           
@@ -149,24 +149,13 @@
 
 <span class="sd">`PWDecomp`</span>
 <span class="sd">   Plane Wave Decomposition</span>
-
-<span class="sd">Not yet implemented:</span>
-<span class="sd">`BEMA`</span>
-<span class="sd">   BEMA Spatial Anti-Aliasing</span>
-<span class="sd">`rfi`</span>
-<span class="sd">   Radial filter improvement</span>
-<span class="sd">`sfe`</span>
-<span class="sd">   Sound field extrapolation</span>
-<span class="sd">`wdr`</span>
-<span class="sd">   Wigner-D Rotation</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">hann</span><span class="p">,</span> <span class="n">resample</span>
-<span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">sph_harm</span><span class="p">,</span> <span class="n">besselj</span><span class="p">,</span> <span class="n">besselh</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">progress_bar</span>
-
-<span class="n">pi</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">fftconvolve</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">lstsq</span>
+<span class="kn">from</span> <span class="nn">.sph</span> <span class="k">import</span> <span class="n">besselj</span><span class="p">,</span> <span class="n">hankel1</span><span class="p">,</span> <span class="n">sph_harm_all</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="n">SphericalGrid</span>
 
 
 <div class="viewcode-block" id="BEMA"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.BEMA">[docs]</a><span class="k">def</span> <span class="nf">BEMA</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">ctSig</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="n">avgBandwidth</span><span class="p">,</span> <span class="n">fade</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -206,21 +195,19 @@
     <span class="k">return</span> <span class="n">Pnm</span></div>
 
 
-<div class="viewcode-block" id="FFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.FFT">[docs]</a><span class="k">def</span> <span class="nf">FFT</span><span class="p">(</span><span class="n">timeData</span><span class="p">,</span> <span class="n">FFToversize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">firstSample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lastSample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;(Fast) Fourier Transform</span>
+<div class="viewcode-block" id="FFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.FFT">[docs]</a><span class="k">def</span> <span class="nf">FFT</span><span class="p">(</span><span class="n">time_signals</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NFFT</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oversampling</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">first_sample</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">last_sample</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Real-valued Fast Fourier Transform.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    timeData : named tuple</span>
-<span class="sd">       timeData tuple with following fields</span>
-<span class="sd">       ::</span>
-<span class="sd">          .impulseResponses [Channels X Samples]</span>
-<span class="sd">          .FS</span>
-<span class="sd">          .radius           Array radius</span>
-<span class="sd">          .averageAirTemp   Temperature in [C]</span>
-<span class="sd">          (.centerIR        [1 x Samples] )</span>
-<span class="sd">    FFToversize : int, optional</span>
-<span class="sd">       FFToversize &gt; 1 increase the FFT Blocksize. [Default: 1]</span>
+<span class="sd">    time_signals : TimeSignal/tuple/object</span>
+<span class="sd">       Time-domain signals to be transformed. If of length 2, fs is assumened as the second element, otherwise fs has to be specified.</span>
+<span class="sd">    fs : int, optional</span>
+<span class="sd">       Sampling frequency - only optional if a TimeSignal or tuple/array containing fs is passed</span>
+<span class="sd">    NFFT : int, optional</span>
+<span class="sd">       Number of frequency bins. Resulting array will have size NFFT//2+1 Default: Next power of 2</span>
+<span class="sd">    oversampling : int, optional</span>
+<span class="sd">       Oversamples the incoming signal to increase frequency resolution [Default: 1]</span>
 <span class="sd">    firstSample : int, optional</span>
 <span class="sd">       First time domain sample to be included. [Default: 0]</span>
 <span class="sd">    lastSample : int, optional</span>
@@ -228,229 +215,206 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    fftData : array_like</span>
-<span class="sd">       Frequency domain data ready for the Spatial Fourier Transform (stc)</span>
-<span class="sd">    kr : array_like</span>
-<span class="sd">       kr-Values of the delivered data</span>
-<span class="sd">    f : array_like</span>
-<span class="sd">       Absolute frequency scale</span>
-<span class="sd">    ctSig : array_like</span>
-<span class="sd">       Center signal, if available</span>
+<span class="sd">    fftData : ndarray</span>
+<span class="sd">       Frequency-domain data</span>
+<span class="sd">    f : ndarray</span>
+<span class="sd">       Frequency scale</span>
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    A FFT of the blocksize (FFToversize*NFFT) is applied</span>
-<span class="sd">    to the time domain data,  where  NFFT is determinded</span>
-<span class="sd">    as the next power of two of the signalSize  which is</span>
-<span class="sd">    signalSize = (lastSample-firstSample).</span>
-<span class="sd">    The function will pick a window of (lastSample-firstSample)</span>
-<span class="sd">    for the FFT.</span>
-
-<span class="sd">    Call this function with a running window (firstSample+td-&gt;lastSample+td)</span>
-<span class="sd">    iteration increasing td to obtain time slices. This way you resolve the</span>
-<span class="sd">    temporal information within the captured sound field.</span>
+<span class="sd">    An oversampling*NFFT point Fourier Transform is applied to the time domain data,</span>
+<span class="sd">    where NFFT is the next power of two of the number of samples.</span>
+<span class="sd">    Time-windowing can be used by providing a first_sample and last_sample index.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">signals</span> <span class="o">=</span> <span class="n">time_signals</span><span class="o">.</span><span class="n">signal</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="n">time_signals</span><span class="o">.</span><span class="n">fs</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_signals</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">signals</span> <span class="o">=</span> <span class="n">time_signals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="n">time_signals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">signals</span> <span class="o">=</span> <span class="n">time_signals</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No valid signal found. Either pass an io.TimeSignal, a tuple/array containg the signal and the sampling frequecy or use the fs argument.&#39;</span><span class="p">)</span>
 
-    <span class="n">IR</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">impulseResponse</span>
-    <span class="n">FS</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">FS</span>
-    <span class="n">temperature</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">averageAirTemp</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">radius</span>
+    <span class="n">signals</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">signals</span><span class="p">)</span>
+    <span class="n">nSig</span><span class="p">,</span> <span class="n">nSamples</span> <span class="o">=</span> <span class="n">signals</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">N</span> <span class="o">=</span> <span class="n">IR</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">last_sample</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># assign lastSample to length of signals if not provided</span>
+        <span class="n">last_sample</span> <span class="o">=</span> <span class="n">nSamples</span>
 
-    <span class="k">if</span> <span class="n">lastSample</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># assign lastSample to length of IR if not provided</span>
-        <span class="n">lastSample</span> <span class="o">=</span> <span class="n">N</span>
+    <span class="k">if</span> <span class="n">oversampling</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;oversampling must be &gt;= 1.&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">FFToversize</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFToversize must be &gt;= 1.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">last_sample</span> <span class="o">&lt;</span> <span class="n">first_sample</span> <span class="ow">or</span> <span class="n">last_sample</span> <span class="o">&gt;</span> <span class="n">nSamples</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;lastSample must be between firstSample and nSamples.&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">lastSample</span> <span class="o">&lt;</span> <span class="n">firstSample</span> <span class="ow">or</span> <span class="n">lastSample</span> <span class="o">&gt;</span> <span class="n">N</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;lastSample must be between firstSample and N (length of impulse response).&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">firstSample</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">firstSample</span> <span class="o">&gt;</span> <span class="n">lastSample</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">first_sample</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">first_sample</span> <span class="o">&gt;</span> <span class="n">last_sample</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;firstSample must be between 0 and lastSample.&#39;</span><span class="p">)</span>
 
-    <span class="n">totalSamples</span> <span class="o">=</span> <span class="n">lastSample</span> <span class="o">-</span> <span class="n">firstSample</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">IR</span> <span class="o">=</span> <span class="n">IR</span><span class="p">[:,</span> <span class="n">firstSample</span><span class="p">:</span><span class="n">lastSample</span><span class="p">]</span>
-    <span class="n">NFFT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">totalSamples</span><span class="p">)))</span>
-    <span class="n">fftData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">IR</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">*</span> <span class="n">FFToversize</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">total_samples</span> <span class="o">=</span> <span class="n">last_sample</span> <span class="o">-</span> <span class="n">first_sample</span>
+    <span class="n">signals</span> <span class="o">=</span> <span class="n">signals</span><span class="p">[:,</span> <span class="n">first_sample</span><span class="p">:</span><span class="n">last_sample</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">timeData</span><span class="o">.</span><span class="n">centerIR</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-        <span class="n">centerIR</span> <span class="o">=</span> <span class="n">timeData</span><span class="o">.</span><span class="n">centerIR</span><span class="p">[:,</span> <span class="n">firstSample</span><span class="p">:</span><span class="n">lastSample</span><span class="p">]</span>
-        <span class="n">ctSig</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">centerIR</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">*</span> <span class="n">FFToversize</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">ctSig</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">NFFT</span><span class="p">:</span>
+        <span class="n">NFFT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">total_samples</span><span class="p">)))</span>
 
-    <span class="n">f</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">NFFT</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">FS</span><span class="p">)</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="mf">331.5</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="n">temperature</span>
-    <span class="n">kr</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">/</span> <span class="n">c</span> <span class="o">*</span> <span class="n">radius</span>
+    <span class="n">fftData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">signals</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">*</span> <span class="n">oversampling</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">NFFT</span> <span class="o">*</span> <span class="n">oversampling</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">ctSig</span></div>
+    <span class="k">return</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">f</span></div>
 
 
-<div class="viewcode-block" id="iSpatFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.iSpatFT">[docs]</a><span class="k">def</span> <span class="nf">iSpatFT</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="spatFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.spatFT">[docs]</a><span class="k">def</span> <span class="nf">spatFT</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">position_grid</span><span class="p">,</span> <span class="n">order_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spherical_harmonic_bases</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Spatial Fourier Transform</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : array_like</span>
+<span class="sd">       Data to be transformed, with signals in rows and frequency bins in columns</span>
+<span class="sd">    order_max : int, optional</span>
+<span class="sd">       Maximum transform order (Default: 10)</span>
+<span class="sd">    position_grid : array_like or io.SphericalGrid</span>
+<span class="sd">       Azimuths/Colatitudes/Gridweights of spatial sampling points</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Pnm : array_like</span>
+<span class="sd">       Spatial Fourier Coefficients with nm coeffs in rows and FFT bins in columns</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">number_of_signals</span><span class="p">,</span> <span class="n">FFTLength</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">position_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">position_grid</span><span class="p">)</span>
+
+    <span class="c1"># Re-generate spherical harmonic bases if they were not provided or their order is too small</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">spherical_harmonic_bases</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+            <span class="n">spherical_harmonic_bases</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">number_of_signals</span> <span class="ow">or</span>
+            <span class="n">spherical_harmonic_bases</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">order_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">spherical_harmonic_bases</span> <span class="o">=</span> <span class="n">sph_harm_all</span><span class="p">(</span><span class="n">order_max</span><span class="p">,</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">colatitude</span><span class="p">)</span>
+
+    <span class="n">spherical_harmonic_bases</span> <span class="o">=</span> <span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">spherical_harmonic_bases</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">weight</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">spherical_harmonic_bases</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="iSpatFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.iSpatFT">[docs]</a><span class="k">def</span> <span class="nf">iSpatFT</span><span class="p">(</span><span class="n">spherical_coefficients</span><span class="p">,</span> <span class="n">position_grid</span><span class="p">,</span> <span class="n">order_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spherical_harmonic_bases</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Inverse spatial Fourier Transform</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Pnm : array_like</span>
-<span class="sd">       Spatial Fourier coefficients with FFT bins as cols and nm coeffs as rows (e.g. from spatFT)</span>
-<span class="sd">    angles : array_like</span>
-<span class="sd">       Target angles of shape</span>
-<span class="sd">       ::</span>
-<span class="sd">          [AZ1, EL1;</span>
-<span class="sd">           AZ2, EL2;</span>
-<span class="sd">             ...</span>
-<span class="sd">           AZn, ELn]</span>
-<span class="sd">    [N] : int, optional</span>
+<span class="sd">    spherical_coefficients : array_like</span>
+<span class="sd">       Spatial Fourier coefficients with columns representing frequncy bins</span>
+<span class="sd">    position_grid : array_like or io.SphericalGrid</span>
+<span class="sd">       Azimuth/Colatitude angles of spherical coefficients</span>
+<span class="sd">    order_max : int, optional</span>
 <span class="sd">       Maximum transform order [Default: highest available order]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    p : array of complex floats</span>
-<span class="sd">       Sound pressures with FFT bins in cols and specified angles in rows</span>
-
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    This transform does not involve extrapolation. (=The pressures are referred to the original radius)</span>
+<span class="sd">    P : array_like</span>
+<span class="sd">       Sound pressures with frequency bins in columnss and angles in rows</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">position_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">position_grid</span><span class="p">)</span>
+    <span class="n">spherical_coefficients</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spherical_coefficients</span><span class="p">)</span>
+    <span class="n">number_of_coefficients</span><span class="p">,</span> <span class="n">FFTLength</span> <span class="o">=</span> <span class="n">spherical_coefficients</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="k">if</span> <span class="n">angles</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">AzimuthAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">angles</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
-        <span class="n">ElevationAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">angles</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
-        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">elif</span> <span class="n">angles</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="n">angles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">AzimuthAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">angles</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
-        <span class="n">ElevationAngles</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">angles</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Error: Delivered angles are not valid. Must consist of [AZ1 EL1; AZ2 EL2; ...; AZn ELn] pairs.&#39;</span><span class="p">)</span>
+    <span class="c1"># todo: check coeffs and bases length correspond with order_max</span>
+    <span class="k">if</span> <span class="n">order_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">order_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">number_of_coefficients</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">PnmDataLength</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">FFTBlocklength</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Supplied Pnm matrix needs to be of [m x n] dimensions, with [m] FFT bins of [n] coefficients.&#39;</span><span class="p">)</span>
+    <span class="c1"># Re-generate spherical harmonic bases if they were not provided or their order is too small</span>
+    <span class="k">if</span> <span class="n">spherical_harmonic_bases</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">spherical_harmonic_bases</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">number_of_coefficients</span> <span class="ow">or</span> <span class="n">spherical_harmonic_bases</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">azimuths</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="n">spherical_harmonic_bases</span> <span class="o">=</span> <span class="n">sph_harm_all</span><span class="p">(</span><span class="n">order_max</span><span class="p">,</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">colatitude</span><span class="p">)</span>
 
-    <span class="n">Nmax</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">PnmDataLength</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">N</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">N</span> <span class="o">=</span> <span class="n">Nmax</span>
-
-    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">numberOfAngles</span><span class="p">,</span> <span class="n">FFTBlocklength</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-
-    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-            <span class="n">progress_bar</span><span class="p">(</span><span class="n">ctr</span><span class="p">,</span> <span class="n">N</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;iSpatFT - Inverse spatial Transform&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">SHresults</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">AzimuthAngles</span><span class="p">,</span> <span class="n">ElevationAngles</span><span class="p">)</span>
-            <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">SHresults</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">])</span>
-            <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">OutputArray</span></div>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">spherical_harmonic_bases</span><span class="p">,</span> <span class="n">spherical_coefficients</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PWDecomp"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.PWDecomp">[docs]</a><span class="k">def</span> <span class="nf">PWDecomp</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">OmegaL</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">cn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Plane Wave Decomposition</span>
+<div class="viewcode-block" id="spatFT_LSF"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.spatFT_LSF">[docs]</a><span class="k">def</span> <span class="nf">spatFT_LSF</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">position_grid</span><span class="p">,</span> <span class="n">order_max</span><span class="p">,</span> <span class="n">spherical_harmonic_bases</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Returns spherical harmonics coefficients least square fitted to provided data</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    N : int</span>
+<span class="sd">    data : array_like, complex</span>
+<span class="sd">       Data to be fitted to</span>
+<span class="sd">    position_grid : array_like, or io.SphericalGrid</span>
+<span class="sd">       Azimuth / colatitude data locations</span>
+<span class="sd">    order_max: int</span>
+<span class="sd">       Maximum order N of fit</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    coefficients: array_like, float</span>
+<span class="sd">       Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">position_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">position_grid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spherical_harmonic_bases</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">spherical_harmonic_bases</span> <span class="o">=</span> <span class="n">sph_harm_all</span><span class="p">(</span><span class="n">order_max</span><span class="p">,</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="n">position_grid</span><span class="o">.</span><span class="n">colatitude</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lstsq</span><span class="p">(</span><span class="n">spherical_harmonic_bases</span><span class="p">,</span> <span class="n">data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="plane_wave_decomp"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.plane_wave_decomp">[docs]</a><span class="k">def</span> <span class="nf">plane_wave_decomp</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">wave_direction</span><span class="p">,</span> <span class="n">field_coeffs</span><span class="p">,</span> <span class="n">radial_filter</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plane wave decomposition</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    order : int</span>
 <span class="sd">       Decomposition order</span>
-<span class="sd">    OmegaL : array_like</span>
-<span class="sd">       Look directions of shape</span>
-<span class="sd">       ::</span>
-<span class="sd">          [AZ1, EL1;</span>
-<span class="sd">           AZ2, EL2;</span>
-<span class="sd">             ...</span>
-<span class="sd">           AZn, ELn]</span>
-<span class="sd">    Pnm : matrix of complex floats</span>
-<span class="sd">       Spatial Fourier Coefficients (e.g. from spatFT)</span>
-<span class="sd">    dn : matrix of complex floats</span>
-<span class="sd">       Modal array filters (e.g. from radFilter)</span>
-<span class="sd">    cn : array_like, optional</span>
-<span class="sd">       Weighting Function. Either frequency invariant weights as 1xN array</span>
-<span class="sd">       or with kr bins in rows over N cols. [Default: None]</span>
+<span class="sd">    wave_direction : array_like</span>
+<span class="sd">       Direction of plane wave as [azimuth, colatitude] pair. io.SphericalGrid is used internally</span>
+<span class="sd">    field_coeffs : array_like</span>
+<span class="sd">       Spatial fourier coefficients</span>
+<span class="sd">    radial_filter : array_like</span>
+<span class="sd">       Radial filters</span>
+<span class="sd">    weights : array_like, optional</span>
+<span class="sd">       Weighting function. Either scalar, one per directions or of dimension (nKR_bins x  nDirections). [Default: None]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Y : matrix of floats</span>
-<span class="sd">       MxN Matrix of the decomposed wavefield with kr bins in rows</span>
+<span class="sd">       Matrix of the decomposed wavefield with kr bins in rows</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;PWDecomp - Plane Wave Decomposition&#39;</span><span class="p">)</span>
+    <span class="n">wave_direction</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">wave_direction</span><span class="p">)</span>
+    <span class="n">number_of_angles</span> <span class="o">=</span> <span class="n">wave_direction</span><span class="o">.</span><span class="n">azimuth</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">field_coeffs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">field_coeffs</span><span class="p">)</span>
+    <span class="n">radial_filter</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">radial_filter</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">field_coeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">field_coeffs</span> <span class="o">=</span> <span class="n">field_coeffs</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">if</span> <span class="n">radial_filter</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">radial_filter</span> <span class="o">=</span> <span class="n">radial_filter</span><span class="o">.</span><span class="n">T</span>
 
-    <span class="c1"># Check shape of supplied look directions</span>
-    <span class="n">OmegaL</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">OmegaL</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># only one dimension -&gt; one AE/EL pair</span>
-        <span class="k">if</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Angle Matrix OmegaL is not valid. Must consist of AZ/EL pairs in one column [AZ1 EL1; AZ2 EL2; ... ; AZn ELn].</span><span class="se">\n</span><span class="s1">Remember: All angles are in RAD.&#39;</span><span class="p">)</span>
-        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>                 <span class="c1"># else: two or more AE/EL pairs</span>
-        <span class="k">if</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Angle Matrix OmegaL is not valid. Must consist of AZ/EL pairs in one column [AZ1 EL1; AZ2 EL2; ... ; AZn ELn].</span><span class="se">\n</span><span class="s1">Remember: All angles are in RAD.&#39;</span><span class="p">)</span>
-        <span class="n">numberOfAngles</span> <span class="o">=</span> <span class="n">OmegaL</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">NMDeliveredSize</span><span class="p">,</span> <span class="n">FFTBlocklengthPnm</span> <span class="o">=</span> <span class="n">field_coeffs</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">Ndn</span><span class="p">,</span> <span class="n">FFTBlocklengthdn</span> <span class="o">=</span> <span class="n">radial_filter</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">Azimut</span> <span class="o">=</span> <span class="n">OmegaL</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">Elevation</span> <span class="o">=</span> <span class="n">OmegaL</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-
-    <span class="c1"># Expand Pnm and dn dims to 2D if necessary</span>
-    <span class="k">if</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">Pnm</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">NMDeliveredSize</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">FFTBlocklengthPnm</span> <span class="o">=</span> <span class="n">Pnm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">dn</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">dn</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">Ndn</span> <span class="o">=</span> <span class="n">dn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">FFTBlocklengthdn</span> <span class="o">=</span> <span class="n">dn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">cn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">pwdflag</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">Ncn</span> <span class="o">=</span> <span class="n">cn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">FFTBlocklengthcn</span> <span class="o">=</span> <span class="n">cn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">cnnofreqflag</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cn</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">pwdflag</span> <span class="o">=</span> <span class="mi">1</span>
-
-    <span class="c1"># Check blocksizes</span>
     <span class="k">if</span> <span class="n">FFTBlocklengthdn</span> <span class="o">!=</span> <span class="n">FFTBlocklengthPnm</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFT Blocksizes of Pnm and dn are not consistent.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">FFTBlocklengthcn</span> <span class="o">!=</span> <span class="n">FFTBlocklengthPnm</span> <span class="ow">and</span> <span class="n">FFTBlocklengthcn</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFT Blocksize of cn is not consistent to Pnm and dn.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFT Blocksizes of field coefficients (Pnm) and radial filter (dn) are not consistent.&#39;</span><span class="p">)</span>
 
-    <span class="n">NMLocatorSize</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="c1"># TODO: Implement all other warnings</span>
-    <span class="k">if</span> <span class="n">NMLocatorSize</span> <span class="o">&gt;</span> <span class="n">NMDeliveredSize</span><span class="p">:</span>  <span class="c1"># Maybe throw proper warning?</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: The requested order N=&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="s1">&#39;cannot be achieved.</span><span class="se">\n</span><span class="s1">&#39;</span>
-              <span class="s1">&#39;The Pnm coefficients deliver a maximum of&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">NMDeliveredSize</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-              <span class="s1">&#39;Will decompose on maximum available order.</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">max_order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">NMDeliveredSize</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="o">&gt;</span> <span class="n">max_order</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The provided coefficients deliver a maximum order of &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; but order &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; was requested.&#39;</span><span class="p">)</span>
 
-    <span class="n">gaincorrection</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="nb">pow</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">gaincorrection</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">((</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numberOfAngles</span><span class="p">,</span> <span class="n">FFTBlocklengthPnm</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">weights</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">number_of_weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">size</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">number_of_weights</span> <span class="o">!=</span> <span class="n">FFTBlocklengthPnm</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">number_of_weights</span> <span class="o">!=</span> <span class="n">number_of_angles</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">number_of_weights</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Weights is not a scalar nor consistent with shape of the field coefficients (Pnm).&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">number_of_weights</span> <span class="o">==</span> <span class="n">number_of_angles</span><span class="p">:</span>
+                <span class="n">weights</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">FFTBlocklengthPnm</span><span class="p">,</span> <span class="n">number_of_angles</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">number_of_angles</span><span class="p">,</span> <span class="n">FFTBlocklengthPnm</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Weights is not a scalar nor consistent with shape of field coefficients (Pnm) and radial filter (dn).&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="mi">1</span>
 
-    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1"># TODO: clean up for loops</span>
-    <span class="k">if</span> <span class="n">pwdflag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># PWD CORE</span>
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">Ynm</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Azimut</span><span class="p">,</span> <span class="n">Elevation</span><span class="p">)</span>
-                <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Ynm</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">*</span> <span class="n">dn</span><span class="p">[</span><span class="n">n</span><span class="p">]))</span>
-                <span class="n">ctr</span> <span class="o">=</span> <span class="n">ctr</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span>  <span class="c1"># BEAMFORMING CORE</span>
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">Ynm</span> <span class="o">=</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Azimut</span><span class="p">,</span> <span class="n">Elevation</span><span class="p">)</span>
-                <span class="n">OutputArray</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Ynm</span><span class="p">,</span> <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">*</span> <span class="n">dn</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">cn</span><span class="p">[</span><span class="n">n</span><span class="p">]))</span>
-                <span class="n">ctr</span> <span class="o">=</span> <span class="n">ctr</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="c1"># RETURN</span>
+    <span class="n">sph_harms</span> <span class="o">=</span> <span class="n">sph_harm_all</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">wave_direction</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="n">wave_direction</span><span class="o">.</span><span class="n">colatitude</span><span class="p">)</span>
+    <span class="n">filtered_coeffs</span> <span class="o">=</span> <span class="n">field_coeffs</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">radial_filter</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">r_</span><span class="p">[:</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sph_harms</span><span class="p">,</span> <span class="n">filtered_coeffs</span><span class="p">)</span>
+    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">OutputArray</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">OutputArray</span> <span class="o">*</span> <span class="n">gaincorrection</span></div>
 
 
@@ -536,16 +500,16 @@
     <span class="n">krb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">krb</span><span class="p">,</span> <span class="p">(</span><span class="n">FCoeff</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">problem</span> <span class="o">==</span> <span class="s1">&#39;interior&#39;</span><span class="p">:</span>
-        <span class="n">jn_kra</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kra</span><span class="p">))</span> <span class="o">*</span> <span class="n">besselj</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">kra</span><span class="p">)</span>
-        <span class="n">jn_krb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">krb</span><span class="p">))</span> <span class="o">*</span> <span class="n">besselj</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">krb</span><span class="p">)</span>
+        <span class="n">jn_kra</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kra</span><span class="p">))</span> <span class="o">*</span> <span class="n">besselj</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">kra</span><span class="p">)</span>
+        <span class="n">jn_krb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">krb</span><span class="p">))</span> <span class="o">*</span> <span class="n">besselj</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">krb</span><span class="p">)</span>
         <span class="n">exp</span> <span class="o">=</span> <span class="n">jn_krb</span> <span class="o">/</span> <span class="n">jn_kra</span>
 
-        <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">e2</span><span class="p">):</span>  <span class="c1"># 40dB</span>
+        <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e2</span><span class="p">):</span>  <span class="c1"># 40dB</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: Extrapolation might be unstable for one or more frequencies/orders!&#39;</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">problem</span> <span class="o">==</span> <span class="s1">&#39;exterior&#39;</span><span class="p">:</span>
-        <span class="n">hn_kra</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kra</span><span class="p">))</span> <span class="o">.</span> <span class="n">besselh</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kra</span><span class="p">)</span>
-        <span class="n">hn_krb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">krb</span><span class="p">))</span> <span class="o">.</span> <span class="n">besselh</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">krb</span><span class="p">)</span>
+        <span class="n">hn_kra</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">kra</span><span class="p">))</span> <span class="o">*</span> <span class="n">hankel1</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kra</span><span class="p">)</span>
+        <span class="n">hn_krb</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">krb</span><span class="p">))</span> <span class="o">*</span> <span class="n">hankel1</span><span class="p">(</span><span class="n">nvector</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">krb</span><span class="p">)</span>
         <span class="n">exp</span> <span class="o">=</span> <span class="n">hn_krb</span> <span class="o">/</span> <span class="n">hn_kra</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Problem selector &#39;</span> <span class="o">+</span> <span class="n">problem</span> <span class="o">+</span> <span class="s1">&#39; not recognized. Please either choose &quot;interior&quot; [Default] or &quot;exterior&quot;.&#39;</span><span class="p">)</span>
@@ -553,111 +517,40 @@
     <span class="k">return</span> <span class="n">Pnm_kra</span> <span class="o">*</span> <span class="n">exp</span><span class="o">.</span><span class="n">T</span></div>
 
 
-<div class="viewcode-block" id="spatFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.spatFT">[docs]</a><span class="k">def</span> <span class="nf">spatFT</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">fftData</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; Fast Spatial Fourier Transform</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    N : int</span>
-<span class="sd">       Maximum transform order</span>
-<span class="sd">    fftData : array_like</span>
-<span class="sd">       Frequency domain soundfield data, (e.g. from FFT()) with spatial sampling positions in cols and FFT bins in rows</span>
-<span class="sd">    grid : array_like</span>
-<span class="sd">       Grid configuration of AZ [0 ... 2pi], EL [0...pi] and W of shape</span>
-<span class="sd">       ::</span>
-<span class="sd">          [AZ1, EL1, W1;</span>
-<span class="sd">           AZ2, EL2, W2;</span>
-<span class="sd">             ...</span>
-<span class="sd">           AZn, ELn, Wn]</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Pnm : array_like</span>
-<span class="sd">       Spatial Fourier Coefficients with nm coeffs in cols and FFT bins in rows</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">_np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">iscomplex</span><span class="p">(</span><span class="n">fftData</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;FFTData: Complex Input Data expected.&#39;</span><span class="p">)</span>
-
-    <span class="n">numberOfSpatialPositionsInFFTBlock</span><span class="p">,</span> <span class="n">FFTBlocklength</span> <span class="o">=</span> <span class="n">fftData</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">numberOfGridPoints</span><span class="p">,</span> <span class="n">numberOfGridInfos</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">if</span> <span class="n">numberOfGridInfos</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;GRID: Invalid grid data, must contain [az, el, r].&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">numberOfSpatialPositionsInFFTBlock</span> <span class="o">!=</span> <span class="n">numberOfGridPoints</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Inconsistent spatial sampling points between fftData (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">numberOfSpatialPositionsInFFTBlock</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;) and supplied grid  (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">numberOfGridPoints</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;).&#39;</span><span class="p">)</span>
-
-    <span class="n">AzimuthAngles</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">ElevationAngles</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">GridWeights</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
-
-    <span class="n">OutputArray</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">FFTBlocklength</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-
-    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">SHarm</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">GridWeights</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">AzimuthAngles</span><span class="p">,</span> <span class="n">ElevationAngles</span><span class="p">))</span>
-            <span class="n">OutputArray</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">SHarm</span><span class="p">,</span> <span class="n">fftData</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-            <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">OutputArray</span></div>
-
-
-<div class="viewcode-block" id="iFFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.iFFT">[docs]</a><span class="k">def</span> <span class="nf">iFFT</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minPhase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resampleFactor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">printInfo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Inverse (Fast) Fourier Transform</span>
+<div class="viewcode-block" id="iFFT"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.iFFT">[docs]</a><span class="k">def</span> <span class="nf">iFFT</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">output_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Inverse real-valued Fourier Transform</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    Y : array_like</span>
-<span class="sd">       Frequency domain data over multiple channels (cols) with FFT data in rows</span>
-<span class="sd">    win float, optional</span>
-<span class="sd">       Window Signal tail [0...1] with a HANN window [Default: 0] - NOT YET IMPLEMENTED</span>
-<span class="sd">    resampleFactor int, optional</span>
-<span class="sd">       Resampling factor (FS_target/FS_source)</span>
-<span class="sd">    minPhase bool, optional</span>
-<span class="sd">       Ensure minimum phase reduction - NOT YET IMPLEMENTED [Default: False]</span>
+<span class="sd">       Frequency domain data [Nsignals x Nbins]</span>
+<span class="sd">    output_length : int, optional</span>
+<span class="sd">       Lenght of returned time-domain signal (Default: 2 x len(Y) + 1)</span>
+<span class="sd">    win : boolean, optional</span>
+<span class="sd">       Weights the resulting time-domain signal with a Hann</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    y : array_like</span>
-<span class="sd">       Reconstructed time-domain signal of channels in cols and impulse responses in rows</span>
-
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    This function recombines time domain signals for multiple channels from</span>
-<span class="sd">    frequency domain data. It is made to work with half-sided spectrum FFT</span>
-<span class="sd">    data.  The impulse responses can be windowed.  The IFFT blocklength is</span>
-<span class="sd">    determined by the Y data itself:</span>
-
-<span class="sd">    Y should have a size [NumberOfChannels x ((2^n)/2)+1] with n=[1,2,3,...]</span>
-<span class="sd">    and the function returns [NumberOfChannels x resampleFactor*2^n] samples.</span>
+<span class="sd">       Reconstructed time-domain signal</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">win</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Argument window must be in range 0.0 ... 1.0!&#39;</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">output_length</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">printInfo</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;iFFT - inverse Fourier Transform&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">window</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">window</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;hann&#39;</span><span class="p">,</span> <span class="s1">&#39;hamming&#39;</span><span class="p">,</span> <span class="s1">&#39;blackman&#39;</span><span class="p">,</span> <span class="s1">&#39;kaiser&#39;</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Selected window must be one of hann, hamming, blackman or kaiser&#39;</span><span class="p">)</span>
+        <span class="n">no_of_signals</span><span class="p">,</span> <span class="n">no_of_samples</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="c1"># inverse real FFT</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-
-    <span class="c1"># TODO: minphase</span>
-    <span class="k">if</span> <span class="n">minPhase</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="c1"># y    = [y, zeros(size(y))]&#39;;</span>
-        <span class="c1"># Y    = fft(y);</span>
-        <span class="c1"># Y(Y == 0) = 1e-21;</span>
-        <span class="c1"># img  = imag(hilbert(log(abs(Y))));</span>
-        <span class="c1"># y    = real(ifft(abs(Y) .* exp(-1i*img)));</span>
-        <span class="c1"># y    = y(1:end/2,:)&#39;;</span>
-        <span class="k">pass</span>
-
-    <span class="c1"># TODO: percentage(?) windowing</span>
-    <span class="k">if</span> <span class="n">win</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">winfkt</span> <span class="o">=</span> <span class="n">hann</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">winfkt</span> <span class="o">*</span> <span class="n">y</span>
-
-    <span class="k">if</span> <span class="n">resampleFactor</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">resampleFactor</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
+        <span class="k">if</span> <span class="n">window</span> <span class="o">==</span> <span class="s1">&#39;hann&#39;</span><span class="p">:</span>
+            <span class="n">window_array</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">no_of_samples</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">window</span> <span class="o">==</span> <span class="s1">&#39;hamming&#39;</span><span class="p">:</span>
+            <span class="n">window_array</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hamming</span><span class="p">(</span><span class="n">no_of_samples</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">window</span> <span class="o">==</span> <span class="s1">&#39;blackman&#39;</span><span class="p">:</span>
+            <span class="n">window_array</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">blackman</span><span class="p">(</span><span class="n">no_of_samples</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">window</span> <span class="o">==</span> <span class="s1">&#39;kaiser&#39;</span><span class="p">:</span>
+            <span class="n">window_array</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">kaiser</span><span class="p">(</span><span class="n">no_of_samples</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">window_array</span> <span class="o">*</span> <span class="n">y</span>
     <span class="k">return</span> <span class="n">y</span></div>
 
 
@@ -679,6 +572,51 @@
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!WARNING. Wigner-D Rotation is not yet implemented. Continuing with un-rotated coefficients!&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Pnm</span></div>
+
+
+<div class="viewcode-block" id="convolve"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.process.convolve">[docs]</a><span class="k">def</span> <span class="nf">convolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">FFT</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Convolve two arrrays A &amp; B row-wise. One or both can be one-dimensional for SIMO/SISO convolution</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A, B: array_like</span>
+<span class="sd">       Data to perform the convolution on of shape [Nsignals x NSamples]</span>
+<span class="sd">    FFT: bool, optional</span>
+<span class="sd">       Selects wether time or frequency domain convolution is applied. Default: On if Nsamples &gt; 500 for both</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out: array</span>
+<span class="sd">       Array containing row-wise, linear convolution of A and B</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+    <span class="n">N_sigA</span><span class="p">,</span> <span class="n">L_sigA</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">N_sigB</span><span class="p">,</span> <span class="n">L_sigB</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">if</span> <span class="n">FFT</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">L_sigA</span> <span class="o">&gt;</span> <span class="mi">500</span> <span class="ow">and</span> <span class="n">L_sigB</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="p">):</span>
+        <span class="n">FFT</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">FFT</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">N_sigA</span> <span class="o">!=</span> <span class="n">N_sigB</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">N_sigA</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">N_sigB</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Number of rows must either match or at least one must be one-dimensional.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">N_sigA</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">N_sigB</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="n">N_sigB</span><span class="p">,</span> <span class="n">L_sigA</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">N_sigA</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">N_sigB</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="p">(</span><span class="n">N_sigA</span><span class="p">,</span> <span class="n">L_sigB</span><span class="p">))</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">IDX</span><span class="p">,</span> <span class="n">cur_row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">FFT</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fftconvolve</span><span class="p">(</span><span class="n">cur_row</span><span class="p">,</span> <span class="n">B</span><span class="p">[</span><span class="n">IDX</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">cur_row</span><span class="p">,</span> <span class="n">B</span><span class="p">[</span><span class="n">IDX</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -712,7 +650,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.2',
+            VERSION:'0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
