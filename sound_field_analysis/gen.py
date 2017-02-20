@@ -196,11 +196,8 @@ def sampled_wave(order, fs, NFFT, array_configuration,
        Order of FFT (number of bins), should be a power of 2.
     array_configuration : ArrayConfiguration
        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
-    gridData : array_like
-       Quadrature grid
-       ::
-          Columns : Position Number 1...M
-          Rows    : [AZ EL Weight]
+    gridData : SphericalGrid
+       List/Tuple/gauss_grid, see io.SphericalGrid
     wave_azimuth, wave_colatitude : float, optional
        Direction of incoming wave in radians [0-2pi].
     wavetype : {'plane', 'spherical'}, optional

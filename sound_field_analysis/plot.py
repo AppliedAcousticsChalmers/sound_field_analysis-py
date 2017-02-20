@@ -1,12 +1,5 @@
 """Plotting functions
 Helps visualizing spherical microphone data.
-
-Generally, you probably want to first extract the amplitude information in spherical coordinates:
->> plot.makeMTX(Pnm, dn, Nviz=3, krIndex=1, oversize=1)
-And then visualize that:
->> plot3D(vizMTX, style='shape')
-
-Other valid styles are 'sphere' and 'flat'.
 """
 import numpy as _np
 from collections import namedtuple
@@ -112,10 +105,6 @@ def makeFullMTX(Pnm, dn, kr, viz_order=None):
        Modal Radial Filters (e.g. from M/F)
     kr : array_like
        kr-vector
-       ::
-          Can also be a matrix [krm; krs] for rigid sphere configurations:
-          [1,:] => krm referring to the microphone radius
-          [2,:] => krs referring to the sphere radius (scatterer)
     viz_order : int, optional
        Order of the spatial fourier tplane_wave_decompransform [Default: Highest available]
 

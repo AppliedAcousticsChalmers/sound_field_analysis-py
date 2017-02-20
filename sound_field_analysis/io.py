@@ -148,11 +148,7 @@ def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatt
     Parameters
     ----------
     matFile : filepath
-       Path to file that has been exported as a struct like so
-       ::
-         load SOFiA_A1;
-         SOFiA_A1_struct = struct(SOFiA_A1);
-         save('SOFiA_A1_struct.mat', , '-struct', 'SOFiA_A1_struct');
+       Path to file that has been exported as a struct
     channel : string, optional
        Channel that holds required signals. Default: 'irChOne'
     transducer_type : {omni, cardoid}, optional

@@ -13,16 +13,6 @@ Functions that act on the Spatial Fourier Coefficients
 
 `PWDecomp`
    Plane Wave Decomposition
-
-Not yet implemented:
-`BEMA`
-   BEMA Spatial Anti-Aliasing
-`rfi`
-   Radial filter improvement
-`sfe`
-   Sound field extrapolation
-`wdr`
-   Wigner-D Rotation
 """
 
 import numpy as _np
