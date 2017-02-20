@@ -2,7 +2,7 @@
 """
 import sys
 from itertools import cycle
-from numpy import log10, abs, repeat, atleast_1d, broadcast_to, pi
+import numpy as np
 from scipy.signal import resample
 spinner = cycle(['-', '/', '|', '\\'])
 
@@ -71,25 +71,25 @@ def db(data, power=False):
         factor = 10
     else:
         factor = 20
-    return factor * log10(abs(data))
+    return factor * np.log10(np.abs(data))
 
 
 def deg2rad(deg):
     """Converts from degree [0 ... 360] to radiant [0 ... 2 pi]
     """
-    return deg % 360 / 180 * pi
+    return deg % 360 / 180 * np.pi
 
 
 def rad2deg(rad):
     """Converts from radiant [0 ... 2 pi] to degree [0 ... 360]
     """
-    return rad / pi * 180 % 360
+    return rad / np.i * 180 % 360
 
 
 def nearest_to_value_IDX(array, target_val):
     """Returns nearest value inside an array
     """
-    return (abs(array - target_val)).argmin()
+    return (np.abs(array - target_val)).argmin()
 
 
 def nearest_to_value(array, target_val):
@@ -114,7 +114,7 @@ def interleave_channels(left_channel, right_channel, style=None):
         if not (left_channel.shape[0] == 360):
             raise ValueError('Provided arrays to have 360 channels (Nchannel x Nsamples).')
 
-    output_data = repeat(left_channel, 2, axis=0)
+    output_data = np.repeat(left_channel, 2, axis=0)
     output_data[1::2, :] = right_channel
 
     return output_data
@@ -129,11 +129,11 @@ def simple_resample(data, original_fs, target_fs):
 def scalar_broadcast_match(a, b):
     """ Returns arguments as np.array, if one is a scalar it will broadcast the other one's shape.
     """
-    a, b = atleast_1d(a, b)
+    a, b = np.atleast_1d(a, b)
     if a.size == 1 and b.size != 1:
-        a = broadcast_to(a, b.shape)
+        a = np.broadcast_to(a, b.shape)
     elif b.size == 1 and a.size != 1:
-        b = broadcast_to(b, a.shape)
+        b = np.broadcast_to(b, a.shape)
     return a, b
 
 
@@ -153,4 +153,19 @@ def frq2kr(target_frequency, freq_vector):
        kr bin closest to target frequency
     """
 
-    return (_np.abs(fVec - fTarget)).argmin()
+    return (np.abs(fVec - fTarget)).argmin()
+
+
+def stack(vector_1, vector_2):
+    """Stacks two 2D vectors along the same-sized dimension or the smaller one"""
+    vector_1, vector_2 = np.atleast_2d(vector_1, vector_2)
+    M1, N1 = vector_1.shape
+    M2, N2 = vector_2.shape
+
+    if (M1 == M2 and (M1 < N1 or M2 < N2)):
+        out = np.vstack([vector_1, vector_2])
+    elif (N1 == N2 and (N1 < M1 or N2 < M2)):
+        out = np.hstack([vector_1, vector_2])
+    else:
+        raise ValueError('vector_1 and vector_2 dont have a common dimension.')
+    return np.squeeze(out)
