@@ -4,6 +4,7 @@ import sys
 from itertools import cycle
 import numpy as np
 from scipy.signal import resample
+from datetime import datetime
 spinner = cycle(['-', '/', '|', '\\'])
 
 
@@ -169,3 +170,7 @@ def stack(vector_1, vector_2):
     else:
         raise ValueError('vector_1 and vector_2 dont have a common dimension.')
     return np.squeeze(out)
+
+
+def current_time():
+    return datetime.now()
