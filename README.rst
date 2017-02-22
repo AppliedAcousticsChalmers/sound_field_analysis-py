@@ -1,5 +1,7 @@
 Sound Field Analysis toolbox for Python
 =======================================
+.. image:: https://api.travis-ci.org/QULab/sound_field_analysis-py.svg
+.. image:: https://ci.appveyor.com/api/projects/status/u0koxo5vcitmbghc?svg=true
 
 The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of
 the `Sound Field Analysis Toolbox (SOFiA) toolbox`_, originally by
