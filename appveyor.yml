@@ -34,10 +34,10 @@ install:
   - conda update -q conda
   - conda config --append channels conda-forge
   - conda info -a
-  - "conda create -q -n test-environment python=%CONDA_PY% numpy scipy plotly pytest"
+  - "conda create -q -n test-environment python=%CONDA_PY% numpy scipy plotly pytest pytest-cov"
   - activate test-environment
 
 build: off
 
 test_script:
-  - pytest -v
+  - pytest -v --cov-report term --cov sound_field_analysis
