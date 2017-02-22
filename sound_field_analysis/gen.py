@@ -309,7 +309,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
 
 
 def spherical_noise(azimuth_grid, colatitude_grid, order_max=8, spherical_harmonic_bases=None):
-    ''' Returns band-limited random weights on a spherical surface
+    ''' Returns order-limited random weights on a spherical surface
 
     Parameters
     ----------
