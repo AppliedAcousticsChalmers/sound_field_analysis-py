@@ -81,7 +81,7 @@ def gauss_grid(azimuth_nodes=10, colatitude_nodes=5):
         gridData[curIDX:curIDX + colatitude_nodes, 1] = EL[::-1 + k % 2 * 2]  # flip EL every second iteration
         gridData[curIDX:curIDX + colatitude_nodes, 2] = W[k][::-1 + k % 2 * 2]  # flip W every second iteration
 
-    gridData = SphericalGrid(gridData[:, 0], gridData[:, 1], None, gridData[:, 2])
+    gridData = SphericalGrid(azimuth=gridData[:, 0], colatitude=gridData[:, 1], radius=_np.ones(colatitude_nodes * azimuth_nodes), weight=gridData[:, 2])
     return gridData
 
 
