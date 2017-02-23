@@ -46,15 +46,22 @@ def showTrace(trace, layout=None, title=None):
         layout=layout
     )
 
+    if title is not None:
+        fig.layout.update(title=title)
+        filename = title + '.html'
+    else:
+        try:
+            filename = fig.layout.title + '.html'
+        except AttributeError:
+            filename = str(current_time()) + '.html'
+
     # if colorize:
     #    data[0].autocolorscale = False
     #    data[0].surfacecolor = [0, 0.5, 1]
     if env_info() == 'jupyter_notebook':
         iplot(fig)
     else:
-        if title is None:
-            title = str(current_time())
-        plt_offline(fig, filename=title + '.html')
+        plt_offline(fig, filename=filename)
 
     return fig
 
