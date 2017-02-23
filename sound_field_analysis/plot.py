@@ -421,7 +421,7 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True, logScale=False):
     showTrace(genVisual(vizMTX, style=style, normalize=True, logScale=logScale), layout=layout)
 
 
-def plot3Dgrid(rows, cols, viz_data, style, normalize=True):
+def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
     if len(viz_data) > rows * cols:
         raise ValueError('Number of plot data is more than the specified rows and columns.')
     fig = tools.make_subplots(rows, cols, specs=[[{'is_3d': True}] * cols] * rows, print_grid=False)
@@ -442,7 +442,13 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True):
         fig.append_trace(genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col)
         fig.layout['scene' + str(IDX + 1)].update(layout_3D)
 
+    if title is not None:
+        fig.layout.update(title=title)
+        filename = title + '.html'
+    else:
+        filename = str(current_time()) + '.html'
+
     if env_info() == 'jupyter_notebook':
         iplot(fig)
     else:
-        plt_offline(fig, filename=str(current_time()) + '.html')
+        plt_offline(fig, filename=filename)
