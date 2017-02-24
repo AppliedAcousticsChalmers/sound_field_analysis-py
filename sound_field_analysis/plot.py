@@ -28,7 +28,7 @@ def showTrace(trace, layout=None, title=None):
     fig : plotly_fig_handle
        JSON representation of generated figure
     """
-    if not layout:
+    if layout is None:
         layout = go.Layout(
             scene=dict(
                 xaxis=dict(range=[-1, 1]),
@@ -52,7 +52,7 @@ def showTrace(trace, layout=None, title=None):
     else:
         try:
             filename = fig.layout.title + '.html'
-        except AttributeError:
+        except TypeError:
             filename = str(current_time()) + '.html'
 
     # if colorize:
@@ -360,7 +360,7 @@ def prepare_2D_x(L, viz_type=None, fs=None):
     return x
 
 
-def prepare_2D_traces(data, viz_type=None, fs=None):
+def prepare_2D_traces(data, viz_type=None, fs=None, line_names=None):
     data = _np.atleast_2d(data)
     N, L = data.shape
 
@@ -373,11 +373,15 @@ def prepare_2D_traces(data, viz_type=None, fs=None):
             x=x,
             y=data[k]
         )
+        try:
+            traces[k].name = line_names[k]
+        except TypeError:
+            pass
 
     return traces
 
 
-def plot2D(data, title=None, viz_type=None, fs=None):
+def plot2D(data, title=None, viz_type=None, fs=None, line_names=None):
     """Visualize 2D data using plotly.
 
     Parameters
@@ -393,12 +397,12 @@ def plot2D(data, title=None, viz_type=None, fs=None):
     """
 
     layout = layout_2D(viz_type, title)
-    traces = prepare_2D_traces(data, viz_type, fs)
+    traces = prepare_2D_traces(data, viz_type, fs, line_names=line_names)
 
     showTrace(traces, layout=layout, title=title)
 
 
-def plot3D(vizMTX, style='shape', layout=None, colorize=True, logScale=False):
+def plot3D(vizMTX, style='shape', layout=None, normalize=True, logScale=False):
     """Visualize matrix data, such as from makeMTX(Pnm, dn)
 
     Parameters
@@ -425,7 +429,7 @@ def plot3D(vizMTX, style='shape', layout=None, colorize=True, logScale=False):
             )
         )
 
-    showTrace(genVisual(vizMTX, style=style, normalize=True, logScale=logScale), layout=layout)
+    showTrace(genVisual(vizMTX, style=style, normalize=normalize, logScale=logScale), layout=layout)
 
 
 def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
@@ -433,12 +437,20 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
         raise ValueError('Number of plot data is more than the specified rows and columns.')
     fig = tools.make_subplots(rows, cols, specs=[[{'is_3d': True}] * cols] * rows, print_grid=False)
 
-    layout_3D = dict(
-        xaxis=dict(range=[-1, 1]),
-        yaxis=dict(range=[-1, 1]),
-        zaxis=dict(range=[-1, 1]),
-        aspectmode='cube'
-    )
+    if style == 'flat':
+        layout_3D = dict(
+            xaxis=dict(range=[0, 360]),
+            yaxis=dict(range=[0, 181]),
+            aspectmode='manual',
+            aspectratio=dict(x=3.6, y=1.81, z=1)
+        )
+    else:
+        layout_3D = dict(
+            xaxis=dict(range=[-1, 1]),
+            yaxis=dict(range=[-1, 1]),
+            zaxis=dict(range=[-1, 1]),
+            aspectmode='cube'
+        )
 
     rows, cols = _np.mgrid[1:rows + 1, 1: cols + 1]
     rows = rows.flatten()
