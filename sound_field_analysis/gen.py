@@ -308,13 +308,13 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     return Pnm
 
 
-def spherical_noise(azimuth_grid, colatitude_grid, order_max=8, spherical_harmonic_bases=None):
+def spherical_noise(gridData=None, order_max=8, spherical_harmonic_bases=None):
     ''' Returns order-limited random weights on a spherical surface
 
     Parameters
     ----------
-    azimuth_grid, colatitude_grid : array_like, float
-       Grids holding azimuthal and colatitudinal angles
+    gridData : io.SphericalGrid
+       SphericalGrid containing azimuth and colatitude
     order_max : int, optional
         Spherical order limit [Default: 8]
 
@@ -323,6 +323,12 @@ def spherical_noise(azimuth_grid, colatitude_grid, order_max=8, spherical_harmon
     noisy_weights : array_like, complex
        Noisy weigths
     '''
+
     if spherical_harmonic_bases is None:
-        spherical_harmonic_bases = sph_harm_all(order_max, azimuth_grid, colatitude_grid)
+        if gridData is None:
+            raise TypeError('Either a grid or the spherical harmonic bases have to be provided.')
+        gridData = SphericalGrid(*gridData)
+        spherical_harmonic_bases = sph_harm_all(order_max, gridData.azimuth, gridData.colatitude)
+    else:
+        order_max = _np.int(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)
     return _np.inner(spherical_harmonic_bases, _np.random.randn((order_max + 1) ** 2) + 1j * _np.random.randn((order_max + 1) ** 2))
