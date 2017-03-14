@@ -4,8 +4,7 @@ Helps visualizing spherical microphone data.
 import numpy as _np
 from collections import namedtuple
 
-from plotly.offline import plot as plt_offline
-from plotly.offline import iplot
+from plotly import offline as plotly_off
 import plotly.graph_objs as go
 from plotly import tools
 
@@ -59,9 +58,10 @@ def showTrace(trace, layout=None, title=None):
     #    data[0].autocolorscale = False
     #    data[0].surfacecolor = [0, 0.5, 1]
     if env_info() == 'jupyter_notebook':
-        iplot(fig)
+        plotly_off.init_notebook_mode()
+        plotly_off.iplot(fig)
     else:
-        plt_offline(fig, filename=filename)
+        plotly_off.plot(fig, filename=filename)
 
     return fig
 
@@ -468,6 +468,6 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
         filename = str(current_time()) + '.html'
 
     if env_info() == 'jupyter_notebook':
-        iplot(fig)
+        plotly_off.iplot(fig)
     else:
-        plt_offline(fig, filename=filename)
+        plotly_off.plot(fig, filename=filename)
