@@ -129,10 +129,11 @@ class ArraySignal(namedtuple('ArraySignal', 'signal grid configuration temperatu
     """
     __slots__ = ()
 
-    def __new__(cls, signal, grid, configuration, temperature=None):
+    def __new__(cls, signal, grid, configuration=None, temperature=None):
         signal = TimeSignal(*signal)
         grid = SphericalGrid(*grid)
-        configuration = ArrayConfiguration(*configuration)
+        if configuration is not None:
+            configuration = ArrayConfiguration(*configuration)
         self = super(ArraySignal, cls).__new__(cls, signal, grid, configuration, temperature)
         return self
 
