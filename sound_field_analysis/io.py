@@ -258,7 +258,8 @@ def read_wavefile(filename):
 
 
 def write_SSR_IRs(filename, time_data_l, time_data_r):
-    """Takes two time signals and writes out the horizontal plane as HRIRs for the SoundScapeRenderer
+    """Takes two time signals and writes out the horizontal plane as HRIRs for the SoundScapeRenderer.
+    Ideally, both hold 360 IRs but smaller sets are tried to be scaled up using repeat.
 
     Parameters
     ----------
@@ -273,9 +274,14 @@ def write_SSR_IRs(filename, time_data_l, time_data_r):
     IRs_left = time_data_l.signal[equator_IDX_left]
     IRs_right = time_data_r.signal[equator_IDX_right]
 
-    if IRs_left.shape[0] == 180:
-        IRs_left = _np.repeat(IRs_left, 2, axis=0)
-        IRs_right = _np.repeat(IRs_right, 2, axis=0)
+    if _np.mod(360 / IRs_left.shape[0], 1) == 0:
+        IRs_left = _np.repeat(IRs_left, 360 / IRs_left.shape[0], axis=0)
+    else:
+        raise ValueError('Number of channels for left ear cannot be fit into 360.')
+    if _np.mod(360 / IRs_right.shape[0], 1) == 0:
+        IRs_right = _np.repeat(IRs_right, 360 / IRs_right.shape[0], axis=0)
+    else:
+        raise ValueError('Number of channels for left ear cannot be fit into 360.')
 
     IRs_to_write = utils.interleave_channels(IRs_left, IRs_right, style="SSR")
     data_to_write = utils.simple_resample(IRs_to_write, original_fs=time_data_l.fs[0], target_fs=44100)
