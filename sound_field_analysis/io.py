@@ -214,8 +214,8 @@ def empty_time_signal(no_of_signals, signal_length):
                                 ('air_temperature', 'f8')]))
 
 
-def load_time_signal(filename):
-    """Convenience function to load saved np data structures
+def load_array_signal(filename):
+    """Convenience function to load ArraySignal saved into np data structures
 
     Parameters
     ----------
@@ -224,18 +224,10 @@ def load_time_signal(filename):
 
     Returns
     -------
-    time_data : recarray
-       Structured array  with following fields:
-    ::
-       .IR               [Channels X Samples]
-       .fs               Sampling frequency in [Hz]
-       .azimuth          Azimuth of sampling points
-       .colatitude       Colatitude of sampling points
-       .radius           Array radius in [m]
-       .grid_weights     Weights of quadrature
-       .air_temperature  Average temperature in [C]
+    Y : ArraySignal
+       See io.ArraySignal
     """
-    return _np.rec.array(_np.load(filename))
+    return ArraySignal(*_np.load(filename))
 
 
 def read_wavefile(filename):
