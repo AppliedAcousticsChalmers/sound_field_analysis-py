@@ -257,14 +257,14 @@ def write_SSR_IRs(filename, time_data_l, time_data_r):
     ----------
     filename : string
        filename to write to
-    time_data_l, time_data_l : time_data recarrays
-       time_data arrays for left/right channel.
+    time_data_l, time_data_l : io.ArraySignal
+       ArraySignals for left/right ear
     """
-    equator_IDX_left = utils.nearest_to_value_logical_IDX(time_data_l.colatitude, _np.pi / 2)
-    equator_IDX_right = utils.nearest_to_value_logical_IDX(time_data_r.colatitude, _np.pi / 2)
+    equator_IDX_left = utils.nearest_to_value_logical_IDX(time_data_l.grid.colatitude, _np.pi / 2)
+    equator_IDX_right = utils.nearest_to_value_logical_IDX(time_data_r.grid.colatitude, _np.pi / 2)
 
-    IRs_left = time_data_l.signal[equator_IDX_left]
-    IRs_right = time_data_r.signal[equator_IDX_right]
+    IRs_left = time_data_l.signal.signal[equator_IDX_left]
+    IRs_right = time_data_r.signal.signal[equator_IDX_right]
 
     if _np.mod(360 / IRs_left.shape[0], 1) == 0:
         IRs_left = _np.repeat(IRs_left, 360 / IRs_left.shape[0], axis=0)
@@ -276,7 +276,7 @@ def write_SSR_IRs(filename, time_data_l, time_data_r):
         raise ValueError('Number of channels for left ear cannot be fit into 360.')
 
     IRs_to_write = utils.interleave_channels(IRs_left, IRs_right, style="SSR")
-    data_to_write = utils.simple_resample(IRs_to_write, original_fs=time_data_l.fs[0], target_fs=44100)
+    data_to_write = utils.simple_resample(IRs_to_write, original_fs=time_data_l.signal.fs, target_fs=44100)
 
     # Fix SSR IR alignment stuff: left<>right flipped and 90 degree rotation
     data_to_write = _np.flipud(data_to_write)
