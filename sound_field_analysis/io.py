@@ -249,7 +249,7 @@ def read_wavefile(filename):
     return data.T, fs
 
 
-def write_SSR_IRs(filename, time_data_l, time_data_r):
+def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat="float"):
     """Takes two time signals and writes out the horizontal plane as HRIRs for the SoundScapeRenderer.
     Ideally, both hold 360 IRs but smaller sets are tried to be scaled up using repeat.
 
@@ -259,6 +259,8 @@ def write_SSR_IRs(filename, time_data_l, time_data_r):
        filename to write to
     time_data_l, time_data_l : io.ArraySignal
        ArraySignals for left/right ear
+    wavformat : string
+       wav file format to write. Either "float" or "int16"
     """
     equator_IDX_left = utils.nearest_to_value_logical_IDX(time_data_l.grid.colatitude, _np.pi / 2)
     equator_IDX_right = utils.nearest_to_value_logical_IDX(time_data_r.grid.colatitude, _np.pi / 2)
@@ -282,4 +284,9 @@ def write_SSR_IRs(filename, time_data_l, time_data_r):
     data_to_write = _np.flipud(data_to_write)
     data_to_write = _np.roll(data_to_write, -90, axis=0)
 
-    sio.wavfile.write(filename, 44100, data_to_write.T)  # wavfile.write expects [Nsamples x Nsignals]
+    if wavformat == "float":
+        sio.wavfile.write(filename, 44100, data_to_write.astype(_np.float32).T)
+    elif wavformat == "int16":
+        sio.wavfile.write(filename, 44100, (data_to_write * 32767).astype(_np.int16).T)
+    else:
+        raise TypeError("Format " + wavformat + "not known. Should be either 'float' or 'int16'.")
