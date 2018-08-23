@@ -48,7 +48,7 @@ Documentation
 -------------
 
 Please find the full documentation over at
-https://qulab.github.io/sound_field_analysis-py/!
+https://appliedacousticschalmers.github.io/sound_field_analysis-py/!
 
 Examples
 --------
@@ -62,12 +62,12 @@ AE1: Ideal plane wave
 
 Ideal unity plane wave simulation and 3D plot.
 
-`View interactively on nbviewer <http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE1_IdealPlaneWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb>`__
 
 |AE1_img|_
 
 .. |AE1_img| image:: examples/img/AE1_shape.png?raw=true
-.. _AE1_img: http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE1_IdealPlaneWave.ipynb
+.. _AE1_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb
 
 
 AE3: Measured plane wave
@@ -76,12 +76,12 @@ AE3: Measured plane wave
 A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using
 a cardioid mic.
 
-`View interactively on nbviewer <http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE3_MeasuredWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb>`__
 
 |AE3_img|_
 
 .. |AE3_img| image:: examples/img/AE3_shape.png?raw=true
-.. _AE3_img: http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE3_MeasuredWave.ipynb
+.. _AE3_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
 
 AE6: Impulse response of ideal plane wave
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -99,6 +99,7 @@ Impulse Response reconstruction on a simulated ideal unity plane wave
 
 AE7: Impulse response of sampled plane wave
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Impulse response reconstruction on a simulated sampled unity plane wave
 
 `View interactively on nbviewer <http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE7_SampledPlaneWave_ImpResp.ipynb>`__
@@ -107,6 +108,14 @@ Impulse response reconstruction on a simulated sampled unity plane wave
 
 .. |AE7_img| image:: examples/img/AE7_SampledPlaneWave_ImpResp.png?raw=true
 .. _AE7_img: http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE7_SampledPlaneWave_ImpResp.ipynb
+
+AE8: Import data in SOFA format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`SOFA format`_
+
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp3_Import_SOFA.ipynb>`__
+
 
 References
 ^^^^^^^^^^
@@ -125,4 +134,5 @@ The Lebedev grid generation was adapted from an implementation by `Richard P. Mu
 .. _Anaconda: https://www.continuum.io/downloads
 .. _conda-forge: https://conda-forge.github.io
 .. _github: examples/
-.. _nbviewer: http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/tree/master/examples/
+.. _nbviewer: http://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/
+.. _SOFA format: https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)

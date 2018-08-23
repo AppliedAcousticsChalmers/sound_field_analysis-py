@@ -6,7 +6,7 @@ setup(
     name='sound_field_analysis',
     version=version,
     description='Analyze, visualize and process sound field data recorded by spherical microphone arrays.',
-    url='https://qulab.github.io/sound_field_analysis-py/',
+    url='https://github.com/AppliedAcousticsChalmers/sound_field_analysis-py/',
     author='QU Lab / Christoph Hohnerlein',
     author_email='christoph.hohnerlein@qu.tu-berlin.de',
     license='GPLv3',
