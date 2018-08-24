@@ -402,7 +402,7 @@ def bn_dual_open_omni(n, kr1, kr2):
     return _np.where(_np.abs(bn1) >= _np.abs(bn2), bn1, bn2)
 
 
-def sph_harm(m, n, az, el, type='complex'):
+def sph_harm(m, n, az, el):
     '''Compute sphercial harmonics
 
     Parameters
@@ -425,25 +425,9 @@ def sph_harm(m, n, az, el, type='complex'):
         Complex spherical harmonic of order m and degree n,
         sampled at theta = az, phi = el
     '''
-    if type == 'legacy':
-        return scy.sph_harm(m, n, az, el)
-    elif type == 'real':
-        Lnm = scy.lpmv(_np.abs(m), n, _np.cos(el))
-
-        factor_1 = (2 * n + 1) / (4 * _np.pi)
-        factor_2 = scy.factorial(n - _np.abs(m)) / scy.factorial(n + abs(m))
-
-        if m != 0:
-            factor_1 = 2 * factor_1
-
-        if m < 0:
-            return (-1) ** m * _np.sqrt(factor_1 * factor_2) * Lnm * _np.sin(m * az)
-        else:
-            return (-1) ** m * _np.sqrt(factor_1 * factor_2) * Lnm * _np.cos(m * az)
-    else:
-        # For the correct Condon–Shortley phase, all m>0 need to be increased by 1
-        return (-1) ** _np.float_(m - (m < 0) * (m % 2)) * scy.sph_harm(m, n, az, el)
-
+    
+    return scy.sph_harm(m, n, az, el)
+    
 
 def sph_harm_large(m, n, az, el):
     '''Compute sphercial harmonics for large orders > 84
@@ -476,6 +460,9 @@ def sph_harm_large(m, n, az, el):
     if _np.all(_np.abs(m) < 84):
         return scy.sph_harm(m, n, az, el)
     else:
+    
+        # TODO: confirm that this uses the correct SH definition
+         
         mAbs = _np.abs(m)
         if isinstance(el, _np.ndarray):
             P = _np.empty(el.size)
@@ -496,7 +483,7 @@ def sph_harm_large(m, n, az, el):
             return Y
 
 
-def sph_harm_all(nMax, az, el, type='complex'):
+def sph_harm_all(nMax, az, el):
     '''Compute all sphercial harmonic coefficients up to degree nMax.
 
     Parameters
@@ -520,7 +507,7 @@ def sph_harm_all(nMax, az, el, type='complex'):
     m, n = mnArrays(nMax)
     mA, azA = _np.meshgrid(m, az)
     nA, elA = _np.meshgrid(n, el)
-    return sph_harm(mA, nA, azA, elA, type=type)
+    return sph_harm(mA, nA, azA, elA)
 
 
 def mnArrays(nMax):
