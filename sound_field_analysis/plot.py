@@ -333,15 +333,15 @@ def layout_2D(type=None, title=None):
 
     if type == 'time':
         layout.title = 'Time domain plot'
-        layout.xaxis.title = 'Time [s]'
+        layout.xaxis.title = 'Time in s'
     elif type == 'linFFT':
         layout.title = 'Frequency domain plot (linear)'
-        layout.yaxis.title = 'Amplitude [dB]'
-        layout.xaxis.title = 'Frequency [Hz]'
+        layout.yaxis.title = 'Amplitude in dB'
+        layout.xaxis.title = 'Frequency in Hz'
     elif type == 'logFFT':
         layout.title = 'Frequency domain plot (logarithmic)'
-        layout.yaxis.title = 'Amplitude [dB]'
-        layout.xaxis.title = 'Frequency [Hz]'
+        layout.yaxis.title = 'Amplitude in dB'
+        layout.xaxis.title = 'Frequency in Hz'
         layout.xaxis.type = 'log'
     return layout
 
