@@ -156,6 +156,8 @@ def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatt
        Sets the type of transducer used in the recording. Default: omni
     scatter_radius : float, option
        Radius of the scatterer. Default: None
+       
+    Note: This function expects a slightly modified miro file in that it expects a field `colatitude` instead of `elevation`. This is for avoiding confusion as may miro file contain colatitude data in the elevation field.
 
     Returns
     -------
@@ -168,10 +170,13 @@ def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatt
                              fs=_np.squeeze(current_data['fs']))
 
     mic_grid = SphericalGrid(azimuth=_np.squeeze(current_data['azimuth']),
-                             colatitude=_np.pi / 2 - _np.squeeze(current_data['elevation']),
+                             colatitude=_np.squeeze(current_data['colatitude']),
                              radius=_np.squeeze(current_data['radius']),
                              weight=_np.squeeze(current_data['quadWeight']))
-
+    
+    if (mic_grid.colatitude < 0).any():    
+        print('WARNING: The \'colatitude\' data contains negative values, which is an indication that it is actually elevation.')
+    
     if _np.squeeze(current_data['scatterer']):
         sphere_config = 'rigid'
     else:
