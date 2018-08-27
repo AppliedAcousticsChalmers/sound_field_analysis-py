@@ -65,7 +65,7 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
     Parameters
     ----------
     time_signals : TimeSignal/tuple/object
-       Time-domain signals to be transformed. If of length 2, fs is assumened as the second element, otherwise fs has to be specified.
+       Time-domain signals to be transformed. 
     fs : int, optional
        Sampling frequency - only optional if a TimeSignal or tuple/array containing fs is passed
     NFFT : int, optional
@@ -94,14 +94,10 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
         signals = time_signals.signal
         fs = time_signals.fs
     except AttributeError:
-        if len(time_signals) == 2:
-            signals = time_signals[0]
-            fs = time_signals[1]
+        if fs is not None:
+            signals = time_signals
         else:
-            if fs is not None:
-                signals = time_signals
-            else:
-                raise ValueError('No valid signal found. Either pass an io.TimeSignal, a tuple/array containg the signal and the sampling frequecy or use the fs argument.')
+            raise ValueError('No valid signal found. Either pass an io.TimeSignal, a tuple/array containg the signal and the sampling frequecy or use the fs argument.')
 
     signals = _np.atleast_2d(signals)
     nSig, nSamples = signals.shape
@@ -123,7 +119,7 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
 
     if not NFFT:
         NFFT = int(2**_np.ceil(_np.log2(total_samples)))
-
+        
     fftData = _np.fft.rfft(signals, NFFT * oversampling, 1)
     f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs)
 
