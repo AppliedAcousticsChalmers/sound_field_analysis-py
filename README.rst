@@ -57,7 +57,7 @@ The following examples are available as Jupyter notebooks, either
 statically on `github`_ or interactively on `nbviewer`_. You can of
 course also simply download the examples and run them locally!
 
-AE1: Ideal plane wave
+Exp1 Ideal plane wave
 ~~~~~~~~~~~~~~~~~~~~~
 
 Ideal unity plane wave simulation and 3D plot.
@@ -70,7 +70,7 @@ Ideal unity plane wave simulation and 3D plot.
 .. _AE1_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb
 
 
-AE3: Measured plane wave
+Exp2: Measured plane wave
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using
@@ -83,39 +83,19 @@ a cardioid mic.
 .. |AE3_img| image:: examples/img/AE3_shape.png?raw=true
 .. _AE3_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
 
-AE6: Impulse response of ideal plane wave
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Impulse Response reconstruction on a simulated ideal unity plane wave
-
-`View interactively on nbviewer <http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE6_IdealPlaneWave_ImpResp.ipynb>`__
-
-|AE6_img|_
-
-.. |AE6_img| image:: examples/img/AE6_IdealPlaneWave_ImpResp.png?raw=true
-.. _AE6_img: http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE6_IdealPlaneWave_ImpResp.ipynb
-
-
-
-AE7: Impulse response of sampled plane wave
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Impulse response reconstruction on a simulated sampled unity plane wave
-
-`View interactively on nbviewer <http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE7_SampledPlaneWave_ImpResp.ipynb>`__
-
-|AE7_img|_
-
-.. |AE7_img| image:: examples/img/AE7_SampledPlaneWave_ImpResp.png?raw=true
-.. _AE7_img: http://nbviewer.jupyter.org/github/QULab/sound_field_analysis-py/blob/master/examples/AE7_SampledPlaneWave_ImpResp.ipynb
-
-AE8: Import data in SOFA format
+Exp3: Import data in SOFA format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 `SOFA format`_
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp3_Import_SOFA.ipynb>`__
 
+
+Exp4: Binaural rendering
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
 References
 ^^^^^^^^^^
