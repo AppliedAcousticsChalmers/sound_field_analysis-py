@@ -95,6 +95,8 @@ Exp3: Import data in SOFA format
 Exp4: Binaural rendering
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
+Render a spherical microphone array measurement binaurally
+
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
 References
