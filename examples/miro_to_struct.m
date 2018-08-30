@@ -28,7 +28,7 @@ avgAirTemp = miro_data.avgAirTemp;
 
 clear miro_data path_name file_name;
 
-save( 'data/HRIR_L2702_struct.mat' );
+save( 'data/HRIR_L2702_struct.mat', '-v7' );
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,4 +57,4 @@ avgAirTemp = miro_data.avgAirTemp;
 
 clear miro_data path_name file_name;
 
-save( 'data/CR1_VSA_110RS_L_struct.mat' );
+save( 'data/CR1_VSA_110RS_L_struct.mat', '-v7' );
