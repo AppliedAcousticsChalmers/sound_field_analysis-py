@@ -26,7 +26,8 @@ setup(
         'examples': ['examples'],
     },
     extras_require={
-        'plotting': ["plotly"]
+        'plotting': ["plotly"],
+        'sofa_import': ["netCDF4"],
     },
     packages=['sound_field_analysis']
 )
