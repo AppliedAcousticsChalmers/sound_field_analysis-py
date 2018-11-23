@@ -2,7 +2,6 @@
 """
 Collection of spherical helper functions:
 
-
 `sph_harm`
    More robust spherical harmonic coefficients
 `spbessel / dspbessel`
@@ -12,14 +11,16 @@ Collection of spherical helper functions:
 `sphankel / dsphankel`
    Spherical Hankel (second kind) and derivative
 `cart2sph / sph2cart`
-   Convert cartesion to spherical coordinates and vice versa
+   Convert cartesian to spherical coordinates and vice versa
 """
+
+from math import factorial as fact
 
 import numpy as _np
 from scipy import special as scy
-from math import factorial as fact
-from .utils import scalar_broadcast_match
+
 from .io import ArrayConfiguration
+from .utils import scalar_broadcast_match
 
 
 def besselj(n, z):
@@ -30,7 +31,7 @@ def besselj(n, z):
     ----------
     n : array_like
        Order
-    kr: array_like
+    z: array_like
        Argument
 
     Returns
@@ -49,7 +50,7 @@ def neumann(n, z):
     ----------
     n : array_like
        Order
-    kr: array_like
+    z: array_like
        Argument
 
     Returns
@@ -68,7 +69,7 @@ def hankel1(n, z):
     ----------
     n : array_like
        Order
-    kr: array_like
+    z: array_like
        Argument
 
     Returns
@@ -87,7 +88,7 @@ def hankel2(n, z):
     ----------
     n : array_like
        Order
-    kr: array_like
+    z: array_like
        Argument
 
     Returns
@@ -119,7 +120,8 @@ def spbessel(n, kr):
         J = _np.zeros(kr.shape, dtype=_np.complex_)
 
         kr_non_zero = kr != 0
-        J[kr_non_zero] = _np.lib.scimath.sqrt(_np.pi / 2 / kr[kr_non_zero]) * besselj(n[kr_non_zero] + 0.5, kr[kr_non_zero])
+        J[kr_non_zero] = _np.lib.scimath.sqrt(_np.pi / 2 / kr[kr_non_zero]) * besselj(n[kr_non_zero] + 0.5,
+                                                                                      kr[kr_non_zero])
         J[_np.logical_and(kr == 0, n == 0)] = 1
     else:
         J = scy.spherical_jn(n.astype(_np.int), kr)
@@ -147,7 +149,8 @@ def spneumann(n, kr):
         Yv = _np.full(kr.shape, _np.nan, dtype=_np.complex_)
 
         kr_non_zero = kr != 0
-        Yv[kr_non_zero] = _np.lib.scimath.sqrt(_np.pi / 2 / kr[kr_non_zero]) * neumann(n[kr_non_zero] + 0.5, kr[kr_non_zero])
+        Yv[kr_non_zero] = _np.lib.scimath.sqrt(_np.pi / 2 / kr[kr_non_zero]) * neumann(n[kr_non_zero] + 0.5,
+                                                                                       kr[kr_non_zero])
         Yv[kr < 0] = -Yv[kr < 0]
     else:
         Yv = scy.spherical_yn(n.astype(_np.int), kr)
@@ -173,7 +176,8 @@ def sphankel1(n, kr):
     n, kr = scalar_broadcast_match(n, kr)
     hn1 = _np.full(n.shape, _np.nan, dtype=_np.complex_)
     kr_nonzero = kr != 0
-    hn1[kr_nonzero] = _np.sqrt(_np.pi / 2) / _np.lib.scimath.sqrt(kr[kr_nonzero]) * hankel1(n[kr_nonzero] + 0.5, kr[kr_nonzero])
+    hn1[kr_nonzero] = _np.sqrt(_np.pi / 2) / _np.lib.scimath.sqrt(kr[kr_nonzero]) * hankel1(n[kr_nonzero] + 0.5,
+                                                                                            kr[kr_nonzero])
     return hn1
 
 
@@ -195,7 +199,8 @@ def sphankel2(n, kr):
     n, kr = scalar_broadcast_match(n, kr)
     hn2 = _np.full(n.shape, _np.nan, dtype=_np.complex_)
     kr_nonzero = kr != 0
-    hn2[kr_nonzero] = _np.sqrt(_np.pi / 2) / _np.lib.scimath.sqrt(kr[kr_nonzero]) * hankel2(n[kr_nonzero] + 0.5, kr[kr_nonzero])
+    hn2[kr_nonzero] = _np.sqrt(_np.pi / 2) / _np.lib.scimath.sqrt(kr[kr_nonzero]) * hankel2(n[kr_nonzero] + 0.5,
+                                                                                            kr[kr_nonzero])
     return hn2
 
 
@@ -257,7 +262,9 @@ def dsphankel1(n, kr):
     n, kr = scalar_broadcast_match(n, kr)
     dhn1 = _np.full(n.shape, _np.nan, dtype=_np.complex_)
     kr_nonzero = kr != 0
-    dhn1[kr_nonzero] = 0.5 * (sphankel1(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel1(n[kr_nonzero] + 1, kr[kr_nonzero]) - sphankel1(n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
+    dhn1[kr_nonzero] = 0.5 * (
+            sphankel1(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel1(n[kr_nonzero] + 1, kr[kr_nonzero]) - sphankel1(
+            n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
     return dhn1
 
 
@@ -279,7 +286,9 @@ def dsphankel2(n, kr):
     n, kr = scalar_broadcast_match(n, kr)
     dhn2 = _np.full(n.shape, _np.nan, dtype=_np.complex_)
     kr_nonzero = kr != 0
-    dhn2[kr_nonzero] = 0.5 * (sphankel2(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel2(n[kr_nonzero] + 1, kr[kr_nonzero]) - sphankel2(n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
+    dhn2[kr_nonzero] = 0.5 * (
+            sphankel2(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel2(n[kr_nonzero] + 1, kr[kr_nonzero]) - sphankel2(
+            n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
     return dhn2
 
 
@@ -296,6 +305,7 @@ def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None, k
        K vector for microphone array
     k_scatter: array_like, optional
        K vector for scatterer  (Default: same as k_mic)
+    k_dual : optional
 
     Returns
     -------
@@ -337,7 +347,6 @@ def array_extrapolation(order, freqs, array_configuration, normalize=True):
     b : array, complex
        Coefficients of shape [nOrder x nFreqs]
     """
-
     array_configuration = ArrayConfiguration(*array_configuration)
 
     freqs, order = _np.meshgrid(freqs, order)
@@ -388,7 +397,8 @@ def bn_rigid_cardioid(n, krm, krs):
     #  P. Plessas, F. Zotter: Microphone arrays around rigid spheres for spatial recording and holography, DAGA 2010
     #  krm: for mic radius, krs: for sphere radius
     krm, krs = scalar_broadcast_match(krm, krs)
-    return spbessel(n, krm) - 1j * dspbessel(n, krm) + (1j * dsphankel2(n, krm) - sphankel2(n, krm)) * (dspbessel(n, krs) / dsphankel2(n, krs))
+    return spbessel(n, krm) - 1j * dspbessel(n, krm) + (1j * dsphankel2(n, krm) - sphankel2(n, krm)) * (
+            dspbessel(n, krs) / dsphankel2(n, krs))
 
 
 def bn_dual_open_omni(n, kr1, kr2):
@@ -403,7 +413,7 @@ def bn_dual_open_omni(n, kr1, kr2):
 
 
 def sph_harm(m, n, az, el):
-    '''Compute sphercial harmonics
+    """Compute spherical harmonics
 
     Parameters
     ----------
@@ -424,13 +434,13 @@ def sph_harm(m, n, az, el):
     y_mn : (complex float)
         Complex spherical harmonic of order m and degree n,
         sampled at theta = az, phi = el
-    '''
-    
+    """
+
     return scy.sph_harm(m, n, az, el)
-    
+
 
 def sph_harm_large(m, n, az, el):
-    '''Compute sphercial harmonics for large orders > 84
+    """Compute spherical harmonics for large orders > 84
 
     Parameters
     ----------
@@ -456,13 +466,13 @@ def sph_harm_large(m, n, az, el):
     as per http://dlmf.nist.gov/14.30
     Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv
     scipy.special.lpmn calculates P(0...m 0...n) and its derivative but won't return +inf at high orders
-    '''
+    """
     if _np.all(_np.abs(m) < 84):
         return scy.sph_harm(m, n, az, el)
     else:
-    
+
         # TODO: confirm that this uses the correct SH definition
-         
+
         mAbs = _np.abs(m)
         if isinstance(el, _np.ndarray):
             P = _np.empty(el.size)
@@ -484,7 +494,7 @@ def sph_harm_large(m, n, az, el):
 
 
 def sph_harm_all(nMax, az, el):
-    '''Compute all sphercial harmonic coefficients up to degree nMax.
+    """Compute all sphercial harmonic coefficients up to degree nMax.
 
     Parameters
     ----------
@@ -503,7 +513,7 @@ def sph_harm_all(nMax, az, el):
         Complex spherical harmonics of degrees n [0 ... nMax] and all corresponding
         orders m [-n ... n], sampled at [az, el]. dim1 corresponds to az/el pairs,
         dim2 to oder/degree (m, n) pairs like 0/0, -1/1, 0/1, 1/1, -2/2, -1/2 ...
-    '''
+    """
     m, n = mnArrays(nMax)
     mA, azA = _np.meshgrid(m, az)
     nA, elA = _np.meshgrid(n, el)
@@ -511,7 +521,7 @@ def sph_harm_all(nMax, az, el):
 
 
 def mnArrays(nMax):
-    '''Returns degrees n and orders m up to nMax.
+    """Returns degrees n and orders m up to nMax.
 
     Parameters
     ----------
@@ -524,13 +534,12 @@ def mnArrays(nMax):
         0, -1, 0, 1, -2, -1, 0, 1, 2, ... , -nMax ..., nMax
     n : (int), array_like
         0, 1, 1, 1, 2, 2, 2, 2, 2, ... nMax, nMax, nMax
-    '''
-
-    # Degree n = 0, 1, 1, 1, 2, 2, 2, 2, 2 ...
+    """
+    # Degree n = 0, 1, 1, 1, 2, 2, 2, 2, 2, ...
     degs = _np.arange(nMax + 1)
     n = _np.repeat(degs, degs * 2 + 1)
 
-    # Order m = 0, -1, 1, 1, -2, -1, 0, 1, 2 ...
+    # Order m = 0, -1, 0, 1, -2, -1, 0, 1, 2, ...
     # http://oeis.org/A196199
     elementNumber = _np.arange((nMax + 1) ** 2) + 1
     t = _np.floor(_np.sqrt(elementNumber - 1)).astype(int)
@@ -540,7 +549,7 @@ def mnArrays(nMax):
 
 
 def cart2sph(x, y, z):
-    '''Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.'''
+    """Converts cartesian coordinates x, y, z to spherical coordinates az, el, r."""
     hxy = _np.hypot(x, y)
     r = _np.hypot(hxy, z)
     el = _np.arctan2(z, hxy)
@@ -549,7 +558,7 @@ def cart2sph(x, y, z):
 
 
 def sph2cart(az, el, r):
-    '''Converts spherical coordinates az, el, r to cartesian coordinates x, y, z.'''
+    """Converts spherical coordinates az, el, r to cartesian coordinates x, y, z."""
     rcos_theta = r * _np.cos(el)
     x = rcos_theta * _np.cos(az)
     y = rcos_theta * _np.sin(az)
@@ -558,7 +567,7 @@ def sph2cart(az, el, r):
 
 
 def kr(f, radius, temperature=20):
-    '''Return kr vector for given f and array radius
+    """Return kr vector for given f and array radius
 
     Parameters
     ----------
@@ -567,13 +576,13 @@ def kr(f, radius, temperature=20):
     radius : float
        Radius of array
     temperature : float, optional
-       Room temperature in degree Celcius [Default: 20]
+       Room temperature in degree Celsius [Default: 20]
 
     Returns
     -------
     kr : array_like
-       2 * pi * f / c(temperatur) * r
-    '''
+       2 * pi * f / c(temperature) * r
+    """
     return 2 * _np.pi * f / (331.5 + 0.6 * temperature) * radius
 
 
@@ -589,15 +598,16 @@ def kr_full_spec(fs, radius, NFFT, temperature=20):
     NFFT : int
        Number of frequency bins
     temperature : float, optional
-       Temperature in degree Celcius (Default: 20 C)
+       Temperature in degree Celsius (Default: 20 C)
 
     Returns
     -------
     kr : array_like
        kr vector of length NFFT/2 + 1 spanning the frequencies of 0:fs/2
     """
-    freqs = _np.linspace(0, fs / 2, NFFT / 2 + 1)
+    freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
     return kr(freqs, radius, temperature)
+
 
 # DEBUG
 def _print_bessel_functions(n, k):
@@ -616,16 +626,21 @@ def _print_mic_scaling(N, freqs, array_radius, scatter_radius=None, dual_radius=
         scatter_radius = array_radius
     if not dual_radius:
         dual_radius = array_radius
-    print(' '.join(('bn_open_omni:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'omni'])))))
-    print(' '.join(('bn_open_cardioid:', str(array_extrapolation(N, freqs, [array_radius, 'open', 'cardioid'])))))
-    print(' '.join(('bn_rigid_omni:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'omni', scatter_radius])))))
-    print(' '.join(('bn_rigid_cardioid:', str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'cardioid', scatter_radius])))))
-    print(' '.join(('bn_dual_open_omni:', str(array_extrapolation(N, freqs, [array_radius, 'dual', 'omni', None, dual_radius])))))
+    print(' '.join(('bn_open_omni:',
+                    str(array_extrapolation(N, freqs, [array_radius, 'open', 'omni'])))))
+    print(' '.join(('bn_open_cardioid:',
+                    str(array_extrapolation(N, freqs, [array_radius, 'open', 'cardioid'])))))
+    print(' '.join(('bn_rigid_omni:',
+                    str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'omni', scatter_radius])))))
+    print(' '.join(('bn_rigid_cardioid:',
+                    str(array_extrapolation(N, freqs, [array_radius, 'rigid', 'cardioid', scatter_radius])))))
+    print(' '.join(('bn_dual_open_omni:',
+                    str(array_extrapolation(N, freqs, [array_radius, 'dual', 'omni', None, dual_radius])))))
 
 
 def _print_bns(N, k_mic, k_scatter):
-    print(' '.join(('bn_open_omni:', str(bn_open_omni(N, k_mic) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_open_cardioid:', str(bn_open_cardioid(N, k_mic) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_rigid_omni:', str(bn_rigid_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_rigid_cardioid:', str(bn_rigid_cardioid(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
-    print(' '.join(('bn_dual_open_omni:', str(bn_dual_open_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N))))
+    print(' '.join(('bn_open_omni:', str(bn_open_omni(N, k_mic) * 4 * _np.pi * 1j ** N))))
+    print(' '.join(('bn_open_cardioid:', str(bn_open_cardioid(N, k_mic) * 4 * _np.pi * 1j ** N))))
+    print(' '.join(('bn_rigid_omni:', str(bn_rigid_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j ** N))))
+    print(' '.join(('bn_rigid_cardioid:', str(bn_rigid_cardioid(N, k_mic, k_scatter) * 4 * _np.pi * 1j ** N))))
+    print(' '.join(('bn_dual_open_omni:', str(bn_dual_open_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j ** N))))

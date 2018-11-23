@@ -16,14 +16,15 @@ Functions that act on the Spatial Fourier Coefficients
 """
 
 import numpy as _np
-from scipy.signal import fftconvolve
 from scipy.linalg import lstsq
-from .sph import besselj, hankel1, sph_harm_all
+from scipy.signal import fftconvolve
+
 from .io import SphericalGrid
+from .sph import besselj, hankel1, sph_harm_all
 
 
 def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
-    '''BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED
+    """BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED
 
     Parameters
     ----------
@@ -38,7 +39,7 @@ def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
     avgBandwidth : int
        Averaging Bandwidth in oct
     fade : bool, optional
-       Fade over if True, else hard cut {false} [Default: True]
+       Fade over if True, else hard cut [Default: True]
 
     Returns
     -------
@@ -53,28 +54,27 @@ def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
     ----------
     .. [1] B. Bernschütz, "Bandwidth Extension for Microphone Arrays",
        AES Convention 2012, Convention Paper 8751, 2012. http://www.aes.org/e-lib/browse.cfm?elib=16493
-    '''
-
+    """
     print('!Warning, BEMA is not yet implemented. Continuing with initial coefficients!')
     return Pnm
 
 
 def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_sample=None):
-    '''Real-valued Fast Fourier Transform.
+    """Real-valued Fast Fourier Transform.
 
     Parameters
     ----------
     time_signals : TimeSignal/tuple/object
-       Time-domain signals to be transformed. 
+       Time-domain signals to be transformed.
     fs : int, optional
        Sampling frequency - only optional if a TimeSignal or tuple/array containing fs is passed
     NFFT : int, optional
        Number of frequency bins. Resulting array will have size NFFT//2+1 Default: Next power of 2
     oversampling : int, optional
        Oversamples the incoming signal to increase frequency resolution [Default: 1]
-    firstSample : int, optional
+    first_sample : int, optional
        First time domain sample to be included. [Default: 0]
-    lastSample : int, optional
+    last_sample : int, optional
        Last time domain sample to be included. [Default: -1]
 
     Returns
@@ -89,7 +89,7 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
     An oversampling*NFFT point Fourier Transform is applied to the time domain data,
     where NFFT is the next power of two of the number of samples.
     Time-windowing can be used by providing a first_sample and last_sample index.
-    '''
+    """
     try:
         signals = time_signals.signal
         fs = time_signals.fs
@@ -127,7 +127,7 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
 
 
 def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
-    ''' Spatial Fourier Transform
+    """ Spatial Fourier Transform
 
     Parameters
     ----------
@@ -142,7 +142,7 @@ def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
     -------
     Pnm : array_like
        Spatial Fourier Coefficients with nm coeffs in rows and FFT bins in columns
-    '''
+    """
     data = _np.atleast_2d(data)
     number_of_signals, FFTLength = data.shape
 
@@ -191,7 +191,7 @@ def iSpatFT(spherical_coefficients, position_grid, order_max=None, spherical_har
 
 
 def spatFT_LSF(data, position_grid, order_max, spherical_harmonic_bases=None):
-    '''Returns spherical harmonics coefficients least square fitted to provided data
+    """Returns spherical harmonics coefficients least square fitted to provided data
 
     Parameters
     ----------
@@ -201,12 +201,13 @@ def spatFT_LSF(data, position_grid, order_max, spherical_harmonic_bases=None):
        Azimuth / colatitude data locations
     order_max: int
        Maximum order N of fit
+    spherical_harmonic_bases : optional
 
     Returns
     -------
     coefficients: array_like, float
        Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
-    '''
+    """
     position_grid = SphericalGrid(*position_grid)
     if spherical_harmonic_bases is None:
         spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
@@ -234,7 +235,6 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
     Y : matrix of floats
        Matrix of the decomposed wavefield with kr bins in rows
     """
-
     wave_direction = SphericalGrid(*wave_direction)
     number_of_angles = wave_direction.azimuth.size
     field_coeffs = _np.atleast_2d(field_coeffs)
@@ -279,7 +279,7 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
 
 
 def rfi(dn, kernelDownScale=2, highPass=0.0):
-    '''R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]
+    """R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]
 
     Parameters
     ----------
@@ -324,12 +324,12 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
        their spectra and impulse responses.
        > Be very carefull if NFFT/max(kr) < 25
        > Do not use R/F/I if NFFT/max(kr) < 15
-    '''
+    """
     return dn
 
 
 def sfe(Pnm_kra, kra, krb, problem='interior'):
-    ''' S/F/E Sound Field Extrapolation. CURRENTLY WIP
+    """ S/F/E Sound Field Extrapolation. CURRENTLY WIP
 
     Parameters
     ----------
@@ -339,8 +339,7 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
        k * ra/rb vector
     problem : string{'interior', 'exterior'}
        Select between interior and exterior problem [Default: interior]
-    '''
-
+    """
     if kra.shape[1] != Pnm_kra.shape[1] or kra.shape[1] != krb.shape[1]:
         raise ValueError('FFTData: Complex Input Data expected.')
 
@@ -360,19 +359,20 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
     krb = _np.tile(krb, (FCoeff, 1))
 
     if problem == 'interior':
-        jn_kra = _np.sqrt(_np.pi / (2 * kra)) * besselj(n + 5, kra)
-        jn_krb = _np.sqrt(_np.pi / (2 * krb)) * besselj(n + 5, krb)
+        jn_kra = _np.sqrt(_np.pi / (2 * kra)) * besselj(nvector + 5, kra)
+        jn_krb = _np.sqrt(_np.pi / (2 * krb)) * besselj(nvector + 5, krb)
         exp = jn_krb / jn_kra
 
         if _np.any(_np.abs(exp) > 1e2):  # 40dB
             print('WARNING: Extrapolation might be unstable for one or more frequencies/orders!')
 
     elif problem == 'exterior':
-        hn_kra = _np.sqrt(_np.pi / (2 * kra)) * hankel1(nvector + 0.5, 1, kra)
-        hn_krb = _np.sqrt(_np.pi / (2 * krb)) * hankel1(nvector + 0.5, 1, krb)
+        hn_kra = _np.sqrt(_np.pi / (2 * kra)) * hankel1(nvector + 0.5, kra)
+        hn_krb = _np.sqrt(_np.pi / (2 * krb)) * hankel1(nvector + 0.5, krb)
         exp = hn_krb / hn_kra
     else:
-        raise ValueError('Problem selector ' + problem + ' not recognized. Please either choose "interior" [Default] or "exterior".')
+        raise ValueError('Problem selector ' + problem + 'not recognized. Please either choose "interior" [Default] '
+                                                         'or "exterior".')
 
     return Pnm_kra * exp.T
 
@@ -386,7 +386,7 @@ def iFFT(Y, output_length=None, window=False):
        Frequency domain data [Nsignals x Nbins]
     output_length : int, optional
        Lenght of returned time-domain signal (Default: 2 x len(Y) + 1)
-    win : boolean, optional
+    window : boolean, optional
        Weights the resulting time-domain signal with a Hann
 
     Returns
@@ -398,8 +398,6 @@ def iFFT(Y, output_length=None, window=False):
     y = _np.fft.irfft(Y, n=output_length)
 
     if window:
-        if window not in {'hann', 'hamming', 'blackman', 'kaiser'}:
-            raise ValueError('Selected window must be one of hann, hamming, blackman or kaiser')
         no_of_signals, no_of_samples = y.shape
 
         if window == 'hann':
@@ -410,6 +408,9 @@ def iFFT(Y, output_length=None, window=False):
             window_array = _np.blackman(no_of_samples)
         elif window == 'kaiser':
             window_array = _np.kaiser(no_of_samples, 3)
+        else:
+            raise ValueError('Selected window must be one of hann, hamming, blackman or kaiser')
+
         y = window_array * y
     return y
 

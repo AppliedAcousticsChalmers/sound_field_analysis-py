@@ -1,10 +1,13 @@
-"""Miscellenious utility functions
 """
+Miscellaneous utility functions"""
+
 import sys
+from datetime import datetime
 from itertools import cycle
+
 import numpy as np
 from scipy.signal import resample
-from datetime import datetime
+
 spinner = cycle(['-', '/', '|', '\\'])
 
 
@@ -14,7 +17,7 @@ def env_info():
     Returns
     -------
     env : string{'jupyter_notebook', 'ipython_terminal', 'terminal'}
-       Guesed environment
+       Guessed environment
     """
     if 'ipykernel' in sys.modules:
         return 'jupyter_notebook'
@@ -22,7 +25,6 @@ def env_info():
         return 'ipython_terminal'
     else:
         return 'terminal'
-    return ip
 
 
 __env = env_info()
@@ -54,7 +56,7 @@ def progress_bar(curIDX, maxIDX=None, description='Progress'):
 
 
 def db(data, power=False):
-    '''Convenience function to calculate the 20*log10(abs(x))
+    """Convenience function to calculate the 20*log10(abs(x))
 
     Parameters
     ----------
@@ -67,7 +69,7 @@ def db(data, power=False):
     -------
     db : array_like
        20 * log10(abs(data))
-    '''
+    """
     if power:
         factor = 10
     else:
@@ -84,7 +86,7 @@ def deg2rad(deg):
 def rad2deg(rad):
     """Converts from radiant [0 ... 2 pi] to degree [0 ... 360]
     """
-    return rad / np.i * 180 % 360
+    return rad / np.pi * 180 % 360
 
 
 def nearest_to_value_IDX(array, target_val):
@@ -143,9 +145,9 @@ def frq2kr(target_frequency, freq_vector):
 
     Parameters
     ----------
-    fTarget : float
+    target_frequency : float
        Target frequency
-    fVec : array_like
+    freq_vector : array_like
        Array containing the available frequencys
 
     Returns
@@ -154,7 +156,7 @@ def frq2kr(target_frequency, freq_vector):
        kr bin closest to target frequency
     """
 
-    return (np.abs(fVec - fTarget)).argmin()
+    return (np.abs(freq_vector - target_frequency)).argmin()
 
 
 def stack(vector_1, vector_2):
@@ -163,9 +165,9 @@ def stack(vector_1, vector_2):
     M1, N1 = vector_1.shape
     M2, N2 = vector_2.shape
 
-    if (M1 == M2 and (M1 < N1 or M2 < N2)):
+    if M1 == M2 and (M1 < N1 or M2 < N2):
         out = np.vstack([vector_1, vector_2])
-    elif (N1 == N2 and (N1 < M1 or N2 < M2)):
+    elif N1 == N2 and (N1 < M1 or N2 < M2):
         out = np.hstack([vector_1, vector_2])
     else:
         raise ValueError('vector_1 and vector_2 dont have a common dimension.')
