@@ -11,23 +11,24 @@ setup(
     author_email='christoph.hohnerlein@qu.tu-berlin.de',
     license='GPLv3',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
         'Topic :: Multimedia :: Sound/Audio',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3',
     ],
     keywords='sound field analysis spherical microphone array',
     install_requires=[
         'scipy',
-        'numpy'
+        'numpy',
     ],
+
     package_data={
         'examples': ['examples'],
     },
     extras_require={
         'plotting': ["plotly"],
-        'sofa_import': ["netCDF4"],
+        'sofa_import': ["netCDF4"],  # see Exp3_Import_SOFA.py description for installation
     },
-    packages=['sound_field_analysis']
+    packages=['sound_field_analysis'],
 )

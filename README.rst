@@ -25,6 +25,7 @@ The following external libraries are required:
 -  `NumPy`_
 -  `SciPy`_
 -  `Plotly`_ (for plotting)
+-  `netCDF4`_ (for sofa_import in Exp3)
 
 Installation
 ------------
@@ -71,7 +72,7 @@ Ideal unity plane wave simulation and 3D plot.
 
 
 Exp2: Measured plane wave
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using
 a cardioid mic.
@@ -85,7 +86,13 @@ a cardioid mic.
 
 
 Exp3: Import data in SOFA format
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Install dependencies for `netCDF4`_ (see example documentation) (this only worked on Mac OS X):
+   ``brew install hdf5``
+   ``brew install netcdf``
+#. Install additional dependency from pypi:
+   ``pip install sound_field_analysis[sofa_import]``
 
 `SOFA format`_
 
@@ -113,6 +120,7 @@ The Lebedev grid generation was adapted from an implementation by `Richard P. Mu
 .. _NumPy: http://www.numpy.org
 .. _SciPy: http://www.scipy.org
 .. _Plotly: https://plot.ly/python/
+.. _netCDF4: http://github.com/Unidata/netcdf4-python
 .. _Anaconda: https://www.continuum.io/downloads
 .. _conda-forge: https://conda-forge.github.io
 .. _github: examples/

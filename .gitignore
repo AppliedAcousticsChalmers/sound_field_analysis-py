@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# IDE specific settings
+.idea
+
 # C extensions
 *.so
 
@@ -60,6 +63,15 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
 # debug stuff
 /test_debug/*
