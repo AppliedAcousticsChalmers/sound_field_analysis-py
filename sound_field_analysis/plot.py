@@ -456,9 +456,9 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
     rows = rows.flatten()
     cols = cols.flatten()
     for IDX in range(0, len(viz_data)):
-        cur_row = rows[IDX]
-        cur_col = cols[IDX]
-        fig.append_trace(genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col)
+        cur_row = int(rows[IDX])
+        cur_col = int(cols[IDX])
+        fig.add_trace(genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col)
         fig.layout['scene' + str(IDX + 1)].update(layout_3D)
 
     if title is not None:
