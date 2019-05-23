@@ -17,10 +17,11 @@ Module contains various generator functions:
    Ideal wave generator, returns spatial fourier coefficients
 """
 import numpy as _np
+from scipy.special import spherical_jn
 
 from .io import ArrayConfiguration, SphericalGrid
 from .process import spatFT, iSpatFT
-from .sph import sph_harm, sph_harm_all, cart2sph, array_extrapolation, kr, sphankel2
+from .sph import sph_harm, sph_harm_all, cart2sph, array_extrapolation, kr, sphankel2, dsphankel2
 
 
 def whiteNoise(fftData, noiseLevel=80):
@@ -131,7 +132,7 @@ def lebedev(max_order=None, degree=None):
 
 
 def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=40):
-    """Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for frequencies 0:fs/2, wraps radial_filter()
+    """Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for frequencies 0:fs/2, wraps radial_filter().
 
     Parameters
     ----------
@@ -157,14 +158,14 @@ def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=4
     return radial_filter(orders, freqs, array_configuration, amp_maxdB=amp_maxdB)
 
 
-def radial_filter(order, freq, array_configuration, amp_maxdB=40):
-    """Generate modal radial filter of specified order and frequency
+def radial_filter(orders, freqs, array_configuration, amp_maxdB=40):
+    """Generate modal radial filter of specified orders and frequencies.
 
     Parameters
     ----------
-    order : array_like
-       order of filter
-    freq : array_like
+    orders : array_like
+       orders of filter
+    freqs : array_like
        Frequency of modal filter
     array_configuration : io.ArrayConfiguration
        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
@@ -178,14 +179,101 @@ def radial_filter(order, freq, array_configuration, amp_maxdB=40):
     """
     array_configuration = ArrayConfiguration(*array_configuration)
 
-    extrapolation_coeffs = array_extrapolation(order, freq, array_configuration)
+    extrapolation_coeffs = array_extrapolation(orders, freqs, array_configuration)
     extrapolation_coeffs[extrapolation_coeffs == 0] = 1e-12
 
-    a_max = 10 ** (amp_maxdB / 20)
-    limiting_factor = 2 * a_max / _np.pi * _np.abs(extrapolation_coeffs) * _np.arctan(
-        _np.pi / (2 * a_max * _np.abs(extrapolation_coeffs)))
+    amp_max = 10 ** (amp_maxdB / 20)
+    limiting_factor = 2 * amp_max / _np.pi * _np.abs(extrapolation_coeffs) * _np.arctan(
+        _np.pi / (2 * amp_max * _np.abs(extrapolation_coeffs)))
 
     return limiting_factor / extrapolation_coeffs
+
+
+def spherical_head_filter(max_order, full_order, kr):
+    """Generate coloration compensation filter of specified maximum SH order.
+
+    Parameters
+    ----------
+    max_order : int
+        Maximum order
+    full_order : int
+        Full order necessary to expand sound field in entire modal range
+    kr : array_like
+        Vector of corresponding wave numbers
+
+    Returns
+    -------
+    G_SHF : array_like
+       Vector of frequency domain filter of shape [NFFT / 2 + 1]
+
+    References
+    ----------
+    .. [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., et al. (2017). Spectral equalization in binaural signals
+           represented by order-truncated spherical harmonics. The Journal of the Acoustical Society of America.
+    """
+
+    def pressure_on_sphere(max_order, kr):
+        """
+        Calculate the diffuse field pressure frequency response of a spherical scatterer, up to the specified SH order.
+        """
+        p = _np.zeros_like(kr)
+        for order in range(max_order + 1):
+            # Calculate mode strength b_n(kr) for an incident plane wave on sphere according to [1, Eq.(9)]
+            b_n = 4 * _np.pi * 1j ** order * (spherical_jn(order, kr) -
+                                              (spherical_jn(order, kr, True) /
+                                               dsphankel2(order, kr)) * sphankel2(order, kr))
+            p += (2 * order + 1) * _np.abs(b_n) ** 2
+
+        # according to [1, Eq.(11)]
+        return 1 / (4 * _np.pi) * _np.sqrt(p)
+
+    # according to [1, Eq.(12)].
+    G_SHF = pressure_on_sphere(full_order, kr) / pressure_on_sphere(max_order, kr)
+    G_SHF[G_SHF == 0] = 1e-12  # catch zeros
+    G_SHF[_np.isnan(G_SHF)] = 1  # catch NaNs
+    return G_SHF
+
+
+def spherical_head_filter_spec(max_order, NFFT, fs, radius, amp_maxdB=None):
+    """Generate NFFT/2 + 1 coloration compensation filter of specified maximum SH order for frequencies 0:fs/2, wraps
+    spherical_head_filter().
+
+    Parameters
+    ----------
+    max_order : int
+       Maximum order
+    NFFT : int
+       Order of FFT (number of bins), should be a power of 2
+    fs : int
+       Sampling frequency
+    radius : float
+        Array radius
+    amp_maxdB : int, optional
+       Maximum modal amplification limit in dB [Default: None]
+
+    Returns
+    -------
+    G_SHF : array_like
+       Vector of frequency domain filter of shape [NFFT / 2 + 1]
+    """
+    # frequency support vector & corresponding wave numbers k
+    freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
+    kr_SHF = kr(freqs, radius)
+
+    # calculate SH order necessary to expand sound field in entire modal range
+    order_full = int(_np.ceil(kr_SHF[-1]))
+
+    # calculate filter
+    G_SHF = spherical_head_filter(max_order, order_full, kr_SHF)
+
+    # filter limiting
+    if amp_maxdB:
+        # TODO: implement arctan() soft clipping
+        raise NotImplementedError('amplitude soft clipping not yet implemented')
+        # amp_max = 10 ** (amp_maxdB / 20)
+        # G_SHF[np.where(G_SHF > amp_max)] = amp_max
+    return G_SHF.astype(_np.complex_)
+
 
 def sampled_wave(order, fs, NFFT, array_configuration,
                  gridData, wave_azimuth, wave_colatitude, wavetype='plane', c=343, distance=1.0, limit_order=85):
