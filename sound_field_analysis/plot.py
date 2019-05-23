@@ -1,11 +1,11 @@
 """Plotting functions
 Helps visualizing spherical microphone data.
 """
-import numpy as _np
 from collections import namedtuple
 
-from plotly import offline as plotly_off
+import numpy as _np
 import plotly.graph_objs as go
+from plotly import offline as plotly_off
 from plotly import tools
 
 from .process import plane_wave_decomp
@@ -19,8 +19,8 @@ def showTrace(trace, layout=None, title=None):
     ----------
     trace : plotly_trace
        Plotly generated trace to be displayed offline
-    colorize : Bool, optional
-       Toggles bw / colored plot [Default: True]
+    # colorize : Bool, optional
+    #    Toggles bw / colored plot [Default: True]
 
     Returns
     -------
@@ -320,7 +320,7 @@ def genVisual(vizMTX, style='shape', normalize=True, logScale=False):
         raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
 
 
-def layout_2D(type=None, title=None):
+def layout_2D(viz_type=None, title=None):
     layout = go.Layout(
         title=title,
         xaxis=dict(
@@ -331,14 +331,14 @@ def layout_2D(type=None, title=None):
         )
     )
 
-    if type == 'time':
+    if viz_type == 'time':
         layout.title = 'Time domain plot'
         layout.xaxis.title = 'Time in s'
-    elif type == 'linFFT':
+    elif viz_type == 'linFFT':
         layout.title = 'Frequency domain plot (linear)'
         layout.yaxis.title = 'Amplitude in dB'
         layout.xaxis.title = 'Frequency in Hz'
-    elif type == 'logFFT':
+    elif viz_type == 'logFFT':
         layout.title = 'Frequency domain plot (logarithmic)'
         layout.yaxis.title = 'Amplitude in dB'
         layout.xaxis.title = 'Frequency in Hz'
@@ -390,7 +390,7 @@ def plot2D(data, title=None, viz_type=None, fs=None, line_names=None):
        Data to be plotted, separated along the first dimension (rows).
     title : string
        Add title to be displayed on plot
-    type : string{None, 'time', 'linFFT', 'logFFT'}
+    viz_type : string{None, 'time', 'linFFT', 'logFFT'}
        Type of data to be displayed. [Default: None]
     fs : int
        Sampling rate in Hz. [Default: 44100]
@@ -414,9 +414,9 @@ def plot3D(vizMTX, style='shape', layout=None, normalize=True, logScale=False):
     normalize : Bool, optional
        Toggle normalization of data to [-1 ... 1] [Default: True]
 
-    TODO
-    ----
-    Colorization, contour plot
+    # TODO
+    # ----
+    # Colorization, contour plot
     """
 
     if style == 'flat':

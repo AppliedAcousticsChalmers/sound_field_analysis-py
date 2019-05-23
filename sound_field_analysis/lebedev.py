@@ -4,7 +4,8 @@ This module only exposes the function  `lebGrid = lebedev.genGrid(degree)`.
 lebGrid is a named tuple containing the coordinates .x, .y, .z and the weights .w
 Possible degrees: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194
 
-Adapted from Richard P. Mullers Python version, https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py
+Adapted from Richard P. Mullers Python version,
+https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py
 C version: Dmitri Laikov
 F77 version: Christoph van Wuellen, http://www.ccl.net
 
@@ -193,6 +194,11 @@ def genGrid(n):
     -------
     lebGrid : named tuple
        lebGrid is a named tuple containing .x, .y, .z and .w
+
+    Raises
+    ------
+    ValueError
+       in case no grid could be generated for given degree
     """
     try:
         leb = _np.array(LebFunc[n]())  # try retrieving grid first
@@ -204,6 +210,5 @@ def genGrid(n):
         lebGrid.z = leb[:, 2]
         lebGrid.w = leb[:, 3]
         return lebGrid
-    except:
+    except KeyError:
         raise ValueError('No grid available for degree', n)
-    return None

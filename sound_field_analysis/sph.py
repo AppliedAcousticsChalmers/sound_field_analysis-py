@@ -263,8 +263,8 @@ def dsphankel1(n, kr):
     dhn1 = _np.full(n.shape, _np.nan, dtype=_np.complex_)
     kr_nonzero = kr != 0
     dhn1[kr_nonzero] = 0.5 * (
-            sphankel1(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel1(n[kr_nonzero] + 1, kr[kr_nonzero]) - sphankel1(
-            n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
+            sphankel1(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel1(n[kr_nonzero] + 1, kr[kr_nonzero])
+            - sphankel1(n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
     return dhn1
 
 
@@ -287,8 +287,8 @@ def dsphankel2(n, kr):
     dhn2 = _np.full(n.shape, _np.nan, dtype=_np.complex_)
     kr_nonzero = kr != 0
     dhn2[kr_nonzero] = 0.5 * (
-            sphankel2(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel2(n[kr_nonzero] + 1, kr[kr_nonzero]) - sphankel2(
-            n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
+            sphankel2(n[kr_nonzero] - 1, kr[kr_nonzero]) - sphankel2(n[kr_nonzero] + 1, kr[kr_nonzero])
+            - sphankel2(n[kr_nonzero], kr[kr_nonzero]) / kr[kr_nonzero])
     return dhn2
 
 
@@ -299,12 +299,12 @@ def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None, k
     ----------
     order : int
        Order
-    array_configuration : ArrayConfiguration
+    array_configuration : io.ArrayConfiguration
        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     k_mic : array_like
        K vector for microphone array
     k_scatter: array_like, optional
-       K vector for scatterer  (Default: same as k_mic)
+       K vector for scatterer  [Default: same as k_mic]
     k_dual : optional
 
     Returns
@@ -337,10 +337,10 @@ def array_extrapolation(order, freqs, array_configuration, normalize=True):
        Order
     freqs : array_like
        Frequencies
-    array_configuration : ArrayConfiguration
+    array_configuration : io.ArrayConfiguration
        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     normalize: Bool, optional
-        Normalize by 4 * pi * 1j ** order (Default: True)
+        Normalize by 4 * pi * 1j ** order [Default: True]
 
     Returns
     -------
@@ -462,6 +462,8 @@ def sph_harm_large(m, n, az, el):
         Complex spherical harmonic of order m and degree n,
         sampled at theta = az, phi = el
 
+    Notes
+    -----
     Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5 * exp(i m phi) * P_n^m(cos(theta))
     as per http://dlmf.nist.gov/14.30
     Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv
@@ -470,7 +472,6 @@ def sph_harm_large(m, n, az, el):
     if _np.all(_np.abs(m) < 84):
         return scy.sph_harm(m, n, az, el)
     else:
-
         # TODO: confirm that this uses the correct SH definition
 
         mAbs = _np.abs(m)
@@ -494,7 +495,7 @@ def sph_harm_large(m, n, az, el):
 
 
 def sph_harm_all(nMax, az, el):
-    """Compute all sphercial harmonic coefficients up to degree nMax.
+    """Compute all spherical harmonic coefficients up to degree nMax.
 
     Parameters
     ----------
@@ -548,6 +549,27 @@ def mnArrays(nMax):
     return m, n
 
 
+def reverseMnIds(nMax):
+    """Returns reverse indexes according to stacked coefficients of orders m up to nMax.
+
+    Parameters
+    ----------
+    nMax : (int)
+        Maximum degree of coefficients reverse indexes to be returned. n >= 0
+
+    Returns
+    -------
+    rev_ids : (int), array_like
+        0, 3, 2, 1, 8, 7, 6, 5, 4, ...
+    """
+    m_ids = list(range(nMax * (nMax + 2) + 1))
+    for o in range(nMax + 1):
+        id_start = o ** 2
+        id_end = id_start + o * 2 + 1
+        m_ids[id_start:id_end] = reversed(m_ids[id_start:id_end])
+    return m_ids
+
+
 def cart2sph(x, y, z):
     """Converts cartesian coordinates x, y, z to spherical coordinates az, el, r."""
     hxy = _np.hypot(x, y)
@@ -598,7 +620,7 @@ def kr_full_spec(fs, radius, NFFT, temperature=20):
     NFFT : int
        Number of frequency bins
     temperature : float, optional
-       Temperature in degree Celsius (Default: 20 C)
+       Temperature in degree Celsius [Default: 20 C]
 
     Returns
     -------

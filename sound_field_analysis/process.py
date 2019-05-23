@@ -98,7 +98,8 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
         if fs is not None:
             signals = time_signals
         else:
-            raise ValueError('No valid signal found. Either pass an io.TimeSignal, a tuple/array containg the signal and the sampling frequecy or use the fs argument.')
+            raise ValueError('No valid signal found. Either pass an io.TimeSignal, a tuple/array containing the signal '
+                             'and the sampling frequency or use the fs argument.')
 
     signals = _np.atleast_2d(signals)
     nSig, nSamples = signals.shape
@@ -119,8 +120,8 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
     signals = signals[:, first_sample:last_sample]
 
     if not NFFT:
-        NFFT = int(2**_np.ceil(_np.log2(total_samples)))
-        
+        NFFT = int(2 ** _np.ceil(_np.log2(total_samples)))
+
     fftData = _np.fft.rfft(signals, NFFT * oversampling, 1)
     f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs)
 
@@ -298,7 +299,8 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
 
     max_order = int(_np.floor(_np.sqrt(NMDeliveredSize) - 1))
     if order > max_order:
-        raise ValueError('The provided coefficients deliver a maximum order of ' + str(max_order) + ' but order ' + str(order) + ' was requested.')
+        raise ValueError('The provided coefficients deliver a maximum order of ' + str(max_order) + ' but order ' + str(
+            order) + ' was requested.')
 
     gaincorrection = 4 * _np.pi / ((order + 1) ** 2)
 
@@ -306,13 +308,15 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
         weights = _np.asarray(weights)
         if weights.ndim == 1:
             number_of_weights = weights.size
-            if (number_of_weights != FFTBlocklengthPnm) and (number_of_weights != number_of_angles) and (number_of_weights != 1):
+            if (number_of_weights != FFTBlocklengthPnm and number_of_weights != number_of_angles
+                    and number_of_weights != 1):
                 raise ValueError('Weights is not a scalar nor consistent with shape of the field coefficients (Pnm).')
             if number_of_weights == number_of_angles:
                 weights = _np.broadcast_to(weights, (FFTBlocklengthPnm, number_of_angles)).T
         else:
             if weights.shape != (number_of_angles, FFTBlocklengthPnm):
-                raise ValueError('Weights is not a scalar nor consistent with shape of field coefficients (Pnm) and radial filter (dn).')
+                raise ValueError('Weights is not a scalar nor consistent with shape of field coefficients (Pnm) and '
+                                 'radial filter (dn).')
     else:
         weights = 1
 
@@ -323,6 +327,7 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
     return OutputArray * gaincorrection
 
 
+# noinspection PyUnusedLocal
 def rfi(dn, kernelDownScale=2, highPass=0.0):
     """R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]
 
@@ -356,7 +361,7 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
 
     IMPORTANT
        Remember to choose a fft-oversize factor (.FFT()) being large
-       enough to cover all filter latencies and reponse slopes.
+       enough to cover all filter latencies and response slopes.
        Otherwise undesired cyclic convolution artifacts may appear
        in the output signal.
 
@@ -367,9 +372,10 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
        Be careful using very small signal blocks because there
        may remain too few taps. Observe the filters by plotting
        their spectra and impulse responses.
-       > Be very carefull if NFFT/max(kr) < 25
+       > Be very careful if NFFT/max(kr) < 25
        > Do not use R/F/I if NFFT/max(kr) < 15
     """
+    print('!Warning, radial filter improvement is not yet implemented. Continuing with initial coefficients!')
     return dn
 
 
@@ -460,6 +466,7 @@ def iFFT(Y, output_length=None, window=False):
     return y
 
 
+# noinspection PyUnusedLocal
 def wdr(Pnm, xAngle, yAngle, zAngle):
     """W/D/R Wigner-D Rotation - NOT YET IMPLEMENTED
 
@@ -476,7 +483,6 @@ def wdr(Pnm, xAngle, yAngle, zAngle):
        Rotated spatial Fourier coefficients
     """
     print('!WARNING. Wigner-D Rotation is not yet implemented. Continuing with un-rotated coefficients!')
-
     return Pnm
 
 
@@ -488,7 +494,7 @@ def convolve(A, B, FFT=None):
     A, B: array_like
        Data to perform the convolution on of shape [Nsignals x NSamples]
     FFT: bool, optional
-       Selects wether time or frequency domain convolution is applied. Default: On if Nsamples > 500 for both
+       Selects whether time or frequency domain convolution is applied. Default: On if Nsamples > 500 for both
 
     Returns
     -------
