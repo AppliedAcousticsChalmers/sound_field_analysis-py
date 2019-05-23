@@ -12,35 +12,36 @@ from . import utils
 
 class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_type transducer_type scatter_radius '
                                                           'dual_radius')):
-    """ Tuple of type ArrayConfiguration
-
-    Parameters
-    ----------
-    array_radius : float
-       Radius of array
-    array_type : {'open', 'rigid'}
-       Type array
-    transducer_type: {'omni', 'cardioid'}
-       Type of transducer,
-    scatter_radius : float, optional
-       Radius of scatterer, required for `array_type` == 'rigid'. (Default: equal to array_radius)
-    dual_radius : float, optional
-       Radius of second array, required for `array_type` == 'dual'
-    """
+    """Named tuple ArrayConfiguration"""
     __slots__ = ()
 
     def __new__(cls, array_radius, array_type, transducer_type, scatter_radius=None, dual_radius=None):
+        """
+        Parameters
+        ----------
+        array_radius : float or array_like
+           Radius of array
+        array_type : {'open', 'rigid'}
+           Type array
+        transducer_type: {'omni', 'cardioid'}
+           Type of transducer,
+        scatter_radius : float, optional
+           Radius of scatterer, required for `array_type` == 'rigid'. (Default: equal to array_radius)
+        dual_radius : float, optional
+           Radius of second array, required for `array_type` == 'dual'
+        """
         if array_type not in {'open', 'rigid', 'dual'}:
             raise ValueError('Sphere configuration has to be either open, rigid, or dual.')
         if transducer_type not in {'omni', 'cardioid'}:
             raise ValueError('Transducer type has to be either omni or cardioid.')
-        if array_type == 'rigid' and not scatter_radius:
+        if array_type == 'rigid' and scatter_radius is None:
             scatter_radius = array_radius
-        if array_type == 'dual' and not dual_radius:
+        if array_type == 'dual' and dual_radius is None:
             raise ValueError('For a dual array configuration, dual_radius must be provided.')
         if array_type == 'dual' and transducer_type == 'cardioid':
             raise ValueError('For a dual array configuration, cardioid transducers are not supported.')
 
+        # noinspection PyArgumentList
         self = super(ArrayConfiguration, cls).__new__(cls, array_radius, array_type, transducer_type, scatter_radius,
                                                       dual_radius)
         return self
@@ -53,19 +54,20 @@ class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_ty
 
 
 class TimeSignal(namedtuple('TimeSignal', 'signal fs delay')):
-    """ Tuple of type TimeSignal
-
-    Parameters
-    ----------
-    signal : array_like
-       Array of signals of shape [nSignals x nSamples]
-    fs : int
-       Sampling frequency
-    delay : float
-    """
+    """Named tuple TimeSignal"""
     __slots__ = ()
 
     def __new__(cls, signal, fs, delay=None):
+        """
+        Parameters
+        ----------
+        signal : array_like
+           Array of signals of shape [nSignals x nSamples]
+        fs : int or array_like
+           Sampling frequency
+        delay : float or array_like, optional
+           [Default: None]
+        """
         signal = _np.atleast_2d(signal)
         no_of_signals = signal.shape[1]
         fs = _np.asarray(fs)
@@ -76,6 +78,7 @@ class TimeSignal(namedtuple('TimeSignal', 'signal fs delay')):
         if (delay.size != 1) and (delay.size != no_of_signals):
             raise ValueError('delay can either be a scalar or an array with one element per signal.')
 
+        # noinspection PyArgumentList
         self = super(TimeSignal, cls).__new__(cls, signal, fs, delay)
         return self
 
@@ -86,16 +89,18 @@ class TimeSignal(namedtuple('TimeSignal', 'signal fs delay')):
 
 
 class SphericalGrid(namedtuple('SphericalGrid', 'azimuth colatitude radius weight')):
-    """ Tuple of type SphericalGrid
-
-    Parameters
-    ----------
-    azimuth, colatitude : float
-    radius, weight : float, optional
-    """
+    """Named tuple SphericalGrid"""
     __slots__ = ()
 
     def __new__(cls, azimuth, colatitude, radius=None, weight=None):
+        """
+        Parameters
+        ----------
+        azimuth, colatitude : array_like
+           Grid sampling point directions in radians
+        radius, weight : float or array_like, optional
+            Grid sampling point distances and weights
+        """
         azimuth = _np.asarray(azimuth)
         colatitude = _np.asarray(colatitude)
         if radius is not None:
@@ -109,6 +114,7 @@ class SphericalGrid(namedtuple('SphericalGrid', 'azimuth colatitude radius weigh
         if (weight is not None) and (weight.size != 1) and (weight.size != azimuth.size):
             raise ValueError('Weight can either be a scalar or an array of same size as azimuth/colatitude.')
 
+        # noinspection PyArgumentList
         self = super(SphericalGrid, cls).__new__(cls, azimuth, colatitude, radius, weight)
         return self
 
@@ -119,26 +125,28 @@ class SphericalGrid(namedtuple('SphericalGrid', 'azimuth colatitude radius weigh
 
 
 class ArraySignal(namedtuple('ArraySignal', 'signal grid configuration temperature')):
-    """ Tuple of type ArraySignal
-
-    Parameters
-    ----------
-    signal : TimeSignal
-       Holds time domain signals and sampling frequency fs
-    grid : SphericalGrid
-       Location grid of all time domain signals
-    configuration : ArrayConfiguration
-       Information on array configuration
-    temperature : array_like, optional
-       Temperature in room or at each sampling position
-    """
+    """Named tuple ArraySignal"""
     __slots__ = ()
 
     def __new__(cls, signal, grid, configuration=None, temperature=None):
+        """
+        Parameters
+        ----------
+        signal : TimeSignal
+           Holds time domain signals and sampling frequency fs
+        grid : SphericalGrid
+           Location grid of all time domain signals
+        configuration : ArrayConfiguration
+           Information on array configuration
+        temperature : array_like, optional
+           Temperature in room or at each sampling position
+        """
         signal = TimeSignal(*signal)
         grid = SphericalGrid(*grid)
         if configuration is not None:
             configuration = ArrayConfiguration(*configuration)
+
+        # noinspection PyArgumentList
         self = super(ArraySignal, cls).__new__(cls, signal, grid, configuration, temperature)
         return self
 
