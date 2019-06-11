@@ -8,10 +8,17 @@ Functions that act on the Spatial Fourier Coefficients
 
 `spatFT`
    Spatial Fourier Transform
+`spatFT_RT`
+   Spatial Fourier Transform for real-time application
+`spatFT_LSF`
+   Spatial Fourier Transform by least square fit to provided data
 `iSpatFT`
    Fast Inverse Spatial Fourier Transform
 
-`PWDecomp`
+`rfi`
+   Radial Filter Improvement
+
+`plane_wave_decomp`
    Plane Wave Decomposition
 """
 
@@ -132,7 +139,7 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
 
 
 def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
-    """ Spatial Fourier Transform
+    """Spatial Fourier Transform
 
     Parameters
     ----------
@@ -180,7 +187,7 @@ def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
 
 
 def spatFT_RT(data, spherical_harmonic_weighted):
-    """ Spatial Fourier Transform for real-time application, otherwise use `spatFT()` for more more convenience and
+    """Spatial Fourier Transform for real-time application, otherwise use `spatFT()` for more more convenience and
     flexibility.
 
     Parameters
@@ -234,8 +241,8 @@ def iSpatFT(spherical_coefficients, position_grid, order_max=None, spherical_har
     return _np.dot(spherical_harmonic_bases, spherical_coefficients)
 
 
-def spatFT_LSF(data, position_grid, order_max, spherical_harmonic_bases=None):
-    """Returns spherical harmonics coefficients least square fitted to provided data
+def spatFT_LSF(data, position_grid, order_max=10, spherical_harmonic_bases=None):
+    """Spatial Fourier Transform by least square fit to provided data
 
     Parameters
     ----------
@@ -243,8 +250,8 @@ def spatFT_LSF(data, position_grid, order_max, spherical_harmonic_bases=None):
        Data to be fitted to
     position_grid : array_like, or io.SphericalGrid
        Azimuth / colatitude data locations
-    order_max: int
-       Maximum order N of fit
+    order_max: int, optional
+       Maximum transform order [Default: 10]
     spherical_harmonic_bases : array_like, optional
        Spherical harmonic base coefficients (not yet weighted by spatial sampling grid) [Default: None]
 
@@ -331,15 +338,15 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
 
 
 # noinspection PyUnusedLocal
-def rfi(dn, kernelDownScale=2, highPass=0.0):
-    """R/F/I Radial Filter Improvement [NOT YET IMPLEMENTED!]
+def rfi(dn, kernelSize=512, highPass=0.0):
+    """R/F/I Radial Filter Improvement
 
     Parameters
     ----------
     dn : array_like
-       Analytical frequency domain radial filters (e.g. gen.radFilter())
-    kernelDownScale : int, optional
-       Downscale factor for the filter kernel [Default: 2]
+       Analytical frequency domain radial filters (e.g. gen.radial_filter_fullspec())
+    kernelSize : int, optional
+       Target filter kernel size [Default: 512]
     highPass : float, optional
        Highpass Filter from 0.0 (off) to 1.0 (maximum kr) [Default: 0.0]
 
@@ -354,32 +361,83 @@ def rfi(dn, kernelDownScale=2, highPass=0.0):
 
     Note
     ----
-    This function improves the FIR radial filters from gen.radFilter(). The filters
-    are made causal and are windowed in time domain. The DC components are
-    estimated. The R/F/I module should always be inserted to the filter
-    path when treating measured data even if no use is made of the included
-    kernel downscaling or highpass filters.
+    This function improves the FIR radial filters from gen.radial_filter_fullspec(). The filters are made causal and are
+    windowed in time domain. The DC components are estimated. The R/F/I module should always be inserted to the filter
+    path when treating measured data even if no use is made of the included kernel downscaling or highpass filters.
 
     Do NOT use R/F/I for single open sphere filters (e.g.simulations).
 
     IMPORTANT
-       Remember to choose a fft-oversize factor (.FFT()) being large
-       enough to cover all filter latencies and response slopes.
-       Otherwise undesired cyclic convolution artifacts may appear
-       in the output signal.
+       Remember to choose a kernel size being large enough to cover all filter latencies and response slopes. Otherwise
+       undesired cyclic convolution artifacts may appear in the output signal.
 
     HIGHPASS
-       If HPF is on (highPass>0) the radial filter kernel is
-       downscaled by a factor of two. Radial Filters and HPF
-       share the available taps and the latency keeps constant.
-       Be careful using very small signal blocks because there
-       may remain too few taps. Observe the filters by plotting
-       their spectra and impulse responses.
+       If HPF is on (0<highPass<=1) the radial filters and HPF share the available taps and the latency keeps constant.
+       Be careful when using very small kernel sizes because since there might be too few taps. Observe the filters by
+       plotting their spectra and impulse responses.
        > Be very careful if NFFT/max(kr) < 25
        > Do not use R/F/I if NFFT/max(kr) < 15
     """
-    print('!Warning, radial filter improvement is not yet implemented. Continuing with initial coefficients!')
-    return dn
+    sourceKernelSize = int((dn.shape[-1] - 1) * 2)
+
+    # DC-component estimation
+    dn_diff = _np.abs(dn[:, 1] / dn[:, 2])
+    oddOrders = range(1, dn.shape[0], 2)
+    dn[oddOrders, 0] = -1j * dn[oddOrders, 1] * 2 * (sourceKernelSize / kernelSize) * dn_diff[oddOrders]
+
+    # transform into time domain
+    dn_ir = iFFT(dn)
+
+    # make filters causal by circular shift
+    dn_ir = _np.roll(dn_ir, int(dn_ir.shape[-1] / 2), axis=-1)
+
+    # downsize kernel
+    latency = kernelSize / 2
+    mid = dn_ir.shape[-1] / 2
+    dn_ir = dn_ir[:, int(mid - latency):int(mid + latency)]
+
+    # apply Hanning / cosine window
+    # 0.5 + 0.5 * _np.cos(2 * _np.pi * (_np.arange(0, kernelSize) - ((kernelSize - 1) / 2)) / (kernelSize - 1))
+    dn_ir *= _np.hanning(kernelSize)
+
+    # transform into one-sided spectrum
+    dn, _ = FFT(dn_ir, calculate_freqs=False)
+
+    # calculate high pass (need to be zero phase since radial filters are already linear phase)
+    if 0 < highPass <= 1:
+        # by designing an IIR filter and taking the magnitude response
+        # calculate IIR filter coefficients
+        # noinspection PyTupleAssignmentBalance
+        hp_b, hp_a = butter(8, highPass, 'highpass', analog=True)
+        # calculate one-sided spectrum
+        _, HP = freqs(hp_b, hp_a, worN=_np.linspace(0, 1, int(kernelSize / 2 + 1)))
+        HP[_np.isnan(HP)] = 0  # prevent NaNs
+
+        # # by designing an FIR filter with FIRLS
+        # from scipy.signal import firls
+        # STOP_BAND_ATTENUATION = -30
+        # # calculate FIR linear phase filter coefficients
+        # bands = [0, highPass/2, highPass, 1]
+        # desired = 10 ** (_np.array([STOP_BAND_ATTENUATION, STOP_BAND_ATTENUATION, 0, 0]) / 20)  # magnitudes as linear
+        # hp = firls(kernelSize - 1, bands=bands, desired=desired)
+        # # make filter zero phase by circular shift
+        # hp = _np.roll(hp, int(hp.shape[-1] / 2), axis=-1)
+        # # transform into one-sided spectrum
+        # HP, _ = FFT(hp, calculate_freqs=False)
+
+        # # by designing an FIR filter with FIRWIN
+        # from scipy.signal import firwin
+        # # calculate FIR linear phase filter coefficients
+        # hp = firwin(kernelSize - 1, highPass, pass_zero=False, window='hamming')
+        # # make filter zero phase by circular shift
+        # hp = _np.roll(hp, int(hp.shape[-1] / 2), axis=-1)
+        # # transform into one-sided spectrum
+        # HP, _ = FFT(hp, calculate_freqs=False)
+
+        # apply high pass
+        dn *= HP
+
+    return dn, kernelSize, latency
 
 
 def sfe(Pnm_kra, kra, krb, problem='interior'):
@@ -490,7 +548,7 @@ def wdr(Pnm, xAngle, yAngle, zAngle):
 
 
 def convolve(A, B, FFT=None):
-    """ Convolve two arrrays A & B row-wise. One or both can be one-dimensional for SIMO/SISO convolution
+    """ Convolve two arrays A & B row-wise. One or both can be one-dimensional for SIMO/SISO convolution
 
     Parameters
     ----------
