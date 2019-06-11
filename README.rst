@@ -106,6 +106,18 @@ Render a spherical microphone array measurement binaurally
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
+Version history
+^^^^^^^^^^^^^^^
+
+*2019-06-11 V0.6*
+    * Port of Radial Filter Improvement from SOFiA
+
+*2019-05-23 V0.5*
+    * Implement Spherical Head Filter
+    * Implement Spherical Fourier Transform using pseudoinverse
+    * Extract real time capable Spatial Fourier Transform
+    * Outsource reversed m index function (Exp. 4)
+
 References
 ^^^^^^^^^^
 The *sound_field_analysis* toolbox is based on the Matlab/C++ `Sound Field Analysis Toolbox (SOFiA) toolbox`_ by Benjamin Bernschütz. For more information you may refer to the original publication:
