@@ -17,7 +17,7 @@ Functions that act on the Spatial Fourier Coefficients
 
 import numpy as _np
 from scipy.linalg import lstsq
-from scipy.signal import fftconvolve
+from scipy.signal import butter, fftconvolve, freqs
 
 from .io import SphericalGrid
 from .sph import besselj, hankel1, sph_harm_all
@@ -60,7 +60,7 @@ def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
     return Pnm
 
 
-def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_sample=None):
+def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_sample=None, calculate_freqs=True):
     """Real-valued Fast Fourier Transform.
 
     Parameters
@@ -68,15 +68,18 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
     time_signals : TimeSignal/tuple/object
        Time-domain signals to be transformed.
     fs : int, optional
-       Sampling frequency - only optional if a TimeSignal or tuple/array containing fs is passed
+       Sampling frequency - only optional no frequency vector should be calculated or if a TimeSignal or tuple/array
+       containing fs is passed
     NFFT : int, optional
        Number of frequency bins. Resulting array will have size NFFT//2+1 Default: Next power of 2
     oversampling : int, optional
-       Oversamples the incoming signal to increase frequency resolution [Default: 1]
+       Oversample the incoming signal to increase frequency resolution [Default: 1]
     first_sample : int, optional
        First time domain sample to be included. [Default: 0]
     last_sample : int, optional
        Last time domain sample to be included. [Default: -1]
+    calculate_freqs : bool, optional
+       Calculate frequency scale if True, else return None. [Default: True]
 
     Returns
     -------
@@ -95,11 +98,11 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
         signals = time_signals.signal
         fs = time_signals.fs
     except AttributeError:
-        if fs is not None:
-            signals = time_signals
-        else:
+        if fs is None and calculate_freqs:
             raise ValueError('No valid signal found. Either pass an io.TimeSignal, a tuple/array containing the signal '
                              'and the sampling frequency or use the fs argument.')
+        else:
+            signals = time_signals
 
     signals = _np.atleast_2d(signals)
     nSig, nSamples = signals.shape
@@ -123,7 +126,7 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
         NFFT = int(2 ** _np.ceil(_np.log2(total_samples)))
 
     fftData = _np.fft.rfft(signals, NFFT * oversampling, 1)
-    f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs)
+    f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs) if calculate_freqs else None
 
     return fftData, f
 
