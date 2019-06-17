@@ -25,6 +25,7 @@ radius     = miro_data.radius;
 quadWeight = miro_data.quadWeight;
 scatterer  = miro_data.scatterer;
 avgAirTemp = miro_data.avgAirTemp; 
+irCenter   = miro_data.irCenter;
 
 clear miro_data path_name file_name;
 
@@ -53,7 +54,8 @@ colatitude = miro_data.elevation;
 radius     = miro_data.radius;
 quadWeight = miro_data.quadWeight;
 scatterer  = miro_data.scatterer;
-avgAirTemp = miro_data.avgAirTemp; 
+avgAirTemp = miro_data.avgAirTemp;
+irCenter   = miro_data.irCenter;
 
 clear miro_data path_name file_name;
 
@@ -82,7 +84,8 @@ colatitude = miro_data.elevation;
 radius     = miro_data.radius;
 quadWeight = miro_data.quadWeight;
 scatterer  = miro_data.scatterer;
-avgAirTemp = miro_data.avgAirTemp; 
+avgAirTemp = miro_data.avgAirTemp;
+irCenter   = miro_data.irCenter;
 
 clear miro_data path_name file_name;
 

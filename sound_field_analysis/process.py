@@ -1,5 +1,7 @@
 """
 Functions that act on the Spatial Fourier Coefficients
+`BEMA`
+   Bandwidth Extension for Microphone Arrays
 
 `FFT`
    (Fast) Fourier Transform
@@ -31,39 +33,93 @@ from .sph import besselj, hankel1, sph_harm_all
 
 
 # noinspection PyUnusedLocal
-def BEMA(Pnm, ctSig, dn, transition, avgBandwidth, fade=True):
-    """BEMA Spatial Anti-Aliasing - NOT YET IMPLEMENTED
+def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order=None):
+    """BEMA Spatial Anti-Aliasing
 
     Parameters
     ----------
     Pnm : array_like
-       Spatial Fourier coefficients
-    ctSig : array_like
-       Signal of the center microphone
+       Sound field SH spatial Fourier coefficients
+    center_sig : array_like
+      center microphone in shape [0, NFFT]
     dn : array_like
        Radial filters for the current array configuration
     transition : int
-       Highest stable bin, approx: transition = (NFFT/FS+1) * (N*c)/(2*pi*r)
-    avgBandwidth : int
-       Averaging Bandwidth in oct
+       Highest stable bin, approx: transition = (NFFT/fs) * (N*c)/(2*pi*r)
+    avg_band_width : int, optional
+       Averaging Bandwidth in oct [Default: 1]
     fade : bool, optional
        Fade over if True, else hard cut [Default: True]
+    max_order : int, optional
+       Maximum transform order [Default: highest available order]
 
     Returns
     -------
     Pnm : array_like
-       Alias-free spatial Fourier coefficients
-
-    Note
-    ----
-    This was presented at the 2012 AES convention, see [1]_.
+       BEMA optimized sound field SH coefficients
 
     References
     ----------
     .. [1] B. Bernschütz, "Bandwidth Extension for Microphone Arrays",
        AES Convention 2012, Convention Paper 8751, 2012. http://www.aes.org/e-lib/browse.cfm?elib=16493
     """
-    print('!Warning, BEMA is not yet implemented. Continuing with initial coefficients!')
+
+    if not max_order:
+        max_order = int(_np.sqrt(Pnm.shape[0] - 1))  # SH order
+
+    transition = _np.floor(transition)
+
+    # computing spatiotemporal Image Imn
+    Imn = _np.zeros((Pnm.shape[0], 1), dtype=complex)  # preallocating the spectral image matrix
+    start_avg_bin = _np.floor(transition / (_np.power(2, avg_band_width)))  # first bin for averaging
+
+    modeCnt = 0
+    avgPower = 0
+    for n in range(0, max_order + 1):  # sh orders
+        for m in range(0, 2 * n + 1):  # modes
+            for bin in range(start_avg_bin - 1, transition):  # bins
+                synthBin = Pnm[modeCnt, bin] * dn[n, bin]
+                Imn[modeCnt, 0] += synthBin
+                avgPower += _np.abs(synthBin) ** 2
+            modeCnt += 1
+
+    # energy normalization (Eq. 9)
+    energySum = _np.sum(_np.power(_np.abs(Imn), 2))
+    normFactor = avgPower / (transition - start_avg_bin + 1)
+    Imn *= _np.sqrt(normFactor / energySum)
+
+    # normalize center signal to its own average level in the source band. (Eq. 13)
+    center_sig[_np.where(center_sig == 0)] = 1e-12
+    sq_avg = _np.sqrt(_np.mean(_np.power(_np.abs(center_sig[:, (start_avg_bin - 1):transition]), 2)))
+    center_sig = _np.multiply(center_sig, (1 / sq_avg))
+
+    Pnm_synth = _np.zeros(Pnm.shape, dtype=complex)
+    modeCnt = 0
+    for n in range(0, max_order + 1):
+        for m in range(0, 2 * n + 1):
+            for bin in range(start_avg_bin - 1, Pnm_synth.shape[1]):
+                Pnm_synth[modeCnt, bin] = Imn[modeCnt, 0] * (1 / dn[n, bin]) * center_sig[0, bin]
+            modeCnt += 1
+
+    # Phase correction (Eq. 16)
+    phaseOffset = _np.angle(Pnm[0, transition] / Pnm_synth[0, transition])
+    Pnm_synth *= _np.exp(1j * phaseOffset)
+
+    # Merge original and synthetic SH coefficients. (Eq. 14)
+    Pnm = _np.concatenate((Pnm[:, 0:(transition - 1)], Pnm_synth[:, (transition - 1):]), axis=1)
+
+    # Fade in of synthetic SH coefficients. (Eq. 17)
+    if fade:
+        Pnm_fade0 = Pnm[:, (start_avg_bin - 1):(transition - 1)]
+        Pnm_fadeS = Pnm_synth[:, (start_avg_bin - 1):(transition - 1)]
+
+        fadeUp = _np.linspace(0, 1, Pnm_fade0.shape[1])
+        fadeDown = _np.flip(fadeUp)
+
+        Pnm_fade0 *= fadeDown
+        Pnm_fadeS *= fadeUp
+        Pnm[:, start_avg_bin - 1:transition - 1] = Pnm_fade0 + Pnm_fadeS
+
     return Pnm
 
 
