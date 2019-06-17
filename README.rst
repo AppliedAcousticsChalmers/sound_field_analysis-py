@@ -108,6 +108,9 @@ Render a spherical microphone array measurement binaurally
 
 Version history
 ^^^^^^^^^^^^^^^
+*2019-06-11 V0.6*
+    * Implement Bandwidth Extension for Microphone Arrays (BEMA)
+    * Edit read_miro_struct, named tuple ArraySignal and miro_to_struct.m to load center measurements
 
 *2019-06-11 V0.6*
     * Port of Radial Filter Improvement from SOFiA
