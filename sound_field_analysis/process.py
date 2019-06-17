@@ -142,20 +142,19 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
     last_sample : int, optional
        Last time domain sample to be included. [Default: -1]
     calculate_freqs : bool, optional
-       Calculate frequency scale if True, else return None. [Default: True]
+       Calculate frequency scale if True, else return only spectrum. [Default: True]
 
     Returns
     -------
-    fftData : ndarray
-       Frequency-domain data
-    f : ndarray
-       Frequency scale
+    fftData : array_like
+       One-sided frequency domain spectrum
+    f : array_like, optional
+       Vector of frequency bins of one-sided spectrum, in case of calculate_freqs
 
-    Note
-    ----
-    An oversampling*NFFT point Fourier Transform is applied to the time domain data,
-    where NFFT is the next power of two of the number of samples.
-    Time-windowing can be used by providing a first_sample and last_sample index.
+    Notes
+    -----
+    An oversampling*NFFT point Fourier Transform is applied to the time domain data, where NFFT is the next power of
+    two of the number of samples. Time-windowing can be used by providing a first_sample and last_sample index.
     """
     try:
         signals = time_signals.signal
@@ -189,8 +188,10 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
         NFFT = int(2 ** _np.ceil(_np.log2(total_samples)))
 
     fftData = _np.fft.rfft(signals, NFFT * oversampling, 1)
-    f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs) if calculate_freqs else None
+    if not calculate_freqs:
+        return fftData
 
+    f = _np.fft.rfftfreq(NFFT * oversampling, d=1 / fs)
     return fftData, f
 
 
@@ -457,7 +458,7 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     dn_ir *= _np.hanning(kernelSize)
 
     # transform into one-sided spectrum
-    dn, _ = FFT(dn_ir, calculate_freqs=False)
+    dn = FFT(dn_ir, calculate_freqs=False)
 
     # calculate high pass (need to be zero phase since radial filters are already linear phase)
     if 0 < highPass <= 1:
