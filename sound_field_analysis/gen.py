@@ -42,7 +42,7 @@ def whiteNoise(fftData, noiseLevel=80):
     dimFactor = 10 ** (noiseLevel / 20)
     fftData = _np.atleast_2d(fftData)
     channels = fftData.shape[0]
-    NFFT = fftData.shape[1] * 2 - 2
+    NFFT = (fftData.shape[1] - 1) * 2
     nNoise = _np.random.rand(channels, NFFT)
     nNoise = dimFactor * nNoise / _np.mean(_np.abs(nNoise))
     nNoiseSpectrum = _np.fft.rfft(nNoise, axis=1)
@@ -153,7 +153,7 @@ def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=4
        Vector of modal frequency domain filter of shape [max_order + 1 x NFFT / 2 + 1]
     """
 
-    freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
+    freqs = _np.linspace(0, fs / 2, NFFT // 2 + 1)
     orders = _np.r_[0:max_order + 1]
     return radial_filter(orders, freqs, array_configuration, amp_maxdB=amp_maxdB)
 
@@ -257,7 +257,7 @@ def spherical_head_filter_spec(max_order, NFFT, fs, radius, amp_maxdB=None):
        Vector of frequency domain filter of shape [NFFT / 2 + 1]
     """
     # frequency support vector & corresponding wave numbers k
-    freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
+    freqs = _np.linspace(0, fs / 2, NFFT // 2 + 1)
     kr_SHF = kr(freqs, radius)
 
     # calculate SH order necessary to expand sound field in entire modal range
@@ -368,7 +368,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     array_configuration = ArrayConfiguration(*array_configuration)
 
     order = _np.int(order)
-    NFFT = int(NFFT / 2 + 1)
+    NFFT = NFFT // 2 + 1
     NMLocatorSize = (order + 1) ** 2
 
     # SAFETY CHECKS

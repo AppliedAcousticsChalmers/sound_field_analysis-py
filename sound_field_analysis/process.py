@@ -26,7 +26,7 @@ Functions that act on the Spatial Fourier Coefficients
 
 import numpy as _np
 from scipy.linalg import lstsq
-from scipy.signal import butter, fftconvolve, freqs
+from scipy.signal import butter, fftconvolve, sosfreqz
 
 from .io import SphericalGrid
 from .sph import besselj, hankel1, sph_harm_all
@@ -167,15 +167,14 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
             signals = time_signals
 
     signals = _np.atleast_2d(signals)
-    nSig, nSamples = signals.shape
 
     if last_sample is None:  # assign lastSample to length of signals if not provided
-        last_sample = nSamples
+        last_sample = signals.shape[1]
 
     if oversampling < 1:
         raise ValueError('oversampling must be >= 1.')
 
-    if last_sample < first_sample or last_sample > nSamples:
+    if last_sample < first_sample or last_sample > signals.shape[1]:
         raise ValueError('lastSample must be between firstSample and nSamples.')
 
     if first_sample < 0 or first_sample > last_sample:
@@ -431,11 +430,17 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     HIGHPASS
        If HPF is on (0<highPass<=1) the radial filters and HPF share the available taps and the latency keeps constant.
        Be careful when using very small kernel sizes because since there might be too few taps. Observe the filters by
-       plotting their spectra and impulse responses.
+       plotting their spectra and impulse responses!
        > Be very careful if NFFT/max(kr) < 25
        > Do not use R/F/I if NFFT/max(kr) < 15
     """
-    sourceKernelSize = int((dn.shape[-1] - 1) * 2)
+    dn = _np.atleast_2d(dn)
+    sourceKernelSize = (dn.shape[-1] - 1) * 2
+
+    # in case highpass should be applied, half both individual kernel sizes
+    endKernelSize = kernelSize
+    if highPass:
+        kernelSize //= 2
 
     # DC-component estimation
     dn_diff = _np.abs(dn[:, 1] / dn[:, 2])
@@ -446,7 +451,7 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     dn_ir = iFFT(dn)
 
     # make filters causal by circular shift
-    dn_ir = _np.roll(dn_ir, int(dn_ir.shape[-1] / 2), axis=-1)
+    dn_ir = _np.roll(dn_ir, dn_ir.shape[-1] // 2, axis=-1)
 
     # downsize kernel
     latency = kernelSize / 2
@@ -458,17 +463,21 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     dn_ir *= _np.hanning(kernelSize)
 
     # transform into one-sided spectrum
-    dn = FFT(dn_ir, calculate_freqs=False)
+    dn = FFT(dn_ir, NFFT=endKernelSize, calculate_freqs=False)
 
     # calculate high pass (need to be zero phase since radial filters are already linear phase)
     if 0 < highPass <= 1:
         # by designing an IIR filter and taking the magnitude response
         # calculate IIR filter coefficients
-        # noinspection PyTupleAssignmentBalance
-        hp_b, hp_a = butter(8, highPass, 'highpass', analog=True)
-        # calculate one-sided spectrum
-        _, HP = freqs(hp_b, hp_a, worN=_np.linspace(0, 1, int(kernelSize / 2 + 1)))
+        hp_sos = butter(8, highPass, btype='highpass', output='sos', analog=False)
+        # calculate "equivalent" zero phase FIR filter one-sided spectrum
+        _, HP = sosfreqz(hp_sos, worN=kernelSize // 2 + 1, whole=False)
         HP[_np.isnan(HP)] = 0  # prevent NaNs
+        # make filter zero phase by circular shift
+        hp = _np.roll(iFFT(HP), kernelSize // 2, axis=-1)
+        latency += kernelSize / 2
+        # append zeros in time domain
+        HP = FFT(hp, NFFT=endKernelSize, calculate_freqs=False)
 
         # # by designing an FIR filter with FIRLS
         # from scipy.signal import firls
@@ -478,18 +487,18 @@ def rfi(dn, kernelSize=512, highPass=0.0):
         # desired = 10 ** (_np.array([STOP_BAND_ATTENUATION, STOP_BAND_ATTENUATION, 0, 0]) / 20)  # magnitudes as linear
         # hp = firls(kernelSize - 1, bands=bands, desired=desired)
         # # make filter zero phase by circular shift
-        # hp = _np.roll(hp, int(hp.shape[-1] / 2), axis=-1)
+        # hp = _np.roll(hp, hp.shape[-1] // 2, axis=-1)
         # # transform into one-sided spectrum
-        # HP, _ = FFT(hp, calculate_freqs=False)
+        # HP = FFT(hp, calculate_freqs=False)
 
         # # by designing an FIR filter with FIRWIN
         # from scipy.signal import firwin
         # # calculate FIR linear phase filter coefficients
         # hp = firwin(kernelSize - 1, highPass, pass_zero=False, window='hamming')
         # # make filter zero phase by circular shift
-        # hp = _np.roll(hp, int(hp.shape[-1] / 2), axis=-1)
+        # hp = _np.roll(hp, hp.shape[-1] // 2, axis=-1)
         # # transform into one-sided spectrum
-        # HP, _ = FFT(hp, calculate_freqs=False)
+        # HP = FFT(hp, calculate_freqs=False)
 
         # apply high pass
         dn *= HP
@@ -554,9 +563,9 @@ def iFFT(Y, output_length=None, window=False):
     Y : array_like
        Frequency domain data [Nsignals x Nbins]
     output_length : int, optional
-       Lenght of returned time-domain signal (Default: 2 x len(Y) + 1)
+       Length of returned time-domain signal (Default: 2 x len(Y) + 1)
     window : boolean, optional
-       Weights the resulting time-domain signal with a Hann
+       Window applied to the resulting time-domain signal
 
     Returns
     -------
@@ -567,7 +576,7 @@ def iFFT(Y, output_length=None, window=False):
     y = _np.fft.irfft(Y, n=output_length)
 
     if window:
-        no_of_signals, no_of_samples = y.shape
+        no_of_samples = y.shape[-1]
 
         if window == 'hann':
             window_array = _np.hanning(no_of_samples)
@@ -580,7 +589,8 @@ def iFFT(Y, output_length=None, window=False):
         else:
             raise ValueError('Selected window must be one of hann, hamming, blackman or kaiser')
 
-        y = window_array * y
+        y *= window_array
+
     return y
 
 

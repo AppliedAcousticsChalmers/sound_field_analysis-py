@@ -106,9 +106,11 @@ Render a spherical microphone array measurement binaurally
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
+
 Version history
 ^^^^^^^^^^^^^^^
-*2019-06-11 V0.6*
+
+*2019-06-17 V0.7*
     * Implement Bandwidth Extension for Microphone Arrays (BEMA)
     * Edit read_miro_struct, named tuple ArraySignal and miro_to_struct.m to load center measurements
 
@@ -120,6 +122,7 @@ Version history
     * Implement Spherical Fourier Transform using pseudoinverse
     * Extract real time capable Spatial Fourier Transform
     * Outsource reversed m index function (Exp. 4)
+
 
 References
 ^^^^^^^^^^
