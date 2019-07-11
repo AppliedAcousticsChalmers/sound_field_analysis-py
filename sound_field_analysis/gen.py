@@ -189,7 +189,7 @@ def radial_filter(orders, freqs, array_configuration, amp_maxdB=40):
     return limiting_factor / extrapolation_coeffs
 
 
-def spherical_head_filter(max_order, full_order, kr):
+def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
     """Generate coloration compensation filter of specified maximum SH order.
 
     Parameters
@@ -200,6 +200,8 @@ def spherical_head_filter(max_order, full_order, kr):
         Full order necessary to expand sound field in entire modal range
     kr : array_like
         Vector of corresponding wave numbers
+    is_tapering : bool, optional
+        If set, spherical head filter will be adapted applying a Hann window, according to [2]
 
     Returns
     -------
@@ -208,33 +210,43 @@ def spherical_head_filter(max_order, full_order, kr):
 
     References
     ----------
-    .. [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., et al. (2017). Spectral equalization in binaural signals
-           represented by order-truncated spherical harmonics. The Journal of the Acoustical Society of America.
+    .. [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., et al. (2017). "Spectral equalization in binaural signals
+           represented by order-truncated spherical harmonics. The Journal of the Acoustical Society of America".
+
+    .. [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and Ivan J. Tashev (2019). “Improving
+           Binaural Ambisonics Decoding by Spherical Harmonics Domain Tapering and Coloration Compensation.”
     """
 
-    def pressure_on_sphere(max_order, kr):
+    # noinspection PyShadowingNames
+    def pressure_on_sphere(max_order, kr, taper_weights=None):
         """
         Calculate the diffuse field pressure frequency response of a spherical scatterer, up to the specified SH order.
+        If tapering weights are specified, pressure on the sphere function will be adapted.
         """
+        if taper_weights is None:
+            taper_weights = _np.ones(max_order + 1)  # no weighting
+
         p = _np.zeros_like(kr)
         for order in range(max_order + 1):
             # Calculate mode strength b_n(kr) for an incident plane wave on sphere according to [1, Eq.(9)]
             b_n = 4 * _np.pi * 1j ** order * (spherical_jn(order, kr) -
                                               (spherical_jn(order, kr, True) /
                                                dsphankel2(order, kr)) * sphankel2(order, kr))
-            p += (2 * order + 1) * _np.abs(b_n) ** 2
+            p += (2 * order + 1) * _np.abs(b_n) ** 2 * taper_weights[order]
 
         # according to [1, Eq.(11)]
         return 1 / (4 * _np.pi) * _np.sqrt(p)
 
     # according to [1, Eq.(12)].
-    G_SHF = pressure_on_sphere(full_order, kr) / pressure_on_sphere(max_order, kr)
+    taper_weights = tapering_window(max_order) if is_tapering else None
+    G_SHF = pressure_on_sphere(full_order, kr) / pressure_on_sphere(max_order, kr, taper_weights)
+
     G_SHF[G_SHF == 0] = 1e-12  # catch zeros
     G_SHF[_np.isnan(G_SHF)] = 1  # catch NaNs
     return G_SHF
 
 
-def spherical_head_filter_spec(max_order, NFFT, fs, radius, amp_maxdB=None):
+def spherical_head_filter_spec(max_order, NFFT, fs, radius, amp_maxdB=None, is_tapering=False):
     """Generate NFFT/2 + 1 coloration compensation filter of specified maximum SH order for frequencies 0:fs/2, wraps
     spherical_head_filter().
 
@@ -250,6 +262,8 @@ def spherical_head_filter_spec(max_order, NFFT, fs, radius, amp_maxdB=None):
         Array radius
     amp_maxdB : int, optional
        Maximum modal amplification limit in dB [Default: None]
+    is_tapering : bool, optional
+       If true spherical head filter will be adapted for SH tapering. [Default: False]
 
     Returns
     -------
@@ -257,14 +271,14 @@ def spherical_head_filter_spec(max_order, NFFT, fs, radius, amp_maxdB=None):
        Vector of frequency domain filter of shape [NFFT / 2 + 1]
     """
     # frequency support vector & corresponding wave numbers k
-    freqs = _np.linspace(0, fs / 2, NFFT // 2 + 1)
+    freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
     kr_SHF = kr(freqs, radius)
 
     # calculate SH order necessary to expand sound field in entire modal range
     order_full = int(_np.ceil(kr_SHF[-1]))
 
     # calculate filter
-    G_SHF = spherical_head_filter(max_order, order_full, kr_SHF)
+    G_SHF = spherical_head_filter(max_order, order_full, kr_SHF, is_tapering=is_tapering)
 
     # filter limiting
     if amp_maxdB:
@@ -430,3 +444,34 @@ def spherical_noise(gridData=None, order_max=8, spherical_harmonic_bases=None):
         order_max = _np.int(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)
     return _np.inner(spherical_harmonic_bases,
                      _np.random.randn((order_max + 1) ** 2) + 1j * _np.random.randn((order_max + 1) ** 2))
+
+
+def tapering_window(max_order):
+    """Design tapering window with cosine slope for orders greater than 3.
+
+    Parameters
+    ---------- 
+    max_order : int
+        Maximum SH order
+
+    Returns
+    -------
+    hann_window_half : array_like
+       Tapering window with cosine slope for orders greater than 3. Ones in case of maximum SH order being smaller than
+       3.
+
+    References
+    ----------
+    .. [1] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and Ivan J. Tashev (2019). “Improving
+           Binaural Ambisonics Decoding by Spherical Harmonics Domain Tapering and Coloration Compensation.”
+    """
+    weights = _np.ones(max_order + 1)
+
+    if max_order >= 3:
+        hann_window = _np.hanning(2 * ((max_order + 1) // 2) + 1)
+        weights[-((max_order - 1) // 2):] = hann_window[-((max_order + 1) // 2):-1]
+    else:
+        import sys
+        print('[WARNING]  SH maximum order is smaller than 3. No tapering will be used.', file=sys.stderr)
+
+    return weights

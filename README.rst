@@ -122,6 +122,10 @@ Render a spherical microphone array measurement for binaural reproduction.
 Version history
 ---------------
 
+*2019-07-11 V0.8*
+    * Implement Spherical Harmonics coefficients tapering
+    * Adaption of associated Spherical Head Filter
+
 *2019-06-17 V0.7*
     * Implement Bandwidth Extension for Microphone Arrays (BEMA)
     * Edit read_miro_struct, named tuple ArraySignal and miro_to_struct.m to load center measurements
