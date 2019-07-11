@@ -10,14 +10,15 @@ analyze, visualize and process sound field data recorded by spherical
 microphone arrays. Furthermore, various types of test-data may be
 generated to evaluate the implemented functions.
 
-The package is pure python and PEP8 compliant (except line-length).
+The package is pure Python and PEP8 compliant (except line-length).
 Please expect things to be slow for now and for the API to break, as the
 development is still very much ongoing.
+
 
 Requirements
 ------------
 
-We use Python 3.5 for development. Chances are that earlier version will
+We use Python 3.7 for development. Chances are that earlier version will
 work too but this is currently untested.
 
 The following external libraries are required:
@@ -25,25 +26,40 @@ The following external libraries are required:
 -  `NumPy`_
 -  `SciPy`_
 -  `Plotly`_ (for plotting)
--  `netCDF4`_ (for sofa_import in Exp3)
+
 
 Installation
 ------------
-You can simply install *sfa* through pip (``pip install sound_field_analysis``).
 
-We highly recommend the `Anaconda`_ python environment. Once installed,
-you can use the following steps to create a new environment with the
-*sfa* toolbox.
+For performance and convenience reasons we highly recommend to use
+`Conda`_ (miniconda for simplicity) to manage your Python installation.
+Once installed, you can use the following steps to create a new environment
+with the *sfa* toolbox.
 
 #. Create a new environment:
-   ``conda create --name sfa numpy scipy plotly``
-#. Activate this environment:
+   ``conda create --name sfa python numpy scipy plotly``
+
+#. Activate the environment:
    ``source activate sfa``
-#. Install from pypi:
+
+#. Install *sfa* from **either** source:
+
+   By cloning (or downloading) the repository **[recommended]**:
+
+   ``git clone https://github.com/AppliedAcousticsChalmers/sound_field_analysis-py.git``
+
+   ``cd sound_field_analysis-py/``
+
+   ``pip install -e .``
+
+   From `conda-forge`_ channel **[not recommended - code currently outdated]**:
+
+   ``conda install -c conda-forge sound_field_analysis``
+
+   From PyPI **[Not recommended - code currently outdated]**:
+
    ``pip install sound_field_analysis``
 
-Soon, you may also install directly from the `conda-forge`_ channel using
-``conda install -c conda-forge sound_field_analysis``.
 
 Documentation
 -------------
@@ -51,14 +67,16 @@ Documentation
 Please find the full documentation over at
 https://appliedacousticschalmers.github.io/sound_field_analysis-py/!
 
+
 Examples
 --------
 
 The following examples are available as Jupyter notebooks, either
-statically on `github`_ or interactively on `nbviewer`_. You can of
+statically on `GitHub`_ or interactively on `nbviewer`_. You can of
 course also simply download the examples and run them locally!
 
-Exp1 Ideal plane wave
+
+Exp1: Ideal plane wave
 ~~~~~~~~~~~~~~~~~~~~~
 
 Ideal unity plane wave simulation and 3D plot.
@@ -88,27 +106,21 @@ a cardioid mic.
 Exp3: Import data in SOFA format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Install dependencies for `netCDF4`_ (see example documentation) (this only worked on Mac OS X):
-   ``brew install hdf5``
-   ``brew install netcdf``
-#. Install additional dependency from pypi:
-   ``pip install sound_field_analysis[sofa_import]``
-
-`SOFA format`_
-
-`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp3_Import_SOFA.ipynb>`__
+The provided example loading a SOFA_ file is outdated. We recommend using the
+`pysofaconventions <https://github.com/andresperezlopez/pysofaconventions>`_
+package. See repository for examples and install instructions.
 
 
 Exp4: Binaural rendering
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Render a spherical microphone array measurement binaurally
+Render a spherical microphone array measurement for binaural reproduction.
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
 
 Version history
-^^^^^^^^^^^^^^^
+---------------
 
 *2019-06-17 V0.7*
     * Implement Bandwidth Extension for Microphone Arrays (BEMA)
@@ -119,28 +131,27 @@ Version history
 
 *2019-05-23 V0.5*
     * Implement Spherical Head Filter
-    * Implement Spherical Fourier Transform using pseudoinverse
+    * Implement Spherical Fourier Transform using pseudo-inverse
     * Extract real time capable Spatial Fourier Transform
     * Outsource reversed m index function (Exp. 4)
 
 
 References
-^^^^^^^^^^
+----------
+
 The *sound_field_analysis* toolbox is based on the Matlab/C++ `Sound Field Analysis Toolbox (SOFiA) toolbox`_ by Benjamin Bernschütz. For more information you may refer to the original publication:
 
 [1] `Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio <http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/>`_
 
 The Lebedev grid generation was adapted from an implementation by `Richard P. Muller <https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
 
-
 .. _Sound Field Analysis Toolbox (SOFiA) toolbox: http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html
 .. _[1]: #references
 .. _NumPy: http://www.numpy.org
 .. _SciPy: http://www.scipy.org
 .. _Plotly: https://plot.ly/python/
-.. _netCDF4: http://github.com/Unidata/netcdf4-python
-.. _Anaconda: https://www.continuum.io/downloads
+.. _Conda: https://www.continuum.io/downloads
 .. _conda-forge: https://conda-forge.github.io
-.. _github: examples/
+.. _GitHub: examples/
 .. _nbviewer: http://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/
-.. _SOFA format: https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)
+.. _SOFA: https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)
