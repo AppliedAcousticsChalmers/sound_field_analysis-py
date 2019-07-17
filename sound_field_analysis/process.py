@@ -71,7 +71,7 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
 
     # computing spatiotemporal Image Imn
     Imn = _np.zeros((Pnm.shape[0], 1), dtype=complex)  # preallocating the spectral image matrix
-    start_avg_bin = _np.floor(transition / (_np.power(2, avg_band_width)))  # first bin for averaging
+    start_avg_bin = int(_np.floor(transition / (_np.power(2, avg_band_width)))) # first bin for averaging
 
     modeCnt = 0
     avgPower = 0
