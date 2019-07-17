@@ -67,7 +67,7 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
     if not max_order:
         max_order = int(_np.sqrt(Pnm.shape[0] - 1))  # SH order
 
-    transition = _np.floor(transition)
+    transition = int(_np.floor(transition))
 
     # computing spatiotemporal Image Imn
     Imn = _np.zeros((Pnm.shape[0], 1), dtype=complex)  # preallocating the spectral image matrix
