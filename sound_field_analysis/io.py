@@ -302,6 +302,7 @@ def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat="float"):
     wavformat : string
        wav file format to write. Either "float" or "int16"
     """
+    import sys
     # equator_IDX_left = utils.nearest_to_value_logical_IDX(time_data_l.grid.colatitude, _np.pi / 2)
     # equator_IDX_right = utils.nearest_to_value_logical_IDX(time_data_r.grid.colatitude, _np.pi / 2)
 
@@ -310,22 +311,17 @@ def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat="float"):
     IRs_left = time_data_l.signal.signal
     IRs_right = time_data_r.signal.signal
 
-    # if _np.mod(360 / IRs_left.shape[0], 1) == 0:
-    #    IRs_left = _np.repeat(IRs_left, 360 / IRs_left.shape[0], axis=0)
-    # else:
-    #    raise ValueError('Number of channels for left ear cannot be fit into 360.')
-    # if _np.mod(360 / IRs_right.shape[0], 1) == 0:
-    #    IRs_right = _np.repeat(IRs_right, 360 / IRs_right.shape[0], axis=0)
-    # else:
-    #    raise ValueError('Number of channels for left ear cannot be fit into 360.')
-
     IRs_to_write = utils.interleave_channels(IRs_left, IRs_right, style="SSR")
     # data_to_write = utils.simple_resample(IRs_to_write, original_fs=time_data_l.signal.fs, target_fs=44100)
     data_to_write = IRs_to_write
 
-    # Fix SSR IR alignment stuff: left<>right flipped and 90 degree rotation
-    # data_to_write = _np.flipud(data_to_write)
-    # data_to_write = _np.roll(data_to_write, -90, axis=0)
+    # get absolute max value
+    max_val = _np.max(_np.abs([time_data_l.signal.signal, time_data_r.signal.signal]))
+    if max_val > 1.0:
+        if wavformat == "int16":
+            raise ValueError("At least one value exceeds 1.0, exporting to 'int16' will lead to clipping. "
+                             "Choose waveformat 'float' instead or normalize data.")
+        print("WARNING: At least one value exceeds 1.0!", file=sys.stderr)
 
     if wavformat == "float":
         sio.wavfile.write(filename, int(time_data_l.signal.fs), data_to_write.astype(_np.float32).T)

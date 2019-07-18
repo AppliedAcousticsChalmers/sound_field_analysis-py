@@ -437,6 +437,10 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     dn = _np.atleast_2d(dn)
     sourceKernelSize = (dn.shape[-1] - 1) * 2
 
+    if kernelSize > sourceKernelSize:
+        raise ValueError('Kernelsize greater than radial filters. Extension of kernelsize not yet implemented.')
+        # TODO: Implement kernelsize extension
+
     # in case highpass should be applied, half both individual kernel sizes
     endKernelSize = kernelSize
     if highPass:
