@@ -89,6 +89,61 @@ def rad2deg(rad):
     """
     return rad / np.pi * 180 % 360
 
+def cart2sph(cartesian_coords, is_deg=False):
+    """
+    Parameters
+    ----------
+    cartesian_coords : numpy.ndarray
+        cartesian coordinates (x, y, z) of size [3; number of coordinates]
+    is_deg : bool, optional
+        if values should be calculated in degrees (radians otherwise)
+
+    Returns
+    -------
+    numpy.ndarray
+        calculated spherical coordinates (azimuth, colatitude, radius) of size [3; number of coordinates]
+    """
+    x = cartesian_coords[0]
+    y = cartesian_coords[1]
+    z = cartesian_coords[2]
+
+    az = np.arctan2(y, x)
+    r = np.sqrt(np.power(x, 2) + np.power(y, 2) + np.power(z, 2))
+    col = np.arccos(z/r)
+
+    if is_deg:
+        az = rad2deg(az)
+        col = rad2deg(col)
+
+    return np.vstack((az, col, r))
+
+def sph2cart(spherical_coords, is_deg=False):
+    """
+    Parameters
+    ----------
+    spherical_coords : numpy.ndarray
+        spherical coordinates (azimuth, colatitude, radius) of size [3; number of coordinates]
+    is_deg : bool, optional
+        True if values are given in degrees (radians otherwise), [default: False]
+
+    Returns
+    -------
+    numpy.ndarray
+        cartesian coordinates (x, y, z) of size [3; number of coordinates]
+    """
+    az = spherical_coords[0]
+    col = spherical_coords[1]
+    r = spherical_coords[2]
+
+    if is_deg:
+        az = deg2rad(az)
+        col = deg2rad(col)
+
+    x = r * np.sin(col) * np.cos(az)
+    y = r * np.sin(col) * np.sin(az)
+    z = r * np.cos(col)
+
+    return np.vstack((x, y, z))
 
 def nearest_to_value_IDX(array, target_val):
     """Returns nearest value inside an array
