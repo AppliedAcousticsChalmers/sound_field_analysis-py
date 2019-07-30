@@ -79,13 +79,13 @@ def db(data, power=False):
 
 
 def deg2rad(deg):
-    """Converts from degree [0 ... 360] to radiant [0 ... 2 pi]
+    """Converts from degree [0 ... 360] to radiant [0 ... 2pi]
     """
     return deg % 360 / 180 * np.pi
 
 
 def rad2deg(rad):
-    """Converts from radiant [0 ... 2 pi] to degree [0 ... 360]
+    """Converts from radiant [0 ... 2pi] to degree [0 ... 360]
     """
     return rad / np.pi * 180 % 360
 
@@ -101,16 +101,17 @@ def cart2sph(cartesian_coords, is_deg=False):
     Returns
     -------
     numpy.ndarray
-        calculated spherical coordinates (azimuth, colatitude, radius) of size [3; number of coordinates]
+        calculated spherical coordinates (azimuth [0 ... 2pi], colatitude [0 ... pi], radius [meter]) of size [3; number of coordinates]
     """
     x = cartesian_coords[0]
     y = cartesian_coords[1]
     z = cartesian_coords[2]
 
-    az = np.arctan2(y, x)
+    az = np.arctan2(y, x)  # return values -pi ... pi
     r = np.sqrt(np.power(x, 2) + np.power(y, 2) + np.power(z, 2))
     col = np.arccos(z/r)
 
+    az %= (2 * np.pi)  # converting to 0 ... 2pi
     if is_deg:
         az = rad2deg(az)
         col = rad2deg(col)

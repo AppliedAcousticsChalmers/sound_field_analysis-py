@@ -133,11 +133,11 @@ class ArraySignal(namedtuple('ArraySignal', 'signal grid center_signal configura
         Parameters
         ----------
         signal : TimeSignal
-           Holds time domain signals and sampling frequency fs
+           Array Time domain signals and sampling frequency
         grid : SphericalGrid
-           Location grid of all time domain signals
+           Measurement grid of time domain signals
         center_signal : TimeSignal
-           Center signal measurement
+           Center measurement time domain signal and sampling frequency
         configuration : ArrayConfiguration
            Information on array configuration
         temperature : array_like, optional
@@ -156,6 +156,40 @@ class ArraySignal(namedtuple('ArraySignal', 'signal grid center_signal configura
         return 'ArraySignal(\n' + ',\n'.join(
             '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
             for name, data in zip(['signal', 'grid', 'center_signal', 'configuration', 'temperature'], self)) + ')'
+
+
+class HrirSignal(namedtuple('HrirSignal', 'l r grid center_signal')):
+    """Named tuple HrirSignal"""
+    __slots__ = ()
+
+    def __new__(cls, l, r, grid, center_signal=None):
+        """
+        Parameters
+        ----------
+        l : TimeSignal
+           Left ear time domain signals and sampling frequency
+        r : TimeSignal
+           Right ear time domain signals and sampling frequency
+        grid : SphericalGrid
+           Measurement grid of time domain signals
+        center_signal : TimeSignal
+           Center measurement time domain signal and sampling frequency
+        """
+        l = TimeSignal(*l)
+        r = TimeSignal(*r)
+
+        grid = SphericalGrid(*grid)
+        if center_signal is not None:
+            center_signal = TimeSignal(*center_signal)
+
+        # noinspection PyArgumentList
+        self = super(HrirSignal, cls).__new__(cls, l, r, grid, center_signal)
+        return self
+
+    def __repr__(self):
+        return 'HrirSignal(\n' + ',\n'.join(
+            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
+            for name, data in zip(['l', 'r', 'grid', 'center_signal'], self)) + ')'
 
 
 def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatter_radius=None,
@@ -220,6 +254,128 @@ def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatt
     array_config = ArrayConfiguration(mic_grid.radius, sphere_config, transducer_type, scatter_radius)
 
     return ArraySignal(time_signal, mic_grid, center_signal, array_config, _np.squeeze(current_data['avgAirTemp']))
+
+
+def read_SOFA_file(file_name):
+    """ Reads Head Related Impulse Responses or Array impuse responses (DRIRs) stored as Spatially Oriented Format for Acoustics (SOFA) files files,
+        and convert them to Array Signal or HRIR Signal class
+
+    Parameters
+    ----------
+    file_name : filepath
+       Path to SOFA file
+
+    Returns
+    -------
+    sofa_signal : ArraySignal
+       Tuple containing a TimeSignal `signal`, SphericalGrid `grid`, TimeSignal 'center_signal',
+       ArrayConfiguration `configuration` and the air temperature
+
+   sofa_signal : HRIRSignal
+       Tuple containing the TimeSignals 'l' for the left, and 'r' for the right ear, SphericalGrid `grid`, TimeSignal 'center_signal'
+
+    Notes
+    -----
+    * Depends python package pysofaconventions:
+        https://github.com/andresperezlopez/pysofaconventions
+    * Up to now, importing 'SimpleFreeFieldHRIR' and 'SingleRoomDRIR' are provided only.
+
+    """
+    # check if package 'pysofaconventions' is available
+    try:
+        import pysofaconventions as sofa
+    except ImportError:
+        print('Could not found pysofaconventions. Could not load SOFA file')
+        return None
+
+    def print_sofa_infos(SOFA_convention):
+        print(f'\n --> samplerate: {SOFA_convention.getSamplingRate()[0]:.0f} Hz' \
+              f', receivers: {SOFA_convention.ncfile.file.dimensions["R"].size}' \
+              f', emitters: {SOFA_convention.ncfile.file.dimensions["E"].size}' \
+              f', measurements: {SOFA_convention.ncfile.file.dimensions["M"].size}' \
+              f', samples: {SOFA_convention.ncfile.file.dimensions["N"].size}' \
+              f', format: {SOFA_convention.getDataIR().dtype}' \
+              f'\n --> SOFA_convention: {SOFA_convention.getGlobalAttributeValue("SOFAConventions")}' \
+              f', version: {SOFA_convention.getGlobalAttributeValue("SOFAConventionsVersion")}')
+        try:
+            print(f' --> listener: {SOFA_convention.getGlobalAttributeValue("ListenerDescription")}')
+        except sofa.SOFAError:
+            pass
+        try:
+            print(f' --> author: {SOFA_convention.getGlobalAttributeValue("Author")}')
+        except sofa.SOFAError:
+            pass
+
+    def load_convention(SOFA_file):
+        convention = SOFA_file.getGlobalAttributeValue('SOFAConventions')
+        if convention == 'SimpleFreeFieldHRIR':
+            return sofa.SOFASimpleFreeFieldHRIR(SOFA_file.ncfile.filename, "r")
+        elif convention == 'SingleRoomDRIR':
+            return sofa.SOFASingleRoomDRIR(SOFA_file.ncfile.filename, "r")
+        else:
+            raise ValueError(f'Unknown or unimplemented SOFA convention!')
+
+    # load SOFA file
+    SOFA_file = sofa.SOFAFile(file_name, 'r')
+
+    # load SOFA convention
+    SOFA_convention = load_convention(SOFA_file)
+
+    # check validity of sofa_file and sofa_convention
+    if not SOFA_file.isValid():
+        raise ValueError('Invalid SOFA file.')
+    elif not SOFA_convention.isValid():
+        raise ValueError('Invalid SOFA convention.')
+    else:
+        # print SOFA file infos
+        print(f'\n open {file_name}')
+        print_sofa_infos(SOFA_convention)
+
+        # store SOFA data as named tupel
+        if SOFA_file.getGlobalAttributeValue('SOFAConventions') == 'SimpleFreeFieldHRIR':
+            left_ear = TimeSignal(signal=_np.squeeze(SOFA_file.getDataIR()[:, 0, :]),
+                                  fs=_np.squeeze(int(SOFA_file.getSamplingRate()[0])))
+            right_ear = TimeSignal(signal=_np.squeeze(SOFA_file.getDataIR()[:, 1, :]),
+                                   fs=_np.squeeze(int(SOFA_file.getSamplingRate()[0])))
+
+            # given spherical coordinates azimuth: [degree], elevation: [degree], radius: [meters]
+            pos_grid_deg = SOFA_file.getSourcePositionValues()
+            pos_grid_deg = pos_grid_deg.T.filled(0).copy()  # transform into regular `numpy.ndarray`
+
+            # transform spherical grid to radiants, and elevation to colatitude
+            pos_grid_deg[1, :] = 90 - pos_grid_deg[1, :]
+            pos_grid_rad = utils.deg2rad(pos_grid_deg[0:2])
+
+            hrir_gird = SphericalGrid(azimuth=_np.squeeze(pos_grid_rad[0]),
+                                      colatitude=_np.squeeze(pos_grid_rad[1]),
+                                      radius=_np.squeeze(pos_grid_deg[2]))  # store original radius
+
+            return HrirSignal(l=left_ear, r=right_ear, grid=hrir_gird)
+
+        elif SOFA_file.getGlobalAttributeValue('SOFAConventions') == 'SingleRoomDRIR':
+            time_signal = TimeSignal(signal=_np.squeeze(SOFA_file.getDataIR()),
+                                     fs=_np.squeeze(int(SOFA_file.getSamplingRate()[0])))
+
+            # given cartesian coordinates x: [meters], y: [meters], z: [meters]
+            pos_grid_cart = SOFA_file.getReceiverPositionValues()[:, :, 0]
+            pos_grid_cart = pos_grid_cart.T.filled(0)  # transform into regular `numpy.ndarray`
+
+            # transform cartesian grid to spherical coordinates in radiants
+            pos_grid_sph = utils.cart2sph(pos_grid_cart, is_deg=False)
+
+            mic_grid = SphericalGrid(azimuth=pos_grid_sph[0],
+                                     colatitude=pos_grid_sph[1],
+                                     radius=pos_grid_sph[2])
+
+            # assume rigid sphere and omnidirectional transducers according to SOFA 1.0, AES69-2015
+            array_config = ArrayConfiguration(array_radius=pos_grid_sph[2].mean(),
+                                              array_type='rigid',
+                                              transducer_type='omni')
+
+            return ArraySignal(signal=time_signal, grid=mic_grid, configuration=array_config)
+        else:
+            import sys
+            print('WARNING: Could not load SOFA file.', file=sys.stderr)
 
 
 def empty_time_signal(no_of_signals, signal_length):
