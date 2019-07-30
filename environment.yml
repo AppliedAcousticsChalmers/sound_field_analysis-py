@@ -1,0 +1,12 @@
+name: sfa
+channels:
+  - defaults
+dependencies:
+  - python
+  - numpy
+  - scipy
+  - plotly
+  - pip
+  - pip:
+    - pysofaconventions >= 0.1.5
+    - -e .

@@ -25,6 +25,7 @@ The following external libraries are required:
 
 -  `NumPy`_
 -  `SciPy`_
+-  `Pysofaconventions`_
 -  `Plotly`_ (for plotting)
 
 
@@ -36,8 +37,8 @@ For performance and convenience reasons we highly recommend to use
 Once installed, you can use the following steps to create a new environment
 with the *sfa* toolbox.
 
-#. Create a new environment:
-   ``conda create --name sfa python numpy scipy plotly``
+#. Create new Conda environment from the specified requirements:
+   ``conda env create --file environment.yml``
 
 #. Activate the environment:
    ``source activate sfa``
@@ -77,7 +78,7 @@ course also simply download the examples and run them locally!
 
 
 Exp1: Ideal plane wave
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 Ideal unity plane wave simulation and 3D plot.
 
@@ -103,24 +104,24 @@ a cardioid mic.
 .. _AE3_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
 
 
-Exp3: Import data in SOFA format
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The provided example loading a SOFA_ file is outdated. We recommend using the
-`pysofaconventions <https://github.com/andresperezlopez/pysofaconventions>`_
-package. See repository for examples and install instructions.
-
-
 Exp4: Binaural rendering
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Render a spherical microphone array measurement for binaural reproduction.
+Render a spherical microphone array measurement for binaural reproduction. The example shows examples for loading miro or `SOFA`_ files.
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
 
 Version history
 ---------------
+
+*2019-07-30 V0.9*
+    * Implement SOFA import
+    * Update Exp4 to contain SOFA import
+    * Delete obsolete Exp3
+    * Add named tuple HRIRSignal
+    * Implement cart2sph and sph2cart utility functions
+    * Add conda environment file for convenient installation of required packages
 
 *2019-07-11 V0.8*
     * Implement Spherical Harmonics coefficients tapering
@@ -137,7 +138,7 @@ Version history
     * Implement Spherical Head Filter
     * Implement Spherical Fourier Transform using pseudo-inverse
     * Extract real time capable Spatial Fourier Transform
-    * Outsource reversed m index function (Exp. 4)
+    * Outsource reversed m index function (Exp4)
 
 
 References
@@ -153,6 +154,7 @@ The Lebedev grid generation was adapted from an implementation by `Richard P. Mu
 .. _[1]: #references
 .. _NumPy: http://www.numpy.org
 .. _SciPy: http://www.scipy.org
+.. _Pysofaconventions: https://github.com/andresperezlopez/pysofaconventions
 .. _Plotly: https://plot.ly/python/
 .. _Conda: https://www.continuum.io/downloads
 .. _conda-forge: https://conda-forge.github.io

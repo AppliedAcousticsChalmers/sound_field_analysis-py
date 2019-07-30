@@ -271,7 +271,7 @@ def read_SOFA_file(file_name):
        Tuple containing a TimeSignal `signal`, SphericalGrid `grid`, TimeSignal 'center_signal',
        ArrayConfiguration `configuration` and the air temperature
 
-   sofa_signal : HRIRSignal
+    sofa_signal : HRIRSignal
        Tuple containing the TimeSignals 'l' for the left, and 'r' for the right ear, SphericalGrid `grid`, TimeSignal 'center_signal'
 
     Notes
@@ -281,12 +281,7 @@ def read_SOFA_file(file_name):
     * Up to now, importing 'SimpleFreeFieldHRIR' and 'SingleRoomDRIR' are provided only.
 
     """
-    # check if package 'pysofaconventions' is available
-    try:
-        import pysofaconventions as sofa
-    except ImportError:
-        print('Could not found pysofaconventions. Could not load SOFA file')
-        return None
+    import pysofaconventions as sofa
 
     def print_sofa_infos(SOFA_convention):
         print(f'\n --> samplerate: {SOFA_convention.getSamplingRate()[0]:.0f} Hz' \

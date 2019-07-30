@@ -21,6 +21,7 @@ setup(
     install_requires=[
         'scipy',
         'numpy',
+        'pysofaconventions',
     ],
 
     package_data={
@@ -28,7 +29,6 @@ setup(
     },
     extras_require={
         'plotting': ["plotly"],
-        'sofa_import': ["netCDF4"],  # see Exp3_Import_SOFA.py description for installation
     },
     packages=['sound_field_analysis'],
 )
