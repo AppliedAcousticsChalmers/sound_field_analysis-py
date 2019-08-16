@@ -28,7 +28,8 @@ setup(
         'examples': ['examples'],
     },
     extras_require={
-        'plotting': ["plotly"],
+        'plotting': ['plotly'],
+        'examples': ['jupyter'],
     },
     packages=['sound_field_analysis'],
 )

@@ -26,6 +26,7 @@ The following external libraries are required:
 -  `NumPy`_
 -  `SciPy`_
 -  `Pysofaconventions`_
+-  `Jupyter`_ (for running *Notebooks* locally)
 -  `Plotly`_ (for plotting)
 
 
@@ -60,6 +61,9 @@ with the *sfa* toolbox.
    From PyPI **[Not recommended - code currently outdated]**:
 
    ``pip install sound_field_analysis``
+
+#. **Optional:** Install additional requirements in case you want to locally run *Jupyter Notebooks*:
+   ``conda env update --file environment_jupyter.yml``
 
 
 Documentation
@@ -155,6 +159,7 @@ The Lebedev grid generation was adapted from an implementation by `Richard P. Mu
 .. _NumPy: http://www.numpy.org
 .. _SciPy: http://www.scipy.org
 .. _Pysofaconventions: https://github.com/andresperezlopez/pysofaconventions
+.. _Jupyter: https://jupyter.org/
 .. _Plotly: https://plot.ly/python/
 .. _Conda: https://www.continuum.io/downloads
 .. _conda-forge: https://conda-forge.github.io
