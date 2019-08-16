@@ -1,92 +1,70 @@
-% Converts miro data into a matlab structure, which can then be loaded from
-% Python
+% Converts MIRO data into a regular Matlab struct, which can then be loaded
+% from Python.
 %
-% This file requires the miro class definition, which can be downloaded 
-% from http://audiogroup.web.th-koeln.de/wdr_irc.html .
+% This file requires the MIRO Matlab Class Definition, which can be
+% downloaded from http://audiogroup.web.th-koeln.de/FILES/miro.m.
+clear; clc;
 
-clear;
+% Specify MIRO Class Data files that should be saved into Matlab structs
+miro2struct('data/HRIR_L2702.mat');
+miro2struct('data/CR1_VSA_110RS_L.mat');
 
-file_name = 'HRIR_L2702';
-path_name = 'data/';
 
-miro_data = load( [ path_name file_name ] );
-miro_data = miro_data.(file_name);
+%% FUNCTION miro2struct
+function miro2struct(file)
+    % Load specified file
+    fprintf('reading file "%s" ...\n',file);
+    miro_data = load(file);
 
-name       = miro_data.name;
-context    = miro_data.context;
-location   = miro_data.location;
-date       = miro_data.date;
-irChOne    = miro_data.irChOne;
-irChTwo    = miro_data.irChTwo;
-fs         = miro_data.fs;
-azimuth    = miro_data.azimuth;
-colatitude = miro_data.elevation;
-radius     = miro_data.radius;
-quadWeight = miro_data.quadWeight;
-scatterer  = miro_data.scatterer;
-avgAirTemp = miro_data.avgAirTemp; 
-irCenter   = miro_data.irCenter;
+    % Extract struct from loaded data
+    fields = fieldnames(miro_data);
+    miro_data = miro_data.(fields{1});
+    clear fields;
 
-clear miro_data path_name file_name;
+    % Pull all existing fields from stuct into this work space
+    read_struct_fields(miro_data);
+    
+    % Pull impulse response again seperately using the builtin function 
+    % `getIR()` which applies a time window
+    [irCenter,irChOne,irChTwo] = read_ir_fields(miro_data); %#ok<ASGLU>
+    clear miro_data;
 
-save( 'data/HRIR_L2702_struct.mat', '-v7' );
+    % Rename field 'elevation' since the Python API uses 'colatitude'. This
+    % was done to prevent mistakes, due to the field actually containing
+    % colatitude data, i.e. was falsely named before.
+    colatitude = elevation(:,:); %#ok<IDISVAR,NODEF>
+    clear elevation;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear;
+    % Update file name
+    file = insert_before_ending(file,'_struct');
 
-file_name = 'CR1_VSA_110RS_L';
-path_name = 'data/';
+    % Save all worksapce variables instead of 'file' by means or regex
+    fprintf('saving file "%s" ...\n\n',file);
+    save(file,'-regexp','^(?!(file)$).','-v7');
+end
 
-miro_data = load( [ path_name file_name ] );
-miro_data = miro_data.(file_name);
+function read_struct_fields(struct)
+    fields = fieldnames(struct);
+    for f = 1 : length(fields)
+        assignin('caller',fields{f},getfield(struct,fields{f})); %#ok<GFLD>
+    end
+end
 
-name       = miro_data.name;
-context    = miro_data.context;
-location   = miro_data.location;
-date       = miro_data.date;
-irChOne    = miro_data.irChOne;
-irChTwo    = miro_data.irChTwo;
-fs         = miro_data.fs;
-azimuth    = miro_data.azimuth;
-colatitude = miro_data.elevation;
-radius     = miro_data.radius;
-quadWeight = miro_data.quadWeight;
-scatterer  = miro_data.scatterer;
-avgAirTemp = miro_data.avgAirTemp;
-irCenter   = miro_data.irCenter;
+function [irCenter,irChOne,irChTwo] = read_ir_fields(struct)
+    irCenter = struct.getIR(0); %#ok<*NASGU>
+    for ch = 1:struct.nIr
+        ir = struct.getIR(ch);
+        irChOne(:,ch) = ir(:,1); %#ok<*AGROW>
+        if size(ir,2) > 1
+            irChTwo(:,ch) = ir(:,2);
+        end
+    end
+    if size(ir,2) <= 1
+        irChTwo = struct.irChTwo;  % pull empty vector again
+    end
+end
 
-clear miro_data path_name file_name;
-
-save( 'data/CR1_VSA_110RS_L_struct.mat', '-v7' );
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear;
-
-file_name = 'SBS_VSA_110RS_PAC';
-path_name = 'data/';
-
-miro_data = load( [ path_name file_name ] );
-miro_data = miro_data.(file_name);
-
-name       = miro_data.name;
-context    = miro_data.context;
-location   = miro_data.location;
-date       = miro_data.date;
-irChOne    = miro_data.irChOne;
-irChTwo    = miro_data.irChTwo;
-fs         = miro_data.fs;
-azimuth    = miro_data.azimuth;
-colatitude = miro_data.elevation;
-radius     = miro_data.radius;
-quadWeight = miro_data.quadWeight;
-scatterer  = miro_data.scatterer;
-avgAirTemp = miro_data.avgAirTemp;
-irCenter   = miro_data.irCenter;
-
-clear miro_data path_name file_name;
-
-save( 'data/SBS_VSA_110RS_PAC_struct.mat', '-v7' );
+function str = insert_before_ending(str,insert_str)
+    parts = strsplit(str,'.');
+    str = [parts{1:end-1},insert_str,'.',parts{end}];
+end
