@@ -149,6 +149,69 @@ def sph2cart(spherical_coords, is_deg=False):
 
     return np.vstack((x, y, z))
 
+
+def SOFA_grid2acr(grid_values, grid_info):
+    """Transform coordinate grid with specified coordinate system definition from a SOFA file into spherical
+    coordinates in radians.
+
+    Parameters
+    ----------
+    grid_values : numpy.ndarray
+        Coordinates either spherical or cartesian of size [3; number of coordinates]
+    grid_info : list of str
+        Definition of coordinate system contained in the provided values according to SOFA convention, i.e. either
+        ('degree, degree, metre', 'spherical') or ('metre, metre, metre', 'cartesian')
+
+    Returns
+    -------
+    numpy.ndarray
+        Spherical coordinates (azimuth [0 ... 2pi], colatitude [0 ... pi], radius [meter]) of size [3; number of
+        coordinates]
+
+    Raises
+    ------
+    ValueError
+        In case unknown coordinate system definition is given
+
+    Notes
+    -----
+    This is used for source position of "SimpleFreeFieldHRIR" and receiver position of "SingleRoomDRIR". These
+    conventions technically require different specific coordinate systems. Experience showed, that this is not
+    exactly met by all SOFA files, hence cartesian or spherical coordinates will be transformed in either case.
+    """
+
+    def _is_grid_spherical(grid):
+        grid = tuple(g.lower() for g in grid)
+        grid0 = grid[0].split(', ')
+        return grid0[0] == 'degree' and grid0[1] == 'degree' and grid0[2] in {'metre', 'meter'} \
+            and grid[1] == 'spherical'
+
+    def _is_grid_cartesian(grid):
+        grid = tuple(g.lower() for g in grid)
+        return grid[0] in {'metre', 'meter'} or grid[1] == 'cartesian'
+
+    grid_values = grid_values.T.filled(0).copy()  # transform into regular `numpy.ndarray`
+
+    # TODO: validation of data units against individual convention should be done in `pysofaconventions`
+    print(grid_info)
+    if _is_grid_spherical(grid_info):
+        # given spherical degrees with elevation
+        # transform into spherical radians with colatitude
+        grid_values[0] = deg2rad(grid_values[0])
+        grid_values[1] = deg2rad(90 - grid_values[1])
+
+    elif _is_grid_cartesian(grid_info):
+        # given cartesian
+        # transform into spherical radians with colatitude
+        grid_values = cart2sph(grid_values, is_deg=False)
+
+    else:
+        raise ValueError(f'SOFA position given in {grid_info}, but (\'degree, degree, metre\', \'spherical\') or '
+                         f'(\'metre\', \'cartesian\') was expected.')
+
+    return grid_values
+
+
 def nearest_to_value_IDX(array, target_val):
     """Returns nearest value inside an array
     """
