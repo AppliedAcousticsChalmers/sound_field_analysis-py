@@ -6,7 +6,7 @@ from collections import namedtuple
 import numpy as _np
 import plotly.graph_objs as go
 from plotly import offline as plotly_off
-from plotly import tools
+from plotly import subplots
 
 from .process import plane_wave_decomp
 from .utils import env_info, progress_bar, current_time
@@ -331,36 +331,39 @@ def layout_2D(viz_type=None, title=None):
         )
     )
 
-    if viz_type == 'time':
+    if viz_type == 'TIME':
         layout.title = 'Time domain plot'
         layout.xaxis.title = 'Time in s'
-    elif viz_type == 'linFFT':
+    elif viz_type == 'ETC':
+        layout.title = 'Time domain plot (ETC)'
+        layout.yaxis.title = 'Amplitude in dB'
+        layout.xaxis.title = 'Time in s'
+    elif viz_type == 'LINFFT':
         layout.title = 'Frequency domain plot (linear)'
         layout.yaxis.title = 'Amplitude in dB'
         layout.xaxis.title = 'Frequency in Hz'
-    elif viz_type == 'logFFT':
+    elif viz_type == 'LOGFFT':
         layout.title = 'Frequency domain plot (logarithmic)'
         layout.yaxis.title = 'Amplitude in dB'
         layout.xaxis.title = 'Frequency in Hz'
         layout.xaxis.type = 'log'
+
     return layout
 
 
-def prepare_2D_x(L, viz_type=None, fs=None):
+def prepare_2D_x(L, viz_type, fs):
     # X vector: samples or time
     x = _np.arange(L - 1, dtype=_np.float_)
 
-    if viz_type == 'time':
+    if viz_type in ['TIME', 'ETC']:
         x /= fs
-    elif viz_type == 'linFFT':
-        x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
-    elif viz_type == 'logFFT':
+    elif viz_type in ['LINFFT', 'LOGFFT']:
         x = _np.fft.rfftfreq(x.shape[0] * 2 - 1, 1 / fs)
 
     return x
 
 
-def prepare_2D_traces(data, viz_type=None, fs=None, line_names=None):
+def prepare_2D_traces(data, viz_type, fs, line_names):
     data = _np.atleast_2d(data)
     N, L = data.shape
 
@@ -369,35 +372,37 @@ def prepare_2D_traces(data, viz_type=None, fs=None, line_names=None):
     traces = [None] * N
 
     for k in range(0, N):
-        traces[k] = go.Scatter(
-            x=x,
-            y=data[k]
-        )
+        y = data[k]
+        traces[k] = go.Scatter(x=x, y=y if viz_type == 'TIME' else 20 * _np.log10(_np.abs(y)))
         try:
             traces[k].name = line_names[k]
-        except TypeError:
+        except (TypeError, IndentationError):
             pass
 
     return traces
 
 
-def plot2D(data, title=None, viz_type=None, fs=None, line_names=None):
+def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
     """Visualize 2D data using plotly.
 
     Parameters
     ----------
     data : array_like
-       Data to be plotted, separated along the first dimension (rows).
-    title : string
+       Data to be plotted, separated along the first dimension (rows)
+    title : str, optional
        Add title to be displayed on plot
-    viz_type : string{None, 'time', 'linFFT', 'logFFT'}
-       Type of data to be displayed. [Default: None]
-    fs : int
-       Sampling rate in Hz. [Default: 44100]
+    viz_type : str{None, 'Time', 'ETC', 'LinFFT', 'LogFFT'}, optional
+       Type of data to be displayed [Default: None]
+    fs : int, optional
+       Sampling rate in Hz [Default: 44100]
+    line_names : list of str, optional
+       Add legend to be displayed on plot, with one entry for each data row [Default: None]
     """
+    viz_type = viz_type.strip().upper()  # remove whitespaces and make upper case
 
-    layout = layout_2D(viz_type, title)
-    traces = prepare_2D_traces(data, viz_type, fs, line_names=line_names)
+    layout = layout_2D(viz_type=viz_type, title=title)
+    # noinspection PyTypeChecker
+    traces = prepare_2D_traces(data=data, viz_type=viz_type, fs=fs, line_names=line_names)
 
     showTrace(traces, layout=layout, title=title)
 
@@ -435,7 +440,7 @@ def plot3D(vizMTX, style='shape', layout=None, normalize=True, logScale=False):
 def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
     if len(viz_data) > rows * cols:
         raise ValueError('Number of plot data is more than the specified rows and columns.')
-    fig = tools.make_subplots(rows, cols, specs=[[{'is_3d': True}] * cols] * rows, print_grid=False)
+    fig = subplots.make_subplots(rows, cols, specs=[[{'is_3d': True}] * cols] * rows, print_grid=False)
 
     if style == 'flat':
         layout_3D = dict(
