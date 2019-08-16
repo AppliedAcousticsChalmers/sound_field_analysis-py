@@ -3,23 +3,16 @@ Sound Field Analysis toolbox for Python
 .. image:: https://api.travis-ci.org/QULab/sound_field_analysis-py.svg
 .. image:: https://ci.appveyor.com/api/projects/status/u0koxo5vcitmbghc?svg=true
 
-The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of
-the `Sound Field Analysis Toolbox (SOFiA) toolbox`_, originally by
-Benjamin Bernschütz\ `[1]`_. The main goal of the *sfa* toolbox is to
-analyze, visualize and process sound field data recorded by spherical
-microphone arrays. Furthermore, various types of test-data may be
+The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of the `Sound Field Analysis Toolbox (SOFiA)
+toolbox`_, originally by Benjamin Bernschütz\ `[1]`_. The main goal of the *sfa* toolbox is to analyze, visualize and
+process sound field data recorded by spherical microphone arrays. Furthermore, various types of test-data may be
 generated to evaluate the implemented functions.
-
-The package is pure Python and PEP8 compliant (except line-length).
-Please expect things to be slow for now and for the API to break, as the
-development is still very much ongoing.
 
 
 Requirements
 ------------
 
-We use Python 3.7 for development. Chances are that earlier version will
-work too but this is currently untested.
+We use Python 3.7 for development. Chances are that earlier version will work too but this is currently untested.
 
 The following external libraries are required:
 
@@ -69,16 +62,14 @@ with the *sfa* toolbox.
 Documentation
 -------------
 
-Please find the full documentation over at
-https://appliedacousticschalmers.github.io/sound_field_analysis-py/!
+Please find the full documentation over at https://appliedacousticschalmers.github.io/sound_field_analysis-py/!
 
 
 Examples
 --------
 
-The following examples are available as Jupyter notebooks, either
-statically on `GitHub`_ or interactively on `nbviewer`_. You can of
-course also simply download the examples and run them locally!
+The following examples are available as Jupyter notebooks, either statically on `GitHub`_ or interactively on
+`nbviewer`_. You can of course also simply download the examples and run them locally!
 
 
 Exp1: Ideal plane wave
@@ -86,7 +77,8 @@ Exp1: Ideal plane wave
 
 Ideal unity plane wave simulation and 3D plot.
 
-`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter
+.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb>`__
 
 |AE1_img|_
 
@@ -97,29 +89,35 @@ Ideal unity plane wave simulation and 3D plot.
 Exp2: Measured plane wave
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using
-a cardioid mic.
+A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using a cardioid mic.
 
-`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter
+.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb>`__
 
 |AE3_img|_
 
 .. |AE3_img| image:: examples/img/AE3_shape.png?raw=true
-.. _AE3_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
+.. _AE3_img: https://nbviewer.jupyterorg/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
 
 
 Exp4: Binaural rendering
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Render a spherical microphone array measurement for binaural reproduction. The example shows examples for loading miro or `SOFA`_ files.
+Render a spherical microphone array measurement for binaural reproduction. The example shows examples for loading
+miro or `SOFA`_ files.
 
-`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter
+.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
 
 Version history
 ---------------
 
-*2019-07-30 V0.9*
+*v2019.8.15*
+    * Change of version number scheme to CalVer
+    * ...
+
+*2019-07-30 v0.9*
     * Implement SOFA import
     * Update Exp4 to contain SOFA import
     * Delete obsolete Exp3
@@ -127,18 +125,18 @@ Version history
     * Implement cart2sph and sph2cart utility functions
     * Add conda environment file for convenient installation of required packages
 
-*2019-07-11 V0.8*
+*2019-07-11 v0.8*
     * Implement Spherical Harmonics coefficients tapering
     * Adaption of associated Spherical Head Filter
 
-*2019-06-17 V0.7*
+*2019-06-17 v0.7*
     * Implement Bandwidth Extension for Microphone Arrays (BEMA)
     * Edit read_miro_struct, named tuple ArraySignal and miro_to_struct.m to load center measurements
 
-*2019-06-11 V0.6*
+*2019-06-11 v0.6*
     * Port of Radial Filter Improvement from SOFiA
 
-*2019-05-23 V0.5*
+*2019-05-23 v0.5*
     * Implement Spherical Head Filter
     * Implement Spherical Fourier Transform using pseudo-inverse
     * Extract real time capable Spatial Fourier Transform
@@ -148,11 +146,15 @@ Version history
 References
 ----------
 
-The *sound_field_analysis* toolbox is based on the Matlab/C++ `Sound Field Analysis Toolbox (SOFiA) toolbox`_ by Benjamin Bernschütz. For more information you may refer to the original publication:
+The *sound_field_analysis* toolbox is based on the Matlab/C++ `Sound Field Analysis Toolbox (SOFiA) toolbox`_ by
+Benjamin Bernschütz. For more information you may refer to the original publication:
 
-[1] `Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio <http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/>`_
+[1] `Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox.
+Proceedings of the ICSA International Conference on Spatial Audio <http://spatialaudio
+.net/sofia-sound-field-analysis-toolbox-2/>`_
 
-The Lebedev grid generation was adapted from an implementation by `Richard P. Muller <https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
+The Lebedev grid generation was adapted from an implementation by `Richard P. Muller <https://github
+.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
 
 .. _Sound Field Analysis Toolbox (SOFiA) toolbox: http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html
 .. _[1]: #references

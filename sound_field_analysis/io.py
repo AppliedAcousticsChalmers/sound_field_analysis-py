@@ -440,7 +440,8 @@ def read_wavefile(filename):
     return data.T, fs
 
 
-def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat="float"):
+# noinspection PyPep8Naming
+def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat='float32'):
     """Takes two time signals and writes out the horizontal plane as HRIRs for the SoundScapeRenderer.
     Ideally, both hold 360 IRs but smaller sets are tried to be scaled up using repeat.
 
@@ -450,33 +451,45 @@ def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat="float"):
        filename to write to
     time_data_l, time_data_r : io.ArraySignal
        ArraySignals for left/right ear
-    wavformat : string
-       wav file format to write. Either "float" or "int16"
+    wavformat : {float32, int32, int16}, optional
+       wav file format to write [Default: float32]
+
+    Raises
+    ------
+    ValueError
+        in case unknown wavformat is provided
+    ValueError
+        in case integer format should be exported and amplitude exceeds 1.0
     """
     import sys
+
+    # make lower case and remove spaces
+    wavformat = wavformat.lower().strip()
+
     # equator_IDX_left = utils.nearest_to_value_logical_IDX(time_data_l.grid.colatitude, _np.pi / 2)
     # equator_IDX_right = utils.nearest_to_value_logical_IDX(time_data_r.grid.colatitude, _np.pi / 2)
 
-    # IRs_left = time_data_l.signal.signal[equator_IDX_left]
-    # IRs_right = time_data_r.signal.signal[equator_IDX_right]
-    IRs_left = time_data_l.signal.signal
-    IRs_right = time_data_r.signal.signal
+    # irs_left = time_data_l.signal.signal[equator_IDX_left]
+    # irs_right = time_data_r.signal.signal[equator_IDX_right]
+    irs_left = time_data_l.signal.signal
+    irs_right = time_data_r.signal.signal
 
-    IRs_to_write = utils.interleave_channels(IRs_left, IRs_right, style="SSR")
-    # data_to_write = utils.simple_resample(IRs_to_write, original_fs=time_data_l.signal.fs, target_fs=44100)
-    data_to_write = IRs_to_write
+    irs_to_write = utils.interleave_channels(left_channel=irs_left, right_channel=irs_right, style='SSR')
+    # data_to_write = utils.simple_resample(irs_to_write, original_fs=time_data_l.signal.fs, target_fs=44100)
+    data_to_write = irs_to_write
 
     # get absolute max value
-    max_val = _np.max(_np.abs([time_data_l.signal.signal, time_data_r.signal.signal]))
+    max_val = _np.abs([time_data_l.signal.signal, time_data_r.signal.signal]).max()
     if max_val > 1.0:
-        if wavformat == "int16":
-            raise ValueError("At least one value exceeds 1.0, exporting to 'int16' will lead to clipping. "
-                             "Choose waveformat 'float' instead or normalize data.")
-        print("WARNING: At least one value exceeds 1.0!", file=sys.stderr)
+        if 'int' in wavformat:
+            raise ValueError('At least one amplitude value exceeds 1.0, exporting to an integer format will lead to '
+                             'clipping. Choose wavformat "float32" instead or normalize data!')
+        print('WARNING: At least one amplitude value exceeds 1.0!', file=sys.stderr)
 
-    if wavformat == "float":
-        sio.wavfile.write(filename, int(time_data_l.signal.fs), data_to_write.astype(_np.float32).T)
-    elif wavformat == "int16":
-        sio.wavfile.write(filename, int(time_data_l.signal.fs), (data_to_write * 32767).astype(_np.int16).T)
+    if wavformat in ['float32', 'float']:
+        sio.wavfile.write(filename=filename, rate=int(time_data_l.signal.fs), data=data_to_write.T.astype(_np.float32))
+    elif wavformat in ['int32', 'int16']:
+        sio.wavfile.write(filename=filename, rate=int(time_data_l.signal.fs),
+                          data=(data_to_write.T * _np.iinfo(wavformat).max).astype(wavformat))
     else:
-        raise TypeError("Format " + wavformat + "not known. Should be either 'float' or 'int16'.")
+        raise ValueError(f'Format "{wavformat}" unknown, should be either "float32", "int32" or "int16".')
