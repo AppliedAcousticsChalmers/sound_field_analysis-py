@@ -418,7 +418,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
 
 
 def spherical_noise(gridData=None, order_max=8, spherical_harmonic_bases=None):
-    """ Returns order-limited random weights on a spherical surface
+    """Returns order-limited random weights on a spherical surface
 
     Parameters
     ----------
@@ -434,7 +434,6 @@ def spherical_noise(gridData=None, order_max=8, spherical_harmonic_bases=None):
     noisy_weights : array_like, complex
        Noisy weights
     """
-
     if spherical_harmonic_bases is None:
         if gridData is None:
             raise TypeError('Either a grid or the spherical harmonic bases have to be provided.')
@@ -450,7 +449,7 @@ def tapering_window(max_order):
     """Design tapering window with cosine slope for orders greater than 3.
 
     Parameters
-    ---------- 
+    ----------
     max_order : int
         Maximum SH order
 
@@ -475,3 +474,22 @@ def tapering_window(max_order):
         print('[WARNING]  SH maximum order is smaller than 3. No tapering will be used.', file=sys.stderr)
 
     return weights
+
+
+def delay_fd(target_length_fd, delay_samples):
+    """Generate delay in frequency domain that resembles a circular shift in time domain
+
+    Parameters
+    ----------
+    target_length_fd : int
+        number of bins in single-sided spectrum
+    delay_samples : float
+        delay time in samples (subsample precision not tested yet!)
+
+    Returns
+    -------
+    numpy.ndarray
+        delay spectrum in frequency domain
+    """
+    omega = _np.linspace(0, .5, target_length_fd)
+    return _np.exp(-1j * 2 * _np.pi * omega * delay_samples)

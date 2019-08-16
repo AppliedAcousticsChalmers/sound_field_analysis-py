@@ -89,6 +89,7 @@ def rad2deg(rad):
     """
     return rad / np.pi * 180 % 360
 
+
 def cart2sph(cartesian_coords, is_deg=False):
     """
     Parameters
@@ -96,20 +97,21 @@ def cart2sph(cartesian_coords, is_deg=False):
     cartesian_coords : numpy.ndarray
         cartesian coordinates (x, y, z) of size [3; number of coordinates]
     is_deg : bool, optional
-        if values should be calculated in degrees (radians otherwise)
+        if values should be calculated in degrees (radians otherwise) [Default: False]
 
     Returns
     -------
     numpy.ndarray
-        calculated spherical coordinates (azimuth [0 ... 2pi], colatitude [0 ... pi], radius [meter]) of size [3; number of coordinates]
+        spherical coordinates (azimuth [0 ... 2pi or 0 ... 360deg], colatitude [0 ... pi or 0 ... 180deg],
+        radius [meter]) of size [3; number of coordinates]
     """
-    x = cartesian_coords[0]
-    y = cartesian_coords[1]
-    z = cartesian_coords[2]
+    x = cartesian_coords[0].copy()  # prevent altering input data
+    y = cartesian_coords[1].copy()  # prevent altering input data
+    z = cartesian_coords[2].copy()  # prevent altering input data
 
     az = np.arctan2(y, x)  # return values -pi ... pi
     r = np.sqrt(np.power(x, 2) + np.power(y, 2) + np.power(z, 2))
-    col = np.arccos(z/r)
+    col = np.arccos(z / r)
 
     az %= (2 * np.pi)  # converting to 0 ... 2pi
     if is_deg:
@@ -118,6 +120,7 @@ def cart2sph(cartesian_coords, is_deg=False):
 
     return np.vstack((az, col, r))
 
+
 def sph2cart(spherical_coords, is_deg=False):
     """
     Parameters
@@ -125,16 +128,16 @@ def sph2cart(spherical_coords, is_deg=False):
     spherical_coords : numpy.ndarray
         spherical coordinates (azimuth, colatitude, radius) of size [3; number of coordinates]
     is_deg : bool, optional
-        True if values are given in degrees (radians otherwise), [default: False]
+        True if values are given in degrees (radians otherwise) [Default: False]
 
     Returns
     -------
     numpy.ndarray
         cartesian coordinates (x, y, z) of size [3; number of coordinates]
     """
-    az = spherical_coords[0]
-    col = spherical_coords[1]
-    r = spherical_coords[2]
+    az = spherical_coords[0].copy()  # prevent altering input data
+    col = spherical_coords[1].copy()  # prevent altering input data
+    r = spherical_coords[2].copy()  # prevent altering input data
 
     if is_deg:
         az = deg2rad(az)
@@ -183,7 +186,7 @@ def interleave_channels(left_channel, right_channel, style=None):
 def simple_resample(data, original_fs, target_fs):
     """Wrap scipy.signal.resample with a simpler API
     """
-    return resample(data, num=int(data.shape[1] * target_fs / original_fs), axis=1)
+    return resample(data, num=int(data.shape[-1] * target_fs / original_fs), axis=-1)
 
 
 def scalar_broadcast_match(a, b):
@@ -229,6 +232,25 @@ def stack(vector_1, vector_2):
     else:
         raise ValueError('vector_1 and vector_2 dont have a common dimension.')
     return np.squeeze(out)
+
+
+def zero_pad_fd(data_fd, target_length_td):
+    """Apply zero padding to frequency domain data by transformation into time domain and back
+
+    Parameters
+    ----------
+    data_fd : numpy.ndarray
+        Single-sided spectrum
+    target_length_td : int
+        target length of time domain representation in samples
+
+    Returns
+    -------
+    numpy.ndarray
+        Zero padded single-sided spectrum
+    """
+    # by transforming into time domain, zero padding and transforming back info frequency domain
+    return np.fft.rfft(np.fft.irfft(data_fd), n=target_length_td)
 
 
 def current_time():
