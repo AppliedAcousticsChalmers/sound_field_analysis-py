@@ -115,7 +115,12 @@ Version history
 
 *v2019.8.15*
     * Change of version number scheme to CalVer
-    * ...
+    * Improvement of Exp4
+    * Update of read_SOFA_file
+    * Update of 2D plotting functions
+    * Improvement of write_SSR_IRs
+    * Improved environment setup for jupyter notebook
+    * Update of miro_to_struct
 
 *2019-07-30 v0.9*
     * Implement SOFA import
