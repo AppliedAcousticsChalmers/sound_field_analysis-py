@@ -6,7 +6,7 @@ Module contains various generator functions:
 `gauss_grid`
    Gauss-Legendre quadrature grid and weights
 `lebedev`
-   Lebedev quadrature grid and weigths
+   Lebedev quadrature grid and weights
 `radial_filter`
    Modal radial filter
 `radial_filter_fullspec`
@@ -20,8 +20,8 @@ import numpy as _np
 from scipy.special import spherical_jn
 
 from .io import ArrayConfiguration, SphericalGrid
-from .process import spatFT, iSpatFT
-from .sph import sph_harm, sph_harm_all, cart2sph, array_extrapolation, kr, sphankel2, dsphankel2
+from .process import iSpatFT, spatFT
+from .sph import array_extrapolation, cart2sph, dsphankel2, kr, sph_harm, sph_harm_all, sphankel2
 
 
 def whiteNoise(fftData, noiseLevel=80):
@@ -101,7 +101,7 @@ def lebedev(max_order=None, degree=None):
     Returns
     -------
     gridData : array_like
-       Lebedev quadrature positions and weigths: [AZ, EL, W]
+       Lebedev quadrature positions and weights: [AZ, EL, W]
     """
     if max_order is None and not degree:
         raise ValueError('Either a maximum order or a degree have to be given.')
@@ -117,8 +117,7 @@ def lebedev(max_order=None, degree=None):
         raise ValueError('Maximum order can only be between 0 and 11.')
 
     if degree not in allowed_degrees:
-        raise ValueError('{} is an invalid quadrature degree. Choose one of the following: {}'.format(
-            degree, allowed_degrees))
+        raise ValueError(f'{degree} is an invalid quadrature degree. Choose one of the following: {allowed_degrees}')
 
     from . import lebedev
     leb = lebedev.genGrid(degree)
@@ -336,8 +335,8 @@ def sampled_wave(order, fs, NFFT, array_configuration,
 
     # TODO : Investigate if limit_order works as intended
     if max_order_fullspec > limit_order:
-        print('Requested wave front needs a minimum order of {} but was limited to order {}'.format(
-            max_order_fullspec, limit_order))
+        print(f'Requested wave front needs a minimum order of {max_order_fullspec} but was limited to order '
+              f'{limit_order}')
     Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth, wave_colatitude, array_configuration,
                      wavetype, distance, NFFT)
     Pnm_resampled = spatFT(iSpatFT(Pnm, gridData), gridData, order_max=order)

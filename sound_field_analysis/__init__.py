@@ -2,7 +2,7 @@
 
 from ._version import __version__
 
-__all__ = ["io", "gen", "process", "sph", "utils", "lebedev"]
+__all__ = ['io', 'gen', 'process', 'sph', 'utils', 'lebedev']
 
 try:
     import plotly

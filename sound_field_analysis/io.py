@@ -1,6 +1,5 @@
-"""
-Input-Output functions"""
-
+"""Input-Output functions"""
+import sys
 from collections import namedtuple
 
 import numpy as _np
@@ -48,10 +47,7 @@ class ArrayConfiguration(namedtuple('ArrayConfiguration', 'array_radius array_ty
         return self
 
     def __repr__(self):
-        return 'ArrayConfiguration(\n' + ',\n'.join(
-            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
-            for name, data in
-            zip(['array_radius', 'array_type', 'transducer_type', 'scatter_radius', 'dual_radius'], self)) + ')'
+        return utils.get_named_tuple__repr__(self)
 
 
 class TimeSignal(namedtuple('TimeSignal', 'signal fs delay')):
@@ -84,9 +80,7 @@ class TimeSignal(namedtuple('TimeSignal', 'signal fs delay')):
         return self
 
     def __repr__(self):
-        return 'TimeSignal(\n' + ',\n'.join(
-            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
-            for name, data in zip(['signal', 'fs', 'delay'], self)) + ')'
+        return utils.get_named_tuple__repr__(self)
 
 
 class SphericalGrid(namedtuple('SphericalGrid', 'azimuth colatitude radius weight')):
@@ -120,9 +114,7 @@ class SphericalGrid(namedtuple('SphericalGrid', 'azimuth colatitude radius weigh
         return self
 
     def __repr__(self):
-        return 'SphericalGrid(\n' + ',\n'.join(
-            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
-            for name, data in zip(['azimuth', 'colatitude', 'radius', 'weight'], self)) + ')'
+        return utils.get_named_tuple__repr__(self)
 
 
 class ArraySignal(namedtuple('ArraySignal', 'signal grid center_signal configuration temperature')):
@@ -154,9 +146,7 @@ class ArraySignal(namedtuple('ArraySignal', 'signal grid center_signal configura
         return self
 
     def __repr__(self):
-        return 'ArraySignal(\n' + ',\n'.join(
-            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
-            for name, data in zip(['signal', 'grid', 'center_signal', 'configuration', 'temperature'], self)) + ')'
+        return utils.get_named_tuple__repr__(self)
 
 
 class HrirSignal(namedtuple('HrirSignal', 'l r grid center_signal')):
@@ -188,9 +178,7 @@ class HrirSignal(namedtuple('HrirSignal', 'l r grid center_signal')):
         return self
 
     def __repr__(self):
-        return 'HrirSignal(\n' + ',\n'.join(
-            '    {0} = {1}'.format(name, repr(data).replace('\n', '\n      '))
-            for name, data in zip(['l', 'r', 'grid', 'center_signal'], self)) + ')'
+        return utils.get_named_tuple__repr__(self)
 
 
 def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatter_radius=None,
@@ -236,7 +224,7 @@ def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatt
             center_signal = TimeSignal(signal=_np.squeeze(current_data['irCenter']).T,
                                        fs=_np.squeeze(current_data['fs']))
         except KeyError:
-            print('WARNING: Center signal not included in miro struct, use extended miro_to_struct.m!')
+            print('WARNING: Center signal not included in miro struct, use extended miro_to_struct.m!', file=sys.stderr)
             center_signal = None
 
     mic_grid = SphericalGrid(azimuth=_np.squeeze(current_data['azimuth']),
@@ -245,8 +233,8 @@ def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatt
                              weight=_np.squeeze(current_data['quadWeight']))
 
     if (mic_grid.colatitude < 0).any():
-        print("WARNING: The 'colatitude' data contains negative values, which is an indication that it is actually "
-              "elevation")
+        print('WARNING: The "colatitude" data contains negative values, which is an indication that it is actually '
+              'elevation', file=sys.stderr)
 
     if _np.squeeze(current_data['scatterer']):
         sphere_config = 'rigid'
@@ -383,7 +371,7 @@ def empty_time_signal(no_of_signals, signal_length):
        .air_temperature  Average temperature in [C]
     """
     return _np.rec.array(_np.zeros(no_of_signals,
-                                   dtype=[('signal', str(signal_length) + 'f8'),
+                                   dtype=[('signal', f'{signal_length}f8'),
                                           ('fs', 'f8'),
                                           ('azimuth', 'f8'),
                                           ('colatitude', 'f8'),
@@ -447,8 +435,6 @@ def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat='float32'):
     ValueError
         in case integer format should be exported and amplitude exceeds 1.0
     """
-    import sys
-
     # make lower case and remove spaces
     wavformat = wavformat.lower().strip()
 

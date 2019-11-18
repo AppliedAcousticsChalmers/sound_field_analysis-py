@@ -1,4 +1,5 @@
-"""Generate Lebedev grid and coefficients
+"""
+Generate Lebedev grid and coefficients
 This module only exposes the function  `lebGrid = lebedev.genGrid(degree)`.
 
 lebGrid is a named tuple containing the coordinates .x, .y, .z and the weights .w
@@ -211,4 +212,4 @@ def genGrid(n):
         lebGrid.w = leb[:, 3]
         return lebGrid
     except KeyError:
-        raise ValueError('No grid available for degree', n)
+        raise ValueError(f'No grid available for degree {n}')

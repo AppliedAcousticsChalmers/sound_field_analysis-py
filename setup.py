@@ -1,23 +1,33 @@
-from setuptools import setup
-
-version = open("sound_field_analysis/_version.py").readlines()[-1].split()[-1].strip("\"'")
+from setuptools import find_packages, setup
 
 setup(
     name='sound_field_analysis',
-    version=version,
-    description='Analyze, visualize and process sound field data recorded by spherical microphone arrays.',
     url='https://github.com/AppliedAcousticsChalmers/sound_field_analysis-py/',
-    author='QU Lab / Christoph Hohnerlein',
-    author_email='christoph.hohnerlein@qu.tu-berlin.de',
+    version=open('sound_field_analysis/_version.py').readlines()[-1].split()[-1].strip('"\''),
     license='GPLv3',
+    # license='MIT',
+
+    description='Analyze, visualize and process sound field data recorded by spherical microphone arrays.',
+    long_description=open('README.rst', mode='r', encoding='utf-8').read(),
+    keywords='sound field analysis spherical microphone array',
+
+    author='QU Lab / Christoph Hohnerlein',
+    # author='Chalmers University of Technology / Jens Ahrens',
+    author_email='christoph.hohnerlein@qu.tu-berlin.de',
+    # author_email='jens.ahrens@chalmers.se',
+
     classifiers=[
         'Development Status :: 4 - Beta',
+        # 'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Science/Research',
         'Topic :: Multimedia :: Sound/Audio',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Programming Language :: Python :: 3',
+        # 'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3.7',
+        'Operating System :: OS Independent',
     ],
-    keywords='sound field analysis spherical microphone array',
+
+    python_requires='>=3.7',
     install_requires=[
         'scipy',
         'numpy',
@@ -27,9 +37,11 @@ setup(
     package_data={
         'examples': ['examples'],
     },
+
     extras_require={
         'plotting': ['plotly'],
         'examples': ['jupyter'],
     },
-    packages=['sound_field_analysis'],
+
+    packages=find_packages(),
 )

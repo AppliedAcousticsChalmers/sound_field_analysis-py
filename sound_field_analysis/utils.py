@@ -43,15 +43,14 @@ def progress_bar(curIDX, maxIDX=None, description='Progress'):
        Clarify what's taking time
     """
     if maxIDX is None:
-        print('\r' + description + ': ' + next(spinner), end='', flush=True)
+        print(f'\r{description}: {next(spinner)}', end='', flush=True)
     else:
         maxIDX = (int(maxIDX) - 1)
         if maxIDX == 0:
             amount_done = 1
         else:
             amount_done = curIDX / maxIDX
-        print('\r' + description + ': [{0:50s}] {1:.1f}%'.format(
-            '#' * int(amount_done * 50), amount_done * 100), end="", flush=True)
+        print(f'\r{description}: [{"#" * int(amount_done * 50):50s}] {amount_done * 100:.1f}%', end='', flush=True)
         if amount_done >= 1:
             print('\n')
 
@@ -193,7 +192,6 @@ def SOFA_grid2acr(grid_values, grid_info):
     grid_values = grid_values.T.filled(0).copy()  # transform into regular `numpy.ndarray`
 
     # TODO: validation of data units against individual convention should be done in `pysofaconventions`
-    print(grid_info)
     if _is_grid_spherical(grid_info):
         # given spherical degrees with elevation
         # transform into spherical radians with colatitude
@@ -318,3 +316,9 @@ def zero_pad_fd(data_fd, target_length_td):
 
 def current_time():
     return datetime.now()
+
+
+def get_named_tuple__repr__(namedtuple):
+    # noinspection PyProtectedMember
+    fields_str = f',\n\t'.join(f'{f} = {repr(v)}' for f, v in zip(namedtuple._fields, namedtuple))
+    return f'{namedtuple.__class__.__name__}(\n\t{fields_str})'

@@ -23,6 +23,7 @@ Functions that act on the Spatial Fourier Coefficients
 `plane_wave_decomp`
    Plane Wave Decomposition
 """
+import sys
 
 import numpy as _np
 from scipy.linalg import lstsq
@@ -69,16 +70,16 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
 
     transition = int(_np.floor(transition))
 
-    # computing spatiotemporal Image Imn
-    Imn = _np.zeros((Pnm.shape[0], 1), dtype=complex)  # preallocating the spectral image matrix
-    start_avg_bin = int(_np.floor(transition / (_np.power(2, avg_band_width)))) # first bin for averaging
+    # computing spatio-temporal Image Imn
+    Imn = _np.zeros((Pnm.shape[0], 1), dtype=complex)  # pre-allocating the spectral image matrix
+    start_avg_bin = int(_np.floor(transition / (_np.power(2, avg_band_width))))  # first bin for averaging
 
     modeCnt = 0
     avgPower = 0
     for n in range(0, max_order + 1):  # sh orders
         for m in range(0, 2 * n + 1):  # modes
-            for bin in range(start_avg_bin - 1, transition):  # bins
-                synthBin = Pnm[modeCnt, bin] * dn[n, bin]
+            for inBin in range(start_avg_bin - 1, transition):  # bins
+                synthBin = Pnm[modeCnt, inBin] * dn[n, inBin]
                 Imn[modeCnt, 0] += synthBin
                 avgPower += _np.abs(synthBin) ** 2
             modeCnt += 1
@@ -97,8 +98,8 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
     modeCnt = 0
     for n in range(0, max_order + 1):
         for m in range(0, 2 * n + 1):
-            for bin in range(start_avg_bin - 1, Pnm_synth.shape[1]):
-                Pnm_synth[modeCnt, bin] = Imn[modeCnt, 0] * (1 / dn[n, bin]) * center_sig[0, bin]
+            for inBin in range(start_avg_bin - 1, Pnm_synth.shape[1]):
+                Pnm_synth[modeCnt, inBin] = Imn[modeCnt, 0] * (1 / dn[n, inBin]) * center_sig[0, inBin]
             modeCnt += 1
 
     # Phase correction (Eq. 16)
@@ -365,8 +366,8 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
 
     max_order = int(_np.floor(_np.sqrt(NMDeliveredSize) - 1))
     if order > max_order:
-        raise ValueError('The provided coefficients deliver a maximum order of ' + str(max_order) + ' but order ' + str(
-            order) + ' was requested.')
+        raise ValueError(
+            f'The provided coefficients deliver a maximum order of {max_order} but order {order} was requested.')
 
     gaincorrection = 4 * _np.pi / ((order + 1) ** 2)
 
@@ -546,15 +547,15 @@ def sfe(Pnm_kra, kra, krb, problem='interior'):
         exp = jn_krb / jn_kra
 
         if _np.any(_np.abs(exp) > 1e2):  # 40dB
-            print('WARNING: Extrapolation might be unstable for one or more frequencies/orders!')
+            print('WARNING: Extrapolation might be unstable for one or more frequencies/orders!', file=sys.stderr)
 
     elif problem == 'exterior':
         hn_kra = _np.sqrt(_np.pi / (2 * kra)) * hankel1(nvector + 0.5, kra)
         hn_krb = _np.sqrt(_np.pi / (2 * krb)) * hankel1(nvector + 0.5, krb)
         exp = hn_krb / hn_kra
     else:
-        raise ValueError('Problem selector ' + problem + 'not recognized. Please either choose "interior" [Default] '
-                                                         'or "exterior".')
+        raise ValueError(
+            f'Problem selector {problem} not recognized. Please either choose "interior" [Default] or "exterior".')
 
     return Pnm_kra * exp.T
 
@@ -614,7 +615,8 @@ def wdr(Pnm, xAngle, yAngle, zAngle):
     PnmRot: array_like
        Rotated spatial Fourier coefficients
     """
-    print('!WARNING. Wigner-D Rotation is not yet implemented. Continuing with un-rotated coefficients!')
+    print('!WARNING. Wigner-D Rotation is not yet implemented. Continuing with un-rotated coefficients!',
+          file=sys.stderr)
     return Pnm
 
 

@@ -26,37 +26,32 @@ The following external libraries are required:
 Installation
 ------------
 
-For performance and convenience reasons we highly recommend to use
-`Conda`_ (miniconda for simplicity) to manage your Python installation.
-Once installed, you can use the following steps to create a new environment
-with the *sfa* toolbox.
+For performance and convenience reasons we highly recommend to use `Conda`_ (miniconda for simplicity) to manage your Python installation. Once installed, you can use the following steps to receive and use *sfa*, depending on your use case:
 
-#. Create new Conda environment from the specified requirements:
-   ``conda env create --file environment.yml``
+A.  By cloning (or downloading) the repository and setting up a new environment **[recommended]**:
 
-#. Activate the environment:
-   ``source activate sfa``
+    ``git clone https://github.com/AppliedAcousticsChalmers/sound_field_analysis-py.git``
 
-#. Install *sfa* from **either** source:
+    ``cd sound_field_analysis-py/``
 
-   By cloning (or downloading) the repository **[recommended]**:
+    Create a new Conda environment from the specified requirements:
+    ``conda env create --file environment.yml``
 
-   ``git clone https://github.com/AppliedAcousticsChalmers/sound_field_analysis-py.git``
+    Activate the environment:
+    ``source activate sfa``
 
-   ``cd sound_field_analysis-py/``
+    **Optional:** Install additional requirements in case you want to locally run the *Jupyter Notebooks* with examples:
+    ``conda env update --file environment_jupyter.yml``
 
-   ``pip install -e .``
+B.  From PyPI **[NOT recommended - code outdated]**:
 
-   From `conda-forge`_ channel **[not recommended - code currently outdated]**:
+    Install into an existing environment (without example *Jupyter Notebooks*):
+    ``pip install sound_field_analysis``
 
-   ``conda install -c conda-forge sound_field_analysis``
+C.  From `conda-forge`_ channel **[NOT recommended - code outdated]**:
 
-   From PyPI **[Not recommended - code currently outdated]**:
-
-   ``pip install sound_field_analysis``
-
-#. **Optional:** Install additional requirements in case you want to locally run *Jupyter Notebooks*:
-   ``conda env update --file environment_jupyter.yml``
+    Install into an existing environment:
+    ``conda install -c conda-forge sound_field_analysis``
 
 
 Documentation
@@ -112,6 +107,9 @@ miro or `SOFA`_ files.
 
 Version history
 ---------------
+
+*v2019.11.6*
+    * Update of internal documentation and string formatting
 
 *v2019.8.15*
     * Change of version number scheme to CalVer

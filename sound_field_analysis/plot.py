@@ -1,31 +1,35 @@
-"""Plotting functions
+"""
+Plotting functions
 Helps visualizing spherical microphone data.
 """
 from collections import namedtuple
 
 import numpy as _np
 import plotly.graph_objs as go
-from plotly import offline as plotly_off
-from plotly import subplots
+from plotly import offline as plotly_off, subplots
 
 from .process import plane_wave_decomp
-from .utils import env_info, progress_bar, current_time
+from .utils import current_time, env_info, progress_bar
 
 
 def showTrace(trace, layout=None, title=None):
-    """ Wrapper around plotlys offline .plot() function
+    """ Wrapper around Plotly's offline .plot() function
 
     Parameters
     ----------
     trace : plotly_trace
-       Plotly generated trace to be displayed offline
-    # colorize : Bool, optional
-    #    Toggles bw / colored plot [Default: True]
+        Plotly generated trace to be displayed offline
+    layout : plotly.graph_objs.Layout, optional
+        Layout of plot to be displayed offline
+    title : str, optional
+        Title of plot to be displayed offline
+    # colorize : bool, optional
+    #     Toggles bw / colored plot [Default: True]
 
     Returns
     -------
     fig : plotly_fig_handle
-       JSON representation of generated figure
+        JSON representation of generated figure
     """
     if layout is None:
         layout = go.Layout(
@@ -47,12 +51,12 @@ def showTrace(trace, layout=None, title=None):
 
     if title is not None:
         fig.layout.update(title=title)
-        filename = title + '.html'
+        filename = f'{title}.html'
     else:
         try:
-            filename = fig.layout.title + '.html'
+            filename = f'{fig.layout.title}.html'
         except TypeError:
-            filename = str(current_time()) + '.html'
+            filename = f'{current_time()}.html'
 
     # if colorize:
     #    data[0].autocolorscale = False
@@ -72,20 +76,20 @@ def makeMTX(spat_coeffs, radial_filter, kr_IDX, viz_order=None, stepsize_deg=1):
     Parameters
     ----------
     spat_coeffs : array_like
-       Spatial fourier coefficients
+        Spatial fourier coefficients
     radial_filter : array_like
-       Modal radial filters
+        Modal radial filters
     kr_IDX : int
-       Index of kr to be computed
+        Index of kr to be computed
     viz_order : int, optional
-       Order of the spatial fourier transform [Default: Highest available]
+        Order of the spatial fourier transform [Default: Highest available]
     stepsize_deg : float, optional
-       Integer Factor to increase the resolution. [Default: 1]
+        Integer Factor to increase the resolution. [Default: 1]
 
     Returns
     -------
     mtxData : array_like
-       Plane wave decomposition (frequency domain)
+        Plane wave decomposition (frequency domain)
 
     Note
     ----
@@ -107,18 +111,18 @@ def makeFullMTX(Pnm, dn, kr, viz_order=None):
     Parameters
     ----------
     Pnm : array_like
-       Spatial Fourier Coefficients (e.g. from S/T/C)
+        Spatial Fourier Coefficients (e.g. from S/T/C)
     dn : array_like
-       Modal Radial Filters (e.g. from M/F)
+        Modal Radial Filters (e.g. from M/F)
     kr : array_like
-       kr-vector
+        kr-vector
     viz_order : int, optional
-       Order of the spatial fourier tplane_wave_decompransform [Default: Highest available]
+        Order of the spatial fourier tplane_wave_decompransform [Default: Highest available]
 
     Returns
     -------
     vizMtx : array_like
-       Computed visualization matrix over all kr
+        Computed visualization matrix over all kr
     """
     kr = _np.asarray(kr)
     if not viz_order:
@@ -138,14 +142,14 @@ def normalizeMTX(MTX, logScale=False):
     Parameters
     ----------
     MTX : array_like
-       Matrix to be normalized
-    logScale : bool
-       Toggle conversion logScale [Default: False]
+        Matrix to be normalized
+    logScale : bool, optional
+        Toggle conversion logScale [Default: False]
 
     Returns
     -------
     MTX : array_liked
-       Normalized Matrix
+        Normalized Matrix
     """
     MTX -= MTX.min()
     MTX /= MTX.max()
@@ -161,6 +165,7 @@ def normalizeMTX(MTX, logScale=False):
 
 def genSphCoords():
     """ Generates cartesian (x,y,z) and spherical (theta, phi) coordinates of a sphere
+
     Returns
     -------
     coords : named tuple
@@ -184,12 +189,12 @@ def sph2cartMTX(vizMTX):
     Parameters
     ----------
     vizMTX : array_like
-       [180 x 360] matrix that hold amplitude information over phi and theta
+        [180 x 360] matrix that hold amplitude information over phi and theta
 
     Returns
     -------
     V : named_tuple
-       Contains .xs, .ys, .zs cartesian coordinates
+        Contains .xs, .ys, .zs cartesian coordinates
     """
     rs = _np.abs(vizMTX.reshape((181, -1)).T)
 
@@ -207,12 +212,12 @@ def genShape(vizMTX):
     Parameters
     ----------
     vizMTX : array_like
-       Matrix holding spherical data for visualization
+        Matrix holding spherical data for visualization
 
     Returns
     -------
     T : plotly_trace
-       Trace of desired shape
+        Trace of desired shape
 
     TODO
     ----
@@ -238,12 +243,12 @@ def genSphere(vizMTX):
     Parameters
     ----------
     vizMTX : array_like
-       Matrix holding spherical data for visualization
+        Matrix holding spherical data for visualization
 
     Returns
     -------
     T : plotly_trace
-       Trace of desired sphere
+        Trace of desired sphere
     """
     coords = genSphCoords()
 
@@ -265,12 +270,12 @@ def genFlat(vizMTX):
     Parameters
     ----------
     vizMTX : array_like
-       Matrix holding spherical data for visualization
+        Matrix holding spherical data for visualization
 
     Returns
     -------
     T : plotly_trace
-       Trace of desired surface
+        Trace of desired surface
 
     TODO
     ----
@@ -295,16 +300,18 @@ def genVisual(vizMTX, style='shape', normalize=True, logScale=False):
     Parameters
     ----------
     vizMTX : array_like
-       Matrix holding spherical data for visualization
+        Matrix holding spherical data for visualization
     style : string{'shape', 'sphere', 'flat'}, optional
-       Style of visualization. [Default: 'Shape']
-    normalize : Bool, optional
-       Toggle normalization of data to [-1 ... 1] [Default: True]
+        Style of visualization. [Default: 'Shape']
+    normalize : bool, optional
+        Toggle normalization of data to [-1 ... 1] [Default: True]
+    logScale : bool, optional
+        Toggle conversion logScale [Default: False]
 
     Returns
     -------
     T : plotly_trace
-       Trace of desired visualization
+        Trace of desired visualization
     """
     vizMTX = _np.abs(vizMTX)  # Can we be sure to only need the abs?
     if normalize:
@@ -317,7 +324,7 @@ def genVisual(vizMTX, style='shape', normalize=True, logScale=False):
     elif style == 'flat':
         return genFlat(vizMTX)
     else:
-        raise ValueError('Provided style "' + style + '" not available. Try sphere, shape or flat.')
+        raise ValueError(f'Provided style "{style}" not available. Try sphere, shape or flat.')
 
 
 def layout_2D(viz_type=None, title=None):
@@ -388,15 +395,15 @@ def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
     Parameters
     ----------
     data : array_like
-       Data to be plotted, separated along the first dimension (rows)
+        Data to be plotted, separated along the first dimension (rows)
     title : str, optional
-       Add title to be displayed on plot
+        Add title to be displayed on plot
     viz_type : str{None, 'Time', 'ETC', 'LinFFT', 'LogFFT'}, optional
-       Type of data to be displayed [Default: None]
+        Type of data to be displayed [Default: None]
     fs : int, optional
-       Sampling rate in Hz [Default: 44100]
+        Sampling rate in Hz [Default: 44100]
     line_names : list of str, optional
-       Add legend to be displayed on plot, with one entry for each data row [Default: None]
+        Add legend to be displayed on plot, with one entry for each data row [Default: None]
     """
     viz_type = viz_type.strip().upper()  # remove whitespaces and make upper case
 
@@ -413,11 +420,15 @@ def plot3D(vizMTX, style='shape', layout=None, normalize=True, logScale=False):
     Parameters
     ----------
     vizMTX : array_like
-       Matrix holding spherical data for visualization
+        Matrix holding spherical data for visualization
+    layout : plotly.graph_objs.Layout, optional
+        Layout of plot to be displayed offline
     style : string{'shape', 'sphere', 'flat'}, optional
-       Style of visualization. [Default: 'shape']
-    normalize : Bool, optional
-       Toggle normalization of data to [-1 ... 1] [Default: True]
+        Style of visualization. [Default: 'shape']
+    normalize : bool, optional
+        Toggle normalization of data to [-1 ... 1] [Default: True]
+    logScale : bool, optional
+        Toggle conversion logScale [Default: False]
 
     # TODO
     # ----
@@ -464,13 +475,13 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
         cur_row = int(rows[IDX])
         cur_col = int(cols[IDX])
         fig.add_trace(genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col)
-        fig.layout['scene' + str(IDX + 1)].update(layout_3D)
+        fig.layout[f'scene{IDX + 1:d}'].update(layout_3D)
 
     if title is not None:
         fig.layout.update(title=title)
-        filename = title + '.html'
+        filename = f'{title}.html'
     else:
-        filename = str(current_time()) + '.html'
+        filename = f'{current_time()}.html'
 
     if env_info() == 'jupyter_notebook':
         plotly_off.iplot(fig)
