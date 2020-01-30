@@ -11,18 +11,14 @@ setup(
     long_description=open('README.rst', mode='r', encoding='utf-8').read(),
     keywords='sound field analysis spherical microphone array',
 
-    author='QU Lab / Christoph Hohnerlein',
-    # author='Chalmers University of Technology / Jens Ahrens',
-    author_email='christoph.hohnerlein@qu.tu-berlin.de',
-    # author_email='jens.ahrens@chalmers.se',
+    author='Chalmers University of Technology / Jens Ahrens',
+    author_email='jens.ahrens@chalmers.se',
 
     classifiers=[
         'Development Status :: 4 - Beta',
-        # 'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Science/Research',
         'Topic :: Multimedia :: Sound/Audio',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        # 'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.7',
         'Operating System :: OS Independent',
     ],

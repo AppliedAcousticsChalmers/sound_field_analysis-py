@@ -3,10 +3,12 @@ Sound Field Analysis toolbox for Python
 .. image:: https://api.travis-ci.org/QULab/sound_field_analysis-py.svg
 .. image:: https://ci.appveyor.com/api/projects/status/u0koxo5vcitmbghc?svg=true
 
-The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of the `Sound Field Analysis Toolbox (SOFiA)
-toolbox`_, originally by Benjamin Bernschütz\ `[1]`_. The main goal of the *sfa* toolbox is to analyze, visualize and
-process sound field data recorded by spherical microphone arrays. Furthermore, various types of test-data may be
-generated to evaluate the implemented functions.
+The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of the `Sound Field Analysis 
+Toolbox (SOFiA) toolbox`_, originally by Benjamin Bernschütz `[1]`_. The main goal of the *sfa* 
+toolbox is to analyze, visualize and process sound field data recorded by spherical microphone 
+arrays. Furthermore, various types of test-data may be generated to evaluate the implemented 
+functions. It is an essential building block of `ReTiSAR`_, an implementation  of real time 
+binaural rendering of spherical microphone array data.
 
 
 Requirements
@@ -28,7 +30,12 @@ Installation
 
 For performance and convenience reasons we highly recommend to use `Conda`_ (miniconda for simplicity) to manage your Python installation. Once installed, you can use the following steps to receive and use *sfa*, depending on your use case:
 
-A.  By cloning (or downloading) the repository and setting up a new environment **[recommended]**:
+A.  From PyPI:
+
+    Install into an existing environment (without example *Jupyter Notebooks*):
+    ``pip install sound_field_analysis``
+
+B.  By cloning (or downloading) the repository and setting up a new environment:
 
     ``git clone https://github.com/AppliedAcousticsChalmers/sound_field_analysis-py.git``
 
@@ -43,12 +50,7 @@ A.  By cloning (or downloading) the repository and setting up a new environment 
     **Optional:** Install additional requirements in case you want to locally run the *Jupyter Notebooks* with examples:
     ``conda env update --file environment_jupyter.yml``
 
-B.  From PyPI **[NOT recommended - code outdated]**:
-
-    Install into an existing environment (without example *Jupyter Notebooks*):
-    ``pip install sound_field_analysis``
-
-C.  From `conda-forge`_ channel **[NOT recommended - code outdated]**:
+.. C.  From `conda-forge`_ channel: **[outdated]**
 
     Install into an existing environment:
     ``conda install -c conda-forge sound_field_analysis``
@@ -57,7 +59,7 @@ C.  From `conda-forge`_ channel **[NOT recommended - code outdated]**:
 Documentation
 -------------
 
-Please find the full documentation over at https://appliedacousticschalmers.github.io/sound_field_analysis-py/!
+Find the full documentation at https://appliedacousticschalmers.github.io/sound_field_analysis-py/.
 
 
 Examples
@@ -98,7 +100,7 @@ A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using a car
 Exp4: Binaural rendering
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Render a spherical microphone array measurement for binaural reproduction. The example shows examples for loading
+Render a spherical microphone array impulse response measurement binaurally. The example shows examples for loading
 miro or `SOFA`_ files.
 
 `View interactively on nbviewer <https://nbviewer.jupyter
@@ -107,6 +109,9 @@ miro or `SOFA`_ files.
 
 Version history
 ---------------
+
+*v2020.1.30*
+    * Update of README and PyPI package
 
 *v2019.11.6*
     * Update of internal documentation and string formatting
@@ -160,6 +165,7 @@ The Lebedev grid generation was adapted from an implementation by `Richard P. Mu
 .com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
 
 .. _Sound Field Analysis Toolbox (SOFiA) toolbox: http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html
+.. _RETiSAR: https://github.com/AppliedAcousticsChalmers/ReTiSAR
 .. _[1]: #references
 .. _NumPy: http://www.numpy.org
 .. _SciPy: http://www.scipy.org
