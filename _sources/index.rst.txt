@@ -7,11 +7,8 @@ Contents:
    :maxdepth: 2
 
    usage
-   generators
-   processing
-   plotting
+   modules
    reference
-
 
 Indices and tables
 ==================
