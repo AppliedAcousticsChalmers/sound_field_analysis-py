@@ -108,6 +108,7 @@ Version history
 *v2021.1.12*
     * Update of MIRO struct loading (quadrature weights are now optional)
     * Fix to prevent Python 3.8 syntax warnings
+    * Improvement of Exp4 (general code structure and utilizing Spherical Head Filter and Spherical Harmonics Tapering)
 
 *v2020.1.30*
     * Update of README and PyPI package
