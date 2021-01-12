@@ -70,7 +70,8 @@ def showTrace(trace, layout=None, title=None):
     return fig
 
 
-def makeMTX(spat_coeffs, radial_filter, kr_IDX, viz_order=None, stepsize_deg=1):
+def makeMTX(spat_coeffs, radial_filter, kr_IDX, viz_order=None, stepsize_deg=1,
+            kind='complex'):
     """Returns a plane wave decomposition over a full sphere
 
     Parameters
@@ -85,6 +86,8 @@ def makeMTX(spat_coeffs, radial_filter, kr_IDX, viz_order=None, stepsize_deg=1):
         Order of the spatial fourier transform [Default: Highest available]
     stepsize_deg : float, optional
         Integer Factor to increase the resolution. [Default: 1]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
 
     Returns
     -------
@@ -100,8 +103,10 @@ def makeMTX(spat_coeffs, radial_filter, kr_IDX, viz_order=None, stepsize_deg=1):
     if not viz_order:
         viz_order = _np.int(_np.ceil(_np.sqrt(spat_coeffs.shape[0]) - 1))
 
-    angles = _np.mgrid[0:360:stepsize_deg, 0:181:stepsize_deg].reshape((2, -1)) * _np.pi / 180
-    Y = plane_wave_decomp(viz_order, angles, spat_coeffs[:, kr_IDX], radial_filter[:, kr_IDX])
+    angles = (_np.mgrid[0:360:stepsize_deg, 0:181:stepsize_deg].reshape((2, -1))
+              * _np.pi / 180)
+    Y = plane_wave_decomp(viz_order, angles, spat_coeffs[:, kr_IDX],
+                          radial_filter[:, kr_IDX], kind=kind)
 
     return Y.reshape((360, -1)).T  # Return pwd data as [181, 360] matrix
 

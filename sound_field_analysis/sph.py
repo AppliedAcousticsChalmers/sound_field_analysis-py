@@ -416,7 +416,7 @@ def bn_dual_open_omni(n, kr1, kr2):
     return _np.where(_np.abs(bn1) >= _np.abs(bn2), bn1, bn2)
 
 
-def sph_harm(m, n, az, co):
+def sph_harm(m, n, az, co, kind='complex'):
     """Compute spherical harmonics
 
     Parameters
@@ -429,18 +429,40 @@ def sph_harm(m, n, az, co):
         Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
     co : (float)
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type according to complex [1] or
+        real definition [2] [Default: 'complex']
 
     Returns
     -------
-    y_mn : (complex float)
-        Complex spherical harmonic of order m and degree n, sampled at
-        theta = az, phi = co
+    y_mn : (complex float) or (float)
+        Spherical harmonic of order m and degree n, sampled at theta = az,
+        phi = co
+
+    References
+    ----------
+    [1] scipy.special.sph_harm
+    [2] F. Zotter, “Analysis and synthesis of sound-radiation with spherical
+        arrays,” University of Music and Performing Arts, 2009.
     """
+    # SAFETY CHECKS
+    kind = kind.lower()
+    if kind not in {'complex', 'real'}:
+        raise ValueError('Invalid kind: Choose either complex or real.')
 
-    return scy.sph_harm(m, n, az, co)
+    Y = scy.sph_harm(m, n, az, co)
+    if kind == 'complex':
+        return Y
+    else:  # kind == 'real'
+        Y[_np.where(m > 0)] = (_np.float_power(-1.0, m)[_np.where(m > 0)]
+                               * _np.sqrt(2) * _np.real(Y[_np.where(m > 0)]))
+        Y[_np.where(m == 0)] = _np.real(Y[_np.where(m == 0)])
+        Y[_np.where(m < 0)] = _np.sqrt(2) * _np.imag(Y[_np.where(m < 0)])
+
+        return _np.real(Y)
 
 
-def sph_harm_large(m, n, az, co):
+def sph_harm_large(m, n, az, co, kind='complex'):
     """Compute spherical harmonics for large orders > 84
 
     Parameters
@@ -453,26 +475,40 @@ def sph_harm_large(m, n, az, co):
         Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
     co : (float)
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type according to complex [1] or
+        real definition [2] [Default: 'complex']
 
     Returns
     -------
-    y_mn : (complex float)
-        Complex spherical harmonic of order m and degree n, sampled at
-        theta = az, phi = el
+    y_mn : (complex float) or (float)
+        Spherical harmonic of order m and degree n, sampled at
+        theta = az,
+        phi = co
 
     Notes
     -----
     Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5
     * exp(i m phi) * P_n^m(cos(theta)) as per http://dlmf.nist.gov/14.30
-    Pmn(z) is the associated Legendre function of the first kind, like
-    scipy.special.lpmv, which calculates P(0...m 0...n) and its derivative but
-    won't return +inf at high orders.
+    Pmn(z) are the associated Legendre functions of the first kind,
+    like scipy.special.lpmv, which calculates P(0...m 0...n) and its derivative
+    but won't return +inf at high orders.
+
+    References
+    ----------
+    [1] scipy.special.sph_harm and scipy.special.lpmv
+    [2] F. Zotter, “Analysis and synthesis of sound-radiation with spherical
+        arrays,” University of Music and Performing Arts, 2009.
     """
     if _np.all(_np.abs(m) < 84):
-        return sph_harm(m, n, az, co)
+        return sph_harm(m, n, az, co, kind=kind)
     else:
-        # TODO: confirm that this uses the correct SH definition
+        # SAFETY CHECKS
+        kind = kind.lower()
+        if kind not in {'complex', 'real'}:
+            raise ValueError('Invalid kind: Choose either complex or real.')
 
+        # TODO: confirm that this uses the correct SH definition
         mAbs = _np.abs(m)
         if isinstance(co, _np.ndarray):
             P = _np.empty(co.size)
@@ -487,10 +523,18 @@ def sph_harm_large(m, n, az, co):
             preFactor2 = _np.sqrt(fact(n - mAbs) // fact(n + mAbs))
 
         Y = preFactor1 * preFactor2 * _np.exp(1j * m * az) * P
-        return Y if m >= 0 else _np.conj(Y)
+        if kind == 'complex':
+            return Y if m >= 0 else _np.conj(Y)
+        else:  # kind == 'real'
+            Y[_np.where(m > 0)] = (_np.float_power(-1.0, m)[_np.where(m > 0)]
+                                   * _np.sqrt(2)
+                                   * _np.real(Y[_np.where(m > 0)]))
+            Y[_np.where(m == 0)] = _np.real(Y[_np.where(m == 0)])
+            Y[_np.where(m < 0)] = _np.sqrt(2) * _np.real(Y[_np.where(m < 0)])
+            return _np.real(Y)
 
 
-def sph_harm_all(nMax, az, co):
+def sph_harm_all(nMax, az, co, kind='complex'):
     """Compute all spherical harmonic coefficients up to degree nMax.
 
     Parameters
@@ -501,19 +545,21 @@ def sph_harm_all(nMax, az, co):
         Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
     co : (float), array_like
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
 
     Returns
     -------
-    y_mn : (complex float), array_like
-        Complex spherical harmonics of degrees n [0 ... nMax] and all
-        corresponding orders m [-n ... n], sampled at [az, el]. dim1
-        corresponds to az/el pairs, dim2 to oder/degree (m, n) pairs like
-        0/0, -1/1, 0/1, 1/1, -2/2, -1/2 ...
+    y_mn : (complex float) or (float), array_like
+        Spherical harmonics of degrees n [0 ... nMax] and all orresponding
+        orders m [-n ... n], sampled at [az, co]. dim1 corresponds to az/co
+        pairs, dim2 to oder/degree (m, n) pairs like 0/0, -1/1, 0/1, 1/1,
+        -2/2, -1/2 ...
     """
     m, n = mnArrays(nMax)
     mA, azA = _np.meshgrid(m, az)
     nA, coA = _np.meshgrid(n, co)
-    return sph_harm(mA, nA, azA, coA)
+    return sph_harm(mA, nA, azA, coA, kind=kind)
 
 
 def mnArrays(nMax):

@@ -195,91 +195,111 @@ def FFT(time_signals, fs=None, NFFT=None, oversampling=1, first_sample=0, last_s
     return fftData, f
 
 
-def spatFT(data, position_grid, order_max=10, spherical_harmonic_bases=None):
+def spatFT(data, position_grid, order_max=10, kind='complex',
+           spherical_harmonic_bases=None):
     """Spatial Fourier Transform
 
     Parameters
     ----------
     data : array_like
-       Data to be transformed, with signals in rows and frequency bins in columns
+        Data to be transformed, with signals in rows and frequency bins in
+        columns
     position_grid : array_like or io.SphericalGrid
-       Azimuths/Colatitudes/Gridweights of spatial sampling points
+        Azimuths/Colatitudes/Gridweights of spatial sampling points
     order_max : int, optional
-       Maximum transform order [Default: 10]
+        Maximum transform order [Default: 10]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
-       Spherical harmonic base coefficients (not yet weighted by spatial sampling grid) [Default: None]
+        Spherical harmonic base coefficients (not yet weighted by spatial
+        sampling grid) [Default: None]
 
     Returns
     -------
     Pnm : array_like
-       Spatial Fourier Coefficients with nm coeffs in rows and FFT bins in columns
+        Spatial Fourier Coefficients with nm coeffs in rows and FFT bins in
+        columns
 
     Notes
     -----
-    In case no weights in spatial sampling grid are given, the pseudo inverse of the SH bases is computed according to
-    Eq. 3.34 in [1].
+    In case no weights in spatial sampling grid are given, the pseudo inverse
+    of the SH bases is computed according to Eq. 3.34 in [1].
 
     References
     ----------
-    .. [1] Boaz Rafaely: Fundamentals of spherical array processing. In. Springer topics in signal processing.
-           Benesty, J.; Kellermann, W. (Eds.), Springer, Heidelberg et al. (2015).
+    .. [1] Boaz Rafaely: Fundamentals of spherical array processing. In.
+           Springer topics in signal processing. Benesty, J.; Kellermann,
+           W. (Eds.), Springer, Heidelberg et al. (2015).
     """
     data = _np.atleast_2d(data)
     position_grid = SphericalGrid(*position_grid)
 
-    # Re-generate spherical harmonic bases if they were not provided or their order is too small
+    # Re-generate spherical harmonic bases if they were not provided or their
+    # order is too small
     if (spherical_harmonic_bases is None or
-            spherical_harmonic_bases.shape[0] < data.shape[0] or
-            spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2):
-        spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
+        spherical_harmonic_bases.shape[0] < data.shape[0] or
+        spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2):
+        spherical_harmonic_bases = sph_harm_all(order_max,
+                                                position_grid.azimuth,
+                                                position_grid.colatitude,
+                                                kind=kind)
 
     if position_grid.weight is None:
-        # calculate pseudo inverse in case no spatial sampling point weights are given
+        # calculate pseudo inverse in case no spatial sampling point weights
+        # are given
         spherical_harmonic_weighted = _np.linalg.pinv(spherical_harmonic_bases)
     else:
         # apply spatial sampling point weights in case they are given
-        spherical_harmonic_weighted = (_np.conj(spherical_harmonic_bases).T * (4 * _np.pi * position_grid.weight))
+        spherical_harmonic_weighted = (_np.conj(spherical_harmonic_bases).T
+                                       * (4 * _np.pi * position_grid.weight))
 
     return spatFT_RT(data, spherical_harmonic_weighted)
 
 
 def spatFT_RT(data, spherical_harmonic_weighted):
-    """Spatial Fourier Transform for real-time application, otherwise use `spatFT()` for more more convenience and
-    flexibility.
+    """Spatial Fourier Transform for real-time application, otherwise use
+    `spatFT()` for more more convenience and flexibility.
 
     Parameters
     ----------
     data : array_like
-       Data to be transformed, with signals in rows and frequency bins in columns
+        Data to be transformed, with signals in rows and frequency bins in
+        columns
     spherical_harmonic_weighted : array_like
-       Spherical harmonic base coefficients (already weighted by spatial sampling grid)
+        Spherical harmonic base coefficients (already weighted by spatial
+        sampling grid)
 
     Returns
     -------
     Pnm : array_like
-       Spatial Fourier Coefficients with nm coeffs in rows and FFT bins in columns
+        Spatial Fourier Coefficients with nm coeffs in rows and FFT bins in
+        columns
     """
     return _np.dot(spherical_harmonic_weighted, data)
 
 
-def iSpatFT(spherical_coefficients, position_grid, order_max=None, spherical_harmonic_bases=None):
+def iSpatFT(spherical_coefficients, position_grid, order_max=None,
+            kind='complex', spherical_harmonic_bases=None):
     """Inverse spatial Fourier Transform
 
     Parameters
     ----------
     spherical_coefficients : array_like
-       Spatial Fourier coefficients with columns representing frequency bins
+        Spatial Fourier coefficients with columns representing frequency bins
     position_grid : array_like or io.SphericalGrid
-       Azimuth/Colatitude angles of spherical coefficients
+        Azimuth/Colatitude angles of spherical coefficients
     order_max : int, optional
-       Maximum transform order [Default: highest available order]
+        Maximum transform order [Default: highest available order]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
-       Spherical harmonic base coefficients (not yet weighted by spatial sampling grid) [Default: None]
+        Spherical harmonic base coefficients (not yet weighted by spatial
+        sampling grid) [Default: None]
 
     Returns
     -------
     P : array_like
-       Sound pressures with frequency bins in columns and angles in rows
+        Sound pressures with frequency bins in columns and angles in rows
     """
     position_grid = SphericalGrid(*position_grid)
     spherical_coefficients = _np.atleast_2d(spherical_coefficients)
@@ -289,64 +309,80 @@ def iSpatFT(spherical_coefficients, position_grid, order_max=None, spherical_har
     if order_max is None:
         order_max = int(_np.sqrt(number_of_coefficients) - 1)
 
-    # Re-generate spherical harmonic bases if they were not provided or their order is too small
+    # Re-generate spherical harmonic bases if they were not provided or their
+    # order is too small
     if (spherical_harmonic_bases is None
-            or spherical_harmonic_bases.shape[1] < number_of_coefficients
-            or spherical_harmonic_bases.shape[1] != position_grid.azimuths.size):
-        spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
+        or spherical_harmonic_bases.shape[1] < number_of_coefficients
+        or spherical_harmonic_bases.shape[1] != position_grid.azimuths.size):
+        spherical_harmonic_bases = sph_harm_all(order_max,
+                                                position_grid.azimuth,
+                                                position_grid.colatitude,
+                                                kind=kind)
 
     return _np.dot(spherical_harmonic_bases, spherical_coefficients)
 
 
-def spatFT_LSF(data, position_grid, order_max=10, spherical_harmonic_bases=None):
+def spatFT_LSF(data, position_grid, order_max=10, kind='complex',
+               spherical_harmonic_bases=None):
     """Spatial Fourier Transform by least square fit to provided data
 
     Parameters
     ----------
     data : array_like, complex
-       Data to be fitted to
+        Data to be fitted to
     position_grid : array_like, or io.SphericalGrid
-       Azimuth / colatitude data locations
+        Azimuth / colatitude data locations
     order_max: int, optional
-       Maximum transform order [Default: 10]
+        Maximum transform order [Default: 10]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
-       Spherical harmonic base coefficients (not yet weighted by spatial sampling grid) [Default: None]
+        Spherical harmonic base coefficients (not yet weighted by spatial
+        sampling grid) [Default: None]
 
     Returns
     -------
     coefficients: array_like, float
-       Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
+        Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
     """
     # Re-generate spherical harmonic bases if they were not provided or their order is too small
     if (spherical_harmonic_bases is None or
             spherical_harmonic_bases.shape[0] < data.shape[0] or
             spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2):
         position_grid = SphericalGrid(*position_grid)
-        spherical_harmonic_bases = sph_harm_all(order_max, position_grid.azimuth, position_grid.colatitude)
+        spherical_harmonic_bases = sph_harm_all(order_max,
+                                                position_grid.azimuth,
+                                                position_grid.colatitude,
+                                                kind=kind)
 
     return lstsq(spherical_harmonic_bases, data)[0]
 
 
-def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weights=None):
+def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter,
+                      weights=None, kind='complex'):
     """Plane wave decomposition
 
     Parameters
     ----------
     order : int
-       Decomposition order
+        Decomposition order
     wave_direction : array_like
-       Direction of plane wave as [azimuth, colatitude] pair. io.SphericalGrid is used internally
+        Direction of plane wave as [azimuth, colatitude] pair.
+        io.SphericalGrid is used internally
     field_coeffs : array_like
-       Spatial fourier coefficients
+        Spatial fourier coefficients
     radial_filter : array_like
-       Radial filters
+        Radial filters
     weights : array_like, optional
-       Weighting function. Either scalar, one per directions or of dimension (nKR_bins x  nDirections). [Default: None]
+        Weighting function. Either scalar, one per directions or of dimension
+        (nKR_bins x  nDirections). [Default: None]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
 
     Returns
     -------
     Y : matrix of floats
-       Matrix of the decomposed wavefield with kr bins in rows
+        Matrix of the decomposed wave field with kr bins in rows
     """
     wave_direction = SphericalGrid(*wave_direction)
     number_of_angles = wave_direction.azimuth.size
@@ -362,12 +398,14 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
     Ndn, FFTBlocklengthdn = radial_filter.shape
 
     if FFTBlocklengthdn != FFTBlocklengthPnm:
-        raise ValueError('FFT Blocksizes of field coefficients (Pnm) and radial filter (dn) are not consistent.')
+        raise ValueError('FFT Blocksizes of field coefficients (Pnm) and '
+                         'radial filter (dn) are not consistent.')
 
     max_order = int(_np.floor(_np.sqrt(NMDeliveredSize) - 1))
     if order > max_order:
         raise ValueError(
-            f'The provided coefficients deliver a maximum order of {max_order} but order {order} was requested.')
+            f'The provided coefficients deliver a maximum order of {max_order} '
+            f'but order {order} was requested.')
 
     gaincorrection = 4 * _np.pi / ((order + 1) ** 2)
 
@@ -375,20 +413,27 @@ def plane_wave_decomp(order, wave_direction, field_coeffs, radial_filter, weight
         weights = _np.asarray(weights)
         if weights.ndim == 1:
             number_of_weights = weights.size
-            if (number_of_weights != FFTBlocklengthPnm and number_of_weights != number_of_angles
-                    and number_of_weights != 1):
-                raise ValueError('Weights is not a scalar nor consistent with shape of the field coefficients (Pnm).')
+            if (number_of_weights != FFTBlocklengthPnm
+                and number_of_weights != number_of_angles
+                and number_of_weights != 1):
+                raise ValueError('Weights is not a scalar nor consistent with s'
+                                 'hape of the field coefficients (Pnm).')
             if number_of_weights == number_of_angles:
-                weights = _np.broadcast_to(weights, (FFTBlocklengthPnm, number_of_angles)).T
+                weights = _np.broadcast_to(weights, (FFTBlocklengthPnm,
+                                                     number_of_angles)).T
         else:
             if weights.shape != (number_of_angles, FFTBlocklengthPnm):
-                raise ValueError('Weights is not a scalar nor consistent with shape of field coefficients (Pnm) and '
-                                 'radial filter (dn).')
+                raise ValueError('Weights is not a scalar nor consistent with '
+                                 'shape of field coefficients (Pnm) and radial '
+                                 'filter (dn).')
     else:
         weights = 1
 
-    sph_harms = sph_harm_all(order, wave_direction.azimuth, wave_direction.colatitude)
-    filtered_coeffs = field_coeffs * _np.repeat(radial_filter, _np.r_[:order + 1] * 2 + 1, axis=0)
+    sph_harms = sph_harm_all(order, wave_direction.azimuth,
+                             wave_direction.colatitude, kind=kind)
+    filtered_coeffs = field_coeffs * _np.repeat(radial_filter,
+                                                _np.r_[:order + 1] * 2 + 1,
+                                                axis=0)
     OutputArray = _np.dot(sph_harms, filtered_coeffs)
     OutputArray = _np.multiply(OutputArray, weights)
     return OutputArray * gaincorrection

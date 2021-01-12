@@ -11,7 +11,7 @@ Module contains various generator functions:
    Modal radial filter
 `radial_filter_fullspec`
    Modal radial filter over the full spectrum
-`sampledWave`
+`sampled_wave`
    Sampled Wave generator, emulating discrete sampling
 `ideal_wave`
    Ideal wave generator, returns spatial fourier coefficients
@@ -292,36 +292,41 @@ def spherical_head_filter_spec(max_order, NFFT, fs, radius, amp_maxdB=None, is_t
 
 
 def sampled_wave(order, fs, NFFT, array_configuration,
-                 gridData, wave_azimuth, wave_colatitude, wavetype='plane', c=343, distance=1.0, limit_order=85):
-    """Returns the frequency domain data of an ideal wave as recorded by a provided array.
+                 gridData, wave_azimuth, wave_colatitude, wavetype='plane',
+                 c=343, distance=1.0, limit_order=85, kind='complex'):
+    """Returns the frequency domain data of an ideal wave as recorded by a
+    provided array.
 
     Parameters
     ----------
     order : int
         Maximum transform order
     fs : int
-       Sampling frequency
+        Sampling frequency
     NFFT : int
-       Order of FFT (number of bins), should be a power of 2.
+        Order of FFT (number of bins), should be a power of 2.
     array_configuration : io.ArrayConfiguration
-       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
+        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     gridData : io.SphericalGrid
-       List/Tuple/gauss_grid, see io.SphericalGrid
+        List/Tuple/gauss_grid, see io.SphericalGrid
     wave_azimuth, wave_colatitude : float, optional
-       Direction of incoming wave in radians [0-2pi].
+        Direction of incoming wave in radians [0-2pi].
     wavetype : {'plane', 'spherical'}, optional
-       Type of the wave. [Default: plane]
+        Type of the wave. [Default: plane]
     c : float, optional
-       __UNUSED__ Speed of sound in [m/s] [Default: 343 m/s]
+        __UNUSED__ Speed of sound in [m/s] [Default: 343 m/s]
     distance : float, optional
-       Distance of the source in [m] (For spherical waves only)
+        Distance of the source in [m] (For spherical waves only)
     limit_order : int, optional
-       Sets the limit for wave generation
+        Sets the limit for wave generation
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
 
     Warning
     -------
-    If NFFT is smaller than the time the wavefront needs to travel from the source to the array, the impulse response
-    will by cyclically shifted (cyclic convolution).
+    If NFFT is smaller than the time the wavefront needs to travel from the
+    source to the array, the impulse response will by cyclically shifted
+    (cyclic convolution).
 
     Returns
     -------
@@ -338,16 +343,19 @@ def sampled_wave(order, fs, NFFT, array_configuration,
 
     # TODO : Investigate if limit_order works as intended
     if max_order_fullspec > limit_order:
-        print(f'Requested wave front needs a minimum order of {max_order_fullspec} but was limited to order '
-              f'{limit_order}')
-    Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth, wave_colatitude, array_configuration,
-                     wavetype, distance, NFFT)
-    Pnm_resampled = spatFT(iSpatFT(Pnm, gridData), gridData, order_max=order)
+        print(f'Requested wave front needs a minimum order of '
+              f'{max_order_fullspec} but was limited to order {limit_order}')
+    Pnm = ideal_wave(min(max_order_fullspec, limit_order), fs, wave_azimuth,
+                     wave_colatitude, array_configuration, wavetype=wavetype,
+                     distance=distance, NFFT=NFFT, kind=kind)
+    Pnm_resampled = spatFT(iSpatFT(Pnm, gridData, kind=kind), gridData,
+                           order_max=order, kind=kind)
     return Pnm_resampled
 
 
 def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
-               wavetype='plane', distance=1.0, NFFT=128, delay=0.0, c=343.0):
+               wavetype='plane', distance=1.0, NFFT=128, delay=0.0, c=343.0,
+               kind='complex'):
     """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an
     ideal wave front hitting a specified array
 
@@ -371,6 +379,8 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
         Time Delay in s [default: 0]
     c : float, optional
         Propagation velocity in m/s [Default: 343m/s]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
 
     Warning
     -------
@@ -390,6 +400,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     NMLocatorSize = (order + 1) ** 2
 
     # SAFETY CHECKS
+    wavetype = wavetype.lower()
     if wavetype not in {'plane', 'spherical'}:
         raise ValueError('Invalid wavetype: Choose either plane or spherical.')
     if delay * fs > NFFT - 1:
@@ -407,7 +418,7 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
             radial_filters[n] = (time_shift
                                  * array_extrapolation(n, freqs,
                                                        array_configuration))
-        elif wavetype == 'spherical':
+        else:  # wavetype == 'spherical':
             k_dist = kr(freqs, distance)
             radial_filters[n] = (4 * _np.pi * -1j * w / c * time_shift
                                  * sphankel2(n, k_dist)
@@ -420,14 +431,16 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     ctr = 0
     for n in range(0, order + 1):
         for m in range(-n, n + 1):
-            Pnm[ctr] = (_np.conj(sph_harm(m, n, azimuth, colatitude))
+            Pnm[ctr] = (_np.conj(sph_harm(m, n, azimuth, colatitude,
+                                          kind=kind))
                         * radial_filters[n])
             ctr = ctr + 1
 
     return Pnm
 
 
-def spherical_noise(gridData=None, order_max=8, spherical_harmonic_bases=None):
+def spherical_noise(gridData=None, order_max=8, kind='complex',
+                    spherical_harmonic_bases=None):
     """Returns order-limited random weights on a spherical surface
 
     Parameters
@@ -436,8 +449,11 @@ def spherical_noise(gridData=None, order_max=8, spherical_harmonic_bases=None):
        SphericalGrid containing azimuth and colatitude
     order_max : int, optional
         Spherical order limit [Default: 8]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
-       Spherical harmonic base coefficients (not yet weighted by spatial sampling grid) [Default: None]
+       Spherical harmonic base coefficients (not yet weighted by spatial
+       sampling grid) [Default: None]
 
     Returns
     -------
@@ -446,13 +462,16 @@ def spherical_noise(gridData=None, order_max=8, spherical_harmonic_bases=None):
     """
     if spherical_harmonic_bases is None:
         if gridData is None:
-            raise TypeError('Either a grid or the spherical harmonic bases have to be provided.')
+            raise TypeError('Either a grid or the spherical harmonic bases '
+                            'have to be provided.')
         gridData = SphericalGrid(*gridData)
-        spherical_harmonic_bases = sph_harm_all(order_max, gridData.azimuth, gridData.colatitude)
+        spherical_harmonic_bases = sph_harm_all(order_max, gridData.azimuth,
+                                                gridData.colatitude, kind=kind)
     else:
         order_max = _np.int(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)
     return _np.inner(spherical_harmonic_bases,
-                     _np.random.randn((order_max + 1) ** 2) + 1j * _np.random.randn((order_max + 1) ** 2))
+                     _np.random.randn((order_max + 1) ** 2)
+                     + 1j * _np.random.randn((order_max + 1) ** 2))
 
 
 def tapering_window(max_order):
