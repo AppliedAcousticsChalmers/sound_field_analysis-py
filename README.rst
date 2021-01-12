@@ -3,18 +3,13 @@ Sound Field Analysis toolbox for Python
 .. image:: https://api.travis-ci.org/QULab/sound_field_analysis-py.svg
 .. image:: https://ci.appveyor.com/api/projects/status/u0koxo5vcitmbghc?svg=true
 
-The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of the `Sound Field Analysis 
-Toolbox (SOFiA) toolbox`_, originally by Benjamin Bernschütz `[1]`_. The main goal of the *sfa* 
-toolbox is to analyze, visualize and process sound field data recorded by spherical microphone 
-arrays. Furthermore, various types of test-data may be generated to evaluate the implemented 
-functions. It is an essential building block of `ReTiSAR`_, an implementation  of real time 
-binaural rendering of spherical microphone array data.
+The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of the `Sound Field Analysis Toolbox (SOFiA) toolbox`_, originally by Benjamin Bernschütz `[1]`_. The main goal of the *sfa* toolbox is to analyze, visualize and process sound field data recorded by spherical microphone arrays. Furthermore, various types of test-data may be generated to evaluate the implemented functions. It is an essential building block of `ReTiSAR`_, an implementation  of real time binaural rendering of spherical microphone array data.
 
 
 Requirements
 ------------
 
-We use Python 3.7 for development. Chances are that earlier version will work too but this is currently untested.
+We use Python 3.9 for development. Chances are that earlier version will work too but this is currently untested.
 
 The following external libraries are required:
 
@@ -109,6 +104,10 @@ miro or `SOFA`_ files.
 
 Version history
 ---------------
+
+*v2021.1.12*
+    * Update of MIRO struct loading (quadrature weights are now optional)
+    * Fix to prevent Python 3.8 syntax warnings
 
 *v2020.1.30*
     * Update of README and PyPI package
