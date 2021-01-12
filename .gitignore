@@ -1,3 +1,10 @@
+# Example data, specific desired recources can be added nevertheless
+# e.g. `git add --force examples/miro_to_struct.m`
+examples/
+
+# always include .gitignore in subdirectories
+!.gitignore
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -11,7 +18,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -22,6 +28,7 @@ lib/
 lib64/
 parts/
 sdist/
+src/
 var/
 *.egg-info/
 .installed.cfg
