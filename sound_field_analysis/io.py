@@ -181,37 +181,39 @@ class HrirSignal(namedtuple('HrirSignal', 'l r grid center_signal')):
         return utils.get_named_tuple__repr__(self)
 
 
-def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatter_radius=None,
-                     get_center_signal=False):
+def read_miro_struct(file_name, channel='irChOne', transducer_type='omni',
+                     scatter_radius=None, get_center_signal=False):
     """Reads miro matlab files.
 
     Parameters
     ----------
     file_name : filepath
-       Path to file that has been exported as a struct
+        Path to file that has been exported as a struct
     channel : string, optional
-       Channel that holds required signals. [Default: 'irChOne']
+        Channel that holds required signals. [Default: 'irChOne']
     transducer_type : {omni, cardioid}, optional
-       Sets the type of transducer used in the recording. [Default: 'omni']
+        Sets the type of transducer used in the recording. [Default: 'omni']
     scatter_radius : float, option
-       Radius of the scatterer. [Default: None]
+        Radius of the scatterer. [Default: None]
     get_center_signal : bool, optional
         If center signal should be loaded. [Default: False]
 
     Returns
     -------
     array_signal : ArraySignal
-       Tuple containing a TimeSignal `signal`, SphericalGrid `grid`, TimeSignal 'center_signal',
-       ArrayConfiguration `configuration` and the air temperature
+        Tuple containing a TimeSignal `signal`, SphericalGrid `grid`,
+        TimeSignal 'center_signal', ArrayConfiguration `configuration` and
+        the air temperature
 
     Notes
     -----
-    This function expects a slightly modified miro file in that it expects a field `colatitude` instead of
-    `elevation`. This is for avoiding confusion as may miro file contain colatitude data in the elevation field.
+    This function expects a slightly modified miro file in that it expects a
+    field `colatitude` instead of `elevation`. This is for avoiding confusion as
+    may miro file contain colatitude data in the elevation field.
 
-    To import center signal measurements the matlab method miro_to_struct has to be extended. Center measurements are
-    included in every measurement provided at http://audiogroup.web.th-koeln.de/.
-
+    To import center signal measurements the matlab method miro_to_struct has to
+    be extended. Center measurements are included in every measurement
+    provided at http://audiogroup.web.th-koeln.de/.
     """
     current_data = sio.loadmat(file_name)
 
@@ -224,25 +226,29 @@ def read_miro_struct(file_name, channel='irChOne', transducer_type='omni', scatt
             center_signal = TimeSignal(signal=_np.squeeze(current_data['irCenter']).T,
                                        fs=_np.squeeze(current_data['fs']))
         except KeyError:
-            print('WARNING: Center signal not included in miro struct, use extended miro_to_struct.m!', file=sys.stderr)
+            print('WARNING: Center signal not included in miro struct, use '
+                  'extended miro_to_struct.m!', file=sys.stderr)
             center_signal = None
 
     mic_grid = SphericalGrid(azimuth=_np.squeeze(current_data['azimuth']),
                              colatitude=_np.squeeze(current_data['colatitude']),
                              radius=_np.squeeze(current_data['radius']),
-                             weight=_np.squeeze(current_data['quadWeight']))
+                             weight=_np.squeeze(current_data['quadWeight'])
+                             if 'quadWeight' in current_data else None)
 
     if (mic_grid.colatitude < 0).any():
-        print('WARNING: The "colatitude" data contains negative values, which is an indication that it is actually '
-              'elevation', file=sys.stderr)
+        print('WARNING: The "colatitude" data contains negative values, which '
+              'is an indication that it is actually elevation', file=sys.stderr)
 
     if _np.squeeze(current_data['scatterer']):
         sphere_config = 'rigid'
     else:
         sphere_config = 'open'
-    array_config = ArrayConfiguration(mic_grid.radius, sphere_config, transducer_type, scatter_radius)
+    array_config = ArrayConfiguration(mic_grid.radius, sphere_config,
+                                      transducer_type, scatter_radius)
 
-    return ArraySignal(time_signal, mic_grid, center_signal, array_config, _np.squeeze(current_data['avgAirTemp']))
+    return ArraySignal(time_signal, mic_grid, center_signal, array_config,
+                       _np.squeeze(current_data['avgAirTemp']))
 
 
 # noinspection PyPep8Naming
