@@ -292,20 +292,22 @@ def dsphankel2(n, kr):
     return dhn2
 
 
-def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None, k_dual=None):
+def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None,
+                            k_dual=None):
     """ Factor that relate signals recorded on a sphere to it's center.
 
     Parameters
     ----------
     order : int
-       Order
+        Order
     array_configuration : io.ArrayConfiguration
-       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
+        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     k_mic : array_like
-       K vector for microphone array
+        K vector for microphone array
     k_scatter: array_like, optional
-       K vector for scatterer  [Default: same as k_mic]
-    k_dual : optional
+        K vector for scatterer  [Default: same as k_mic]
+    k_dual : float, optional
+        Radius of second array, required for `array_type` == 'dual'
 
     Returns
     -------
@@ -313,39 +315,40 @@ def spherical_extrapolation(order, array_configuration, k_mic, k_scatter=None, k
     """
     array_configuration = ArrayConfiguration(*array_configuration)
 
-    if array_configuration.array_type is 'open':
-        if array_configuration.transducer_type is 'omni':
+    if array_configuration.array_type == 'open':
+        if array_configuration.transducer_type == 'omni':
             return bn_open_omni(order, k_mic)
-        elif array_configuration.transducer_type is 'cardioid':
+        elif array_configuration.transducer_type == 'cardioid':
             return bn_open_cardioid(order, k_mic)
-    elif array_configuration.array_type is 'rigid':
-        if array_configuration.transducer_type is 'omni':
+    elif array_configuration.array_type == 'rigid':
+        if array_configuration.transducer_type == 'omni':
             return bn_rigid_omni(order, k_mic, k_scatter)
-        elif array_configuration.transducer_type is 'cardioid':
+        elif array_configuration.transducer_type == 'cardioid':
             return bn_rigid_cardioid(order, k_mic, k_scatter)
-    elif array_configuration.array_type is 'dual':
+    elif array_configuration.array_type == 'dual':
         return bn_dual_open_omni(order, k_mic, k_dual)
 
 
 def array_extrapolation(order, freqs, array_configuration, normalize=True):
-    """ Factor that relate signals recorded on a sphere to it's center.
-    In the rigid configuration, a scatter_radius that is different to the array radius may be set.
+    """Factor that relate signals recorded on a sphere to it's center. In the
+    rigid configuration, a scatter_radius that is different to the array radius
+    may be set.
 
     Parameters
     ----------
     order : int
-       Order
+        Order
     freqs : array_like
-       Frequencies
+        Frequencies
     array_configuration : io.ArrayConfiguration
-       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
+        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     normalize: Bool, optional
         Normalize by 4 * pi * 1j ** order [Default: True]
 
     Returns
     -------
     b : array, complex
-       Coefficients of shape [nOrder x nFreqs]
+        Coefficients of shape [nOrder x nFreqs]
     """
     array_configuration = ArrayConfiguration(*array_configuration)
 
@@ -359,9 +362,9 @@ def array_extrapolation(order, freqs, array_configuration, normalize=True):
     else:
         scale_factor = 1
 
-    if array_configuration.array_type is 'open':
+    if array_configuration.array_type == 'open':
         k_scatter = None
-    elif array_configuration.array_type is 'rigid':
+    elif array_configuration.array_type == 'rigid':
         if array_configuration.scatter_radius is None:
             scatter_radius = array_configuration.array_radius
         else:
@@ -373,10 +376,11 @@ def array_extrapolation(order, freqs, array_configuration, normalize=True):
             k_mic[:, 0] = k_mic[:, 1]
         if _np.any(k_scatter[:, 0] == 0):
             k_scatter[:, 0] = k_scatter[:, 1]
-    elif array_configuration.array_type is 'dual':
+    elif array_configuration.array_type == 'dual':
         k_dual = kr(freqs, array_configuration.dual_radius)
 
-    return scale_factor * spherical_extrapolation(order, array_configuration, k_mic, k_scatter, k_dual)
+    return scale_factor * spherical_extrapolation(order, array_configuration,
+                                                  k_mic, k_scatter, k_dual)
 
 
 def bn_open_omni(n, krm):

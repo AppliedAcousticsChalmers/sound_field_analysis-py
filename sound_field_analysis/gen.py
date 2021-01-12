@@ -21,7 +21,8 @@ from scipy.special import spherical_jn
 
 from .io import ArrayConfiguration, SphericalGrid
 from .process import iSpatFT, spatFT
-from .sph import array_extrapolation, cart2sph, dsphankel2, kr, sph_harm, sph_harm_all, sphankel2
+from .sph import array_extrapolation, cart2sph, dsphankel2, kr, sph_harm, \
+    sph_harm_all, sphankel2
 
 
 def whiteNoise(fftData, noiseLevel=80):
@@ -88,25 +89,25 @@ def gauss_grid(azimuth_nodes=10, colatitude_nodes=5):
 
 
 def lebedev(max_order=None, degree=None):
-    """Compute Lebedev quadrature nodes and weights given a maximum stable order. Alternatively, a degree may be
-    supplied.
+    """Compute Lebedev quadrature nodes and weights given a maximum stable
+    order. Alternatively, a degree may be supplied.
 
     Parameters
     ----------
     max_order : int
-       Maximum stable order of the Lebedev grid, [0 ... 11]
+        Maximum stable order of the Lebedev grid, [0 ... 11]
     degree : int, optional
-       Lebedev Degree, one of {6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}
+        Lebedev Degree, one of {6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}
 
     Returns
     -------
     gridData : array_like
-       Lebedev quadrature positions and weights: [AZ, EL, W]
+        Lebedev quadrature positions and weights: [AZ, EL, W]
     """
     if max_order is None and not degree:
         raise ValueError('Either a maximum order or a degree have to be given.')
 
-    if max_order is 0:
+    if max_order == 0:
         max_order = 1
 
     allowed_degrees = [6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194]
@@ -117,13 +118,15 @@ def lebedev(max_order=None, degree=None):
         raise ValueError('Maximum order can only be between 0 and 11.')
 
     if degree not in allowed_degrees:
-        raise ValueError(f'{degree} is an invalid quadrature degree. Choose one of the following: {allowed_degrees}')
+        raise ValueError(f'{degree} is an invalid quadrature degree. Choose '
+                         f'one of the following: {allowed_degrees}')
 
     from . import lebedev
     leb = lebedev.genGrid(degree)
     azimuth, elevation, radius = cart2sph(leb.x, leb.y, leb.z)
 
-    gridData = _np.array([azimuth % (2 * _np.pi), (_np.pi / 2 - elevation) % (2 * _np.pi), radius, leb.w]).T
+    gridData = _np.array([azimuth % (2 * _np.pi), (_np.pi / 2 - elevation)
+                          % (2 * _np.pi), radius, leb.w]).T
     gridData = gridData[gridData[:, 1].argsort()]
     gridData = gridData[gridData[:, 0].argsort()]
 
@@ -345,38 +348,40 @@ def sampled_wave(order, fs, NFFT, array_configuration,
 
 def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
                wavetype='plane', distance=1.0, NFFT=128, delay=0.0, c=343.0):
-    """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an ideal wave front hitting a specified array
+    """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an
+    ideal wave front hitting a specified array
 
     Parameters
     ----------
     order : int
         Maximum transform order
     fs : int
-       Sampling frequency
+        Sampling frequency
     NFFT : int
-       Order of FFT (number of bins), should be a power of 2
+        Order of FFT (number of bins), should be a power of 2
     array_configuration : io.ArrayConfiguration
-       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
+        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
     azimuth, colatitude : float
-       Azimuth/Colatitude angle of the wave in [RAD]
+        Azimuth/Colatitude angle of the wave in [RAD]
     wavetype : {'plane', 'spherical'}, optional
-       Select between plane or spherical wave [Default: Plane wave]
+        Select between plane or spherical wave [Default: Plane wave]
     distance : float, optional
-       Distance of the source in [m] (for spherical waves only)
+        Distance of the source in [m] (for spherical waves only)
     delay : float, optional
-       Time Delay in s [default: 0]
+        Time Delay in s [default: 0]
     c : float, optional
-       Propagation velocity in m/s [Default: 343m/s]
+        Propagation velocity in m/s [Default: 343m/s]
 
     Warning
     -------
-    If NFFT is smaller than the time the wavefront needs to travel from the source to the array, the impulse response
-    will by cyclically shifted.
+    If NFFT is smaller than the time the wavefront needs to travel from the
+    source to the array, the impulse response will by cyclically shifted.
 
     Returns
     -------
     Pnm : array of complex floats
-       Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows
+        Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in
+        rows
     """
     array_configuration = ArrayConfiguration(*array_configuration)
 
@@ -388,7 +393,8 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     if wavetype not in {'plane', 'spherical'}:
         raise ValueError('Invalid wavetype: Choose either plane or spherical.')
     if delay * fs > NFFT - 1:
-        raise ValueError('Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).')
+        raise ValueError('Delay t is large for provided NFFT. '
+                         'Choose t < NFFT/(2*FS).')
 
     w = _np.linspace(0, _np.pi * fs, NFFT)
     freqs = _np.linspace(0, fs / 2, NFFT)
@@ -397,12 +403,16 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     time_shift = _np.exp(-1j * w * delay)
 
     for n in range(0, order + 1):
-        if wavetype is 'plane':
-            radial_filters[n] = time_shift * array_extrapolation(n, freqs, array_configuration)
-        elif wavetype is 'spherical':
+        if wavetype == 'plane':
+            radial_filters[n] = (time_shift
+                                 * array_extrapolation(n, freqs,
+                                                       array_configuration))
+        elif wavetype == 'spherical':
             k_dist = kr(freqs, distance)
-            radial_filters[n] = 4 * _np.pi * -1j * w / c * time_shift * sphankel2(n, k_dist) \
-                                * array_extrapolation(n, freqs, array_configuration)
+            radial_filters[n] = (4 * _np.pi * -1j * w / c * time_shift
+                                 * sphankel2(n, k_dist)
+                                 * array_extrapolation(n, freqs,
+                                                       array_configuration))
 
     # GENERATOR CORE
     Pnm = _np.empty([NMLocatorSize, NFFT], dtype=_np.complex_)
@@ -410,7 +420,8 @@ def ideal_wave(order, fs, azimuth, colatitude, array_configuration,
     ctr = 0
     for n in range(0, order + 1):
         for m in range(-n, n + 1):
-            Pnm[ctr] = _np.conj(sph_harm(m, n, azimuth, colatitude)) * radial_filters[n]
+            Pnm[ctr] = (_np.conj(sph_harm(m, n, azimuth, colatitude))
+                        * radial_filters[n])
             ctr = ctr + 1
 
     return Pnm
