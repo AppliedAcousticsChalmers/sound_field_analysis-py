@@ -449,6 +449,7 @@ def sph_harm(m, n, az, co, kind='complex'):
     kind = kind.lower()
     if kind not in {'complex', 'real'}:
         raise ValueError('Invalid kind: Choose either complex or real.')
+    m = _np.atleast_1d(m)
 
     Y = scy.sph_harm(m, n, az, co)
     if kind == 'complex':
@@ -458,7 +459,6 @@ def sph_harm(m, n, az, co, kind='complex'):
                                * _np.sqrt(2) * _np.real(Y[_np.where(m > 0)]))
         Y[_np.where(m == 0)] = _np.real(Y[_np.where(m == 0)])
         Y[_np.where(m < 0)] = _np.sqrt(2) * _np.imag(Y[_np.where(m < 0)])
-
         return _np.real(Y)
 
 
@@ -507,6 +507,7 @@ def sph_harm_large(m, n, az, co, kind='complex'):
         kind = kind.lower()
         if kind not in {'complex', 'real'}:
             raise ValueError('Invalid kind: Choose either complex or real.')
+        m = _np.atleast_1d(m)
 
         # TODO: confirm that this uses the correct SH definition
         mAbs = _np.abs(m)

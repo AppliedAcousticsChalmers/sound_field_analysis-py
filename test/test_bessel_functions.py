@@ -52,6 +52,30 @@ def test_sph_harm():
     assert sph.sph_harm(-17, 17, 6, -7, kind='complex') == approx(
         4.945682459644794e-05 - 4.843297071701655e-04j)
 
+    # AKsh(0, 0, 0, 0, 'real')
+    assert sph.sph_harm(0, 0, 0, 0, kind='real') == approx(
+        0.282094791773878)
+
+    # AKsh(1, 0, rad2deg(0.1), rad2deg(0.1), 'real')
+    assert sph.sph_harm(0, 1, 0.1, 0.1, kind='real') == approx(
+        0.486161534508712)
+
+    # AKsh(2, -2, rad2deg(-0.1), rad2deg(-0.1), 'real')
+    assert sph.sph_harm(-2, 2, -0.1, -0.1, kind='real') == approx(
+        0.001081666550095)
+
+    # AKsh(2, 2, rad2deg(-0.1), rad2deg(0.1), 'real')
+    assert sph.sph_harm(2, 2, -0.1, 0.1, kind='real') == approx(
+        0.005336028615361)
+
+    # AKsh(17, 17, rad2deg(7), rad2deg(6), 'real')
+    assert sph.sph_harm(17, 17, 7, 6, kind='real') == approx(
+        3.115120086120565e-10)
+
+    # AKsh(17, -17, rad2deg(6), rad2deg(-7), 'real')
+    assert sph.sph_harm(-17, 17, 6, -7, kind='real') == approx(
+        -6.849456405402378e-04)
+
 
 def test_besselj():
     n, k = generate_n_k()
