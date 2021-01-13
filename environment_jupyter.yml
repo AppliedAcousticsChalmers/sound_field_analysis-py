@@ -1,4 +1,6 @@
 channels:
   - defaults
+  - conda-forge
 dependencies:
-  - jupyter
+  - jupyter  # for notebooks
+  - pytest  # for testing and performance analysis

@@ -1,33 +1,56 @@
-"""This should test all sph functions numerically compared to ground truth from Matlab.
+"""This should test all sph functions numerically compared to ground truth from
+Matlab.
 
-- For bessel and related functions, all permutations of arguments n, k = [-1.5, -1, 0, 1, 1.5] are tested both
-individually and as a matrix.
+- For bessel and related functions, all permutations of arguments
+n, k = [-1.5, -1, 0, 1, 1.5] are tested both individually and as a matrix.
 
-- For spherical harmonics, a random set of large and small orders with large/small & positive/negative arguments are checked.
-
+- For spherical harmonics, a random set of large and small orders with
+large/small & positive/negative arguments are checked.
 """
 
 import numpy as np
-from py.test import approx
-import sys
-import os
-myPath = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, myPath + '/../')
+from pytest import approx
+
 from sound_field_analysis import sph
 
 
 def test_sph_harm():
+    """Implementation checked against AKtools [1].
+
+    Notes
+    -----
+    `AKsh` uses the inverted order of the parameters n and m. The inclination
+    angle is referenced as elevation although colatitude is used. The angles
+    are specified in degrees.
+
+    References
+    ----------
+    [1] F. Brinkmann and S. Weinzierl, “AKtools - An Open Software Toolbox for
+        Signal Acquisition, Processing, and Inspection in Acoustics,” in AES
+        Convention 142, 2017, pp. 1–6.
+    """
+    # AKsh(0, 0, 0, 0, 'complex')
     assert sph.sph_harm(0, 0, 0, 0, kind='complex') == approx(0.282094791773878)
+
+    # AKsh(1, 0, rad2deg(0.1), rad2deg(0.1), 'complex')
     assert sph.sph_harm(0, 1, 0.1, 0.1, kind='complex') == approx(
         0.486161534508712)
+
+    # AKsh(2, -2, rad2deg(-0.1), rad2deg(-0.1), 'complex')
     assert sph.sph_harm(-2, 2, -0.1, -0.1, kind='complex') == approx(
         0.003773142018527 + 0.000764853752555j)
+
+    # AKsh(2, 2, rad2deg(-0.1), rad2deg(0.1), 'complex')
     assert sph.sph_harm(2, 2, -0.1, 0.1, kind='complex') == approx(
         0.003773142018527 - 0.000764853752555j)
+
+    # AKsh(17, 17, rad2deg(7), rad2deg(6), 'complex')
     assert sph.sph_harm(17, 17, 7, 6, kind='complex') == approx(
-        2.202722537106286e-10 - 8.811259608537731e-11j)
+        -2.202722537106273e-10 + 8.811259608538045e-11j)
+
+    # AKsh(17, -17, rad2deg(6), rad2deg(-7), 'complex')
     assert sph.sph_harm(-17, 17, 6, -7, kind='complex') == approx(
-        4.945682459644879e-05 - 4.843297071701738e-04j)
+        4.945682459644794e-05 - 4.843297071701655e-04j)
 
 
 def test_besselj():

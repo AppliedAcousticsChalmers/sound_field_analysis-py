@@ -36,8 +36,9 @@ setup(
     },
 
     extras_require={
-        'plotting': ['plotly'],
         'examples': ['jupyter'],
+        'plotting': ['plotly'],
+        'testing':  ['pytest'],
     },
 
     packages=find_packages(),
