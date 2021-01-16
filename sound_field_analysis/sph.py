@@ -455,10 +455,10 @@ def sph_harm(m, n, az, co, kind='complex'):
     if kind == 'complex':
         return Y
     else:  # kind == 'real'
-        Y[_np.where(m > 0)] = (_np.float_power(-1.0, m)[_np.where(m > 0)]
-                               * _np.sqrt(2) * _np.real(Y[_np.where(m > 0)]))
-        Y[_np.where(m == 0)] = _np.real(Y[_np.where(m == 0)])
-        Y[_np.where(m < 0)] = _np.sqrt(2) * _np.imag(Y[_np.where(m < 0)])
+        mg0 = m > 0
+        ml0 = m < 0
+        Y[mg0] = _np.float_power(-1.0, m)[mg0] * _np.sqrt(2) * _np.real(Y[mg0])
+        Y[ml0] = _np.sqrt(2) * _np.imag(Y[ml0])
         return _np.real(Y)
 
 
