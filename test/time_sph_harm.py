@@ -17,8 +17,9 @@ def _timeit(description, stmt, setup, _globals, repeat, number, reference=None):
     print(description)
 
     # do timing and get results
-    result = timeit.Timer(stmt=stmt, setup=setup, globals=_globals) \
-        .repeat(repeat=repeat, number=number)
+    result = timeit.Timer(stmt=stmt, setup=setup, globals=_globals).repeat(
+        repeat=repeat, number=number
+    )
     result = (min(list(zip(*result))[0]), result[0][1])
     # (time, computation result)
 
@@ -76,7 +77,7 @@ def _timeit(description, stmt, setup, _globals, repeat, number, reference=None):
     return result
 
 
-def sh_matrix(N, azi, colat, SH_type='complex', weights=None):
+def sh_matrix(N, azi, colat, SH_type="complex", weights=None):
     """
     From https://github.com/chris-hld/spaudiopy/blob/master/spaudiopy/sph.py
 
@@ -95,79 +96,89 @@ def sh_matrix(N, azi, colat, SH_type='complex', weights=None):
         Q = len(azi)
     if weights is None:
         weights = _np.ones(Q)
-    if SH_type == 'complex':
+    if SH_type == "complex":
         Ymn = _np.zeros([Q, (N + 1) ** 2], dtype=_np.complex_)
-    elif SH_type == 'real':
+    elif SH_type == "real":
         Ymn = _np.zeros([Q, (N + 1) ** 2], dtype=_np.float_)
     else:
-        raise ValueError('SH_type unknown.')
+        raise ValueError("SH_type unknown.")
 
     idx = 0
     for n in range(N + 1):
         for m in range(-n, n + 1):
-            if SH_type == 'complex':
+            if SH_type == "complex":
                 Ymn[:, idx] = weights * scy.sph_harm(m, n, azi, colat)
-            elif SH_type == 'real':
+            elif SH_type == "real":
                 if m == 0:
-                    Ymn[:, idx] = weights * _np.real(
-                        scy.sph_harm(0, n, azi, colat))
+                    Ymn[:, idx] = weights * _np.real(scy.sph_harm(0, n, azi, colat))
                 if m < 0:
-                    Ymn[:, idx] = weights * _np.sqrt(2) * (-1) ** abs(m) * \
-                                  _np.imag(
-                                      scy.sph_harm(abs(m), n, azi, colat))
+                    Ymn[:, idx] = (
+                        weights
+                        * _np.sqrt(2)
+                        * (-1) ** abs(m)
+                        * _np.imag(scy.sph_harm(abs(m), n, azi, colat))
+                    )
                 if m > 0:
-                    Ymn[:, idx] = weights * _np.sqrt(2) * (-1) ** abs(m) * \
-                                  _np.real(
-                                      scy.sph_harm(abs(m), n, azi, colat))
+                    Ymn[:, idx] = (
+                        weights
+                        * _np.sqrt(2)
+                        * (-1) ** abs(m)
+                        * _np.real(scy.sph_harm(abs(m), n, azi, colat))
+                    )
 
             idx += 1
     return Ymn
 
 
-def sph_harm_all_func(func, _N_MAX, az, co, kind='complex'):
+def sph_harm_all_func(func, _N_MAX, az, co, kind="complex"):
     m, n = mnArrays(_N_MAX)
     mA, azA = _np.meshgrid(m, az)
     nA, coA = _np.meshgrid(n, co)
     return func(mA, nA, azA, coA, kind=kind)
 
 
-def sph_harm_1(m, n, az, co, kind='complex'):
+def sph_harm_1(m, n, az, co, kind="complex"):
     Y = scy.sph_harm(m, n, az, co)
-    if kind == 'complex':
+    if kind == "complex":
         return Y
     else:  # kind == 'real'
-        Y[_np.where(m > 0)] = (_np.float_power(-1.0, m)[_np.where(m > 0)]
-                               * _np.sqrt(2) * _np.real(Y[_np.where(m > 0)]))
+        Y[_np.where(m > 0)] = (
+            _np.float_power(-1.0, m)[_np.where(m > 0)]
+            * _np.sqrt(2)
+            * _np.real(Y[_np.where(m > 0)])
+        )
         Y[_np.where(m == 0)] = _np.real(Y[_np.where(m == 0)])
         Y[_np.where(m < 0)] = _np.sqrt(2) * _np.imag(Y[_np.where(m < 0)])
         return _np.real(Y)
 
 
-def sph_harm_2(m, n, az, co, kind='complex'):
+def sph_harm_2(m, n, az, co, kind="complex"):
     Y = scy.sph_harm(m, n, az, co)
-    if kind == 'complex':
+    if kind == "complex":
         return Y
     else:  # kind == 'real'
-        Y[_np.where(m > 0)] = (_np.float_power(-1.0, m)[_np.where(m > 0)]
-                               * _np.sqrt(2) * _np.real(Y[_np.where(m > 0)]))
+        Y[_np.where(m > 0)] = (
+            _np.float_power(-1.0, m)[_np.where(m > 0)]
+            * _np.sqrt(2)
+            * _np.real(Y[_np.where(m > 0)])
+        )
         Y[_np.where(m < 0)] = _np.sqrt(2) * _np.imag(Y[_np.where(m < 0)])
         return _np.real(Y)
 
 
-def sph_harm_3(m, n, az, co, kind='complex'):
+def sph_harm_3(m, n, az, co, kind="complex"):
     Y = scy.sph_harm(m, n, az, co)
-    if kind == 'complex':
+    if kind == "complex":
         return Y
     else:  # kind == 'real'
-        Y[m > 0] = (_np.float_power(-1.0, m)[m > 0] * _np.sqrt(2)
-                    * _np.real(Y[m > 0]))
+        Y[m > 0] = _np.float_power(-1.0, m)[m > 0] * _np.sqrt(2) * _np.real(Y[m > 0])
         Y[m < 0] = _np.sqrt(2) * _np.imag(Y[m < 0])
         return _np.real(Y)
 
 
-def sph_harm_4(m, n, az, co, kind='complex'):
+def sph_harm_4(m, n, az, co, kind="complex"):
     Y = scy.sph_harm(m, n, az, co)
-    if kind == 'complex':
+    if kind == "complex":
         return Y
     else:  # kind == 'real'
         mg0 = m > 0
@@ -177,17 +188,16 @@ def sph_harm_4(m, n, az, co, kind='complex'):
         return _np.real(Y)
 
 
-def sph_harm_5(m, n, az, co, kind='complex'):
+def sph_harm_5(m, n, az, co, kind="complex"):
     Y = scy.sph_harm(m, n, az, co)
-    if kind == 'complex':
+    if kind == "complex":
         return Y
     else:  # kind == 'real'
         mg0 = m > 0
         me0 = m == 0
         ml0 = m < 0
         Y_real = _np.zeros(Y.shape, dtype=_np.float_)
-        Y_real[mg0] = (_np.float_power(-1.0, m)[mg0] * _np.sqrt(2)
-                       * _np.real(Y[mg0]))
+        Y_real[mg0] = _np.float_power(-1.0, m)[mg0] * _np.sqrt(2) * _np.real(Y[mg0])
         Y_real[me0] = _np.real(Y[me0])
         Y_real[ml0] = _np.sqrt(2) * _np.imag(Y[ml0])
         return Y_real
@@ -207,7 +217,7 @@ def inner(_it, _timer{init}):
 # set parameters
 _TIMEIT_REPEAT = 5
 _TIMEIT_NUMBER = 5000
-(_N_MAX, _AZ, _CO, _KIND) = (8, 0.1, 0.1, 'real')
+(_N_MAX, _AZ, _CO, _KIND) = (8, 0.1, 0.1, "real")
 
 print("======================")
 print(f"_TIMEIT_REPEAT = {_TIMEIT_REPEAT}")
