@@ -1,5 +1,0 @@
-channels:
-  - defaults
-dependencies:
-  - sphinx
-  - sphinx_rtd_theme

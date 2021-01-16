@@ -36,14 +36,14 @@ B.  By cloning (or downloading) the repository and setting up a new environment:
 
     ``cd sound_field_analysis-py/``
 
-    Create a new Conda environment from the specified requirements:
-    ``conda env create --file environment.yml``
+    Create a new Conda environment from the specified dependencies:
+    ``conda env create --file environment.yml --force``
 
     Activate the environment:
     ``source activate sfa``
 
-    **Optional:** Install additional requirements in case you want to locally run the *Jupyter Notebooks* with examples:
-    ``conda env update --file environment_jupyter.yml``
+    **Optional:** Install additional dependencies for development purposes (locally run *Jupyter Notebooks* with example, run tests, generate documentation):
+    ``conda env update --file environment_dev.yml``
 
 .. C.  From `conda-forge`_ channel: **[outdated]**
 

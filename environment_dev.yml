@@ -1,0 +1,9 @@
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - black >=20.8b1 # for code formatting
+  - jupyter  # for Notebooks
+  - pytest  # for testing and performance analysis
+  - sphinx  # for documentation
+  - sphinx_rtd_theme  # for documentation

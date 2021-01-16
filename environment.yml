@@ -1,12 +1,13 @@
 name: sfa
 channels:
   - defaults
+  - conda-forge
 dependencies:
-  - python
   - numpy
-  - scipy
-  - plotly
   - pip
+  - plotly
+  - python >=3.7
+  - scipy
   - pip:
-    - pysofaconventions >= 0.1.5
-    - -e .
+      - pysofaconventions >= 0.1.5
+      - -e .
