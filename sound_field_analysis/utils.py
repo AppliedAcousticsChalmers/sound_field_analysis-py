@@ -344,7 +344,9 @@ def get_named_tuple__repr__(namedtuple):
     return f"{namedtuple.__class__.__name__}(\n\t{fields_str})"
 
 
-def time_it(description, stmt, setup, _globals, repeat, number, reference=None):
+def time_it(
+    description, stmt, setup, _globals, repeat, number, reference=None, check_dtype=None
+):
     """
     Measure execution of a specified statement which is useful for the
     performance analysis. In this way, the execution time and respective
@@ -370,6 +372,8 @@ def time_it(description, stmt, setup, _globals, repeat, number, reference=None):
         Result with the same data structure as returned by this function,
         which will be referenced in order to compare execution time and
         similarity of the result data
+    check_dtype : str, optional
+        Data type of the result to check
 
     Returns
     -------
@@ -378,6 +382,18 @@ def time_it(description, stmt, setup, _globals, repeat, number, reference=None):
         execution result of first repetition (data depends on the specified
         statement to be timed)
     """
+
+    def _check_dtype(data_dtype):
+        # check date type
+        if data_dtype == check_dtype:
+            _grade = "MATCH"
+            _file = sys.stdout
+        else:
+            _grade = f"MISMATCH ({str(check_dtype)})"
+            _file = sys.stderr
+        print(f"result dtype: {str(data_dtype):>21} ... {_grade}", file=_file)
+        sleep(0.05)  # to get correct output order
+
     print(description)
 
     # execute timed statement
@@ -406,14 +422,22 @@ def time_it(description, stmt, setup, _globals, repeat, number, reference=None):
         print(f"time factor: {t:-22.2f} ... {grade}", file=file)
         sleep(0.05)  # to get correct output order
 
-        # flip computation result, if matrices do not match
         if reference[1].shape != result[1].shape:
-            reference = (reference[0], reference[1].T)
-        if reference[1].shape != result[1].shape:
-            print(f'result: {"":22} {"DIMENSION MISMATCH"}', file=sys.stderr)
-            sleep(0.05)  # to get correct output order
-            print()
-            return result
+            if reference[1].shape == result[1].T.shape:
+                # flip computation result, if matrices do not match
+                reference = (reference[0], reference[1].T)
+            else:
+                print(
+                    f"result shape: {str(result[1].shape):>21s}"
+                    f" ... MISMATCH {str(reference[1].shape)}",
+                    file=sys.stderr,
+                )
+                sleep(0.05)  # to get correct output order
+
+                if check_dtype:
+                    _check_dtype(result[1].dtype)
+                print()
+                return result
 
         r = np.abs(np.sum(np.subtract(result[1], reference[1])))
         file = sys.stdout
@@ -439,6 +463,8 @@ def time_it(description, stmt, setup, _globals, repeat, number, reference=None):
         print(f"result max:  {r:-22} ... {grade}", file=file)
         sleep(0.05)  # to get correct output order
 
+    if check_dtype:
+        _check_dtype(result[1].dtype)
     print()
     return result
 

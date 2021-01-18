@@ -1,5 +1,57 @@
 """This test the equality and execution speed of different implementations to
 generate spherical harmonics.
+
+Exemplary execution:
+======================
+_TIMEIT_REPEAT = 5
+_TIMEIT_NUMBER = 5000
+_N_MAX = 8
+_KIND = real
+======================
+node "C18TTLT"
+======================
+
+sph_harm_1
+time:                          0.88s
+
+spaudiopy.sh_matrix
+time:                          3.98s
+time factor:                   4.54 ... WORSE
+result sum:      0.7027539767877192 ... MISMATCH
+result max:     0.12727637177922763 ... MISMATCH
+
+pyshtools
+time:                          0.52s
+time factor:                   0.60 ... BETTER
+result sum:       0.702753976787717 ... MISMATCH
+result max:      0.9629001108439836 ... MISMATCH
+
+sph_harm_2
+time:                          0.63s
+time factor:                   0.72 ... BETTER
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
+
+sph_harm_3
+time:                          0.57s
+time factor:                   0.65 ... BETTER
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
+
+sph_harm_4
+time:                          0.55s
+time factor:                   0.62 ... BETTER
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
+
+sph_harm_5
+time:                          0.56s
+time factor:                   0.64 ... BETTER
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
+
+sph_harm COMPLEX
+time:                          0.40s
 """
 
 import platform
@@ -243,54 +295,3 @@ time_it(
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
 )  # for timing reference (mismatch in case of 'real' kind is expected)
-
-# ======================
-# _TIMEIT_REPEAT = 5
-# _TIMEIT_NUMBER = 5000
-# _N_MAX = 8
-# _KIND = real
-# ======================
-# node "C18TTLT"
-# ======================
-#
-# sph_harm_1
-# time:                          0.88s
-#
-# spaudiopy.sh_matrix
-# time:                          3.98s
-# time factor:                   4.54 ... WORSE
-# result sum:      0.7027539767877192 ... MISMATCH
-# result max:     0.12727637177922763 ... MISMATCH
-#
-# pyshtools
-# time:                          0.52s
-# time factor:                   0.60 ... BETTER
-# result sum:       0.702753976787717 ... MISMATCH
-# result max:      0.9629001108439836 ... MISMATCH
-#
-# sph_harm_2
-# time:                          0.63s
-# time factor:                   0.72 ... BETTER
-# result sum:                     0.0 ... PERFECT
-# result max:                     0.0 ... PERFECT
-#
-# sph_harm_3
-# time:                          0.57s
-# time factor:                   0.65 ... BETTER
-# result sum:                     0.0 ... PERFECT
-# result max:                     0.0 ... PERFECT
-#
-# sph_harm_4
-# time:                          0.55s
-# time factor:                   0.62 ... BETTER
-# result sum:                     0.0 ... PERFECT
-# result max:                     0.0 ... PERFECT
-#
-# sph_harm_5
-# time:                          0.56s
-# time factor:                   0.64 ... BETTER
-# result sum:                     0.0 ... PERFECT
-# result max:                     0.0 ... PERFECT
-#
-# sph_harm COMPLEX
-# time:                          0.40s
