@@ -2,8 +2,10 @@
 Miscellaneous utility functions"""
 
 import sys
+import timeit
 from datetime import datetime
 from itertools import cycle
+from time import sleep
 
 import numpy as np
 from scipy.signal import resample
@@ -340,3 +342,114 @@ def get_named_tuple__repr__(namedtuple):
         f"{f} = {repr(v)}" for f, v in zip(namedtuple._fields, namedtuple)
     )
     return f"{namedtuple.__class__.__name__}(\n\t{fields_str})"
+
+
+def time_it(description, stmt, setup, _globals, repeat, number, reference=None):
+    """
+    Measure execution of a specified statement which is useful for the
+    performance analysis. In this way, the execution time and respective
+    results can be directly compared.
+
+    Parameters
+    ----------
+    description : str
+        Descriptive name of configuration to be shown in the log
+    stmt : str
+        Statement to be timed
+    setup : str
+        Additional statement used for setup
+    _globals :
+        Namespace the code will be executed in (as opposed to inside timeit's
+        namespace)
+    repeat : int
+        How many times to repeat the timeit measurement (results will be
+        gathered as a list)
+    number : int
+        How many times to execute the statement to be timed
+    reference : list of (float, any), optional
+        Result with the same data structure as returned by this function,
+        which will be referenced in order to compare execution time and
+        similarity of the result data
+
+    Returns
+    -------
+    (float, any)
+        Tuple of execution time in seconds (minimum of all repetitions) and
+        execution result of first repetition (data depends on the specified
+        statement to be timed)
+    """
+    print(description)
+
+    # execute timed statement
+    result = timeit.Timer(stmt=stmt, setup=setup, globals=_globals).repeat(
+        repeat=repeat, number=number
+    )
+    # generate tuple of (time, evaluation result), whereby the kept time is
+    # the minimum of all repetitions and the data is the result of the first
+    # execution
+    result = (min(list(zip(*result))[0]), result[0][1])
+
+    # print conclusion
+    print(f"time: {result[0]:-29.2f}s")
+    sleep(0.05)  # to get correct output order
+
+    if reference:
+        t = result[0] / reference[0]
+        file = sys.stdout
+        if abs(t - 1) < 2e-2:
+            grade = "EVEN"
+        elif t < 1:
+            grade = "BETTER"
+        else:
+            grade = "WORSE"
+            file = sys.stderr
+        print(f"time factor: {t:-22.2f} ... {grade}", file=file)
+        sleep(0.05)  # to get correct output order
+
+        # flip computation result, if matrices do not match
+        if reference[1].shape != result[1].shape:
+            reference = (reference[0], reference[1].T)
+        if reference[1].shape != result[1].shape:
+            print(f'result: {"":22} {"DIMENSION MISMATCH"}', file=sys.stderr)
+            sleep(0.05)  # to get correct output order
+            print()
+            return result
+
+        r = np.abs(np.sum(np.subtract(result[1], reference[1])))
+        file = sys.stdout
+        if r == 0:
+            grade = "PERFECT"
+        elif r < 1e-10:
+            grade = "OKAY"
+        else:
+            grade = "MISMATCH"
+            file = sys.stderr
+        print(f"result sum:  {r:-22} ... {grade}", file=file)
+        sleep(0.05)  # to get correct output order
+
+        r = np.abs(np.subtract(result[1], reference[1])).max()
+        file = sys.stdout
+        if r == 0:
+            grade = "PERFECT"
+        elif r < 1e-10:
+            grade = "OKAY"
+        else:
+            grade = "MISMATCH"
+            file = sys.stderr
+        print(f"result max:  {r:-22} ... {grade}", file=file)
+        sleep(0.05)  # to get correct output order
+
+    print()
+    return result
+
+
+# modify timer template to also receive evaluation results from `timeit` function call
+timeit.template = """
+def inner(_it, _timer{init}):
+    {setup}
+    _t0 = _timer()
+    for _i in _it:
+        result = {stmt}
+    _t1 = _timer()
+    return _t1 - _t0, result  # time, evaluation result
+"""

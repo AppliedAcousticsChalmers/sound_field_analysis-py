@@ -3,78 +3,12 @@ generate spherical harmonics.
 """
 
 import platform
-import sys
-import timeit
-from time import sleep
 
 import numpy as _np
 from scipy import special as scy
 
 from sound_field_analysis.sph import mnArrays
-
-
-def _timeit(description, stmt, setup, _globals, repeat, number, reference=None):
-    print(description)
-
-    # do timing and get results
-    result = timeit.Timer(stmt=stmt, setup=setup, globals=_globals).repeat(
-        repeat=repeat, number=number
-    )
-    result = (min(list(zip(*result))[0]), result[0][1])
-    # (time, computation result)
-
-    # print conclusion
-    print(f"time: {result[0]:-29.2f}s")
-    sleep(0.05)  # to get correct output order
-
-    if reference:
-        t = result[0] / reference[0]
-        file = sys.stdout
-        if abs(t - 1) < 2e-2:
-            grade = "EVEN"
-        elif t < 1:
-            grade = "BETTER"
-        else:
-            grade = "WORSE"
-            file = sys.stderr
-        print(f"time factor: {t:-22.2f} ... {grade}", file=file)
-        sleep(0.05)  # to get correct output order
-
-        # flip computation result, if matrices do not match
-        if reference[1].shape != result[1].shape:
-            reference = (reference[0], reference[1].T)
-        if reference[1].shape != result[1].shape:
-            print(f'result: {"":22} {"DIMENSION MISMATCH"}', file=sys.stderr)
-            sleep(0.05)  # to get correct output order
-            print()
-            return result
-
-        r = _np.abs(_np.sum(_np.subtract(result[1], reference[1])))
-        file = sys.stdout
-        if r == 0:
-            grade = "PERFECT"
-        elif r < 1e-10:
-            grade = "OKAY"
-        else:
-            grade = "MISMATCH"
-            file = sys.stderr
-        print(f"result sum:  {r:-22} ... {grade}", file=file)
-        sleep(0.05)  # to get correct output order
-
-        r = _np.abs(_np.subtract(result[1], reference[1])).max()
-        file = sys.stdout
-        if r == 0:
-            grade = "PERFECT"
-        elif r < 1e-10:
-            grade = "OKAY"
-        else:
-            grade = "MISMATCH"
-            file = sys.stderr
-        print(f"result max:  {r:-22} ... {grade}", file=file)
-        sleep(0.05)  # to get correct output order
-
-    print()
-    return result
+from sound_field_analysis.utils import time_it
 
 
 def sh_matrix(N, azi, colat, SH_type="complex", weights=None):
@@ -203,17 +137,6 @@ def sph_harm_5(m, n, az, co, kind="complex"):
         return Y_real
 
 
-# modify timer template to also receive evaluation results from `timeit` function call
-timeit.template = """
-def inner(_it, _timer{init}):
-    {setup}
-    _t0 = _timer()
-    for _i in _it:
-        result = {stmt}
-    _t1 = _timer()
-    return _t1 - _t0, result  # time, computation result
-"""
-
 # set parameters
 _TIMEIT_REPEAT = 5
 _TIMEIT_NUMBER = 5000
@@ -228,7 +151,7 @@ print("======================")
 print(f'node "{platform.node()}"')
 print("======================\n")
 
-ref = _timeit(
+ref = time_it(
     description="sph_harm_1",
     stmt="sph_harm_all_func(sph_harm_1, _N_MAX, _AZ, _CO, kind=_KIND)",
     setup="",
@@ -237,17 +160,17 @@ ref = _timeit(
     number=_TIMEIT_NUMBER,
 )
 
-_timeit(
+time_it(
     description="spaudiopy.sh_matrix",
     stmt="sh_matrix(N=_N_MAX, azi=_AZ, colat=_CO, SH_type=_KIND, weights=None)",
     setup="",
     _globals=locals(),
-    reference=ref,
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
+    reference=ref,
 )  # slowest, not sure if mismatch is due to a bug or a different convention
 
-_timeit(
+time_it(
     description="pyshtools",
     stmt="""\
 result = spharm(lmax=_N_MAX, theta=_CO, phi=_AZ, kind=_KIND, degrees=False,
@@ -257,9 +180,9 @@ result = SHCilmToVector(result)[_np.newaxis, :]""",
 from pyshtools.expand import spharm
 from pyshtools.shio import SHCilmToVector""",
     _globals=locals(),
-    reference=ref,
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
+    reference=ref,
 )  # fastest, but does not result in similar coefficient order yet
 """
 Notes
@@ -276,43 +199,43 @@ dependencies:
   - openblas  # required dependency for pyshtools
 """
 
-_timeit(
+time_it(
     description="sph_harm_2",
     stmt="sph_harm_all_func(sph_harm_2, _N_MAX, _AZ, _CO, kind=_KIND)",
     setup="",
     _globals=locals(),
-    reference=ref,
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
+    reference=ref,
 )
-_timeit(
+time_it(
     description="sph_harm_3",
     stmt="sph_harm_all_func(sph_harm_3, _N_MAX, _AZ, _CO, kind=_KIND)",
     setup="",
     _globals=locals(),
-    reference=ref,
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
+    reference=ref,
 )
-_timeit(
+time_it(
     description="sph_harm_4",
     stmt="sph_harm_all_func(sph_harm_4, _N_MAX, _AZ, _CO, kind=_KIND)",
     setup="",
     _globals=locals(),
-    reference=ref,
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
+    reference=ref,
 )  # fastest (apart from pyshtools(
-_timeit(
+time_it(
     description="sph_harm_5",
     stmt="sph_harm_all_func(sph_harm_5, _N_MAX, _AZ, _CO, kind=_KIND)",
     setup="",
     _globals=locals(),
-    reference=ref,
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
+    reference=ref,
 )
-_timeit(
+time_it(
     description="sph_harm COMPLEX",
     stmt="sph_harm_all_func(sph_harm_1, _N_MAX, _AZ, _CO, kind='complex')",
     setup="",
