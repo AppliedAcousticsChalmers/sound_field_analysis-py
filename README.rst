@@ -36,7 +36,7 @@ B.  By cloning (or downloading) the repository and setting up a new environment:
 
     ``cd sound_field_analysis-py/``
 
-    Create a new Conda environment from the specified dependencies:
+    Create a new `Conda`_ environment from the specified dependencies:
     ``conda env create --file environment.yml --force``
 
     Activate the environment:
@@ -60,17 +60,15 @@ Find the full documentation at https://appliedacousticschalmers.github.io/sound_
 Examples
 --------
 
-The following examples are available as Jupyter notebooks, either statically on `GitHub`_ or interactively on
-`nbviewer`_. You can of course also simply download the examples and run them locally!
+The following examples are available as Jupyter notebooks, either statically on `GitHub`_ or interactively on `nbviewer`_. You can of course also simply download the examples and run them locally!
 
 
 Exp1: Ideal plane wave
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 Ideal unity plane wave simulation and 3D plot.
 
-`View interactively on nbviewer <https://nbviewer.jupyter
-.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb>`__
 
 |AE1_img|_
 
@@ -79,76 +77,73 @@ Ideal unity plane wave simulation and 3D plot.
 
 
 Exp2: Measured plane wave
-~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using a cardioid mic.
 
-`View interactively on nbviewer <https://nbviewer.jupyter
-.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb>`__
 
-|AE3_img|_
+|AE2_img|_
 
-.. |AE3_img| image:: examples/img/AE3_shape.png?raw=true
-.. _AE3_img: https://nbviewer.jupyterorg/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
+.. |AE2_img| image:: examples/img/AE2_shape.png?raw=true
+.. _AE2_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
 
 
 Exp4: Binaural rendering
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Render a spherical microphone array impulse response measurement binaurally. The example shows examples for loading
-miro or `SOFA`_ files.
+Render a spherical microphone array impulse response measurement binaurally. The example shows examples for loading miro or `SOFA`_ files.
 
-`View interactively on nbviewer <https://nbviewer.jupyter
-.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
 
 Version history
 ---------------
 
 *v2021.1.12*
-    * Update of MIRO struct loading (quadrature weights are now optional)
+    * Update MIRO struct loading (quadrature weights are now optional)
     * Fix to prevent Python 3.8 syntax warnings
-    * Improvement of Exp4 (general code structure and utilizing Spherical Head Filter and Spherical Harmonics Tapering)
+    * Improve Exp4 (general code structure and utilizing Spherical Head Filter and Spherical Harmonics Tapering)
 
 *v2020.1.30*
-    * Update of README and PyPI package
+    * Update README and PyPI package
 
 *v2019.11.6*
-    * Update of internal documentation and string formatting
+    * Update internal documentation and string formatting
 
 *v2019.8.15*
-    * Change of version number scheme to CalVer
-    * Improvement of Exp4
-    * Update of read_SOFA_file
-    * Update of 2D plotting functions
-    * Improvement of write_SSR_IRs
-    * Improved environment setup for jupyter notebook
-    * Update of miro_to_struct
+    * Change version number scheme to CalVer
+    * Improve Exp4
+    * Update `read_SOFA_file()`
+    * Update 2D plotting functions
+    * Improve `write_SSR_IRs()`
+    * Improve `Conda`_ environment setup for `Jupyter`_ Notebooks
+    * Update `miro_to_struct()`
 
 *2019-07-30 v0.9*
-    * Implement SOFA import
-    * Update Exp4 to contain SOFA import
+    * Implement `SOFA`_ import
+    * Update Exp4 to contain `SOFA`_ import
     * Delete obsolete Exp3
-    * Add named tuple HRIRSignal
-    * Implement cart2sph and sph2cart utility functions
-    * Add conda environment file for convenient installation of required packages
+    * Add named tuple `HRIRSignal`
+    * Implement `cart2sph()` and `sph2cart()` utility functions
+    * Add `Conda`_ environment file for convenient installation of required packages
 
 *2019-07-11 v0.8*
     * Implement Spherical Harmonics coefficients tapering
-    * Adaption of associated Spherical Head Filter
+    * Update Spherical Head Filter to consider tapering
 
 *2019-06-17 v0.7*
     * Implement Bandwidth Extension for Microphone Arrays (BEMA)
-    * Edit read_miro_struct, named tuple ArraySignal and miro_to_struct.m to load center measurements
+    * Edit `read_miro_struct()`, named tuple `ArraySignal` and `miro_to_struct.m` to load center measurements
 
 *2019-06-11 v0.6*
-    * Port of Radial Filter Improvement from SOFiA
+    * Implement Radial Filter Improvement from `Sound Field Analysis Toolbox (SOFiA) toolbox`_
 
 *2019-05-23 v0.5*
     * Implement Spherical Head Filter
     * Implement Spherical Fourier Transform using pseudo-inverse
-    * Extract real time capable Spatial Fourier Transform
-    * Outsource reversed m index function (Exp4)
+    * Extract real time capable spatial Fourier transform
+    * Extract reversed m index function (Update Exp4)
 
 
 References
@@ -165,7 +160,7 @@ The Lebedev grid generation was adapted from an implementation by `Richard P. Mu
 .com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
 
 .. _Sound Field Analysis Toolbox (SOFiA) toolbox: http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html
-.. _RETiSAR: https://github.com/AppliedAcousticsChalmers/ReTiSAR
+.. _ReTiSAR: https://github.com/AppliedAcousticsChalmers/ReTiSAR
 .. _[1]: #references
 .. _NumPy: http://www.numpy.org
 .. _SciPy: http://www.scipy.org
