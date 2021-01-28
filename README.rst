@@ -96,6 +96,11 @@ Render a spherical microphone array impulse response measurement binaurally. The
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
+|AE4_img|_
+
+.. |AE4_img| image:: examples/img/AE4_radial_filters.png?raw=true
+.. _AE4_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb
+
 
 Version history
 ---------------
