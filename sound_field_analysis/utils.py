@@ -186,6 +186,10 @@ def SOFA_grid2acr(grid_values, grid_info):
     different specific coordinate systems. Experience showed, that this is not
     exactly met by all SOFA files, hence cartesian or spherical coordinates will
     be transformed in either case.
+
+    TODO
+    ----
+    Validate data units against individual convention in `pysofaconventions`
     """
 
     def _is_grid_spherical(grid):
@@ -205,8 +209,8 @@ def SOFA_grid2acr(grid_values, grid_info):
     # transform into regular `numpy.ndarray`
     grid_values = grid_values.T.filled(0).copy()
 
-    # TODO: validation of data units against individual convention should be
-    #  done in `pysofaconventions`
+    # TODO: Validate data units against individual convention in
+    #  `pysofaconventions`
     if _is_grid_spherical(grid_info):
         # given spherical degrees with elevation
         # transform into spherical radians with colatitude

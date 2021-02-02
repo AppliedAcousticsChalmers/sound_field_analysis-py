@@ -336,12 +336,18 @@ def iSpatFT(
     -------
     P : array_like
         Sound pressures with frequency bins in columns and angles in rows
+
+    TODO
+    ----
+    Check `spherical_coefficients` and `spherical_harmonic_bases` length
+    correspond with `order_max`
     """
     position_grid = SphericalGrid(*position_grid)
     spherical_coefficients = _np.atleast_2d(spherical_coefficients)
     number_of_coefficients = spherical_coefficients.shape[0]
 
-    # todo: check coeffs and bases length correspond with order_max
+    # TODO: Check `spherical_coefficients` and `spherical_harmonic_bases` length
+    #  correspond with `order_max`
     if order_max is None:
         order_max = int(_np.sqrt(number_of_coefficients) - 1)
 
@@ -535,6 +541,10 @@ def rfi(dn, kernelSize=512, highPass=0.0):
         Observe the filters by plotting their spectra and impulse responses!
         > Be very careful if NFFT/max(kr) < 25
         > Do not use R/F/I if NFFT/max(kr) < 15
+
+    TODO
+    ----
+    Implement `kernelsize` extension
     """
     dn = _np.atleast_2d(dn)
     sourceKernelSize = (dn.shape[-1] - 1) * 2
@@ -544,7 +554,7 @@ def rfi(dn, kernelSize=512, highPass=0.0):
             "Kernelsize greater than radial filters. Extension of "
             "kernelsize not yet implemented."
         )
-        # TODO: Implement kernelsize extension
+        # TODO: Implement `kernelsize` extension
 
     # in case highpass should be applied, half both individual kernel sizes
     endKernelSize = kernelSize

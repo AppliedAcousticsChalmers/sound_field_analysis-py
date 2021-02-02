@@ -23,13 +23,15 @@ def showTrace(trace, layout=None, title=None):
         Layout of plot to be displayed offline
     title : str, optional
         Title of plot to be displayed offline
-    # colorize : bool, optional
-    #     Toggles bw / colored plot [Default: True]
 
     Returns
     -------
     fig : plotly_fig_handle
         JSON representation of generated figure
+
+    TODO
+    ----
+        Add colorization
     """
     if layout is None:
         layout = go.Layout(
@@ -55,6 +57,9 @@ def showTrace(trace, layout=None, title=None):
         except TypeError:
             filename = f"{current_time()}.html"
 
+    # TODO: Add colorization
+    # colorize : bool, optional
+    #     Toggles bw / colored plot [Default: True]
     # if colorize:
     #    data[0].autocolorscale = False
     #    data[0].surfacecolor = [0, 0.5, 1]
@@ -235,6 +240,7 @@ def genShape(vizMTX):
     ----
     Fix camera position
     """
+    # TODO: Fix camera position
     V = sph2cartMTX(vizMTX)
 
     trace = go.Surface(
@@ -294,7 +300,7 @@ def genFlat(vizMTX):
     ----
     Fix orientation and axis limits
     """
-
+    # TODO: Fix orientation and axis limits
     trace = go.Surface(
         x=_np.r_[0:360],
         y=_np.r_[0:181],
@@ -429,7 +435,7 @@ def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
 
 
 def plot3D(vizMTX, style="shape", layout=None, normalize=True, logScale=False):
-    """Visualize matrix data, such as from makeMTX(Pnm, dn)
+    """Visualize matrix data, such as from makeMTX(Pnm, dn).
 
     Parameters
     ----------
@@ -444,10 +450,15 @@ def plot3D(vizMTX, style="shape", layout=None, normalize=True, logScale=False):
     logScale : bool, optional
         Toggle conversion logScale [Default: False]
 
-    # TODO
-    # ----
-    # Colorization, contour plot
+    Returns
+    -------
+    None
+
+    TODO
+    ----
+        Add colorization and contour plots
     """
+    # TODO: Add colorization and contour plots
     if style == "flat":
         layout = go.Layout(
             scene=dict(

@@ -310,6 +310,10 @@ def spherical_head_filter_spec(
     -------
     G_SHF : array_like
         Vector of frequency domain filter of shape [NFFT / 2 + 1]
+
+    TODO
+    ----
+    Implement `arctan()` soft-clipping
     """
     # frequency support vector & corresponding wave numbers k
     freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
@@ -325,7 +329,7 @@ def spherical_head_filter_spec(
 
     # filter limiting
     if amp_maxdB:
-        # TODO: implement arctan() soft clipping
+        # TODO: Implement `arctan()` soft-clipping
         raise NotImplementedError("amplitude soft clipping not yet implemented")
         # amp_max = 10 ** (amp_maxdB / 20)
         # G_SHF[np.where(G_SHF > amp_max)] = amp_max
@@ -384,6 +388,10 @@ def sampled_wave(
     -------
     Pnm : array_like
         Spatial fourier coefficients of resampled sound field
+
+    TODO
+    ----
+    Investigate if `limit_order` works as intended
     """
     gridData = SphericalGrid(*gridData)
     array_configuration = ArrayConfiguration(*array_configuration)
@@ -393,7 +401,7 @@ def sampled_wave(
 
     max_order_fullspec = _np.ceil(_np.max(kr_mic) * 2)
 
-    # TODO : Investigate if limit_order works as intended
+    # TODO : Investigate if `limit_order` works as intended
     if max_order_fullspec > limit_order:
         print(
             f"Requested wave front needs a minimum order of "

@@ -519,6 +519,10 @@ def sph_harm_large(m, n, az, co, kind="complex"):
     Pmn(z) are the associated Legendre functions of the first kind,
     like scipy.special.lpmv, which calculates P(0...m 0...n) and its derivative
     but won't return +inf at high orders.
+
+    TODO
+    ----
+    Confirm that the correct SH definition is used
     """
     if _np.all(_np.abs(m) < 84):
         return sph_harm(m, n, az, co, kind=kind)
@@ -529,7 +533,7 @@ def sph_harm_large(m, n, az, co, kind="complex"):
             raise ValueError("Invalid kind: Choose either complex or real.")
         m = _np.atleast_1d(m)
 
-        # TODO: confirm that this uses the correct SH definition
+        # TODO: Confirm that the correct SH definition is used
         mAbs = _np.abs(m)
         if isinstance(co, _np.ndarray):
             P = _np.empty(co.size)
