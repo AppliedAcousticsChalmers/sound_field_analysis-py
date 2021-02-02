@@ -443,7 +443,7 @@ def bn_dual_open_omni(n, kr1, kr2):
 
 
 def sph_harm(m, n, az, co, kind="complex"):
-    """Compute spherical harmonics
+    """Compute spherical harmonics.
 
     Parameters
     ----------
@@ -456,8 +456,8 @@ def sph_harm(m, n, az, co, kind="complex"):
     co : (float)
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
     kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type according to complex [1] or
-        real definition [2] [Default: 'complex']
+        Spherical harmonic coefficients data type according to complex [6]_ or
+        real definition [7]_ [Default: 'complex']
 
     Returns
     -------
@@ -467,9 +467,9 @@ def sph_harm(m, n, az, co, kind="complex"):
 
     References
     ----------
-    [1] scipy.special.sph_harm
-    [2] F. Zotter, “Analysis and synthesis of sound-radiation with spherical
-        arrays,” University of Music and Performing Arts, 2009.
+    .. [6] scipy.special.sph_harm
+    .. [7] F. Zotter, “Analysis and synthesis of sound-radiation with
+       spherical arrays,” University of Music and Performing Arts, 2009.
     """
     # SAFETY CHECKS
     kind = kind.lower()
@@ -489,7 +489,7 @@ def sph_harm(m, n, az, co, kind="complex"):
 
 
 def sph_harm_large(m, n, az, co, kind="complex"):
-    """Compute spherical harmonics for large orders > 84
+    """Compute spherical harmonics for large orders > 84.
 
     Parameters
     ----------
@@ -502,8 +502,8 @@ def sph_harm_large(m, n, az, co, kind="complex"):
     co : (float)
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
     kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type according to complex [1] or
-        real definition [2] [Default: 'complex']
+        Spherical harmonic coefficients data type according to complex [6]_ or
+        real definition [7]_ [Default: 'complex']
 
     Returns
     -------
@@ -519,12 +519,6 @@ def sph_harm_large(m, n, az, co, kind="complex"):
     Pmn(z) are the associated Legendre functions of the first kind,
     like scipy.special.lpmv, which calculates P(0...m 0...n) and its derivative
     but won't return +inf at high orders.
-
-    References
-    ----------
-    [1] scipy.special.sph_harm and scipy.special.lpmv
-    [2] F. Zotter, “Analysis and synthesis of sound-radiation with spherical
-        arrays,” University of Music and Performing Arts, 2009.
     """
     if _np.all(_np.abs(m) < 84):
         return sph_harm(m, n, az, co, kind=kind)

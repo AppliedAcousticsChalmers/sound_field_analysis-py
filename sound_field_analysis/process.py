@@ -1,5 +1,6 @@
 """
-Functions that act on the Spatial Fourier Coefficients
+Functions that act on the Spatial Fourier Coefficients.
+
 `BEMA`
    Bandwidth Extension for Microphone Arrays
 
@@ -35,7 +36,7 @@ from .sph import besselj, hankel1, sph_harm_all
 
 # noinspection PyUnusedLocal
 def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order=None):
-    """BEMA Spatial Anti-Aliasing
+    """BEMA Spatial Anti-Aliasing, according to [4]_.
 
     Parameters
     ----------
@@ -61,9 +62,9 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
 
     References
     ----------
-    .. [1] B. Bernschütz, "Bandwidth Extension for Microphone Arrays",
-           AES Convention 2012, Convention Paper 8751, 2012.
-           http://www.aes.org/e-lib/browse.cfm?elib=16493
+    .. [4] B. Bernschütz, "Bandwidth Extension for Microphone Arrays",
+       AES Convention 2012, Convention Paper 8751, 2012.
+       http://www.aes.org/e-lib/browse.cfm?elib=16493
     """
 
     if not max_order:
@@ -251,13 +252,13 @@ def spatFT(
     Notes
     -----
     In case no weights in spatial sampling grid are given, the pseudo inverse
-    of the SH bases is computed according to Eq. 3.34 in [1].
+    of the SH bases is computed according to Eq. 3.34 in [5]_.
 
     References
     ----------
-    .. [1] Boaz Rafaely: Fundamentals of spherical array processing. In.
-           Springer topics in signal processing. Benesty, J.; Kellermann,
-           W. (Eds.), Springer, Heidelberg et al. (2015).
+    .. [5] Boaz Rafaely: Fundamentals of spherical array processing. In.
+       Springer topics in signal processing. Benesty, J.; Kellermann,
+       W. (Eds.), Springer, Heidelberg et al. (2015).
     """
     data = _np.atleast_2d(data)
     position_grid = SphericalGrid(*position_grid)
@@ -511,8 +512,8 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     latency : float
         Approximate signal latency due to the filters
 
-    Note
-    ----
+    Notes
+    -----
     This function improves the FIR radial filters from
     `gen.radial_filter_fullspec()`. The filters are made causal and are
     windowed in time domain. The DC components are estimated. The R/F/I module

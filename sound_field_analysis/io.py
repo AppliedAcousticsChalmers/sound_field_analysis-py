@@ -93,11 +93,11 @@ class TimeSignal(namedtuple("TimeSignal", "signal fs delay")):
 
         if (fs.size != 1) and (fs.size != no_of_signals):
             raise ValueError(
-                "fs can either be a scalar or an array with one element per signal."
+                "Sampling frequency can either be a scalar or an array with one element per signal."
             )
         if (delay.size != 1) and (delay.size != no_of_signals):
             raise ValueError(
-                "delay can either be a scalar or an array with one element per signal."
+                "Delay can either be a scalar or an array with one element per signal."
             )
 
         # noinspection PyArgumentList

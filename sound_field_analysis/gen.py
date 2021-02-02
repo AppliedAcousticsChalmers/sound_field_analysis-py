@@ -218,7 +218,8 @@ def radial_filter(orders, freqs, array_configuration, amp_maxdB=40):
 
 
 def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
-    """Generate coloration compensation filter of specified maximum SH order.
+    """Generate coloration compensation filter of specified maximum SH order,
+    according to [1]_.
 
     Parameters
     ----------
@@ -230,7 +231,7 @@ def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
         Vector of corresponding wave numbers
     is_tapering : bool, optional
         If set, spherical head filter will be adapted applying a Hann window,
-        according to [2]
+        according to [2]_
 
     Returns
     -------
@@ -240,12 +241,8 @@ def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
     References
     ----------
     .. [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., et al. (2017). "Spectral
-           equalization in binaural signals represented by order-truncated
-           spherical harmonics. The Journal of the Acoustical Society of America".
-
-    .. [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and
-           Ivan J. Tashev (2019). “Improving Binaural Ambisonics Decoding by
-           Spherical Harmonics Domain Tapering and Coloration Compensation.”
+       equalization in binaural signals represented by order-truncated
+       spherical harmonics. The Journal of the Acoustical Society of America".
     """
 
     # noinspection PyShadowingNames
@@ -480,9 +477,7 @@ def ideal_wave(
     if wavetype not in {"plane", "spherical"}:
         raise ValueError("Invalid wavetype: Choose either plane or spherical.")
     if delay * fs > NFFT - 1:
-        raise ValueError(
-            "Delay t is large for provided NFFT. Choose t < NFFT/(2*FS)."
-        )
+        raise ValueError("Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).")
 
     w = _np.linspace(0, _np.pi * fs, NFFT)
     freqs = _np.linspace(0, fs / 2, NFFT)
@@ -564,7 +559,8 @@ def spherical_noise(
 
 
 def tapering_window(max_order):
-    """Design tapering window with cosine slope for orders greater than 3.
+    """Design tapering window with cosine slope for orders greater than 3,
+    according to [2]_.
 
     Parameters
     ----------
@@ -579,9 +575,9 @@ def tapering_window(max_order):
 
     References
     ----------
-    .. [1] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and
-           Ivan J. Tashev (2019). “Improving Binaural Ambisonics Decoding by
-           Spherical Harmonics Domain Tapering and Coloration Compensation.”
+    .. [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and
+       Ivan J. Tashev (2019). “Improving Binaural Ambisonics Decoding by
+       Spherical Harmonics Domain Tapering and Coloration Compensation.”
     """
     weights = _np.ones(max_order + 1)
 

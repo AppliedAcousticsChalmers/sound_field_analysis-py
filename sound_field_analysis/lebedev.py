@@ -10,12 +10,14 @@ https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py
 C version: Dmitri Laikov
 F77 version: Christoph van Wuellen, http://www.ccl.net
 
-Users of this code are asked to include reference [1] in their publications,
+Users of this code are asked to include reference [3]_ in their publications,
 and in the user- and programmers-manuals describing their codes.
 
-[1] V.I. Lebedev, and D.N. Laikov 'A quadrature formula for the sphere of the
-    131st algebraic order of accuracy' Doklady Mathematics, Vol. 59, No. 3,
-    1999, pp. 477-481.
+References
+----------
+.. [3] V.I. Lebedev, and D.N. Laikov 'A quadrature formula for the sphere of the
+   131st algebraic order of accuracy' Doklady Mathematics, Vol. 59, No. 3,
+   1999, pp. 477-481.
 """
 
 import numpy as _np
