@@ -144,10 +144,10 @@ def makeFullMTX(Pnm, dn, kr, viz_order=None):
         viz_order = _np.int(_np.ceil(_np.sqrt(Pnm.shape[0]) - 1))
 
     N = kr.size
-    vizMtx = [None] * N
+    vizMtx = []
     for k in range(0, N):
         progress_bar(k, N, "Visual matrix generation")
-        vizMtx[k] = makeMTX(Pnm, dn, k, viz_order)
+        vizMtx.append(makeMTX(Pnm, dn, k, viz_order))
     return vizMtx
 
 
@@ -166,8 +166,8 @@ def normalizeMTX(MTX, logScale=False):
     MTX : array_liked
         Normalized Matrix
     """
-    MTX -= MTX.min()
-    MTX /= MTX.max()
+    MTX -= MTX.min(initial=_np.Inf)
+    MTX /= MTX.max(initial=-_np.Inf)
 
     if logScale:
         MTX += 0.00001
@@ -386,22 +386,34 @@ def prepare_2D_x(L, viz_type, fs):
 
 
 def prepare_2D_traces(data, viz_type, fs, line_names):
+    """
+
+    Parameters
+    ----------
+    data
+    viz_type
+    fs
+    line_names : list[str] or None
+        aa
+
+    Returns
+    -------
+
+    """
     data = _np.atleast_2d(data)
     N, L = data.shape
 
     x = prepare_2D_x(L, viz_type, fs)
 
-    traces = [None] * N
-
+    # traces: list[go.Scatter] = []
+    traces = []
     for k in range(0, N):
         y = data[k]
-        traces[k] = go.Scatter(
+        traces.append(go.Scatter(
             x=x, y=y if viz_type == "TIME" else 20 * _np.log10(_np.abs(y))
-        )
-        try:
+        ))
+        if line_names and k < len(line_names):
             traces[k].name = line_names[k]
-        except (TypeError, IndentationError):
-            pass
 
     return traces
 
@@ -426,7 +438,6 @@ def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
     viz_type = viz_type.strip().upper()  # remove whitespaces and make upper case
 
     layout = layout_2D(viz_type=viz_type, title=title)
-    # noinspection PyTypeChecker
     traces = prepare_2D_traces(
         data=data, viz_type=viz_type, fs=fs, line_names=line_names
     )

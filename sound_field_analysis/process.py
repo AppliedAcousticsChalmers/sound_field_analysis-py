@@ -30,7 +30,7 @@ import numpy as _np
 from scipy.linalg import lstsq
 from scipy.signal import butter, fftconvolve, sosfreqz
 
-from .io import SphericalGrid
+from .io import SphericalGrid, TimeSignal
 from .sph import besselj, hankel1, sph_harm_all
 
 
@@ -181,18 +181,17 @@ def FFT(
     Time-windowing can be used by providing a first_sample and last_sample
     index.
     """
-    try:
+    if isinstance(time_signals, TimeSignal):
         signals = time_signals.signal
         fs = time_signals.fs
-    except AttributeError:
-        if fs is None and calculate_freqs:
-            raise ValueError(
-                "No valid signal found. Either pass an io.TimeSignal, a "
-                "tuple/array containing the signal and the sampling frequency "
-                "or use the fs argument."
-            )
-        else:
-            signals = time_signals
+    elif fs is None and calculate_freqs:
+        raise ValueError(
+            "No valid signal found. Either pass an io.TimeSignal, a "
+            "tuple/array containing the signal and the sampling frequency "
+            "or use the fs argument."
+        )
+    else:
+        signals = time_signals
 
     signals = _np.atleast_2d(signals)
 
@@ -752,7 +751,12 @@ def wdr(Pnm, xAngle, yAngle, zAngle):
     -------
     PnmRot: array_like
         Rotated spatial Fourier coefficients
+
+    TODO
+    ----
+    Implement Wigner-D rotations
     """
+    # TODO: Implement Wigner-D rotations
     print(
         "!WARNING. Wigner-D Rotation is not yet implemented. Continuing with "
         "un-rotated coefficients!",

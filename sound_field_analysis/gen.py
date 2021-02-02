@@ -245,7 +245,6 @@ def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
        spherical harmonics. The Journal of the Acoustical Society of America".
     """
 
-    # noinspection PyShadowingNames
     def pressure_on_sphere(max_order, kr, taper_weights=None):
         """
         Calculate the diffuse field pressure frequency response of a spherical
@@ -336,6 +335,7 @@ def spherical_head_filter_spec(
     return G_SHF.astype(_np.complex_)
 
 
+# noinspection PyUnusedLocal
 def sampled_wave(
     order,
     fs,
