@@ -1,7 +1,10 @@
 Sound Field Analysis toolbox for Python
 =======================================
+
 .. image:: https://api.travis-ci.org/QULab/sound_field_analysis-py.svg
 .. image:: https://ci.appveyor.com/api/projects/status/u0koxo5vcitmbghc?svg=true
+
+.. sphinx-include-start-1
 
 The *sound\_field\_analysis* toolbox (short: *sfa*) is a Python port of the `Sound Field Analysis Toolbox (SOFiA) toolbox`_, originally by Benjamin Bernschütz `[1]`_. The main goal of the *sfa* toolbox is to analyze, visualize and process sound field data recorded by spherical microphone arrays. Furthermore, various types of test-data may be generated to evaluate the implemented functions. It is an essential building block of `ReTiSAR <https://github.com/AppliedAcousticsChalmers/ReTiSAR>`_, an implementation  of real time binaural rendering of spherical microphone array data.
 
@@ -41,7 +44,7 @@ For performance and convenience reasons we highly recommend to use `Conda`_ (min
     |  Activate the environment:
     |  ``source activate sfa``
 
-    |  **Optional:** Install additional dependencies for development purposes (locally run *Jupyter Notebooks* with example, run tests, generate documentation):
+    |  **Optional:** Install additional dependencies for development purposes (locally run `Jupyter`_ *Notebooks* with example, run tests, generate documentation):
     |  ``conda env update --file environment_dev.yml``
 
 .. C.  From `conda-forge <https://conda-forge.github.io>`_ channel: **[outdated]**
@@ -53,7 +56,7 @@ For performance and convenience reasons we highly recommend to use `Conda`_ (min
 Examples
 --------
 
-The following examples are available as Jupyter notebooks, either statically on `GitHub <examples/>`_ or interactively on `nbviewer <http://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/>`_. You can of course also simply download the examples and run them locally!
+The following examples are available as `Jupyter`_ *Notebooks*, either statically on `GitHub <examples/>`_ or interactively on `nbviewer <http://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/>`_. You can of course also simply download the examples and run them locally!
 
 
 Exp1: Ideal plane wave
@@ -63,10 +66,14 @@ Ideal unity plane wave simulation and 3D plot.
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb>`__
 
+.. sphinx-include-end-1
+
 |AE1_img|_
 
 .. |AE1_img| image:: examples/img/AE1_shape.png?raw=true
 .. _AE1_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb
+
+.. sphinx-include-start-2
 
 
 Exp2: Measured plane wave
@@ -76,10 +83,14 @@ A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using a car
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb>`__
 
+.. sphinx-include-end-2
+
 |AE2_img|_
 
 .. |AE2_img| image:: examples/img/AE2_shape.png?raw=true
 .. _AE2_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
+
+.. sphinx-include-start-3
 
 
 Exp4: Binaural rendering
@@ -89,10 +100,14 @@ Render a spherical microphone array impulse response measurement binaurally. The
 
 `View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
 
+.. sphinx-include-end-3
+
 |AE4_img|_
 
 .. |AE4_img| image:: examples/img/AE4_radial_filters.png?raw=true
 .. _AE4_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb
+
+.. sphinx-include-start-4
 
 
 Version history
