@@ -147,7 +147,7 @@ Version history
 Contribute
 ----------
 
-See `contribute <contribute.md>`_ for full details.
+See `CONTRIBUTE.rst <CONTRIBUTE.rst>`_ for full details.
 
 You can find the full offline documentation as `PDF <sfa_readme.pdf>`_ as well as online at https://appliedacousticschalmers.github.io/sound_field_analysis-py/ .
 
@@ -171,5 +171,5 @@ The Lebedev grid generation was adapted from an implementation by `Richard P. Mu
 .. _[1]: #references
 .. _PyPI: https://pypi.org/project/sound-field-analysis/
 .. _Jupyter: https://jupyter.org/
-.. _Conda: https://www.continuum.io/downloads
+.. _Conda: https://conda.io/en/master/miniconda.html
 .. _SOFA: https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)
