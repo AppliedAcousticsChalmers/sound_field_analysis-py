@@ -12,8 +12,8 @@ from .process import plane_wave_decomp
 from .utils import current_time, env_info, progress_bar
 
 
-def showTrace(trace, layout=None, title=None):
-    """Wrapper around Plotly's offline .plot() function.
+def _showTrace(trace, layout=None, title=None):
+    """Wrapper around Plotly's offline `plot()` function.
 
     Parameters
     ----------
@@ -151,7 +151,7 @@ def makeFullMTX(Pnm, dn, kr, viz_order=None):
     return vizMtx
 
 
-def normalizeMTX(MTX, logScale=False):
+def _normalizeMTX(MTX, logScale=False):
     """Normalizes a matrix to [0 ... 1].
 
     Parameters
@@ -178,7 +178,7 @@ def normalizeMTX(MTX, logScale=False):
     return MTX
 
 
-def genSphCoords():
+def _genSphCoords():
     """Generates cartesian (x,y,z) and spherical (theta, phi) coordinates of a
     sphere.
 
@@ -200,8 +200,8 @@ def genSphCoords():
     return coords
 
 
-def sph2cartMTX(vizMTX):
-    """Converts the spherical vizMTX data to named tuple contaibubg .xs/.ys/.zs.
+def _sph2cartMTX(vizMTX):
+    """Converts the spherical vizMTX data to named tuple containing .xs/.ys/.zs.
 
     Parameters
     ----------
@@ -215,7 +215,7 @@ def sph2cartMTX(vizMTX):
     """
     rs = _np.abs(vizMTX.reshape((181, -1)).T)
 
-    coords = genSphCoords()
+    coords = _genSphCoords()
     V = namedtuple("V", ["xs", "ys", "zs"])
     V.xs = rs * _np.sin(coords.el) * _np.cos(coords.az)
     V.ys = rs * _np.sin(coords.el) * _np.sin(coords.az)
@@ -223,7 +223,7 @@ def sph2cartMTX(vizMTX):
     return V
 
 
-def genShape(vizMTX):
+def _genShape(vizMTX):
     """Returns trace of shape with intensity as radial extension.
 
     Parameters
@@ -241,7 +241,7 @@ def genShape(vizMTX):
     Fix camera position
     """
     # TODO: Fix camera position
-    V = sph2cartMTX(vizMTX)
+    V = _sph2cartMTX(vizMTX)
 
     trace = go.Surface(
         x=V.xs,
@@ -255,7 +255,7 @@ def genShape(vizMTX):
     return trace
 
 
-def genSphere(vizMTX):
+def _genSphere(vizMTX):
     """Returns trace of sphere with intensity as surface color.
 
     Parameters
@@ -268,7 +268,7 @@ def genSphere(vizMTX):
     T : plotly_trace
         Trace of desired sphere
     """
-    coords = genSphCoords()
+    coords = _genSphCoords()
 
     trace = go.Surface(
         x=coords.x,
@@ -282,7 +282,7 @@ def genSphere(vizMTX):
     return trace
 
 
-def genFlat(vizMTX):
+def _genFlat(vizMTX):
     """Returns trace of flat surface with intensity as surface elevation and
     color.
 
@@ -313,7 +313,7 @@ def genFlat(vizMTX):
     return trace
 
 
-def genVisual(vizMTX, style="shape", normalize=True, logScale=False):
+def _genVisual(vizMTX, style="shape", normalize=True, logScale=False):
     """Returns desired trace after cleaning the data.
 
     Parameters
@@ -334,21 +334,21 @@ def genVisual(vizMTX, style="shape", normalize=True, logScale=False):
     """
     vizMTX = _np.abs(vizMTX)  # Can we be sure to only need the abs?
     if normalize:
-        vizMTX = normalizeMTX(vizMTX, logScale=logScale)
+        vizMTX = _normalizeMTX(vizMTX, logScale=logScale)
 
     if style == "shape":
-        return genShape(vizMTX)
+        return _genShape(vizMTX)
     elif style == "sphere":
-        return genSphere(vizMTX)
+        return _genSphere(vizMTX)
     elif style == "flat":
-        return genFlat(vizMTX)
+        return _genFlat(vizMTX)
     else:
         raise ValueError(
             f'Provided style "{style}" not available. Try sphere, shape or flat.'
         )
 
 
-def layout_2D(viz_type=None, title=None):
+def _layout_2D(viz_type=None, title=None):
     layout = go.Layout(
         title=title, xaxis=dict(title="Samples"), yaxis=dict(title="Amplitude")
     )
@@ -373,7 +373,7 @@ def layout_2D(viz_type=None, title=None):
     return layout
 
 
-def prepare_2D_x(L, viz_type, fs):
+def _prepare_2D_x(L, viz_type, fs):
     # X vector: samples or time
     x = _np.arange(L - 1, dtype=_np.float_)
 
@@ -385,27 +385,29 @@ def prepare_2D_x(L, viz_type, fs):
     return x
 
 
-def prepare_2D_traces(data, viz_type, fs, line_names):
+def _prepare_2D_traces(data, viz_type, fs, line_names):
     """
-
     Parameters
     ----------
-    data
-    viz_type
-    fs
+    data : array_like
+        Data to be plotted, separated along the first dimension (rows)
+    viz_type : str{None, 'Time', 'ETC', 'LinFFT', 'LogFFT'}
+        Type of data to be displayed
+    fs : int
+        Sampling rate in Hz
     line_names : list[str] or None
-        aa
+        Add legend to be displayed on plot, with one entry for each data row
 
     Returns
     -------
-
+    traces : plotly_trace
+        Plotly generated trace to be displayed offline
     """
     data = _np.atleast_2d(data)
     N, L = data.shape
 
-    x = prepare_2D_x(L, viz_type, fs)
+    x = _prepare_2D_x(L, viz_type, fs)
 
-    # traces: list[go.Scatter] = []
     traces = []
     for k in range(0, N):
         y = data[k]
@@ -437,16 +439,16 @@ def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
     """
     viz_type = viz_type.strip().upper()  # remove whitespaces and make upper case
 
-    layout = layout_2D(viz_type=viz_type, title=title)
-    traces = prepare_2D_traces(
+    layout = _layout_2D(viz_type=viz_type, title=title)
+    traces = _prepare_2D_traces(
         data=data, viz_type=viz_type, fs=fs, line_names=line_names
     )
 
-    showTrace(traces, layout=layout, title=title)
+    _showTrace(traces, layout=layout, title=title)
 
 
 def plot3D(vizMTX, style="shape", layout=None, normalize=True, logScale=False):
-    """Visualize matrix data, such as from makeMTX(Pnm, dn).
+    """Visualize matrix data, such as from `makeMTX(Pnm, dn)`.
 
     Parameters
     ----------
@@ -480,13 +482,30 @@ def plot3D(vizMTX, style="shape", layout=None, normalize=True, logScale=False):
             )
         )
 
-    showTrace(
-        genVisual(vizMTX, style=style, normalize=normalize, logScale=logScale),
+    _showTrace(
+        _genVisual(vizMTX, style=style, normalize=normalize, logScale=logScale),
         layout=layout,
     )
 
 
 def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
+    """Visualize matrix data in a grid, such as from `makeMTX(Pnm, dn)`.
+
+    Parameters
+    ----------
+    rows : int
+        Number of grid rows
+    cols : int
+        Number of grid columns
+    viz_data : array_like
+        Matrix holding data for visualization
+    style : string{'shape', 'sphere', 'flat'}, optional
+        Style of visualization. [Default: 'shape']
+    normalize : bool, optional
+        Toggle normalization of data to [-1 ... 1] [Default: True]
+    title : str, optional
+        Add title to be displayed on plot
+    """
     if len(viz_data) > rows * cols:
         raise ValueError(
             "Number of plot data is more than the specified rows and columns."
@@ -517,7 +536,7 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
         cur_row = int(rows[IDX])
         cur_col = int(cols[IDX])
         fig.add_trace(
-            genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col
+            _genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col
         )
         fig.layout[f"scene{IDX + 1:d}"].update(layout_3D)
 
