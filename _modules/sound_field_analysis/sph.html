@@ -1,55 +1,67 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="writer-html5" lang="en" >
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>sound_field_analysis.sph &mdash; Sound Field Analysis toolbox for Python 2021.2.4 documentation</title>
+  
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
-    <title>sound_field_analysis.sph &mdash; Sound Field Analysis toolbox for Python 2020.1.30 documentation</title>
+  
+  
 
+  
+  
 
-    <!--[if lt IE 9]>
+  
+
+  
+  <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
-    <![endif]-->
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"
-            type="text/javascript"></script>
-    <script src="../../_static/jquery.js" type="text/javascript"></script>
-    <script src="../../_static/underscore.js" type="text/javascript"></script>
-    <script src="../../_static/doctools.js" type="text/javascript"></script>
-    <script src="../../_static/language_data.js" type="text/javascript"></script>
-
-    <script src="../../_static/js/theme.js" type="text/javascript"></script>
-
-
-    <link href="../../_static/css/theme.css" rel="stylesheet" type="text/css"/>
-    <link href="../../_static/pygments.css" rel="stylesheet" type="text/css"/>
-    <link href="../../genindex.html" rel="index" title="Index"/>
-    <link href="../../search.html" rel="search" title="Search"/>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
-
-<div class="wy-grid-for-nav">
-
+   
+  <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
 
+          
+            <a href="../../index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
+          
 
-                <a alt="Documentation Home" class="icon icon-home" href="../../index.html"> Sound Field Analysis toolbox
-                    for Python
+          
+          </a>
 
-
-                </a>
-
-
-                <div class="version">
-                    2020.1.30
+          
+            
+            
+              <div class="version">
+                2021.2.4
               </div>
             
           
@@ -66,375 +78,327 @@
           
         </div>
 
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp1-ideal-plane-wave">Exp1: Ideal plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp2-measured-plane-wave">Exp2: Measured plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp4-binaural-rendering">Exp4: Binaural rendering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#version-history">Version history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#contribute">Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.sph">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.utils">Utilities</a></li>
+</ul>
+</li>
+</ul>
 
-            <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../usage.html#how-to-get-started">How to Get Started</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#reference">Reference</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.gen">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.io">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.plot">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.process">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.sph">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.utils">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-
-            </div>
-
+            
+          
         </div>
+        
+      </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-
-        <nav aria-label="top navigation" class="wy-nav-top">
-
-            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-            <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
-
-        </nav>
-
-
-        <div class="wy-nav-content">
-
-            <div class="rst-content">
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
+        
+      </nav>
 
 
-                <div role="navigation" aria-label="breadcrumbs navigation">
-
-                    <ul class="wy-breadcrumbs">
-
-                        <li><a class="icon icon-home" href="../../index.html"></a> &raquo;</li>
-
-                        <li><a href="../index.html">Module code</a> &raquo;</li>
-
-                        <li>sound_field_analysis.sph</li>
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
 
 
-                        <li class="wy-breadcrumbs-aside">
-
-                        </li>
-
-                    </ul>
 
 
-                    <hr/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>sound_field_analysis.sph</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for sound_field_analysis.sph</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Collection of spherical helper functions:</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module containing various spherical harmonics helper functions:</span>
 
+<span class="sd">`besselj` / `neumann`</span>
+<span class="sd">    Bessel function of first and second kind of order n at kr.</span>
+<span class="sd">`hankel1` / `hankel2`</span>
+<span class="sd">    Hankel function of first and second kind of order n at kr.</span>
+<span class="sd">`spbessel` / `spneumann`</span>
+<span class="sd">    Spherical Bessel function of first and second kind of order n at kr.</span>
+<span class="sd">`sphankel1` / `sphankel2`</span>
+<span class="sd">    Spherical Hankel of first and second kind of order n at kr.</span>
+<span class="sd">`dspbessel` / `dspneumann`</span>
+<span class="sd">    Derivative of spherical Bessel of first and second kind of order n at kr.</span>
+<span class="sd">`dsphankel1` / `dsphankel2`</span>
+<span class="sd">    Derivative spherical Hankel of first and second kind of order n at kr.</span>
+<span class="sd">`spherical_extrapolation`</span>
+<span class="sd">    Factor that relate signals recorded on a sphere to it&#39;s center.</span>
+<span class="sd">`array_extrapolation`</span>
+<span class="sd">    Factor that relate signals recorded on a sphere to it&#39;s center. In the</span>
+<span class="sd">    rigid configuration, a scatter_radius that is different to the array radius</span>
+<span class="sd">    may be set.</span>
 <span class="sd">`sph_harm`</span>
-<span class="sd">   More robust spherical harmonic coefficients</span>
-<span class="sd">`spbessel / dspbessel`</span>
-<span class="sd">   Spherical Bessel and derivative</span>
-<span class="sd">`spneumann / dspneumann`</span>
-<span class="sd">   Spherical Neumann (Bessel 2nd kind) and derivative</span>
-<span class="sd">`sphankel / dsphankel`</span>
-<span class="sd">   Spherical Hankel (second kind) and derivative</span>
-<span class="sd">`cart2sph / sph2cart`</span>
-<span class="sd">   Convert cartesian to spherical coordinates and vice versa</span>
+<span class="sd">    Compute spherical harmonics.</span>
+<span class="sd">`sph_harm_large`</span>
+<span class="sd">    Compute spherical harmonics for large orders &gt; 84.</span>
+<span class="sd">`sph_harm_all`</span>
+<span class="sd">    Compute all spherical harmonic coefficients up to degree nMax.</span>
+<span class="sd">`mnArrays`</span>
+<span class="sd">    Generate degrees n and orders m up to nMax.</span>
+<span class="sd">`reverseMnIds`</span>
+<span class="sd">    Generate reverse indexes according to stacked coefficients of orders m up</span>
+<span class="sd">    to nMax.</span>
+<span class="sd">`cart2sph` / `sph2cart`</span>
+<span class="sd">    Convert cartesian to spherical coordinates and vice versa.</span>
+<span class="sd">`kr`</span>
+<span class="sd">    Generate kr vector for given f and array radius.</span>
+<span class="sd">`kr_full_spec`</span>
+<span class="sd">    Generate full spectrum kr.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span
-                   class="n">factorial</span> <span class="k">as</span> <span class="n">fact</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">factorial</span> <span class="k">as</span> <span class="n">fact</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">special</span> <span
-                   class="k">as</span> <span class="n">scy</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">special</span> <span class="k">as</span> <span class="n">scy</span>
 
 <span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">ArrayConfiguration</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">scalar_broadcast_match</span>
 
 
-<div class="viewcode-block" id="besselj"><a class="viewcode-back"
-                                            href="../../reference.html#sound_field_analysis.sph.besselj">[docs]</a><span
-        class="k">def</span> <span class="nf">besselj</span><span class="p">(</span><span class="n">n</span><span
-        class="p">,</span> <span class="n">z</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Bessel function of first kind of order n at kr.</span>
-<span class="sd">    Wraps scipy.special.jn(n, z).</span>
+<div class="viewcode-block" id="besselj"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.besselj">[docs]</a><span class="k">def</span> <span class="nf">besselj</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Bessel function of first kind of order n at kr. Wraps</span>
+<span class="sd">    `scipy.special.jn(n, z)`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    z: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    J : array_like</span>
-<span class="sd">       Values of Bessel function of order n at position z</span>
+<span class="sd">        Values of Bessel function of order n at position z</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="neumann"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.neumann">[docs]</a><span class="k">def</span> <span class="nf">neumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Bessel function of second kind (Neumann / Weber function) of order n at kr.</span>
-<span class="sd">    Implemented as (hankel1(n, z) - besselj(n, z)) / 1j</span>
+    <span class="sd">&quot;&quot;&quot;Bessel function of second kind (Neumann / Weber function) of order n at</span>
+<span class="sd">    kr. Implemented as `(hankel1(n, z) - besselj(n, z)) / 1j`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    z: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Y : array_like</span>
-<span class="sd">       Values of Hankel function of order n at position z</span>
+<span class="sd">        Values of Hankel function of order n at position z</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">hankel1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">besselj</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span> <span class="o">/</span> <span class="mi">1</span><span class="n">j</span></div>
 
 
 <div class="viewcode-block" id="hankel1"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.hankel1">[docs]</a><span class="k">def</span> <span class="nf">hankel1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Bessel function of third kind (Hankel function) of order n at kr.</span>
-<span class="sd">    Wraps scipy.special.hankel1(n, z)</span>
+    <span class="sd">&quot;&quot;&quot;Hankel function of first kind of order n at kr. Wraps</span>
+<span class="sd">    `scipy.special.hankel2(n, z)`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    z: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    H1 : array_like</span>
-<span class="sd">       Values of Hankel function of order n at position z</span>
+<span class="sd">        Values of Hankel function of order n at position z</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">hankel1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="hankel2"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.hankel2">[docs]</a><span class="k">def</span> <span class="nf">hankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Bessel function of third kind (Hankel function) of order n at kr.</span>
-<span class="sd">    Wraps scipy.special.hankel2(n, z)</span>
+    <span class="sd">&quot;&quot;&quot;Hankel function of second kind of order n at kr. Wraps</span>
+<span class="sd">    `scipy.special.hankel2(n, z)`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    z: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    H2 : array_like</span>
-<span class="sd">       Values of Hankel function of order n at position z</span>
+<span class="sd">        Values of Hankel function of order n at position z</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">hankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="spbessel"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.spbessel">[docs]</a><span class="k">def</span> <span class="nf">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Spherical Bessel function (first kind) of order n at kr</span>
+    <span class="sd">&quot;&quot;&quot;Spherical Bessel function (first kind) of order n at kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    kr: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    J : complex float</span>
-<span class="sd">       Spherical Bessel</span>
+<span class="sd">        Spherical Bessel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span
-            class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span
-            class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">any</span><span class="p">(</span><span class="n">kr</span> <span class="o">&lt;</span> <span
-            class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span
-            class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span
-            class="p">):</span>
-        <span class="n">J</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">zeros</span><span class="p">(</span><span class="n">kr</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">kr</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">kr</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
 
-        <span class="n">kr_non_zero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span
-            class="mi">0</span>
-        <span class="n">J</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">lib</span><span
-            class="o">.</span><span class="n">scimath</span><span class="o">.</span><span class="n">sqrt</span><span
-            class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span
-            class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">kr</span><span
-            class="p">[</span><span class="n">kr_non_zero</span><span class="p">])</span> <span class="o">*</span> <span
-            class="n">besselj</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span
-            class="n">kr_non_zero</span><span class="p">]</span> <span class="o">+</span> <span
-            class="mf">0.5</span><span class="p">,</span>
-                                                                                      <span class="n">kr</span><span
-            class="p">[</span><span class="n">kr_non_zero</span><span class="p">])</span>
-        <span class="n">J</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">logical_and</span><span class="p">(</span><span class="n">kr</span> <span
-            class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span
-            class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span
-            class="mi">1</span>
+        <span class="n">kr_non_zero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="n">J</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">scimath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">])</span> <span class="o">*</span> <span class="n">besselj</span><span class="p">(</span>
+            <span class="n">n</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">J</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">kr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">J</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span
-            class="n">spherical_jn</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span
-            class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">int</span><span class="p">),</span> <span class="n">kr</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span
-            class="p">(</span><span class="n">J</span><span class="p">)</span></div>
+        <span class="n">J</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">spherical_jn</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span> <span class="n">kr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">J</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="spneumann"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.spneumann">[docs]</a><span class="k">def</span> <span class="nf">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Spherical Neumann (Bessel second kind) of order n at kr</span>
+    <span class="sd">&quot;&quot;&quot;Spherical Neumann (Bessel second kind) of order n at kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    kr: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Yv : complex float</span>
-<span class="sd">       Spherical Neumann (Bessel second kind)</span>
+<span class="sd">        Spherical Neumann (Bessel second kind)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span
-            class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span
-            class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">any</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span
-            class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span
-            class="p">):</span>
-        <span class="n">Yv</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">full</span><span class="p">(</span><span class="n">kr</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">Yv</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">kr</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
 
-        <span class="n">kr_non_zero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span
-            class="mi">0</span>
-        <span class="n">Yv</span><span class="p">[</span><span class="n">kr_non_zero</span><span
-            class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">lib</span><span class="o">.</span><span class="n">scimath</span><span class="o">.</span><span
-            class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span
-            class="n">kr</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">])</span> <span
-            class="o">*</span> <span class="n">neumann</span><span class="p">(</span><span class="n">n</span><span
-            class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span> <span class="o">+</span> <span
-            class="mf">0.5</span><span class="p">,</span>
-                                                                                       <span class="n">kr</span><span
-            class="p">[</span><span class="n">kr_non_zero</span><span class="p">])</span>
-        <span class="n">Yv</span><span class="p">[</span><span class="n">kr</span> <span class="o">&lt;</span> <span
-            class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span
-            class="n">Yv</span><span class="p">[</span><span class="n">kr</span> <span class="o">&lt;</span> <span
-            class="mi">0</span><span class="p">]</span>
+        <span class="n">kr_non_zero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="n">Yv</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">scimath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">])</span> <span class="o">*</span> <span class="n">neumann</span><span class="p">(</span>
+            <span class="n">n</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_non_zero</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">Yv</span><span class="p">[</span><span class="n">kr</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">Yv</span><span class="p">[</span><span class="n">kr</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">Yv</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span
-            class="n">spherical_yn</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span
-            class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">int</span><span class="p">),</span> <span class="n">kr</span><span class="p">)</span>
-        <span class="n">Yv</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">isinf</span><span class="p">(</span><span class="n">Yv</span><span class="p">)]</span> <span
-            class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">nan</span>  <span
-            class="c1"># return possible infs as nan to stay consistent</span>
-    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span
-            class="p">(</span><span class="n">Yv</span><span class="p">)</span></div>
+        <span class="n">Yv</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">spherical_yn</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span> <span class="n">kr</span><span class="p">)</span>
+        <span class="c1"># return possible infs as nan to stay consistent</span>
+        <span class="n">Yv</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">Yv</span><span class="p">)]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">Yv</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="sphankel1"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.sphankel1">[docs]</a><span class="k">def</span> <span class="nf">sphankel1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Spherical Hankel (first kind) of order n at kr</span>
+    <span class="sd">&quot;&quot;&quot;Spherical Hankel (first kind) of order n at kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    kr: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    hn1 : complex float</span>
-<span class="sd">       Spherical Hankel function hn (first kind)</span>
+<span class="sd">        Spherical Hankel function hn (first kind)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
-    <span class="n">hn1</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span
-            class="mi">0</span>
-    <span class="n">hn1</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span
-            class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span
-            class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span
-            class="n">scimath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span
-            class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span> <span
-            class="o">*</span> <span class="n">hankel1</span><span class="p">(</span><span class="n">n</span><span
-            class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span
-            class="mf">0.5</span><span class="p">,</span>
-                                                                                            <span class="n">kr</span><span
-            class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+    <span class="n">hn1</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">hn1</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">scimath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+        <span class="o">*</span> <span class="n">hankel1</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">hn1</span></div>
 
 
@@ -453,212 +417,171 @@
 <span class="sd">    hn2 : complex float</span>
 <span class="sd">       Spherical Hankel function hn (second kind)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
-    <span class="n">hn2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span
-            class="mi">0</span>
-    <span class="n">hn2</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span
-            class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span
-            class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span
-            class="n">scimath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span
-            class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span> <span
-            class="o">*</span> <span class="n">hankel2</span><span class="p">(</span><span class="n">n</span><span
-            class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span
-            class="mf">0.5</span><span class="p">,</span>
-                                                                                            <span class="n">kr</span><span
-            class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+    <span class="n">hn2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">hn2</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">scimath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+        <span class="o">*</span> <span class="n">hankel2</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">hn2</span></div>
 
 
 <div class="viewcode-block" id="dspbessel"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.dspbessel">[docs]</a><span class="k">def</span> <span class="nf">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Derivative of spherical Bessel (first kind) of order n at kr</span>
+    <span class="sd">&quot;&quot;&quot;Derivative of spherical Bessel (first kind) of order n at kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    kr: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    J&#39; : complex float</span>
-<span class="sd">       Derivative of spherical Bessel</span>
+<span class="sd">        Derivative of spherical Bessel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="dspneumann"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.dspneumann">[docs]</a><span class="k">def</span> <span class="nf">dspneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Derivative spherical Neumann (Bessel second kind) of order n at kr</span>
+    <span class="sd">&quot;&quot;&quot;Derivative spherical Neumann (Bessel second kind) of order n at kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    kr: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Yv&#39; : complex float</span>
-<span class="sd">       Derivative of spherical Neumann (Bessel second kind)</span>
+<span class="sd">        Derivative of spherical Neumann (Bessel second kind)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">kr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">kr</span> <span class="o">-</span> <span class="n">spneumann</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">spherical_yn</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span> <span class="n">kr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">complex</span><span class="p">),</span> <span class="n">derivative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">spherical_yn</span><span class="p">(</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span> <span class="n">kr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">complex</span><span class="p">),</span> <span class="n">derivative</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="dsphankel1"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.dsphankel1">[docs]</a><span class="k">def</span> <span class="nf">dsphankel1</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Derivative spherical Hankel (first kind) of order n at kr</span>
+    <span class="sd">&quot;&quot;&quot;Derivative spherical Hankel (first kind) of order n at kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    kr: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    dhn1 : complex float</span>
-<span class="sd">       Derivative of spherical Hankel function hn&#39; (second kind)</span>
+<span class="sd">        Derivative of spherical Hankel function hn&#39; (second kind)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
-    <span class="n">dhn1</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span
-            class="mi">0</span>
-    <span class="n">dhn1</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span
-            class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
-            <span class="n">sphankel1</span><span class="p">(</span><span class="n">n</span><span
-            class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">-</span> <span
-            class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span
-            class="n">kr_nonzero</span><span class="p">])</span> <span class="o">-</span> <span
-            class="n">sphankel1</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span
-            class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span
-            class="p">])</span>
-            <span class="o">-</span> <span class="n">sphankel1</span><span class="p">(</span><span
-            class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">],</span> <span
-            class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span> <span
-            class="o">/</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span
-            class="p">])</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+    <span class="n">dhn1</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">dhn1</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="n">sphankel1</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+        <span class="o">-</span> <span class="n">sphankel1</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+        <span class="o">-</span> <span class="n">sphankel1</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">],</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span> <span class="o">/</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">dhn1</span></div>
 
 
 <div class="viewcode-block" id="dsphankel2"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.dsphankel2">[docs]</a><span class="k">def</span> <span class="nf">dsphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Derivative spherical Hankel (second kind) of order n at kr</span>
+    <span class="sd">&quot;&quot;&quot;Derivative spherical Hankel (second kind) of order n at kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n : array_like</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    kr: array_like</span>
-<span class="sd">       Argument</span>
+<span class="sd">        Argument</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    dhn2 : complex float</span>
-<span class="sd">       Derivative of spherical Hankel function hn&#39; (second kind)</span>
+<span class="sd">        Derivative of spherical Hankel function hn&#39; (second kind)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
-    <span class="n">dhn2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span
-            class="mi">0</span>
-    <span class="n">dhn2</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span
-            class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
-            <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span
-            class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">-</span> <span
-            class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span
-            class="n">kr_nonzero</span><span class="p">])</span> <span class="o">-</span> <span
-            class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span
-            class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span
-            class="p">])</span>
-            <span class="o">-</span> <span class="n">sphankel2</span><span class="p">(</span><span
-            class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">],</span> <span
-            class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span> <span
-            class="o">/</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span
-            class="p">])</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+    <span class="n">dhn2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="n">kr_nonzero</span> <span class="o">=</span> <span class="n">kr</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">dhn2</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+        <span class="o">-</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span>
+        <span class="o">-</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">],</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">])</span> <span class="o">/</span> <span class="n">kr</span><span class="p">[</span><span class="n">kr_nonzero</span><span class="p">]</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">dhn2</span></div>
 
 
-<div class="viewcode-block" id="spherical_extrapolation"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.spherical_extrapolation">[docs]</a><span class="k">def</span> <span class="nf">spherical_extrapolation</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k_dual</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Factor that relate signals recorded on a sphere to it&#39;s center.</span>
+<div class="viewcode-block" id="spherical_extrapolation"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.spherical_extrapolation">[docs]</a><span class="k">def</span> <span class="nf">spherical_extrapolation</span><span class="p">(</span>
+    <span class="n">order</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k_dual</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Factor that relate signals recorded on a sphere to it&#39;s center.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    order : int</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    array_configuration : io.ArrayConfiguration</span>
-<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
 <span class="sd">    k_mic : array_like</span>
-<span class="sd">       K vector for microphone array</span>
+<span class="sd">        K vector for microphone array</span>
 <span class="sd">    k_scatter: array_like, optional</span>
-<span class="sd">       K vector for scatterer  [Default: same as k_mic]</span>
-<span class="sd">    k_dual : optional</span>
+<span class="sd">        K vector for scatterer  [Default: same as k_mic]</span>
+<span class="sd">    k_dual : float, optional</span>
+<span class="sd">        Radius of second array, required for `array_type` == &#39;dual&#39;</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    b : array, complex</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span
-            class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
+    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span
-            class="ow">is</span> <span class="s1">&#39;open&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span
-            class="ow">is</span> <span class="s1">&#39;omni&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">bn_open_omni</span><span class="p">(</span><span class="n">order</span><span
-            class="p">,</span> <span class="n">k_mic</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span class="ow">is</span> <span class="s1">&#39;cardioid&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;open&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span class="o">==</span> <span class="s2">&quot;omni&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">bn_open_omni</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span class="o">==</span> <span class="s2">&quot;cardioid&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">bn_open_cardioid</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="ow">is</span> <span class="s1">&#39;rigid&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span class="ow">is</span> <span class="s1">&#39;omni&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;rigid&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span class="o">==</span> <span class="s2">&quot;omni&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">bn_rigid_omni</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span class="ow">is</span> <span class="s1">&#39;cardioid&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">transducer_type</span> <span class="o">==</span> <span class="s2">&quot;cardioid&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">bn_rigid_cardioid</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="ow">is</span> <span class="s1">&#39;dual&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;dual&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">bn_dual_open_omni</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_dual</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="array_extrapolation"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.array_extrapolation">[docs]</a><span class="k">def</span> <span class="nf">array_extrapolation</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Factor that relate signals recorded on a sphere to it&#39;s center.</span>
-<span class="sd">    In the rigid configuration, a scatter_radius that is different to the array radius may be set.</span>
+    <span class="sd">&quot;&quot;&quot;Factor that relate signals recorded on a sphere to it&#39;s center. In the</span>
+<span class="sd">    rigid configuration, a scatter_radius that is different to the array radius</span>
+<span class="sd">    may be set.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    order : int</span>
-<span class="sd">       Order</span>
+<span class="sd">        Order</span>
 <span class="sd">    freqs : array_like</span>
-<span class="sd">       Frequencies</span>
+<span class="sd">        Frequencies</span>
 <span class="sd">    array_configuration : io.ArrayConfiguration</span>
-<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
 <span class="sd">    normalize: Bool, optional</span>
 <span class="sd">        Normalize by 4 * pi * 1j ** order [Default: True]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    b : array, complex</span>
-<span class="sd">       Coefficients of shape [nOrder x nFreqs]</span>
+<span class="sd">        Coefficients of shape [nOrder x nFreqs]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
 
@@ -672,9 +595,9 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">scale_factor</span> <span class="o">=</span> <span class="mi">1</span>
 
-    <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="ow">is</span> <span class="s1">&#39;open&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;open&quot;</span><span class="p">:</span>
         <span class="n">k_scatter</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="ow">is</span> <span class="s1">&#39;rigid&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;rigid&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">scatter_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">scatter_radius</span> <span class="o">=</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_radius</span>
         <span class="k">else</span><span class="p">:</span>
@@ -686,10 +609,12 @@
             <span class="n">k_mic</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">k_mic</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">k_scatter</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
             <span class="n">k_scatter</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">k_scatter</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="ow">is</span> <span class="s1">&#39;dual&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;dual&quot;</span><span class="p">:</span>
         <span class="n">k_dual</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">dual_radius</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">spherical_extrapolation</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">,</span> <span class="n">k_dual</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">spherical_extrapolation</span><span class="p">(</span>
+        <span class="n">order</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">,</span> <span class="n">k_dual</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="bn_open_omni"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.bn_open_omni">[docs]</a><span class="k">def</span> <span class="nf">bn_open_omni</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">):</span>
@@ -702,40 +627,29 @@
 
 <div class="viewcode-block" id="bn_rigid_omni"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.bn_rigid_omni">[docs]</a><span class="k">def</span> <span class="nf">bn_rigid_omni</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">):</span>
     <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span> <span class="o">/</span> <span class="n">dsphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">))</span> <span class="o">*</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span> <span class="o">/</span> <span class="n">dsphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">))</span> <span class="o">*</span> <span class="n">sphankel2</span><span class="p">(</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">krm</span>
+    <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="bn_rigid_cardioid"><a class="viewcode-back"
-                                                      href="../../reference.html#sound_field_analysis.sph.bn_rigid_cardioid">[docs]</a><span
-        class="k">def</span> <span class="nf">bn_rigid_cardioid</span><span class="p">(</span><span
-        class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span
-        class="p">):</span>
+<div class="viewcode-block" id="bn_rigid_cardioid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.bn_rigid_cardioid">[docs]</a><span class="k">def</span> <span class="nf">bn_rigid_cardioid</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">):</span>
     <span class="c1">#  Rerence for Filter design for rigid sphere with cardioid microphones:</span>
-    <span class="c1">#  P. Plessas, F. Zotter: Microphone arrays around rigid spheres for spatial recording and holography, DAGA 2010</span>
+    <span class="c1">#  P. Plessas, F. Zotter: Microphone arrays around rigid spheres for spatial</span>
+    <span class="c1">#  recording and holography, DAGA 2010</span>
     <span class="c1">#  krm: for mic radius, krs: for sphere radius</span>
-    <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span> <span class="o">=</span> <span
-            class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">krm</span><span
-            class="p">,</span> <span class="n">krs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span
-            class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span
-            class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dspbessel</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span
-            class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span
-            class="n">j</span> <span class="o">*</span> <span class="n">dsphankel2</span><span class="p">(</span><span
-            class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span
-            class="o">-</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span
-            class="p">,</span> <span class="n">krm</span><span class="p">))</span> <span class="o">*</span> <span
-            class="p">(</span>
-            <span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span
-            class="p">,</span> <span class="n">krs</span><span class="p">)</span> <span class="o">/</span> <span
-            class="n">dsphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span
-            class="n">krs</span><span class="p">))</span></div>
+    <span class="n">krm</span><span class="p">,</span> <span class="n">krs</span> <span class="o">=</span> <span class="n">scalar_broadcast_match</span><span class="p">(</span><span class="n">krm</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span>
+        <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">dsphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">)</span> <span class="o">-</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krm</span><span class="p">))</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">)</span> <span class="o">/</span> <span class="n">dsphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">krs</span><span class="p">))</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="bn_dual_open_omni"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.bn_dual_open_omni">[docs]</a><span class="k">def</span> <span class="nf">bn_dual_open_omni</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr1</span><span class="p">,</span> <span class="n">kr2</span><span class="p">):</span>
-    <span class="c1"># Reference: Rafaely et al,</span>
-    <span class="c1">#  High-resolution plane-wave decomposition in an auditorium using a dual-radius scanning spherical microphone array</span>
-    <span class="c1">#  JASA, 122(5), 2007</span>
+    <span class="c1"># Reference: Rafaely et al, &quot;High-resolution plane-wave decomposition in</span>
+    <span class="c1"># an auditorium using a dual-radius scanning spherical microphone array&quot;</span>
+    <span class="c1"># JASA, 122(5), 2007</span>
     <span class="c1"># kr1, kr2 are the kr values of the two different microphone spheres</span>
     <span class="c1"># Implementation by Nils Peters, November 2011*/</span>
     <span class="n">bn1</span> <span class="o">=</span> <span class="n">bn_open_omni</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">kr1</span><span class="p">)</span>
@@ -743,164 +657,155 @@
     <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">bn1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">bn2</span><span class="p">),</span> <span class="n">bn1</span><span class="p">,</span> <span class="n">bn2</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="sph_harm"><a class="viewcode-back"
-                                             href="../../reference.html#sound_field_analysis.sph.sph_harm">[docs]</a><span
-        class="k">def</span> <span class="nf">sph_harm</span><span class="p">(</span><span class="n">m</span><span
-        class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span
-        class="p">,</span> <span class="n">el</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute spherical harmonics</span>
+<div class="viewcode-block" id="sph_harm"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.sph_harm">[docs]</a><span class="k">def</span> <span class="nf">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute spherical harmonics.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    m : (int)</span>
 <span class="sd">        Order of the spherical harmonic. abs(m) &lt;= n</span>
-
 <span class="sd">    n : (int)</span>
 <span class="sd">        Degree of the harmonic, sometimes called l. n &gt;= 0</span>
-
-<span class="sd">    az: (float)</span>
+<span class="sd">    az : (float)</span>
 <span class="sd">        Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.</span>
-
-<span class="sd">    el : (float)</span>
-<span class="sd">        Elevation (colatitudinal) coordinate [0, pi], also called Phi.</span>
+<span class="sd">    co : (float)</span>
+<span class="sd">        Polar (colatitudinal) coordinate [0, pi], also called Phi.</span>
+<span class="sd">    kind : {&#39;complex&#39;, &#39;real&#39;}, optional</span>
+<span class="sd">        Spherical harmonic coefficients data type according to complex [7]_ or</span>
+<span class="sd">        real definition [8]_ [Default: &#39;complex&#39;]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    y_mn : (complex float)</span>
-<span class="sd">        Complex spherical harmonic of order m and degree n,</span>
-<span class="sd">        sampled at theta = az, phi = el</span>
+<span class="sd">    y_mn : (complex float) or (float)</span>
+<span class="sd">        Spherical harmonic of order m and degree n, sampled at theta = az,</span>
+<span class="sd">        phi = co</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [7] scipy.special.sph_harm</span>
+<span class="sd">    .. [8] F. Zotter, “Analysis and synthesis of sound-radiation with</span>
+<span class="sd">       spherical arrays,” University of Music and Performing Arts, 2009.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># SAFETY CHECKS</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;complex&quot;</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid kind: Choose either complex or real.&quot;</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span class="n">sph_harm</span><span
-            class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span
-            class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span
-            class="p">)</span></div>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">co</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;complex&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Y</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># kind == &#39;real&#39;</span>
+        <span class="n">mg0</span> <span class="o">=</span> <span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">ml0</span> <span class="o">=</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="mi">0</span>
+        <span class="n">Y</span><span class="p">[</span><span class="n">mg0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m</span><span class="p">)[</span><span class="n">mg0</span><span class="p">]</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">mg0</span><span class="p">])</span>
+        <span class="n">Y</span><span class="p">[</span><span class="n">ml0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">ml0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="sph_harm_large"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.sph_harm_large">[docs]</a><span class="k">def</span> <span class="nf">sph_harm_large</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute spherical harmonics for large orders &gt; 84</span>
+<div class="viewcode-block" id="sph_harm_large"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.sph_harm_large">[docs]</a><span class="k">def</span> <span class="nf">sph_harm_large</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute spherical harmonics for large orders &gt; 84.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    m : (int)</span>
 <span class="sd">        Order of the spherical harmonic. abs(m) &lt;= n</span>
-
 <span class="sd">    n : (int)</span>
 <span class="sd">        Degree of the harmonic, sometimes called l. n &gt;= 0</span>
-
-<span class="sd">    az: (float)</span>
+<span class="sd">    az : (float)</span>
 <span class="sd">        Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.</span>
-
-<span class="sd">    el : (float)</span>
-<span class="sd">        Elevation (colatitudinal) coordinate [0, pi], also called Phi.</span>
+<span class="sd">    co : (float)</span>
+<span class="sd">        Polar (colatitudinal) coordinate [0, pi], also called Phi.</span>
+<span class="sd">    kind : {&#39;complex&#39;, &#39;real&#39;}, optional</span>
+<span class="sd">        Spherical harmonic coefficients data type according to complex [6]_ or</span>
+<span class="sd">        real definition [7]_ [Default: &#39;complex&#39;]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    y_mn : (complex float)</span>
-<span class="sd">        Complex spherical harmonic of order m and degree n,</span>
-<span class="sd">        sampled at theta = az, phi = el</span>
+<span class="sd">    y_mn : (complex float) or (float)</span>
+<span class="sd">        Spherical harmonic of order m and degree n, sampled at</span>
+<span class="sd">        theta = az,</span>
+<span class="sd">        phi = co</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5 * exp(i m phi) * P_n^m(cos(theta))</span>
-<span class="sd">    as per http://dlmf.nist.gov/14.30</span>
-<span class="sd">    Pmn(z) is the associated Legendre function of the first kind, like scipy.special.lpmv</span>
-<span class="sd">    scipy.special.lpmn calculates P(0...m 0...n) and its derivative but won&#39;t return +inf at high orders</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">all</span><span
-            class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span
-            class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&lt;</span> <span
-            class="mi">84</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">scy</span><span class="o">.</span><span
-            class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span
-            class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span
-            class="n">el</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># TODO: confirm that this uses the correct SH definition</span>
+<span class="sd">    Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5</span>
+<span class="sd">    * exp(i m phi) * P_n^m(cos(theta)) as per http://dlmf.nist.gov/14.30</span>
+<span class="sd">    Pmn(z) are the associated Legendre functions of the first kind,</span>
+<span class="sd">    like scipy.special.lpmv, which calculates P(0...m 0...n) and its derivative</span>
+<span class="sd">    but won&#39;t return +inf at high orders.</span>
 
-        <span class="n">mAbs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span
-            class="n">el</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">ndarray</span><span class="p">):</span>
-            <span class="n">P</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">empty</span><span class="p">(</span><span class="n">el</span><span class="o">.</span><span
-            class="n">size</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span
-            class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">el</span><span
-            class="o">.</span><span class="n">size</span><span class="p">):</span>
-                <span class="n">P</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">lpmn</span><span
-            class="p">(</span><span class="n">mAbs</span><span class="p">,</span> <span class="n">n</span><span
-            class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span
-            class="p">(</span><span class="n">el</span><span class="p">[</span><span class="n">k</span><span class="p">]))[</span><span
-            class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span
-            class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="sd">    TODO</span>
+<span class="sd">    ----</span>
+<span class="sd">    Confirm that the correct SH definition is used</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">84</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># SAFETY CHECKS</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;complex&quot;</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid kind: Choose either complex or real.&quot;</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="c1"># TODO: Confirm that the correct SH definition is used</span>
+        <span class="n">mAbs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">co</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+                <span class="n">P</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">lpmn</span><span class="p">(</span><span class="n">mAbs</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="n">k</span><span class="p">]))[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">P</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span
-            class="n">lpmn</span><span class="p">(</span><span class="n">mAbs</span><span class="p">,</span> <span
-            class="n">n</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">))[</span><span
-            class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span
-            class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">preFactor1</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span
-            class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span
-            class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span
-            class="p">))</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">scy</span><span class="o">.</span><span class="n">lpmn</span><span class="p">(</span><span class="n">mAbs</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">co</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">preFactor1</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">preFactor2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">mAbs</span><span class="p">)</span> <span class="o">/</span> <span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">mAbs</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">OverflowError</span><span class="p">:</span>  <span class="c1"># integer division for very large orders</span>
             <span class="n">preFactor2</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">mAbs</span><span class="p">)</span> <span class="o">//</span> <span class="n">fact</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">mAbs</span><span class="p">))</span>
 
         <span class="n">Y</span> <span class="o">=</span> <span class="n">preFactor1</span> <span class="o">*</span> <span class="n">preFactor2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">az</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span>
-        <span class="k">if</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Y</span></div>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;complex&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Y</span> <span class="k">if</span> <span class="n">m</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># kind == &#39;real&#39;</span>
+            <span class="n">Y</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">_np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m</span><span class="p">)[</span><span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span>
+                <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)])</span>
+            <span class="p">)</span>
+            <span class="n">Y</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)])</span>
+            <span class="n">Y</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)])</span>
+            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="sph_harm_all"><a class="viewcode-back"
-                                                 href="../../reference.html#sound_field_analysis.sph.sph_harm_all">[docs]</a><span
-        class="k">def</span> <span class="nf">sph_harm_all</span><span class="p">(</span><span
-        class="n">nMax</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span
-        class="p">):</span>
+<div class="viewcode-block" id="sph_harm_all"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.sph_harm_all">[docs]</a><span class="k">def</span> <span class="nf">sph_harm_all</span><span class="p">(</span><span class="n">nMax</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute all spherical harmonic coefficients up to degree nMax.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    nMax : (int)</span>
 <span class="sd">        Maximum degree of coefficients to be returned. n &gt;= 0</span>
-
 <span class="sd">    az: (float), array_like</span>
 <span class="sd">        Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.</span>
-
-<span class="sd">    el : (float), array_like</span>
-<span class="sd">        Elevation (colatitudinal) coordinate [0, pi], also called Phi.</span>
+<span class="sd">    co : (float), array_like</span>
+<span class="sd">        Polar (colatitudinal) coordinate [0, pi], also called Phi.</span>
+<span class="sd">    kind : {&#39;complex&#39;, &#39;real&#39;}, optional</span>
+<span class="sd">        Spherical harmonic coefficients data type [Default: &#39;complex&#39;]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    y_mn : (complex float), array_like</span>
-<span class="sd">        Complex spherical harmonics of degrees n [0 ... nMax] and all corresponding</span>
-<span class="sd">        orders m [-n ... n], sampled at [az, el]. dim1 corresponds to az/el pairs,</span>
-<span class="sd">        dim2 to oder/degree (m, n) pairs like 0/0, -1/1, 0/1, 1/1, -2/2, -1/2 ...</span>
+<span class="sd">    y_mn : (complex float) or (float), array_like</span>
+<span class="sd">        Spherical harmonics of degrees n [0 ... nMax] and all corresponding</span>
+<span class="sd">        orders m [-n ... n], sampled at [az, co]. dim1 corresponds to az/co</span>
+<span class="sd">        pairs, dim2 to oder/degree (m, n) pairs like 0/0, -1/1, 0/1, 1/1,</span>
+<span class="sd">        -2/2, -1/2 ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">mnArrays</span><span
-            class="p">(</span><span class="n">nMax</span><span class="p">)</span>
-    <span class="n">mA</span><span class="p">,</span> <span class="n">azA</span> <span class="o">=</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span
-            class="n">m</span><span class="p">,</span> <span class="n">az</span><span class="p">)</span>
-    <span class="n">nA</span><span class="p">,</span> <span class="n">elA</span> <span class="o">=</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span
-            class="n">n</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">mA</span><span
-            class="p">,</span> <span class="n">nA</span><span class="p">,</span> <span class="n">azA</span><span
-            class="p">,</span> <span class="n">elA</span><span class="p">)</span></div>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">mnArrays</span><span class="p">(</span><span class="n">nMax</span><span class="p">)</span>
+    <span class="n">mA</span><span class="p">,</span> <span class="n">azA</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">az</span><span class="p">)</span>
+    <span class="n">nA</span><span class="p">,</span> <span class="n">coA</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">co</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sph_harm</span><span class="p">(</span><span class="n">mA</span><span class="p">,</span> <span class="n">nA</span><span class="p">,</span> <span class="n">azA</span><span class="p">,</span> <span class="n">coA</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="mnArrays"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.mnArrays">[docs]</a><span class="k">def</span> <span class="nf">mnArrays</span><span class="p">(</span><span class="n">nMax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns degrees n and orders m up to nMax.</span>
+    <span class="sd">&quot;&quot;&quot;Generate degrees n and orders m up to nMax.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -915,37 +820,21 @@
 <span class="sd">        0, 1, 1, 1, 2, 2, 2, 2, 2, ... nMax, nMax, nMax</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Degree n = 0, 1, 1, 1, 2, 2, 2, 2, 2, ...</span>
-    <span class="n">degs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">arange</span><span class="p">(</span><span class="n">nMax</span> <span class="o">+</span> <span
-            class="mi">1</span><span class="p">)</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">repeat</span><span
-            class="p">(</span><span class="n">degs</span><span class="p">,</span> <span class="n">degs</span> <span
-            class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">)</span>
+    <span class="n">degs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nMax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">degs</span><span class="p">,</span> <span class="n">degs</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Order m = 0, -1, 0, 1, -2, -1, 0, 1, 2, ...</span>
     <span class="c1"># http://oeis.org/A196199</span>
-    <span class="n">elementNumber</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">arange</span><span class="p">((</span><span class="n">nMax</span> <span
-            class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span
-            class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">floor</span><span
-            class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span
-            class="p">(</span><span class="n">elementNumber</span> <span class="o">-</span> <span
-            class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span
-            class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">elementNumber</span> <span
-            class="o">-</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span> <span
-            class="o">-</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">elementNumber</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arange</span><span class="p">((</span><span class="n">nMax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">elementNumber</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">elementNumber</span> <span class="o">-</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span> <span class="o">-</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span></div>
 
 
-<div class="viewcode-block" id="reverseMnIds"><a class="viewcode-back"
-                                                 href="../../reference.html#sound_field_analysis.sph.reverseMnIds">[docs]</a><span
-        class="k">def</span> <span class="nf">reverseMnIds</span><span class="p">(</span><span
-        class="n">nMax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns reverse indexes according to stacked coefficients of orders m up to nMax.</span>
+<div class="viewcode-block" id="reverseMnIds"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.reverseMnIds">[docs]</a><span class="k">def</span> <span class="nf">reverseMnIds</span><span class="p">(</span><span class="n">nMax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate reverse indexes according to stacked coefficients of orders m up</span>
+<span class="sd">    to nMax.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -957,49 +846,29 @@
 <span class="sd">    rev_ids : (int), array_like</span>
 <span class="sd">        0, 3, 2, 1, 8, 7, 6, 5, 4, ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">m_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span
-            class="nb">range</span><span class="p">(</span><span class="n">nMax</span> <span class="o">*</span> <span
-            class="p">(</span><span class="n">nMax</span> <span class="o">+</span> <span class="mi">2</span><span
-            class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span
-            class="p">(</span><span class="n">nMax</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">):</span>
-        <span class="n">id_start</span> <span class="o">=</span> <span class="n">o</span> <span
-            class="o">**</span> <span class="mi">2</span>
-        <span class="n">id_end</span> <span class="o">=</span> <span class="n">id_start</span> <span class="o">+</span> <span
-            class="n">o</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span
-            class="mi">1</span>
-        <span class="n">m_ids</span><span class="p">[</span><span class="n">id_start</span><span class="p">:</span><span
-            class="n">id_end</span><span class="p">]</span> <span class="o">=</span> <span
-            class="nb">reversed</span><span class="p">(</span><span class="n">m_ids</span><span class="p">[</span><span
-            class="n">id_start</span><span class="p">:</span><span class="n">id_end</span><span class="p">])</span>
+    <span class="n">m_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nMax</span> <span class="o">*</span> <span class="p">(</span><span class="n">nMax</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nMax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">id_start</span> <span class="o">=</span> <span class="n">o</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">id_end</span> <span class="o">=</span> <span class="n">id_start</span> <span class="o">+</span> <span class="n">o</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">m_ids</span><span class="p">[</span><span class="n">id_start</span><span class="p">:</span><span class="n">id_end</span><span class="p">]</span> <span class="o">=</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">m_ids</span><span class="p">[</span><span class="n">id_start</span><span class="p">:</span><span class="n">id_end</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">m_ids</span></div>
 
 
-<div class="viewcode-block" id="cart2sph"><a class="viewcode-back"
-                                             href="../../reference.html#sound_field_analysis.sph.cart2sph">[docs]</a><span
-        class="k">def</span> <span class="nf">cart2sph</span><span class="p">(</span><span class="n">x</span><span
-        class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts cartesian coordinates x, y, z to spherical coordinates az, el, r.&quot;&quot;&quot;</span>
-    <span class="n">hxy</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">hypot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span
-            class="n">y</span><span class="p">)</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hypot</span><span
-            class="p">(</span><span class="n">hxy</span><span class="p">,</span> <span class="n">z</span><span
-            class="p">)</span>
-    <span class="n">el</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">arctan2</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span
-            class="n">hxy</span><span class="p">)</span>
-    <span class="n">az</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span
-            class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span
-            class="p">,</span> <span class="n">r</span></div>
+<div class="viewcode-block" id="cart2sph"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.cart2sph">[docs]</a><span class="k">def</span> <span class="nf">cart2sph</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert cartesian coordinates x, y, z to spherical coordinates</span>
+<span class="sd">    az, el, r.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hxy</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">hxy</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">el</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">hxy</span><span class="p">)</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">r</span></div>
 
 
 <div class="viewcode-block" id="sph2cart"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.sph2cart">[docs]</a><span class="k">def</span> <span class="nf">sph2cart</span><span class="p">(</span><span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts spherical coordinates az, el, r to cartesian coordinates x, y, z.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Convert spherical coordinates az, el, r to cartesian coordinates</span>
+<span class="sd">    x, y, z.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rcos_theta</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">rcos_theta</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">rcos_theta</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
@@ -1008,7 +877,7 @@
 
 
 <div class="viewcode-block" id="kr"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.kr">[docs]</a><span class="k">def</span> <span class="nf">kr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return kr vector for given f and array radius</span>
+    <span class="sd">&quot;&quot;&quot;Generate kr vector for given f and array radius.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1024,15 +893,11 @@
 <span class="sd">    kr : array_like</span>
 <span class="sd">       2 * pi * f / c(temperature) * r</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span
-            class="o">/</span> <span class="p">(</span><span class="mf">331.5</span> <span class="o">+</span> <span
-            class="mf">0.6</span> <span class="o">*</span> <span class="n">temperature</span><span
-            class="p">)</span> <span class="o">*</span> <span class="n">radius</span></div>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">/</span> <span class="p">(</span><span class="mf">331.5</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span></div>
 
 
 <div class="viewcode-block" id="kr_full_spec"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.sph.kr_full_spec">[docs]</a><span class="k">def</span> <span class="nf">kr_full_spec</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns full spectrum kr</span>
+    <span class="sd">&quot;&quot;&quot;Generate full spectrum kr.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1050,162 +915,89 @@
 <span class="sd">    kr : array_like</span>
 <span class="sd">       kr vector of length NFFT/2 + 1 spanning the frequencies of 0:fs/2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span
-            class="nb">int</span><span class="p">(</span><span class="n">NFFT</span> <span class="o">/</span> <span
-            class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span
-            class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span
-            class="n">temperature</span><span class="p">)</span></div>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span></div>
 
 
 <span class="c1"># DEBUG</span>
 <span class="k">def</span> <span class="nf">_print_bessel_functions</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bessel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">besselj</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;hankel2:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">hankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;spbessel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dspbessel:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;spneumann:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dspneumann:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span
-                   class="n">dspneumann</span><span class="p">(</span><span class="n">n</span><span
-                   class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;sphankel2:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span
-                   class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span
-                   class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;dsphankel2:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span
-                   class="n">dsphankel2</span><span class="p">(</span><span class="n">n</span><span
-                   class="p">,</span> <span class="n">k</span><span class="p">)))))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bessel:&quot;</span><span class="p">,</span> <span class="n">besselj</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hankel2:&quot;</span><span class="p">,</span> <span class="n">hankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spbessel:&quot;</span><span class="p">,</span> <span class="n">spbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dspbessel:&quot;</span><span class="p">,</span> <span class="n">dspbessel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spneumann:&quot;</span><span class="p">,</span> <span class="n">spneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dspneumann:&quot;</span><span class="p">,</span> <span class="n">dspneumann</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sphankel2:&quot;</span><span class="p">,</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dsphankel2:&quot;</span><span class="p">,</span> <span class="n">dsphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">_print_mic_scaling</span><span class="p">(</span><span
-                   class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span
-                   class="n">array_radius</span><span class="p">,</span> <span class="n">scatter_radius</span><span
-                   class="o">=</span><span class="kc">None</span><span class="p">,</span> <span
-                   class="n">dual_radius</span><span class="o">=</span><span class="kc">None</span><span
-                   class="p">):</span>
+<span class="k">def</span> <span class="nf">_print_mic_scaling</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_radius</span><span class="p">,</span> <span class="n">scatter_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dual_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">scatter_radius</span><span class="p">:</span>
         <span class="n">scatter_radius</span> <span class="o">=</span> <span class="n">array_radius</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">dual_radius</span><span class="p">:</span>
         <span class="n">dual_radius</span> <span class="o">=</span> <span class="n">array_radius</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_open_omni:&#39;</span><span
-                   class="p">,</span>
-                    <span class="nb">str</span><span class="p">(</span><span class="n">array_extrapolation</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span
-                   class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span
-                   class="p">,</span> <span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;omni&#39;</span><span
-                   class="p">])))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_open_cardioid:&#39;</span><span
-                   class="p">,</span>
-                    <span class="nb">str</span><span class="p">(</span><span class="n">array_extrapolation</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span
-                   class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span
-                   class="p">,</span> <span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;cardioid&#39;</span><span
-                   class="p">])))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigid_omni:&#39;</span><span
-                   class="p">,</span>
-                    <span class="nb">str</span><span class="p">(</span><span class="n">array_extrapolation</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span
-                   class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span
-                   class="p">,</span> <span class="s1">&#39;rigid&#39;</span><span class="p">,</span> <span class="s1">&#39;omni&#39;</span><span
-                   class="p">,</span> <span class="n">scatter_radius</span><span class="p">])))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigid_cardioid:&#39;</span><span
-                   class="p">,</span>
-                    <span class="nb">str</span><span class="p">(</span><span class="n">array_extrapolation</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span
-                   class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span
-                   class="p">,</span> <span class="s1">&#39;rigid&#39;</span><span class="p">,</span> <span class="s1">&#39;cardioid&#39;</span><span
-                   class="p">,</span> <span class="n">scatter_radius</span><span class="p">])))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_dual_open_omni:&#39;</span><span
-                   class="p">,</span>
-                    <span class="nb">str</span><span class="p">(</span><span class="n">array_extrapolation</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span
-                   class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span
-                   class="p">,</span> <span class="s1">&#39;dual&#39;</span><span class="p">,</span> <span class="s1">&#39;omni&#39;</span><span
-                   class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span
-                   class="n">dual_radius</span><span class="p">])))))</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;bn_open_omni:&quot;</span><span class="p">,</span> <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="s2">&quot;omni&quot;</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;bn_open_cardioid:&quot;</span><span class="p">,</span>
+        <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="s2">&quot;cardioid&quot;</span><span class="p">]),</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;bn_rigid_omni:&quot;</span><span class="p">,</span>
+        <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span class="p">,</span> <span class="s2">&quot;rigid&quot;</span><span class="p">,</span> <span class="s2">&quot;omni&quot;</span><span class="p">,</span> <span class="n">scatter_radius</span><span class="p">]),</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;bn_rigid_cardioid:&quot;</span><span class="p">,</span>
+        <span class="n">array_extrapolation</span><span class="p">(</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span class="p">,</span> <span class="s2">&quot;rigid&quot;</span><span class="p">,</span> <span class="s2">&quot;cardioid&quot;</span><span class="p">,</span> <span class="n">scatter_radius</span><span class="p">]</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;bn_dual_open_omni:&quot;</span><span class="p">,</span>
+        <span class="n">array_extrapolation</span><span class="p">(</span>
+            <span class="n">N</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="n">array_radius</span><span class="p">,</span> <span class="s2">&quot;dual&quot;</span><span class="p">,</span> <span class="s2">&quot;omni&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dual_radius</span><span class="p">]</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_print_bns</span><span class="p">(</span><span class="n">N</span><span
-                   class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span
-                   class="n">k_scatter</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_open_omni:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span
-                   class="n">bn_open_omni</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span
-                   class="n">k_mic</span><span class="p">)</span> <span class="o">*</span> <span
-                   class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span
-                   class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span
-                   class="o">**</span> <span class="n">N</span><span class="p">))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_open_cardioid:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn_open_cardioid</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span
-                   class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span
-                   class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span
-                   class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">N</span><span
-                   class="p">))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigid_omni:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span
-                   class="n">bn_rigid_omni</span><span class="p">(</span><span class="n">N</span><span
-                   class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span
-                   class="n">k_scatter</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span
-                   class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span
-                   class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span
-                   class="n">N</span><span class="p">))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_rigid_cardioid:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn_rigid_cardioid</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span
-                   class="p">,</span> <span class="n">k_scatter</span><span class="p">)</span> <span class="o">*</span> <span
-                   class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span
-                   class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span
-                   class="o">**</span> <span class="n">N</span><span class="p">))))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span
-                   class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;bn_dual_open_omni:&#39;</span><span
-                   class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">bn_dual_open_omni</span><span
-                   class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span
-                   class="p">,</span> <span class="n">k_scatter</span><span class="p">)</span> <span class="o">*</span> <span
-                   class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span
-                   class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span
-                   class="o">**</span> <span class="n">N</span><span class="p">))))</span>
+<span class="k">def</span> <span class="nf">_print_bns</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bn_open_omni:&quot;</span><span class="p">,</span> <span class="n">bn_open_omni</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">N</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bn_open_cardioid:&quot;</span><span class="p">,</span> <span class="n">bn_open_cardioid</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">N</span><span class="p">),</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bn_rigid_omni:&quot;</span><span class="p">,</span> <span class="n">bn_rigid_omni</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">N</span><span class="p">),</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;bn_rigid_cardioid:&quot;</span><span class="p">,</span>
+        <span class="n">bn_rigid_cardioid</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">N</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;bn_dual_open_omni:&quot;</span><span class="p">,</span>
+        <span class="n">bn_dual_open_omni</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k_mic</span><span class="p">,</span> <span class="n">k_scatter</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">N</span><span class="p">,</span>
+    <span class="p">)</span>
 </pre></div>
 
            </div>
-
+           
           </div>
           <footer>
 
+  <hr/>
 
-              <hr/>
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Chalmers University of Technology.
 
-              <div role="contentinfo">
-                  <p>
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-                      &copy; Copyright 2020, Chalmers University of Technology
-
-                  </p>
-              </div>
-
-
-              Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
-                  href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a
-                  href="https://readthedocs.org">Read the Docs</a>.
-
-          </footer>
-
+</footer>
         </div>
       </div>
 
@@ -1220,6 +1012,10 @@
       });
   </script>
 
+  
+  
+    
+   
 
 </body>
 </html>

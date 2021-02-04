@@ -1,342 +1,476 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html class="writer-html5" lang="en" >
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Modules &mdash; Sound Field Analysis toolbox for Python 2021.2.4 documentation</title>
+  
 
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
-    <title>Modules &mdash; Sound Field Analysis toolbox for Python 2020.1.30 documentation</title>
+  
+  
 
+  
+  
 
-    <!--[if lt IE 9]>
+  
+
+  
+  <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
-    <![endif]-->
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"
-            type="text/javascript"></script>
-    <script src="_static/jquery.js" type="text/javascript"></script>
-    <script src="_static/underscore.js" type="text/javascript"></script>
-    <script src="_static/doctools.js" type="text/javascript"></script>
-    <script src="_static/language_data.js" type="text/javascript"></script>
-
-    <script src="_static/js/theme.js" type="text/javascript"></script>
-
-
-    <link href="_static/css/theme.css" rel="stylesheet" type="text/css"/>
-    <link href="_static/pygments.css" rel="stylesheet" type="text/css"/>
-    <link href="genindex.html" rel="index" title="Index"/>
-    <link href="search.html" rel="search" title="Search"/>
-    <link href="reference.html" rel="next" title="Reference"/>
-    <link href="usage.html" rel="prev" title="Usage"/>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
 
-<div class="wy-grid-for-nav">
+          
+            <a href="index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
+          
 
-    <nav class="wy-nav-side" data-toggle="wy-nav-shift">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
+          
+          </a>
 
+          
+            
+            
+              <div class="version">
+                2021.2.4
+              </div>
+            
+          
 
-                <a alt="Documentation Home" class="icon icon-home" href="index.html"> Sound Field Analysis toolbox for
-                    Python
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
 
-
-                </a>
-
-
-                <div class="version">
-                    2020.1.30
-                </div>
-
-
-                <div role="search">
-                    <form action="search.html" class="wy-form" id="rtd-search-form" method="get">
-                        <input name="q" placeholder="Search docs" type="text"/>
-                        <input name="check_keywords" type="hidden" value="yes"/>
-                        <input name="area" type="hidden" value="default"/>
-                    </form>
-                </div>
-
-
-            </div>
-
-
-            <div aria-label="main navigation" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
-
-
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="usage.html#requirements">Requirements</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="usage.html#how-to-get-started">How
-                                to Get Started</a></li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="usage.html#reference">Reference</a></li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="#generators">Generators</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="#i-o">I/O</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="#lebedev">Lebedev</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="#plotting">Plotting</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="#processing">Processing</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="#spherical">Spherical</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a></li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.gen">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.io">I/O</a></li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.plot">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.process">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.sph">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.utils">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-
-            </div>
-
+          
         </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#exp1-ideal-plane-wave">Exp1: Ideal plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#exp2-measured-plane-wave">Exp2: Measured plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#exp4-binaural-rendering">Exp4: Binaural rendering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#version-history">Version history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#contribute">Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-o">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spherical">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.sph">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.utils">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
     </nav>
 
-    <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sound Field Analysis toolbox for Python</a>
+        
+      </nav>
 
 
-        <nav aria-label="top navigation" class="wy-nav-top">
-
-            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-            <a href="index.html">Sound Field Analysis toolbox for Python</a>
-
-        </nav>
-
-
-        <div class="wy-nav-content">
-
-            <div class="rst-content">
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
 
 
-                <div aria-label="breadcrumbs navigation" role="navigation">
-
-                    <ul class="wy-breadcrumbs">
-
-                        <li><a class="icon icon-home" href="index.html"></a> &raquo;</li>
-
-                        <li>Modules</li>
 
 
-                        <li class="wy-breadcrumbs-aside">
 
 
-                            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
 
 
-                        </li>
-
-                    </ul>
 
 
-                    <hr/>
-                </div>
-                <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
-                    <div itemprop="articleBody">
-
-                        <div class="section" id="modules">
-                            <h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a>
-                            </h1>
-                            <div class="section" id="generators">
-                                <h2>Generators<a class="headerlink" href="#generators"
-                                                 title="Permalink to this headline">¶</a></h2>
-                                <p>Module contains various generator functions:</p>
-                                <dl class="simple">
-                                    <dt><cite>whiteNoise</cite></dt>
-                                    <dd><p>Generate additive White Gaussian noise</p>
-                                    </dd>
-                                    <dt><cite>gauss_grid</cite></dt>
-                                    <dd><p>Gauss-Legendre quadrature grid and weights</p>
-                                    </dd>
-                                    <dt><cite>lebedev</cite></dt>
-                                    <dd><p>Lebedev quadrature grid and weights</p>
-                                    </dd>
-                                    <dt><cite>radial_filter</cite></dt>
-                                    <dd><p>Modal radial filter</p>
-                                    </dd>
-                                    <dt><cite>radial_filter_fullspec</cite></dt>
-                                    <dd><p>Modal radial filter over the full spectrum</p>
-                                    </dd>
-                                    <dt><cite>sampledWave</cite></dt>
-                                    <dd><p>Sampled Wave generator, emulating discrete sampling</p>
-                                    </dd>
-                                    <dt><cite>ideal_wave</cite></dt>
-                                    <dd><p>Ideal wave generator, returns spatial fourier coefficients</p>
-                                    </dd>
-                                </dl>
-                            </div>
-                            <div class="section" id="i-o">
-                                <h2>I/O<a class="headerlink" href="#i-o" title="Permalink to this headline">¶</a></h2>
-                                <p>Input-Output functions</p>
-                            </div>
-                            <div class="section" id="lebedev">
-                                <h2>Lebedev<a class="headerlink" href="#lebedev"
-                                              title="Permalink to this headline">¶</a></h2>
-                                <p>Generate Lebedev grid and coefficients
-                                    This module only exposes the function <cite>lebGrid = lebedev.genGrid(degree)</cite>.
-                                </p>
-                                <p>lebGrid is a named tuple containing the coordinates .x, .y, .z and the weights .w
-                                    Possible degrees: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194</p>
-                                <p>Adapted from Richard P. Mullers Python version,
-                                    <a class="reference external"
-                                       href="https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py">https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py</a>
-                                    C version: Dmitri Laikov
-                                    F77 version: Christoph van Wuellen, <a class="reference external"
-                                                                           href="http://www.ccl.net">http://www.ccl.net</a>
-                                </p>
-                                <p>Users of this code are asked to include reference [1] in their publications,
-                                    and in the user- and programmers-manuals describing their codes.</p>
-                                <p>[1] V.I. Lebedev, and D.N. Laikov
-                                    ‘A quadrature formula for the sphere of the 131st algebraic order of accuracy’
-                                    Doklady Mathematics, Vol. 59, No. 3, 1999, pp. 477-481.</p>
-                            </div>
-                            <div class="section" id="plotting">
-                                <h2>Plotting<a class="headerlink" href="#plotting"
-                                               title="Permalink to this headline">¶</a></h2>
-                                <p>Plotting functions
-                                    Helps visualizing spherical microphone data.</p>
-                            </div>
-                            <div class="section" id="processing">
-                                <h2>Processing<a class="headerlink" href="#processing"
-                                                 title="Permalink to this headline">¶</a></h2>
-                                <p>Functions that act on the Spatial Fourier Coefficients.</p>
-                                <dl class="simple">
-                                    <dt><cite>BEMA</cite></dt>
-                                    <dd><p>Bandwidth Extension for Microphone Arrays</p>
-                                    </dd>
-                                    <dt><cite>FFT</cite></dt>
-                                    <dd><p>(Fast) Fourier Transform</p>
-                                    </dd>
-                                    <dt><cite>iFFT</cite></dt>
-                                    <dd><p>Inverse (Fast) Fourier Transform</p>
-                                    </dd>
-                                    <dt><cite>spatFT</cite></dt>
-                                    <dd><p>Spatial Fourier Transform</p>
-                                    </dd>
-                                    <dt><cite>spatFT_RT</cite></dt>
-                                    <dd><p>Spatial Fourier Transform for real-time application</p>
-                                    </dd>
-                                    <dt><cite>spatFT_LSF</cite></dt>
-                                    <dd><p>Spatial Fourier Transform by least square fit to provided data</p>
-                                    </dd>
-                                    <dt><cite>iSpatFT</cite></dt>
-                                    <dd><p>Fast Inverse Spatial Fourier Transform</p>
-                                    </dd>
-                                    <dt><cite>rfi</cite></dt>
-                                    <dd><p>Radial Filter Improvement</p>
-                                    </dd>
-                                    <dt><cite>plane_wave_decomp</cite></dt>
-                                    <dd><p>Plane Wave Decomposition</p>
-                                    </dd>
-                                </dl>
-                            </div>
-                            <div class="section" id="spherical">
-                                <h2>Spherical<a class="headerlink" href="#spherical" title="Permalink to this headline">¶</a>
-                                </h2>
-                                <p>Collection of spherical helper functions:</p>
-                                <dl class="simple">
-                                    <dt><cite>sph_harm</cite></dt>
-                                    <dd><p>More robust spherical harmonic coefficients</p>
-                                    </dd>
-                                    <dt><cite>spbessel / dspbessel</cite></dt>
-                                    <dd><p>Spherical Bessel and derivative</p>
-                                    </dd>
-                                    <dt><cite>spneumann / dspneumann</cite></dt>
-                                    <dd><p>Spherical Neumann (Bessel 2nd kind) and derivative</p>
-                                    </dd>
-                                    <dt><cite>sphankel / dsphankel</cite></dt>
-                                    <dd><p>Spherical Hankel (second kind) and derivative</p>
-                                    </dd>
-                                    <dt><cite>cart2sph / sph2cart</cite></dt>
-                                    <dd><p>Convert cartesian to spherical coordinates and vice versa</p>
-                                    </dd>
-                                </dl>
-                            </div>
-                            <div class="section" id="utilities">
-                                <h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a>
-                                </h2>
-                                <p>Miscellaneous utility functions</p>
-                            </div>
-                        </div>
 
 
-                    </div>
-
-                </div>
-                <footer>
-
-                    <div aria-label="footer navigation" class="rst-footer-buttons" role="navigation">
-
-                        <a accesskey="n" class="btn btn-neutral float-right" href="reference.html" rel="next"
-                           title="Reference">Next <span class="fa fa-arrow-circle-right"></span></a>
 
 
-                        <a accesskey="p" class="btn btn-neutral float-left" href="usage.html" rel="prev"
-                           title="Usage"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-
-                    </div>
 
 
-                    <hr/>
 
-                    <div role="contentinfo">
-                        <p>
+<div role="navigation" aria-label="breadcrumbs navigation">
 
-                            &copy; Copyright 2020, Chalmers University of Technology
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Modules</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
 
-                        </p>
-                    </div>
-
-
-                    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
-                        href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a
-                        href="https://readthedocs.org">Read the Docs</a>.
-
-                </footer>
-
-            </div>
-        </div>
-
-    </section>
-
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="generators">
+<h2>Generators<a class="headerlink" href="#generators" title="Permalink to this headline">¶</a></h2>
+<p>Module containing various generator functions:</p>
+<dl class="simple">
+<dt><cite>whiteNoise</cite></dt><dd><p>Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</p>
+</dd>
+<dt><cite>gauss_grid</cite></dt><dd><p>Compute Gauss-Legendre quadrature nodes and weights in the SOFiA /
+VariSphear data format.</p>
+</dd>
+<dt><cite>lebedev</cite></dt><dd><p>Compute Lebedev quadrature nodes and weights given a maximum stable
+order. Alternatively, a degree may be supplied.</p>
+</dd>
+<dt><cite>radial_filter</cite></dt><dd><p>Generate modal radial filter of specified orders and frequencies.</p>
+</dd>
+<dt><cite>radial_filter_fullspec</cite></dt><dd><p>Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for
+frequencies 0:fs/2, wraps <cite>radial_filter()</cite>.</p>
+</dd>
+<dt><cite>spherical_head_filter</cite></dt><dd><p>Generate coloration compensation filter of specified maximum SH order.</p>
+</dd>
+<dt><cite>spherical_head_filter_spec</cite></dt><dd><p>Generate NFFT/2 + 1 coloration compensation filter of specified maximum
+SH order for frequencies 0:fs/2, wraps <cite>spherical_head_filter()</cite>.</p>
+</dd>
+<dt><cite>tapering_window</cite></dt><dd><p>Design tapering window with cosine slope for orders greater than 3.</p>
+</dd>
+<dt><cite>sampled_wave</cite></dt><dd><p>Returns the frequency domain data of an ideal wave as recorded by a
+provided array.</p>
+</dd>
+<dt><cite>ideal_wave</cite></dt><dd><p>Ideal wave generator, returns spatial Fourier coefficients <cite>Pnm</cite> of an
+ideal wave front hitting a specified array.</p>
+</dd>
+<dt><cite>spherical_noise</cite></dt><dd><p>Returns order-limited random weights on a spherical surface.</p>
+</dd>
+<dt><cite>delay_fd</cite></dt><dd><p>Generate delay in frequency domain that resembles a circular shift in
+time domain.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="i-o">
+<h2>I/O<a class="headerlink" href="#i-o" title="Permalink to this headline">¶</a></h2>
+<p>Module containing various input and output functions:</p>
+<dl class="simple">
+<dt><cite>TimeSignal</cite></dt><dd><p>Named tuple to store time domain data and related metadata.</p>
+</dd>
+<dt><cite>SphericalGrid</cite></dt><dd><p>Named tuple to store spherical sampling grid geometry.</p>
+</dd>
+<dt><cite>ArrayConfiguration</cite></dt><dd><p>Named tuple to store microphone array characteristics.</p>
+</dd>
+<dt><cite>ArraySignal</cite></dt><dd><p>Named tuple to store microphone array data in terms of <cite>TimeSignal</cite>,
+<cite>SphericalGrid</cite> and <cite>ArrayConfiguration</cite></p>
+</dd>
+<dt><cite>HrirSignal</cite></dt><dd><p>Named tuple to store Head Related Impulse Response grid data in terms of
+<cite>TimeSignal</cite> for either ear and <cite>SphericalGrid</cite></p>
+</dd>
+<dt><cite>read_miro_struct</cite></dt><dd><p>Read Head Related Impulse Responses (HRIRs) or Array / Directional
+Impulse Responses (DRIRs) stored as MIRO Matlab files and convert them to
+<cite>ArraySignal</cite>.</p>
+</dd>
+<dt><cite>read_SOFA_file</cite></dt><dd><p>Read Head Related Impulse Responses (HRIRs) or Array / Directional
+Impulse Responses (DRIRs) stored as Spatially Oriented Format for Acoustics
+(SOFA) files and convert them to <cite>ArraySignal</cite> or <cite>HrirSignal</cite>.</p>
+</dd>
+<dt><cite>empty_time_signal</cite></dt><dd><p>Returns an empty np rec array that has the proper data structure.</p>
+</dd>
+<dt><cite>load_array_signal</cite></dt><dd><p>Convenience function to load ArraySignal saved into np data structures.</p>
+</dd>
+<dt><cite>read_wavefile</cite></dt><dd><p>Reads in WAV files and returns data [Nsig x Nsamples] and fs.</p>
+</dd>
+<dt><cite>write_SSR_IRs</cite></dt><dd><p>Takes two time signals and writes out the horizontal plane as HRIRs for
+the SoundScapeRenderer. Ideally, both hold 360 IRs but smaller sets are
+tried to be scaled up using repeat.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="lebedev">
+<h2>Lebedev<a class="headerlink" href="#lebedev" title="Permalink to this headline">¶</a></h2>
+<p>Module to generate Lebedev grids and quadrature weights for degrees 6, 14, 26,
+38, 50, 74, 86, 110, 146, 170, 194:</p>
+<dl class="simple">
+<dt><cite>genGrid(n)</cite></dt><dd><p>Generate Lebedev grid geometry of degree <cite>n</cite>.</p>
+</dd>
+</dl>
+<p>Adapted from Richard P. Mullers Python version,
+<a class="reference external" href="https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py">https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py</a>
+C version: Dmitri Laikov
+F77 version: Christoph van Wuellen, <a class="reference external" href="http://www.ccl.net">http://www.ccl.net</a></p>
+<p>Users of this code are asked to include reference <a class="footnote-reference brackets" href="#id2" id="id1">3</a> in their publications,
+and in the user- and programmers-manuals describing their codes.</p>
+<div class="admonition-references admonition">
+<p class="admonition-title">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">3</a></span></dt>
+<dd><p>V.I. Lebedev, and D.N. Laikov ‘A quadrature formula for the sphere of the
+131st algebraic order of accuracy’ Doklady Mathematics, Vol. 59, No. 3,
+1999, pp. 477-481.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="plotting">
+<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h2>
+<p>Module containing various plotting functions:</p>
+<dl class="simple">
+<dt><cite>makeMTX</cite></dt><dd><p>Returns a plane wave decomposition over a full sphere.</p>
+</dd>
+<dt><cite>makeFullMTX</cite></dt><dd><p>Generates visualization matrix for a set of spatial fourier coefficients
+over all kr.</p>
+</dd>
+<dt><cite>plot2D</cite></dt><dd><p>Visualize 2D data using plotly.</p>
+</dd>
+<dt><cite>plot3D</cite></dt><dd><p>Visualize matrix data, such as from <cite>makeMTX(Pnm, dn)</cite>.</p>
+</dd>
+<dt><cite>plot3Dgrid</cite></dt><dd><p>Visualize matrix data in a grid, such as from <cite>makeMTX(Pnm, dn)</cite>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="processing">
+<h2>Processing<a class="headerlink" href="#processing" title="Permalink to this headline">¶</a></h2>
+<p>Module containing functions to act on the Spatial Fourier Coefficients.</p>
+<dl class="simple">
+<dt><cite>BEMA</cite></dt><dd><p>Perform Bandwidth Extension for Microphone Arrays (BEMA) spatial
+anti-aliasing.</p>
+</dd>
+<dt><cite>FFT</cite></dt><dd><p>Perform real-valued Fast Fourier Transform (FFT).</p>
+</dd>
+<dt><cite>iFFT</cite></dt><dd><p>Perform inverse real-valued (Fast) Fourier Transform (iFFT).</p>
+</dd>
+<dt><cite>spatFT</cite></dt><dd><p>Perform spatial Fourier transform.</p>
+</dd>
+<dt><cite>spatFT_RT</cite></dt><dd><p>Perform spatial Fourier transform for real-time applications
+(otherwise use <cite>spatFT()</cite> for more more convenience and flexibility).</p>
+</dd>
+<dt><cite>spatFT_LSF</cite></dt><dd><p>Perform spatial Fourier transform by least square fit to provided data.</p>
+</dd>
+<dt><cite>iSpatFT</cite></dt><dd><p>Perform inverse spatial Fourier transform.</p>
+</dd>
+<dt><cite>plane_wave_decomp</cite></dt><dd><p>Perform plane wave decomposition.</p>
+</dd>
+<dt><cite>rfi</cite></dt><dd><p>Perform radial filter improvement (RFI)</p>
+</dd>
+<dt><cite>sfe</cite></dt><dd><p>Perform sound field extrapolation (SFE) - WORK IN PROGRESS.</p>
+</dd>
+<dt><cite>wdr</cite></dt><dd><p>Perform Wigner-D rotation (WDR) - NOT YET IMPLEMENTED.</p>
+</dd>
+<dt><cite>convolve</cite></dt><dd><p>Convolve two arrays A &amp; B row-wise where one or both can be
+one-dimensional for SIMO/SISO convolution.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="spherical">
+<h2>Spherical<a class="headerlink" href="#spherical" title="Permalink to this headline">¶</a></h2>
+<p>Module containing various spherical harmonics helper functions:</p>
+<dl class="simple">
+<dt><cite>besselj</cite> / <cite>neumann</cite></dt><dd><p>Bessel function of first and second kind of order n at kr.</p>
+</dd>
+<dt><cite>hankel1</cite> / <cite>hankel2</cite></dt><dd><p>Hankel function of first and second kind of order n at kr.</p>
+</dd>
+<dt><cite>spbessel</cite> / <cite>spneumann</cite></dt><dd><p>Spherical Bessel function of first and second kind of order n at kr.</p>
+</dd>
+<dt><cite>sphankel1</cite> / <cite>sphankel2</cite></dt><dd><p>Spherical Hankel of first and second kind of order n at kr.</p>
+</dd>
+<dt><cite>dspbessel</cite> / <cite>dspneumann</cite></dt><dd><p>Derivative of spherical Bessel of first and second kind of order n at kr.</p>
+</dd>
+<dt><cite>dsphankel1</cite> / <cite>dsphankel2</cite></dt><dd><p>Derivative spherical Hankel of first and second kind of order n at kr.</p>
+</dd>
+<dt><cite>spherical_extrapolation</cite></dt><dd><p>Factor that relate signals recorded on a sphere to it’s center.</p>
+</dd>
+<dt><cite>array_extrapolation</cite></dt><dd><p>Factor that relate signals recorded on a sphere to it’s center. In the
+rigid configuration, a scatter_radius that is different to the array radius
+may be set.</p>
+</dd>
+<dt><cite>sph_harm</cite></dt><dd><p>Compute spherical harmonics.</p>
+</dd>
+<dt><cite>sph_harm_large</cite></dt><dd><p>Compute spherical harmonics for large orders &gt; 84.</p>
+</dd>
+<dt><cite>sph_harm_all</cite></dt><dd><p>Compute all spherical harmonic coefficients up to degree nMax.</p>
+</dd>
+<dt><cite>mnArrays</cite></dt><dd><p>Generate degrees n and orders m up to nMax.</p>
+</dd>
+<dt><cite>reverseMnIds</cite></dt><dd><p>Generate reverse indexes according to stacked coefficients of orders m up
+to nMax.</p>
+</dd>
+<dt><cite>cart2sph</cite> / <cite>sph2cart</cite></dt><dd><p>Convert cartesian to spherical coordinates and vice versa.</p>
+</dd>
+<dt><cite>kr</cite></dt><dd><p>Generate kr vector for given f and array radius.</p>
+</dd>
+<dt><cite>kr_full_spec</cite></dt><dd><p>Generate full spectrum kr.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
+<p>Module containing various utility functions:</p>
+<dl class="simple">
+<dt><cite>env_info</cite></dt><dd><p>Guess environment based on <cite>sys.modules</cite>.</p>
+</dd>
+<dt><cite>progress_bar</cite></dt><dd><p>Display a spinner or a progress bar.</p>
+</dd>
+<dt><cite>db</cite></dt><dd><p>Convenience function to calculate the 20*log10(abs(x)).</p>
+</dd>
+<dt><cite>cart2sph</cite> / <cite>sph2cart</cite></dt><dd><p>Transform cartesian into spherical coordinates and vice versa.</p>
+</dd>
+<dt><cite>SOFA_grid2acr</cite></dt><dd><p>Transform coordinate grid with specified coordinate system definition
+from a SOFA file into spherical coordinates in radians.</p>
+</dd>
+<dt><cite>nearest_to_value</cite> / <cite>nearest_to_value_IDX</cite> / <cite>nearest_to_value_logical_IDX</cite></dt><dd><p>Returns nearest value inside an array.</p>
+</dd>
+<dt><cite>interleave_channels</cite></dt><dd><p>Interleave left and right channels. Style == ‘SSR’ checks if we total
+360 channels.</p>
+</dd>
+<dt><cite>simple_resample</cite></dt><dd><p>Wrap scipy.signal.resample with a simpler API.</p>
+</dd>
+<dt><cite>scalar_broadcast_match</cite></dt><dd><p>Returns arguments as np.array, if one is a scalar it will broadcast the
+other one’s shape.</p>
+</dd>
+<dt><cite>frq2kr</cite></dt><dd><p>Returns the kr bin closest to the target frequency.</p>
+</dd>
+<dt><cite>stack</cite></dt><dd><p>Stacks two 2D vectors along the same-sized dimension or the smaller one.</p>
+</dd>
+<dt><cite>zero_pad_fd</cite></dt><dd><p>Apply zero padding to frequency domain data by transformation into time
+domain and back.</p>
+</dd>
+<dt><cite>current_time</cite></dt><dd><p>Return current system time based on <cite>datetime.now()</cite>.</p>
+</dd>
+<dt><cite>time_it</cite></dt><dd><p>Measure execution of a specified statement which is useful for the
+performance analysis. In this way, the execution time and respective
+results can be directly compared.</p>
+</dd>
+</dl>
+</div>
 </div>
 
 
-<script type="text/javascript">
-    jQuery(function () {
-        SphinxRtdTheme.Navigation.enable(true);
-    });
-</script>
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="reference.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Chalmers University of Technology.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

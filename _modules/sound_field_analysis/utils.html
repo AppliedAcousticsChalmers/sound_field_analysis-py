@@ -1,55 +1,67 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="writer-html5" lang="en" >
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>sound_field_analysis.utils &mdash; Sound Field Analysis toolbox for Python 2021.2.4 documentation</title>
+  
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
-    <title>sound_field_analysis.utils &mdash; Sound Field Analysis toolbox for Python 2020.1.30 documentation</title>
+  
+  
 
+  
+  
 
-    <!--[if lt IE 9]>
+  
+
+  
+  <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
-    <![endif]-->
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"
-            type="text/javascript"></script>
-    <script src="../../_static/jquery.js" type="text/javascript"></script>
-    <script src="../../_static/underscore.js" type="text/javascript"></script>
-    <script src="../../_static/doctools.js" type="text/javascript"></script>
-    <script src="../../_static/language_data.js" type="text/javascript"></script>
-
-    <script src="../../_static/js/theme.js" type="text/javascript"></script>
-
-
-    <link href="../../_static/css/theme.css" rel="stylesheet" type="text/css"/>
-    <link href="../../_static/pygments.css" rel="stylesheet" type="text/css"/>
-    <link href="../../genindex.html" rel="index" title="Index"/>
-    <link href="../../search.html" rel="search" title="Search"/>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
-
-<div class="wy-grid-for-nav">
-
+   
+  <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
 
+          
+            <a href="../../index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
+          
 
-                <a alt="Documentation Home" class="icon icon-home" href="../../index.html"> Sound Field Analysis toolbox
-                    for Python
+          
+          </a>
 
-
-                </a>
-
-
-                <div class="version">
-                    2020.1.30
+          
+            
+            
+              <div class="version">
+                2021.2.4
               </div>
             
           
@@ -66,306 +78,278 @@
           
         </div>
 
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp1-ideal-plane-wave">Exp1: Ideal plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp2-measured-plane-wave">Exp2: Measured plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp4-binaural-rendering">Exp4: Binaural rendering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#version-history">Version history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#contribute">Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.sph">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.utils">Utilities</a></li>
+</ul>
+</li>
+</ul>
 
-            <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../usage.html#how-to-get-started">How to Get Started</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#reference">Reference</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.gen">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.io">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.plot">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.process">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.sph">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.utils">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-
-            </div>
-
+            
+          
         </div>
+        
+      </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-
-        <nav aria-label="top navigation" class="wy-nav-top">
-
-            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-            <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
-
-        </nav>
-
-
-        <div class="wy-nav-content">
-
-            <div class="rst-content">
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
+        
+      </nav>
 
 
-                <div role="navigation" aria-label="breadcrumbs navigation">
-
-                    <ul class="wy-breadcrumbs">
-
-                        <li><a class="icon icon-home" href="../../index.html"></a> &raquo;</li>
-
-                        <li><a href="../index.html">Module code</a> &raquo;</li>
-
-                        <li>sound_field_analysis.utils</li>
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
 
 
-                        <li class="wy-breadcrumbs-aside">
-
-                        </li>
-
-                    </ul>
 
 
-                    <hr/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>sound_field_analysis.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for sound_field_analysis.utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Miscellaneous utility functions&quot;&quot;&quot;</span>
+<span class="sd">Module containing various utility functions:</span>
+
+<span class="sd">`env_info`</span>
+<span class="sd">    Guess environment based on `sys.modules`.</span>
+<span class="sd">`progress_bar`</span>
+<span class="sd">    Display a spinner or a progress bar.</span>
+<span class="sd">`db`</span>
+<span class="sd">    Convenience function to calculate the 20*log10(abs(x)).</span>
+<span class="sd">`cart2sph` / `sph2cart`</span>
+<span class="sd">    Transform cartesian into spherical coordinates and vice versa.</span>
+<span class="sd">`SOFA_grid2acr`</span>
+<span class="sd">    Transform coordinate grid with specified coordinate system definition</span>
+<span class="sd">    from a SOFA file into spherical coordinates in radians.</span>
+<span class="sd">`nearest_to_value` / `nearest_to_value_IDX` / `nearest_to_value_logical_IDX`</span>
+<span class="sd">    Returns nearest value inside an array.</span>
+<span class="sd">`interleave_channels`</span>
+<span class="sd">    Interleave left and right channels. Style == &#39;SSR&#39; checks if we total</span>
+<span class="sd">    360 channels.</span>
+<span class="sd">`simple_resample`</span>
+<span class="sd">    Wrap scipy.signal.resample with a simpler API.</span>
+<span class="sd">`scalar_broadcast_match`</span>
+<span class="sd">    Returns arguments as np.array, if one is a scalar it will broadcast the</span>
+<span class="sd">    other one&#39;s shape.</span>
+<span class="sd">`frq2kr`</span>
+<span class="sd">    Returns the kr bin closest to the target frequency.</span>
+<span class="sd">`stack`</span>
+<span class="sd">    Stacks two 2D vectors along the same-sized dimension or the smaller one.</span>
+<span class="sd">`zero_pad_fd`</span>
+<span class="sd">    Apply zero padding to frequency domain data by transformation into time</span>
+<span class="sd">    domain and back.</span>
+<span class="sd">`current_time`</span>
+<span class="sd">    Return current system time based on `datetime.now()`.</span>
+<span class="sd">`time_it`</span>
+<span class="sd">    Measure execution of a specified statement which is useful for the</span>
+<span class="sd">    performance analysis. In this way, the execution time and respective</span>
+<span class="sd">    results can be directly compared.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span
-                   class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span
-                   class="n">cycle</span>
+<span class="kn">import</span> <span class="nn">timeit</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">resample</span>
 
-<span class="n">spinner</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">([</span><span
-                   class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span
-                   class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span> <span
-                   class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span
-                   class="p">])</span>
+<span class="n">spinner</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">([</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="env_info"><a class="viewcode-back"
-                                             href="../../reference.html#sound_field_analysis.utils.env_info">[docs]</a><span
-        class="k">def</span> <span class="nf">env_info</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; Guess environment based on sys.modules.</span>
+<div class="viewcode-block" id="env_info"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.env_info">[docs]</a><span class="k">def</span> <span class="nf">env_info</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Guess environment based on `sys.modules`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    env : string{&#39;jupyter_notebook&#39;, &#39;ipython_terminal&#39;, &#39;terminal&#39;}</span>
-<span class="sd">       Guessed environment</span>
+<span class="sd">        Guessed environment</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s1">&#39;ipykernel&#39;</span> <span class="ow">in</span> <span
-            class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;jupyter_notebook&#39;</span>
-    <span class="k">elif</span> <span class="s1">&#39;IPython&#39;</span> <span class="ow">in</span> <span
-            class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;ipython_terminal&#39;</span>
+    <span class="k">if</span> <span class="s2">&quot;ipykernel&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;jupyter_notebook&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;IPython&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;ipython_terminal&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;terminal&#39;</span></div>
+        <span class="k">return</span> <span class="s2">&quot;terminal&quot;</span></div>
 
 
 <span class="n">__env</span> <span class="o">=</span> <span class="n">env_info</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="progress_bar"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.progress_bar">[docs]</a><span class="k">def</span> <span class="nf">progress_bar</span><span class="p">(</span><span class="n">curIDX</span><span class="p">,</span> <span class="n">maxIDX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Progress&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Display a spinner or a progress bar</span>
+<div class="viewcode-block" id="progress_bar"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.progress_bar">[docs]</a><span class="k">def</span> <span class="nf">progress_bar</span><span class="p">(</span><span class="n">curIDX</span><span class="p">,</span> <span class="n">maxIDX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Progress&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display a spinner or a progress bar.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    curIDX : int</span>
-<span class="sd">       Current position in the loop</span>
+<span class="sd">        Current position in the loop</span>
 <span class="sd">    maxIDX : int, optional</span>
-<span class="sd">       Number of iterations. Will force a spinner if set to None. [Default: None]</span>
+<span class="sd">        Number of iterations. Will force a spinner if set to None.</span>
+<span class="sd">        [Default: None]</span>
 <span class="sd">    description : string, optional</span>
-<span class="sd">       Clarify what&#39;s taking time</span>
+<span class="sd">        Clarify what&#39;s taking time</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">maxIDX</span> <span class="ow">is</span> <span class="kc">None</span><span
-            class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span
-            class="se">\r</span><span class="si">{description}</span><span class="s1">: {next(spinner)}&#39;</span><span
-            class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span
-            class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span
-            class="p">)</span>
+    <span class="k">if</span> <span class="n">maxIDX</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\r</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">next</span><span class="p">(</span><span class="n">spinner</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">maxIDX</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span
-            class="p">(</span><span class="n">maxIDX</span><span class="p">)</span> <span class="o">-</span> <span
-            class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">maxIDX</span> <span class="o">==</span> <span class="mi">0</span><span
-            class="p">:</span>
+        <span class="n">maxIDX</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">maxIDX</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">maxIDX</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">amount_done</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">amount_done</span> <span class="o">=</span> <span class="n">curIDX</span> <span
-            class="o">/</span> <span class="n">maxIDX</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span
-            class="se">\r</span><span class="si">{description}</span><span class="s1">: [{&quot;#&quot; * int(amount_done * 50):50s}] {amount_done * 100:.1f}%&#39;</span><span
-            class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span
-            class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="n">amount_done</span> <span class="o">&gt;=</span> <span
-            class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span
-            class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="n">amount_done</span> <span class="o">=</span> <span class="n">curIDX</span> <span class="o">/</span> <span class="n">maxIDX</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\r</span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s1">: [</span><span class="si">{</span><span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">amount_done</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span><span class="si">:</span><span class="s1">50s</span><span class="si">}</span><span class="s1">] </span><span class="si">{</span><span class="n">amount_done</span> <span class="o">*</span> <span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">amount_done</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="db"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.db">[docs]</a><span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convenience function to calculate the 20*log10(abs(x))</span>
+    <span class="sd">&quot;&quot;&quot;Convenience function to calculate the 20*log10(abs(x)).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    data : array_like</span>
-<span class="sd">       signals to be converted to db</span>
+<span class="sd">        signals to be converted to db</span>
 <span class="sd">    power : boolean</span>
-<span class="sd">       data is a power signal and only needs factor 10</span>
+<span class="sd">        data is a power signal and only needs factor 10</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    db : array_like</span>
-<span class="sd">       20 * log10(abs(data))</span>
+<span class="sd">        20 * log10(abs(data))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">power</span><span class="p">:</span>
-        <span class="n">factor</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">factor</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="mi">10</span> <span class="k">if</span> <span class="n">power</span> <span class="k">else</span> <span class="mi">20</span>
     <span class="k">return</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="deg2rad"><a class="viewcode-back"
-                                            href="../../reference.html#sound_field_analysis.utils.deg2rad">[docs]</a><span
-        class="k">def</span> <span class="nf">deg2rad</span><span class="p">(</span><span class="n">deg</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts from degree [0 ... 360] to radiant [0 ... 2pi]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">deg</span> <span class="o">%</span> <span class="mi">360</span> <span
-            class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">np</span><span
-            class="o">.</span><span class="n">pi</span></div>
+<div class="viewcode-block" id="cart2sph"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.cart2sph">[docs]</a><span class="k">def</span> <span class="nf">cart2sph</span><span class="p">(</span><span class="n">cartesian_coords</span><span class="p">,</span> <span class="n">is_deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform cartesian into spherical coordinates.</span>
 
-
-<div class="viewcode-block" id="rad2deg"><a class="viewcode-back"
-                                            href="../../reference.html#sound_field_analysis.utils.rad2deg">[docs]</a><span
-        class="k">def</span> <span class="nf">rad2deg</span><span class="p">(</span><span class="n">rad</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts from radiant [0 ... 2pi] to degree [0 ... 360]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">rad</span> <span class="o">/</span> <span class="n">np</span><span
-            class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">180</span> <span
-            class="o">%</span> <span class="mi">360</span></div>
-
-
-<div class="viewcode-block" id="cart2sph"><a class="viewcode-back"
-                                             href="../../reference.html#sound_field_analysis.utils.cart2sph">[docs]</a><span
-        class="k">def</span> <span class="nf">cart2sph</span><span class="p">(</span><span
-        class="n">cartesian_coords</span><span class="p">,</span> <span class="n">is_deg</span><span
-        class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    cartesian_coords : numpy.ndarray</span>
 <span class="sd">        cartesian coordinates (x, y, z) of size [3; number of coordinates]</span>
 <span class="sd">    is_deg : bool, optional</span>
-<span class="sd">        if values should be calculated in degrees (radians otherwise) [Default: False]</span>
+<span class="sd">        if values should be calculated in degrees (radians otherwise)</span>
+<span class="sd">        [Default: False]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
-<span class="sd">        spherical coordinates (azimuth [0 ... 2pi or 0 ... 360deg], colatitude [0 ... pi or 0 ... 180deg],</span>
-<span class="sd">        radius [meter]) of size [3; number of coordinates]</span>
+<span class="sd">        spherical coordinates (azimuth [0 ... 2pi or 0 ... 360deg],</span>
+<span class="sd">        colatitude [0 ... pi or 0 ... 180deg], radius [meter]) of size</span>
+<span class="sd">        [3; number of coordinates]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">cartesian_coords</span><span
-            class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>  <span class="c1"># prevent altering input data</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">cartesian_coords</span><span
-            class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>  <span class="c1"># prevent altering input data</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">cartesian_coords</span><span
-            class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>  <span class="c1"># prevent altering input data</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">cartesian_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># prevent altering input data</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">cartesian_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># prevent altering input data</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">cartesian_coords</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># prevent altering input data</span>
 
-    <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span
-            class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span
-            class="p">)</span>  <span class="c1"># return values -pi ... pi</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span
-            class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span
-            class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span
-            class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span
-            class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span
-            class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span
-            class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
-            class="n">arccos</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span
-            class="n">r</span><span class="p">)</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># return values -pi ... pi</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">z</span> <span class="o">/</span> <span class="n">r</span><span class="p">)</span>
 
-    <span class="n">az</span> <span class="o">%=</span> <span class="p">(</span><span class="mi">2</span> <span
-            class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span
-            class="p">)</span>  <span class="c1"># converting to 0 ... 2pi</span>
+    <span class="n">az</span> <span class="o">%=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># converting to 0 ... 2pi</span>
     <span class="k">if</span> <span class="n">is_deg</span><span class="p">:</span>
-        <span class="n">az</span> <span class="o">=</span> <span class="n">rad2deg</span><span class="p">(</span><span
-            class="n">az</span><span class="p">)</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="n">rad2deg</span><span class="p">(</span><span
-            class="n">col</span><span class="p">)</span>
+        <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span
-            class="p">((</span><span class="n">az</span><span class="p">,</span> <span class="n">col</span><span
-            class="p">,</span> <span class="n">r</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">az</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="sph2cart"><a class="viewcode-back"
-                                             href="../../reference.html#sound_field_analysis.utils.sph2cart">[docs]</a><span
-        class="k">def</span> <span class="nf">sph2cart</span><span class="p">(</span><span
-        class="n">spherical_coords</span><span class="p">,</span> <span class="n">is_deg</span><span
-        class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sph2cart"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.sph2cart">[docs]</a><span class="k">def</span> <span class="nf">sph2cart</span><span class="p">(</span><span class="n">spherical_coords</span><span class="p">,</span> <span class="n">is_deg</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform spherical into cartesian coordinates.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    spherical_coords : numpy.ndarray</span>
-<span class="sd">        spherical coordinates (azimuth, colatitude, radius) of size [3; number of coordinates]</span>
+<span class="sd">        spherical coordinates (azimuth, colatitude, radius) of size</span>
+<span class="sd">        [3; number of coordinates]</span>
 <span class="sd">    is_deg : bool, optional</span>
 <span class="sd">        True if values are given in degrees (radians otherwise) [Default: False]</span>
 
@@ -374,59 +358,40 @@
 <span class="sd">    numpy.ndarray</span>
 <span class="sd">        cartesian coordinates (x, y, z) of size [3; number of coordinates]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">az</span> <span class="o">=</span> <span class="n">spherical_coords</span><span
-            class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>  <span class="c1"># prevent altering input data</span>
-    <span class="n">col</span> <span class="o">=</span> <span class="n">spherical_coords</span><span
-            class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>  <span class="c1"># prevent altering input data</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">spherical_coords</span><span
-            class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>  <span class="c1"># prevent altering input data</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">spherical_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># prevent altering input data</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">spherical_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># prevent altering input data</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">spherical_coords</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># prevent altering input data</span>
 
     <span class="k">if</span> <span class="n">is_deg</span><span class="p">:</span>
-        <span class="n">az</span> <span class="o">=</span> <span class="n">deg2rad</span><span class="p">(</span><span
-            class="n">az</span><span class="p">)</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="n">deg2rad</span><span class="p">(</span><span
-            class="n">col</span><span class="p">)</span>
+        <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
 
-    <span class="n">x</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span
-            class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span
-            class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span
-            class="n">cos</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span
-            class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span
-            class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span
-            class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span
-            class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">col</span><span
-            class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span
-            class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span
-            class="n">z</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="SOFA_grid2acr"><a class="viewcode-back"
-                                                  href="../../reference.html#sound_field_analysis.utils.SOFA_grid2acr">[docs]</a><span
-        class="k">def</span> <span class="nf">SOFA_grid2acr</span><span class="p">(</span><span
-        class="n">grid_values</span><span class="p">,</span> <span class="n">grid_info</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Transform coordinate grid with specified coordinate system definition from a SOFA file into spherical</span>
-<span class="sd">    coordinates in radians.</span>
+<div class="viewcode-block" id="SOFA_grid2acr"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.SOFA_grid2acr">[docs]</a><span class="k">def</span> <span class="nf">SOFA_grid2acr</span><span class="p">(</span><span class="n">grid_values</span><span class="p">,</span> <span class="n">grid_info</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform coordinate grid with specified coordinate system definition</span>
+<span class="sd">    from a SOFA file into spherical coordinates in radians.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    grid_values : numpy.ndarray</span>
-<span class="sd">        Coordinates either spherical or cartesian of size [3; number of coordinates]</span>
+<span class="sd">        Coordinates either spherical or cartesian of size</span>
+<span class="sd">        [3; number of coordinates]</span>
 <span class="sd">    grid_info : list of str</span>
-<span class="sd">        Definition of coordinate system contained in the provided values according to SOFA convention, i.e. either</span>
-<span class="sd">        (&#39;degree, degree, metre&#39;, &#39;spherical&#39;) or (&#39;metre, metre, metre&#39;, &#39;cartesian&#39;)</span>
+<span class="sd">        Definition of coordinate system contained in the provided values</span>
+<span class="sd">        according to SOFA convention, i.e. either (&#39;degree, degree, metre&#39;,</span>
+<span class="sd">        &#39;spherical&#39;) or (&#39;metre, metre, metre&#39;, &#39;cartesian&#39;)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
-<span class="sd">        Spherical coordinates (azimuth [0 ... 2pi], colatitude [0 ... pi], radius [meter]) of size [3; number of</span>
-<span class="sd">        coordinates]</span>
+<span class="sd">        Spherical coordinates (azimuth [0 ... 2pi], colatitude [0 ... pi],</span>
+<span class="sd">        radius [meter]) of size [3; number of coordinates]</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -435,121 +400,82 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This is used for source position of &quot;SimpleFreeFieldHRIR&quot; and receiver position of &quot;SingleRoomDRIR&quot;. These</span>
-<span class="sd">    conventions technically require different specific coordinate systems. Experience showed, that this is not</span>
-<span class="sd">    exactly met by all SOFA files, hence cartesian or spherical coordinates will be transformed in either case.</span>
+<span class="sd">    This is used for source position of &quot;SimpleFreeFieldHRIR&quot; and receiver</span>
+<span class="sd">    position of &quot;SingleRoomDRIR&quot;. These conventions technically require</span>
+<span class="sd">    different specific coordinate systems. Experience showed, that this is not</span>
+<span class="sd">    exactly met by all SOFA files, hence cartesian or spherical coordinates will</span>
+<span class="sd">    be transformed in either case.</span>
+
+<span class="sd">    TODO</span>
+<span class="sd">    ----</span>
+<span class="sd">    Validate data units against individual convention in `pysofaconventions`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_is_grid_spherical</span><span class="p">(</span><span
-            class="n">grid</span><span class="p">):</span>
-        <span class="n">grid</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span
-            class="n">g</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span
-            class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">grid</span><span
-            class="p">)</span>
-        <span class="n">grid0</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span
-            class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span
-            class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">grid0</span><span class="p">[</span><span class="mi">0</span><span
-            class="p">]</span> <span class="o">==</span> <span class="s1">&#39;degree&#39;</span> <span
-            class="ow">and</span> <span class="n">grid0</span><span class="p">[</span><span class="mi">1</span><span
-            class="p">]</span> <span class="o">==</span> <span class="s1">&#39;degree&#39;</span> <span
-            class="ow">and</span> <span class="n">grid0</span><span class="p">[</span><span class="mi">2</span><span
-            class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span
-            class="s1">&#39;metre&#39;</span><span class="p">,</span> <span class="s1">&#39;meter&#39;</span><span
-            class="p">}</span> \
-            <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span
-            class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span
-            class="s1">&#39;spherical&#39;</span>
+    <span class="k">def</span> <span class="nf">_is_grid_spherical</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">)</span>
+        <span class="n">grid0</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">grid0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;degree&quot;</span>
+            <span class="ow">and</span> <span class="n">grid0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;degree&quot;</span>
+            <span class="ow">and</span> <span class="n">grid0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;metre&quot;</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">}</span>
+            <span class="ow">and</span> <span class="n">grid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;spherical&quot;</span>
+        <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_is_grid_cartesian</span><span class="p">(</span><span
-            class="n">grid</span><span class="p">):</span>
-        <span class="n">grid</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span
-            class="n">g</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span
-            class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">grid</span><span
-            class="p">)</span>
-        <span class="k">return</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span
-            class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span
-            class="s1">&#39;metre&#39;</span><span class="p">,</span> <span class="s1">&#39;meter&#39;</span><span
-            class="p">}</span> <span class="ow">or</span> <span class="n">grid</span><span class="p">[</span><span
-            class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span
-            class="s1">&#39;cartesian&#39;</span>
+    <span class="k">def</span> <span class="nf">_is_grid_cartesian</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;metre&quot;</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">}</span> <span class="ow">or</span> <span class="n">grid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cartesian&quot;</span>
 
-    <span class="n">grid_values</span> <span class="o">=</span> <span class="n">grid_values</span><span
-            class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">filled</span><span
-            class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>  <span class="c1"># transform into regular `numpy.ndarray`</span>
+    <span class="c1"># transform into regular `numpy.ndarray`</span>
+    <span class="n">grid_values</span> <span class="o">=</span> <span class="n">grid_values</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="c1"># TODO: validation of data units against individual convention should be done in `pysofaconventions`</span>
-    <span class="k">if</span> <span class="n">_is_grid_spherical</span><span class="p">(</span><span
-            class="n">grid_info</span><span class="p">):</span>
+    <span class="c1"># TODO: Validate data units against individual convention in</span>
+    <span class="c1">#  `pysofaconventions`</span>
+    <span class="k">if</span> <span class="n">_is_grid_spherical</span><span class="p">(</span><span class="n">grid_info</span><span class="p">):</span>
         <span class="c1"># given spherical degrees with elevation</span>
         <span class="c1"># transform into spherical radians with colatitude</span>
-        <span class="n">grid_values</span><span class="p">[</span><span class="mi">0</span><span
-            class="p">]</span> <span class="o">=</span> <span class="n">deg2rad</span><span class="p">(</span><span
-            class="n">grid_values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">grid_values</span><span class="p">[</span><span class="mi">1</span><span
-            class="p">]</span> <span class="o">=</span> <span class="n">deg2rad</span><span class="p">(</span><span
-            class="mi">90</span> <span class="o">-</span> <span class="n">grid_values</span><span
-            class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">grid_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">grid_values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">grid_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">90</span> <span class="o">-</span> <span class="n">grid_values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="k">elif</span> <span class="n">_is_grid_cartesian</span><span class="p">(</span><span class="n">grid_info</span><span
-            class="p">):</span>
+    <span class="k">elif</span> <span class="n">_is_grid_cartesian</span><span class="p">(</span><span class="n">grid_info</span><span class="p">):</span>
         <span class="c1"># given cartesian</span>
         <span class="c1"># transform into spherical radians with colatitude</span>
-        <span class="n">grid_values</span> <span class="o">=</span> <span class="n">cart2sph</span><span
-            class="p">(</span><span class="n">grid_values</span><span class="p">,</span> <span
-            class="n">is_deg</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">grid_values</span> <span class="o">=</span> <span class="n">cart2sph</span><span class="p">(</span><span class="n">grid_values</span><span class="p">,</span> <span class="n">is_deg</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span
-            class="s1">&#39;SOFA position given in </span><span class="si">{grid_info}</span><span
-            class="s1">, but (</span><span class="se">\&#39;</span><span class="s1">degree, degree, metre</span><span
-            class="se">\&#39;</span><span class="s1">, </span><span class="se">\&#39;</span><span
-            class="s1">spherical</span><span class="se">\&#39;</span><span class="s1">) or &#39;</span>
-                         <span class="sa">f</span><span class="s1">&#39;(</span><span class="se">\&#39;</span><span
-            class="s1">metre</span><span class="se">\&#39;</span><span class="s1">, </span><span
-            class="se">\&#39;</span><span class="s1">cartesian</span><span class="se">\&#39;</span><span class="s1">) was expected.&#39;</span><span
-            class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;SOFA position given in </span><span class="si">{</span><span class="n">grid_info</span><span class="si">}</span><span class="s2">, but (&#39;degree, degree, metre&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;spherical&#39;) or (&#39;metre&#39;, &#39;cartesian&#39;) was expected.&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">grid_values</span></div>
 
 
-<div class="viewcode-block" id="nearest_to_value_IDX"><a class="viewcode-back"
-                                                         href="../../reference.html#sound_field_analysis.utils.nearest_to_value_IDX">[docs]</a><span
-        class="k">def</span> <span class="nf">nearest_to_value_IDX</span><span class="p">(</span><span
-        class="n">array</span><span class="p">,</span> <span class="n">target_val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns nearest value inside an array</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span
-            class="n">abs</span><span class="p">(</span><span class="n">array</span> <span class="o">-</span> <span
-            class="n">target_val</span><span class="p">))</span><span class="o">.</span><span
-            class="n">argmin</span><span class="p">()</span></div>
+<div class="viewcode-block" id="nearest_to_value_IDX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.nearest_to_value_IDX">[docs]</a><span class="k">def</span> <span class="nf">nearest_to_value_IDX</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">target_val</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns nearest value inside an array.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">array</span> <span class="o">-</span> <span class="n">target_val</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="nearest_to_value"><a class="viewcode-back"
-                                                     href="../../reference.html#sound_field_analysis.utils.nearest_to_value">[docs]</a><span
-        class="k">def</span> <span class="nf">nearest_to_value</span><span class="p">(</span><span
-        class="n">array</span><span class="p">,</span> <span class="n">target_val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns nearest value inside an array</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="nearest_to_value"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.nearest_to_value">[docs]</a><span class="k">def</span> <span class="nf">nearest_to_value</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">target_val</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns nearest value inside an array.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">nearest_to_value_IDX</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">target_val</span><span class="p">)]</span></div>
 
 
 <div class="viewcode-block" id="nearest_to_value_logical_IDX"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.nearest_to_value_logical_IDX">[docs]</a><span class="k">def</span> <span class="nf">nearest_to_value_logical_IDX</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">target_val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns logical indices of nearest values inside array</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Returns logical indices of nearest values inside array.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">array</span> <span class="o">==</span> <span class="n">nearest_to_value</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">target_val</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="interleave_channels"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.interleave_channels">[docs]</a><span class="k">def</span> <span class="nf">interleave_channels</span><span class="p">(</span><span class="n">left_channel</span><span class="p">,</span> <span class="n">right_channel</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Interleave left and right channels. Style == &#39;SSR&#39; checks if we total 360 channels</span>
+    <span class="sd">&quot;&quot;&quot;Interleave left and right channels. Style == &#39;SSR&#39; checks if we total</span>
+<span class="sd">    360 channels.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">left_channel</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">right_channel</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;left_channel and right_channel have to be of same dimensions!&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;left_channel and right_channel have to be of same dimensions!&quot;</span>
+        <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;SSR&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">left_channel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">360</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Provided arrays to have 360 channels (Nchannel x Nsamples).&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s2">&quot;SSR&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">left_channel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">360</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provided arrays to have 360 channels (Nchannel x Nsamples).&quot;</span><span class="p">)</span>
 
     <span class="n">output_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">left_channel</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">output_data</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">right_channel</span>
@@ -557,24 +483,14 @@
     <span class="k">return</span> <span class="n">output_data</span></div>
 
 
-<div class="viewcode-block" id="simple_resample"><a class="viewcode-back"
-                                                    href="../../reference.html#sound_field_analysis.utils.simple_resample">[docs]</a><span
-        class="k">def</span> <span class="nf">simple_resample</span><span class="p">(</span><span
-        class="n">data</span><span class="p">,</span> <span class="n">original_fs</span><span class="p">,</span> <span
-        class="n">target_fs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrap scipy.signal.resample with a simpler API</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">resample</span><span class="p">(</span><span
-            class="n">data</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span
-            class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span
-            class="p">]</span> <span class="o">*</span> <span class="n">target_fs</span> <span class="o">/</span> <span
-            class="n">original_fs</span><span class="p">),</span> <span class="n">axis</span><span
-            class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
+<div class="viewcode-block" id="simple_resample"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.simple_resample">[docs]</a><span class="k">def</span> <span class="nf">simple_resample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">original_fs</span><span class="p">,</span> <span class="n">target_fs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrap scipy.signal.resample with a simpler API.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">resample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">target_fs</span> <span class="o">/</span> <span class="n">original_fs</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="scalar_broadcast_match"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.scalar_broadcast_match">[docs]</a><span class="k">def</span> <span class="nf">scalar_broadcast_match</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns arguments as np.array, if one is a scalar it will broadcast the other one&#39;s shape.</span>
+    <span class="sd">&quot;&quot;&quot;Returns arguments as np.array, if one is a scalar it will broadcast the</span>
+<span class="sd">    other one&#39;s shape.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">b</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -585,7 +501,7 @@
 
 
 <div class="viewcode-block" id="frq2kr"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.frq2kr">[docs]</a><span class="k">def</span> <span class="nf">frq2kr</span><span class="p">(</span><span class="n">target_frequency</span><span class="p">,</span> <span class="n">freq_vector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the kr bin closest  to the target frequency</span>
+    <span class="sd">&quot;&quot;&quot;Returns the kr bin closest to the target frequency.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -599,54 +515,28 @@
 <span class="sd">    krTarget : int</span>
 <span class="sd">       kr bin closest to target frequency</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span
-            class="n">abs</span><span class="p">(</span><span class="n">freq_vector</span> <span
-            class="o">-</span> <span class="n">target_frequency</span><span class="p">))</span><span
-            class="o">.</span><span class="n">argmin</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">freq_vector</span> <span class="o">-</span> <span class="n">target_frequency</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="stack"><a class="viewcode-back"
-                                          href="../../reference.html#sound_field_analysis.utils.stack">[docs]</a><span
-        class="k">def</span> <span class="nf">stack</span><span class="p">(</span><span class="n">vector_1</span><span
-        class="p">,</span> <span class="n">vector_2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stacks two 2D vectors along the same-sized dimension or the smaller one&quot;&quot;&quot;</span>
-    <span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span> <span
-            class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span
-            class="p">(</span><span class="n">vector_1</span><span class="p">,</span> <span
-            class="n">vector_2</span><span class="p">)</span>
-    <span class="n">M1</span><span class="p">,</span> <span class="n">N1</span> <span class="o">=</span> <span
-            class="n">vector_1</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">M2</span><span class="p">,</span> <span class="n">N2</span> <span class="o">=</span> <span
-            class="n">vector_2</span><span class="o">.</span><span class="n">shape</span>
+<div class="viewcode-block" id="stack"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.stack">[docs]</a><span class="k">def</span> <span class="nf">stack</span><span class="p">(</span><span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stacks two 2D vectors along the same-sized dimension or the smaller</span>
+<span class="sd">    one.&quot;&quot;&quot;</span>
+    <span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">)</span>
+    <span class="n">M1</span><span class="p">,</span> <span class="n">N1</span> <span class="o">=</span> <span class="n">vector_1</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">M2</span><span class="p">,</span> <span class="n">N2</span> <span class="o">=</span> <span class="n">vector_2</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="k">if</span> <span class="n">M1</span> <span class="o">==</span> <span class="n">M2</span> <span
-            class="ow">and</span> <span class="p">(</span><span class="n">M1</span> <span class="o">&lt;</span> <span
-            class="n">N1</span> <span class="ow">or</span> <span class="n">M2</span> <span class="o">&lt;</span> <span
-            class="n">N2</span><span class="p">):</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
-            class="n">vstack</span><span class="p">([</span><span class="n">vector_1</span><span
-            class="p">,</span> <span class="n">vector_2</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">N1</span> <span class="o">==</span> <span class="n">N2</span> <span
-            class="ow">and</span> <span class="p">(</span><span class="n">N1</span> <span class="o">&lt;</span> <span
-            class="n">M1</span> <span class="ow">or</span> <span class="n">N2</span> <span class="o">&lt;</span> <span
-            class="n">M2</span><span class="p">):</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span
-            class="n">hstack</span><span class="p">([</span><span class="n">vector_1</span><span
-            class="p">,</span> <span class="n">vector_2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">M1</span> <span class="o">==</span> <span class="n">M2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">M1</span> <span class="o">&lt;</span> <span class="n">N1</span> <span class="ow">or</span> <span class="n">M2</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">N1</span> <span class="o">==</span> <span class="n">N2</span> <span class="ow">and</span> <span class="p">(</span><span class="n">N1</span> <span class="o">&lt;</span> <span class="n">M1</span> <span class="ow">or</span> <span class="n">N2</span> <span class="o">&lt;</span> <span class="n">M2</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">vector_1</span><span class="p">,</span> <span class="n">vector_2</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;vector_1 and vector_2 dont have a common dimension.&#39;</span><span
-            class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span
-            class="p">(</span><span class="n">out</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;vector_1 and vector_2 dont have a common dimension.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="zero_pad_fd"><a class="viewcode-back"
-                                                href="../../reference.html#sound_field_analysis.utils.zero_pad_fd">[docs]</a><span
-        class="k">def</span> <span class="nf">zero_pad_fd</span><span class="p">(</span><span
-        class="n">data_fd</span><span class="p">,</span> <span class="n">target_length_td</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Apply zero padding to frequency domain data by transformation into time domain and back</span>
+<div class="viewcode-block" id="zero_pad_fd"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.zero_pad_fd">[docs]</a><span class="k">def</span> <span class="nf">zero_pad_fd</span><span class="p">(</span><span class="n">data_fd</span><span class="p">,</span> <span class="n">target_length_td</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply zero padding to frequency domain data by transformation into time</span>
+<span class="sd">    domain and back.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -660,61 +550,184 @@
 <span class="sd">    numpy.ndarray</span>
 <span class="sd">        Zero padded single-sided spectrum</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># by transforming into time domain, zero padding and transforming back info frequency domain</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span
-            class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">np</span><span
-            class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span
-            class="p">(</span><span class="n">data_fd</span><span class="p">),</span> <span class="n">n</span><span
-            class="o">=</span><span class="n">target_length_td</span><span class="p">)</span></div>
+    <span class="c1"># by transforming into time domain, zero padding and transforming back into</span>
+    <span class="c1"># frequency domain</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">data_fd</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="n">target_length_td</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="current_time"><a class="viewcode-back"
-                                                 href="../../reference.html#sound_field_analysis.utils.current_time">[docs]</a><span
-        class="k">def</span> <span class="nf">current_time</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span
-            class="p">()</span></div>
+<div class="viewcode-block" id="current_time"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.current_time">[docs]</a><span class="k">def</span> <span class="nf">current_time</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Return current system time based on `datetime.now()`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="get_named_tuple__repr__"><a class="viewcode-back"
-                                                            href="../../reference.html#sound_field_analysis.utils.get_named_tuple__repr__">[docs]</a><span
-        class="k">def</span> <span class="nf">get_named_tuple__repr__</span><span class="p">(</span><span class="n">namedtuple</span><span
-        class="p">):</span>
+<div class="viewcode-block" id="get_named_tuple__repr__"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.get_named_tuple__repr__">[docs]</a><span class="k">def</span> <span class="nf">get_named_tuple__repr__</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">):</span>
     <span class="c1"># noinspection PyProtectedMember</span>
-    <span class="n">fields_str</span> <span class="o">=</span> <span class="sa">f</span><span
-            class="s1">&#39;,</span><span class="se">\n\t</span><span class="s1">&#39;</span><span
-            class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span
-            class="s1">&#39;</span><span class="si">{f}</span><span class="s1"> = {repr(v)}&#39;</span> <span class="k">for</span> <span
-            class="n">f</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span
-            class="nb">zip</span><span class="p">(</span><span class="n">namedtuple</span><span class="o">.</span><span
-            class="n">_fields</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">))</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{namedtuple.__class__.__name__}</span><span
-            class="s1">(</span><span class="se">\n\t</span><span class="si">{fields_str}</span><span
-            class="s1">)&#39;</span></div>
+    <span class="n">fields_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;,</span><span class="se">\n\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">namedtuple</span><span class="o">.</span><span class="n">_fields</span><span class="p">,</span> <span class="n">namedtuple</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">namedtuple</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="se">\n\t</span><span class="si">{</span><span class="n">fields_str</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+<div class="viewcode-block" id="time_it"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.utils.time_it">[docs]</a><span class="k">def</span> <span class="nf">time_it</span><span class="p">(</span>
+    <span class="n">description</span><span class="p">,</span> <span class="n">stmt</span><span class="p">,</span> <span class="n">setup</span><span class="p">,</span> <span class="n">_globals</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check_dtype</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Measure execution of a specified statement which is useful for the</span>
+<span class="sd">    performance analysis. In this way, the execution time and respective</span>
+<span class="sd">    results can be directly compared.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    description : str</span>
+<span class="sd">        Descriptive name of configuration to be shown in the log</span>
+<span class="sd">    stmt : str</span>
+<span class="sd">        Statement to be timed</span>
+<span class="sd">    setup : str</span>
+<span class="sd">        Additional statement used for setup</span>
+<span class="sd">    _globals :</span>
+<span class="sd">        Namespace the code will be executed in (as opposed to inside timeit&#39;s</span>
+<span class="sd">        namespace)</span>
+<span class="sd">    repeat : int</span>
+<span class="sd">        How many times to repeat the timeit measurement (results will be</span>
+<span class="sd">        gathered as a list)</span>
+<span class="sd">    number : int</span>
+<span class="sd">        How many times to execute the statement to be timed</span>
+<span class="sd">    reference : list of (float, any), optional</span>
+<span class="sd">        Result with the same data structure as returned by this function,</span>
+<span class="sd">        which will be referenced in order to compare execution time and</span>
+<span class="sd">        similarity of the result data</span>
+<span class="sd">    check_dtype : str, optional</span>
+<span class="sd">        Data type of the result to check</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float, any)</span>
+<span class="sd">        Tuple of execution time in seconds (minimum of all repetitions) and</span>
+<span class="sd">        execution result of first repetition (data depends on the specified</span>
+<span class="sd">        statement to be timed)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_check_dtype</span><span class="p">(</span><span class="n">data_dtype</span><span class="p">):</span>
+        <span class="c1"># check date type</span>
+        <span class="k">if</span> <span class="n">data_dtype</span> <span class="o">==</span> <span class="n">check_dtype</span><span class="p">:</span>
+            <span class="n">_grade</span> <span class="o">=</span> <span class="s2">&quot;MATCH&quot;</span>
+            <span class="n">_file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_grade</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;MISMATCH (</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">check_dtype</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="n">_file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;result dtype: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">data_dtype</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;21</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">_grade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">_file</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># to get correct output order</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+
+    <span class="c1"># execute timed statement</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">stmt</span><span class="o">=</span><span class="n">stmt</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="n">setup</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="n">_globals</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span>
+        <span class="n">repeat</span><span class="o">=</span><span class="n">repeat</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="n">number</span>
+    <span class="p">)</span>
+    <span class="c1"># generate tuple of (time, evaluation result), whereby the kept time is</span>
+    <span class="c1"># the minimum of all repetitions and the data is the result of the first</span>
+    <span class="c1"># execution</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">result</span><span class="p">))[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># print conclusion</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;time: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">-29.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># to get correct output order</span>
+
+    <span class="k">if</span> <span class="n">reference</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">reference</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">2e-2</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;EVEN&quot;</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;BETTER&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;WORSE&quot;</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;time factor: </span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">-22.2f</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">grade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># to get correct output order</span>
+
+        <span class="k">if</span> <span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="c1"># flip computation result, if matrices do not match</span>
+                <span class="n">reference</span> <span class="o">=</span> <span class="p">(</span><span class="n">reference</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;result shape: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;21s</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; ... MISMATCH </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># to get correct output order</span>
+
+                <span class="k">if</span> <span class="n">check_dtype</span><span class="p">:</span>
+                    <span class="n">_check_dtype</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">result</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;PERFECT&quot;</span>
+        <span class="k">elif</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;OKAY&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;MISMATCH&quot;</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;result sum:  </span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s2">-22</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">grade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># to get correct output order</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reference</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;PERFECT&quot;</span>
+        <span class="k">elif</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;OKAY&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;MISMATCH&quot;</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;result max:  </span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s2">-22</span><span class="si">}</span><span class="s2"> ... </span><span class="si">{</span><span class="n">grade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># to get correct output order</span>
+
+    <span class="k">if</span> <span class="n">check_dtype</span><span class="p">:</span>
+        <span class="n">_check_dtype</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="c1"># modify timer template to also receive evaluation results from `timeit` function call</span>
+<span class="n">timeit</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def inner(_it, _timer</span><span class="si">{init}</span><span class="s2">):</span>
+<span class="s2">    </span><span class="si">{setup}</span><span class="s2"></span>
+<span class="s2">    _t0 = _timer()</span>
+<span class="s2">    for _i in _it:</span>
+<span class="s2">        result = </span><span class="si">{stmt}</span><span class="s2"></span>
+<span class="s2">    _t1 = _timer()</span>
+<span class="s2">    return _t1 - _t0, result  # time, evaluation result</span>
+<span class="s2">&quot;&quot;&quot;</span>
 </pre></div>
 
            </div>
-
+           
           </div>
           <footer>
 
+  <hr/>
 
-              <hr/>
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Chalmers University of Technology.
 
-              <div role="contentinfo">
-                  <p>
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-                      &copy; Copyright 2020, Chalmers University of Technology
-
-                  </p>
-              </div>
-
-
-              Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
-                  href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a
-                  href="https://readthedocs.org">Read the Docs</a>.
-
-          </footer>
-
+</footer>
         </div>
       </div>
 
@@ -729,6 +742,10 @@
       });
   </script>
 
+  
+  
+    
+   
 
 </body>
 </html>

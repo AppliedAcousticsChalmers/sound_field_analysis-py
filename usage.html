@@ -1,57 +1,69 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="writer-html5" lang="en" >
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Usage &mdash; Sound Field Analysis toolbox for Python 2021.2.4 documentation</title>
+  
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
-    <title>Usage &mdash; Sound Field Analysis toolbox for Python 2020.1.30 documentation</title>
+  
+  
 
+  
+  
 
-    <!--[if lt IE 9]>
+  
+
+  
+  <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
-    <![endif]-->
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"
-            type="text/javascript"></script>
-    <script src="_static/jquery.js" type="text/javascript"></script>
-    <script src="_static/underscore.js" type="text/javascript"></script>
-    <script src="_static/doctools.js" type="text/javascript"></script>
-    <script src="_static/language_data.js" type="text/javascript"></script>
-
-    <script src="_static/js/theme.js" type="text/javascript"></script>
-
-
-    <link href="_static/css/theme.css" rel="stylesheet" type="text/css"/>
-    <link href="_static/pygments.css" rel="stylesheet" type="text/css"/>
-    <link href="genindex.html" rel="index" title="Index"/>
-    <link href="search.html" rel="search" title="Search"/>
-    <link href="modules.html" rel="next" title="Modules"/>
-    <link href="index.html" rel="prev" title="Welcome to the Sound Field Analysis toolbox for Python!"/>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="Sound Field Analysis toolbox Documentation" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
-
-<div class="wy-grid-for-nav">
-
+   
+  <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
 
+          
+            <a href="index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
+          
 
-                <a alt="Documentation Home" class="icon icon-home" href="index.html"> Sound Field Analysis toolbox for
-                    Python
+          
+          </a>
 
-
-                </a>
-
-
-                <div class="version">
-                    2020.1.30
+          
+            
+            
+              <div class="version">
+                2021.2.4
               </div>
             
           
@@ -68,181 +80,297 @@
           
         </div>
 
-
-            <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="#how-to-get-started">How to Get
-                                Started</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="modules.html#generators">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="modules.html#i-o">I/O</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="modules.html#lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="modules.html#plotting">Plotting</a></li>
-                            <li class="toctree-l2"><a class="reference internal" href="modules.html#processing">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="modules.html#spherical">Spherical</a></li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="modules.html#utilities">Utilities</a></li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.gen">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.io">I/O</a></li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.plot">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.process">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.sph">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="reference.html#module-sound_field_analysis.utils">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exp1-ideal-plane-wave">Exp1: Ideal plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp2-measured-plane-wave">Exp2: Measured plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp4-binaural-rendering">Exp4: Binaural rendering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#version-history">Version history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contribute">Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#i-o">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#spherical">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.sph">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-sound_field_analysis.utils">Utilities</a></li>
+</ul>
+</li>
+</ul>
 
             
           
         </div>
-
-        </div>
+        
+      </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-
-        <nav aria-label="top navigation" class="wy-nav-top">
-
-            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-            <a href="index.html">Sound Field Analysis toolbox for Python</a>
-
-        </nav>
-
-
-        <div class="wy-nav-content">
-
-            <div class="rst-content">
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sound Field Analysis toolbox for Python</a>
+        
+      </nav>
 
 
-                <div role="navigation" aria-label="breadcrumbs navigation">
-
-                    <ul class="wy-breadcrumbs">
-
-                        <li><a class="icon icon-home" href="index.html"></a> &raquo;</li>
-
-                        <li>Usage</li>
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
 
 
-                        <li class="wy-breadcrumbs-aside">
 
 
-                            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
 
 
-                        </li>
-
-                    </ul>
 
 
-                    <hr/>
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Usage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>The <em>sound_field_analysis</em> toolbox (short: <em>sfa</em>) is a Python port of the <a class="reference external" href="http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html">Sound Field Analysis Toolbox (SOFiA) toolbox</a>, originally by Benjamin Bernschütz <a class="reference external" href="#references">[1]</a>. The main goal of the <em>sfa</em> toolbox is to analyze, visualize and process sound field data recorded by spherical microphone arrays. Furthermore, various types of test-data may be generated to evaluate the implemented functions. It is an essential building block of <a class="reference external" href="https://github.com/AppliedAcousticsChalmers/ReTiSAR">ReTiSAR</a>, an implementation  of real time binaural rendering of spherical microphone array data.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-    <p>Obviously, you’ll need <a class="reference external" href="http://www.python.org/">Python</a>.
-        The code has been developed and tested on Python 3.7 only.
-        <a class="reference external" href="http://www.numpy.org/">NumPy</a> and <a class="reference external"
-                                                                                    href="http://www.scipy.org/scipylib/">SciPy</a>
-        are needed for calculations.
-        .. If you also want to plot the resulting sound fields, you’ll need <a class="reference external"
-                                                                               href="http://matplotlib.org/">matplotlib</a>.
-    </p>
-<p>Instead of installing all of them separately, you should probably get a Python
-distribution that already includes everything, e.g. <a class="reference external" href="http://docs.continuum.io/anaconda/">Anaconda</a>.</p>
-</div>
-<div class="section" id="how-to-get-started">
-<h2>How to Get Started<a class="headerlink" href="#how-to-get-started" title="Permalink to this headline">¶</a></h2>
-<p>Various jupyter notebooks are located in the root directory/</p>
+<p>We use <a class="reference external" href="https://www.python.org/downloads/">Python 3.9</a> for development. Chances are that earlier version will work too but this is currently untested.</p>
+<p>The following external libraries are required:</p>
 <ul class="simple">
-    <li>
-        <dl class="simple">
-            <dt>AE1_IdealPlaneWave.ipynb:</dt>
-            <dd><p>Ideal unity plane wave simulation</p>
-            </dd>
-        </dl>
-    </li>
+<li><p><a class="reference external" href="http://www.numpy.org">NumPy</a></p></li>
+<li><p><a class="reference external" href="http://www.scipy.org">SciPy</a></p></li>
+<li><p><a class="reference external" href="https://github.com/andresperezlopez/pysofaconventions">Pysofaconventions</a></p></li>
+<li><p><a class="reference external" href="https://jupyter.org/">Jupyter</a> (for running <em>Notebooks</em> locally)</p></li>
+<li><p><a class="reference external" href="https://plot.ly/python/">Plotly</a> (for plotting)</p></li>
 </ul>
 </div>
-<div class="section" id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
-<p>Feel free to check out the full <a class="reference internal" href="reference.html"><span class="doc">Reference</span></a>.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>For performance and convenience reasons we highly recommend to use <a class="reference external" href="https://conda.io/en/master/miniconda.html">Conda</a> (miniconda for simplicity) to manage your Python installation. Once installed, you can use the following steps to receive and use <em>sfa</em>, depending on your use case:</p>
+<ul>
+<li><p>From <a class="reference external" href="https://pypi.org/project/sound-field-analysis/">PyPI</a> / <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="line-block">
+<div class="line">Install into an existing environment (without example <a class="reference external" href="https://jupyter.org/">Jupyter</a> <em>Notebooks</em>):</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sound_field_analysis</span></code></div>
+</div>
+</li>
+<li><p>By cloning (or downloading) the repository and setting up a new environment:</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/AppliedAcousticsChalmers/sound_field_analysis-py.git</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">sound_field_analysis-py/</span></code></div>
+</div>
+<div class="line-block">
+<div class="line">Create a new <a class="reference external" href="https://conda.io/en/master/miniconda.html">Conda</a> environment from the specified dependencies:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">create</span> <span class="pre">--file</span> <span class="pre">environment.yml</span> <span class="pre">--force</span></code></div>
+</div>
+<div class="line-block">
+<div class="line">Activate the environment:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">sfa</span></code></div>
+</div>
+<div class="line-block">
+<div class="line"><strong>Optional:</strong> Install additional dependencies for development purposes (locally run <a class="reference external" href="https://jupyter.org/">Jupyter</a> <em>Notebooks</em> with example, run tests, generate documentation):</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">update</span> <span class="pre">--file</span> <span class="pre">environment_dev.yml</span></code></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following examples are available as <a class="reference external" href="https://jupyter.org/">Jupyter</a> <em>Notebooks</em>, either statically on <a class="reference external" href="examples/">GitHub</a> or interactively on <a class="reference external" href="http://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/">nbviewer</a>. You can of course also simply download the examples and run them locally!</p>
+<div class="section" id="exp1-ideal-plane-wave">
+<h3>Exp1: Ideal plane wave<a class="headerlink" href="#exp1-ideal-plane-wave" title="Permalink to this headline">¶</a></h3>
+<p>Ideal unity plane wave simulation and 3D plot.</p>
+<p><a class="reference external" href="https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb">View interactively on nbviewer</a></p>
+</div>
+<div class="section" id="exp2-measured-plane-wave">
+<h3>Exp2: Measured plane wave<a class="headerlink" href="#exp2-measured-plane-wave" title="Permalink to this headline">¶</a></h3>
+<p>A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using a cardioid mic.</p>
+<p><a class="reference external" href="https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb">View interactively on nbviewer</a></p>
+</div>
+<div class="section" id="exp4-binaural-rendering">
+<h3>Exp4: Binaural rendering<a class="headerlink" href="#exp4-binaural-rendering" title="Permalink to this headline">¶</a></h3>
+<p>Render a spherical microphone array impulse response measurement binaurally. The example shows examples for loading miro or <a class="reference external" href="https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)">SOFA</a> files.</p>
+<p><a class="reference external" href="https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb">View interactively on nbviewer</a></p>
+</div>
+</div>
+<div class="section" id="version-history">
+<h2>Version history<a class="headerlink" href="#version-history" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><em>v2021.2.4</em></dt><dd><ul class="simple">
+<li><p>Implement option to use real spherical harmonic basis functions</p></li>
+<li><p>Update Exp4 to optionally utilize real spherical harmonics</p></li>
+<li><p>Fix testing of spherical harmonics against reference Matlab implementation</p></li>
+<li><p>Add testing for generation of real spherical harmonics</p></li>
+<li><p>Add evaluation of performance for generation of complex and real spherical harmonics</p></li>
+<li><p>Add evaluation of performance for spatial sound field decomposition</p></li>
+<li><p>Update <a class="reference external" href="https://conda.io/en/master/miniconda.html">Conda</a> environment setup to combine all development dependencies</p></li>
+<li><p>Update <a class="reference external" href="https://appliedacousticschalmers.github.io/sound_field_analysis-py/">online</a> and <a class="reference external" href="DOCUMENTATION.pdf">offline</a> documentation</p></li>
+</ul>
+</dd>
+<dt><em>v2021.1.12</em></dt><dd><ul class="simple">
+<li><p>Update MIRO struct loading (quadrature weights are now optional)</p></li>
+<li><p>Fix to prevent Python 3.8 syntax warnings</p></li>
+<li><p>Improve Exp4 (general code structure and utilizing Spherical Head Filter and Spherical Harmonics Tapering)</p></li>
+</ul>
+</dd>
+<dt><em>v2020.1.30</em></dt><dd><ul class="simple">
+<li><p>Update README and <a class="reference external" href="https://pypi.org/project/sound-field-analysis/">PyPI</a> package</p></li>
+</ul>
+</dd>
+<dt><em>v2019.11.6</em></dt><dd><ul class="simple">
+<li><p>Update internal documentation and string formatting</p></li>
+</ul>
+</dd>
+<dt><em>v2019.8.15</em></dt><dd><ul class="simple">
+<li><p>Change version number scheme to CalVer</p></li>
+<li><p>Improve Exp4</p></li>
+<li><p>Update <cite>read_SOFA_file()</cite></p></li>
+<li><p>Update 2D plotting functions</p></li>
+<li><p>Improve <cite>write_SSR_IRs()</cite></p></li>
+<li><p>Improve <a class="reference external" href="https://conda.io/en/master/miniconda.html">Conda</a> environment setup for <a class="reference external" href="https://jupyter.org/">Jupyter</a> Notebooks</p></li>
+<li><p>Update <cite>miro_to_struct()</cite></p></li>
+</ul>
+</dd>
+<dt><em>2019-07-30 (v0.9)</em></dt><dd><ul class="simple">
+<li><p>Implement <a class="reference external" href="https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)">SOFA</a> import</p></li>
+<li><p>Update Exp4 to contain <a class="reference external" href="https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)">SOFA</a> import</p></li>
+<li><p>Delete obsolete Exp3</p></li>
+<li><p>Add named tuple <cite>HRIRSignal</cite></p></li>
+<li><p>Implement <cite>cart2sph()</cite> and <cite>sph2cart()</cite> utility functions</p></li>
+<li><p>Add <a class="reference external" href="https://conda.io/en/master/miniconda.html">Conda</a> environment file for convenient installation of required packages</p></li>
+</ul>
+</dd>
+<dt><em>2019-07-11 (v0.8)</em></dt><dd><ul class="simple">
+<li><p>Implement Spherical Harmonics coefficients tapering</p></li>
+<li><p>Update Spherical Head Filter to consider tapering</p></li>
+</ul>
+</dd>
+<dt><em>2019-06-17 (v0.7)</em></dt><dd><ul class="simple">
+<li><p>Implement Bandwidth Extension for Microphone Arrays (BEMA)</p></li>
+<li><p>Edit <cite>read_miro_struct()</cite>, named tuple <cite>ArraySignal</cite> and <cite>miro_to_struct.m</cite> to load center measurements</p></li>
+</ul>
+</dd>
+<dt><em>2019-06-11 (v0.6)</em></dt><dd><ul class="simple">
+<li><p>Implement Radial Filter Improvement from <a class="reference external" href="http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html">Sound Field Analysis Toolbox (SOFiA) toolbox</a></p></li>
+</ul>
+</dd>
+<dt><em>2019-05-23 (v0.5)</em></dt><dd><ul class="simple">
+<li><p>Implement Spherical Head Filter</p></li>
+<li><p>Implement Spherical Fourier Transform using pseudo-inverse</p></li>
+<li><p>Extract real time capable spatial Fourier transform</p></li>
+<li><p>Extract reversed m index function (Update Exp4)</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="contribute">
+<h2>Contribute<a class="headerlink" href="#contribute" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference external" href="CONTRIBUTE.rst">CONTRIBUTE.rst</a> for full details.</p>
+<p>You can find the full offline documentation as <a class="reference external" href="DOCUMENTATION.pdf">PDF</a> as well as online at <a class="reference external" href="https://appliedacousticschalmers.github.io/sound_field_analysis-py/">https://appliedacousticschalmers.github.io/sound_field_analysis-py/</a> .</p>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>This software is licensed under the MIT License (see <a class="reference external" href="LICENSE">LICENSE</a> for full details).</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>The <em>sound_field_analysis</em> toolbox is based on the Matlab/C++ <a class="reference external" href="http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html">Sound Field Analysis Toolbox (SOFiA) toolbox</a> by Benjamin Bernschütz. For more information you may refer to the original publication:</p>
+<p>[1] <a class="reference external" href="http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/">Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio</a></p>
+<p>The Lebedev grid generation was adapted from an implementation by <a class="reference external" href="https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py">Richard P. Muller</a>.</p>
 </div>
 </div>
 
 
            </div>
-
+           
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-
-        <a accesskey="n" class="btn btn-neutral float-right" href="modules.html" rel="next" title="Modules">Next <span
-                class="fa fa-arrow-circle-right"></span></a>
-
-
-        <a accesskey="p" class="btn btn-neutral float-left" href="index.html" rel="prev"
-           title="Welcome to the Sound Field Analysis toolbox for Python!"><span class="fa fa-arrow-circle-left"></span>
-            Previous</a>
-      
+        <a href="modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Sound Field Analysis toolbox Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
+  <hr/>
 
-              <hr/>
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Chalmers University of Technology.
 
-              <div role="contentinfo">
-                  <p>
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-                      &copy; Copyright 2020, Chalmers University of Technology
-
-                  </p>
-              </div>
-
-
-              Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
-                  href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a
-                  href="https://readthedocs.org">Read the Docs</a>.
-
-          </footer>
-
+</footer>
         </div>
       </div>
 
@@ -257,6 +385,10 @@ distribution that already includes everything, e.g. <a class="reference external
       });
   </script>
 
+  
+  
+    
+   
 
 </body>
 </html>

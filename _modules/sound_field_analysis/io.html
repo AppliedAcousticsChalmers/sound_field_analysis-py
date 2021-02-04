@@ -1,55 +1,67 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="writer-html5" lang="en" >
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>sound_field_analysis.io &mdash; Sound Field Analysis toolbox for Python 2021.2.4 documentation</title>
+  
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
-    <title>sound_field_analysis.io &mdash; Sound Field Analysis toolbox for Python 2020.1.30 documentation</title>
+  
+  
 
+  
+  
 
-    <!--[if lt IE 9]>
+  
+
+  
+  <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
-    <![endif]-->
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"
-            type="text/javascript"></script>
-    <script src="../../_static/jquery.js" type="text/javascript"></script>
-    <script src="../../_static/underscore.js" type="text/javascript"></script>
-    <script src="../../_static/doctools.js" type="text/javascript"></script>
-    <script src="../../_static/language_data.js" type="text/javascript"></script>
-
-    <script src="../../_static/js/theme.js" type="text/javascript"></script>
-
-
-    <link href="../../_static/css/theme.css" rel="stylesheet" type="text/css"/>
-    <link href="../../_static/pygments.css" rel="stylesheet" type="text/css"/>
-    <link href="../../genindex.html" rel="index" title="Index"/>
-    <link href="../../search.html" rel="search" title="Search"/>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
-
-<div class="wy-grid-for-nav">
-
+   
+  <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
 
+          
+            <a href="../../index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
+          
 
-                <a alt="Documentation Home" class="icon icon-home" href="../../index.html"> Sound Field Analysis toolbox
-                    for Python
+          
+          </a>
 
-
-                </a>
-
-
-                <div class="version">
-                    2020.1.30
+          
+            
+            
+              <div class="version">
+                2021.2.4
               </div>
             
           
@@ -66,783 +78,622 @@
           
         </div>
 
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp1-ideal-plane-wave">Exp1: Ideal plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp2-measured-plane-wave">Exp2: Measured plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp4-binaural-rendering">Exp4: Binaural rendering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#version-history">Version history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#contribute">Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.sph">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.utils">Utilities</a></li>
+</ul>
+</li>
+</ul>
 
-            <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../usage.html#how-to-get-started">How to Get Started</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#reference">Reference</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.gen">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.io">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.plot">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.process">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.sph">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.utils">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-
-            </div>
-
+            
+          
         </div>
+        
+      </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-
-        <nav aria-label="top navigation" class="wy-nav-top">
-
-            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-            <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
-
-        </nav>
-
-
-        <div class="wy-nav-content">
-
-            <div class="rst-content">
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
+        
+      </nav>
 
 
-                <div role="navigation" aria-label="breadcrumbs navigation">
-
-                    <ul class="wy-breadcrumbs">
-
-                        <li><a class="icon icon-home" href="../../index.html"></a> &raquo;</li>
-
-                        <li><a href="../index.html">Module code</a> &raquo;</li>
-
-                        <li>sound_field_analysis.io</li>
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
 
 
-                        <li class="wy-breadcrumbs-aside">
-
-                        </li>
-
-                    </ul>
 
 
-                    <hr/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>sound_field_analysis.io</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for sound_field_analysis.io</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Input-Output functions&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module containing various input and output functions:</span>
+
+<span class="sd">`TimeSignal`</span>
+<span class="sd">    Named tuple to store time domain data and related metadata.</span>
+<span class="sd">`SphericalGrid`</span>
+<span class="sd">    Named tuple to store spherical sampling grid geometry.</span>
+<span class="sd">`ArrayConfiguration`</span>
+<span class="sd">    Named tuple to store microphone array characteristics.</span>
+<span class="sd">`ArraySignal`</span>
+<span class="sd">    Named tuple to store microphone array data in terms of `TimeSignal`,</span>
+<span class="sd">    `SphericalGrid` and `ArrayConfiguration`</span>
+<span class="sd">`HrirSignal`</span>
+<span class="sd">    Named tuple to store Head Related Impulse Response grid data in terms of</span>
+<span class="sd">    `TimeSignal` for either ear and `SphericalGrid`</span>
+<span class="sd">`read_miro_struct`</span>
+<span class="sd">    Read Head Related Impulse Responses (HRIRs) or Array / Directional</span>
+<span class="sd">    Impulse Responses (DRIRs) stored as MIRO Matlab files and convert them to</span>
+<span class="sd">    `ArraySignal`.</span>
+<span class="sd">`read_SOFA_file`</span>
+<span class="sd">    Read Head Related Impulse Responses (HRIRs) or Array / Directional</span>
+<span class="sd">    Impulse Responses (DRIRs) stored as Spatially Oriented Format for Acoustics</span>
+<span class="sd">    (SOFA) files and convert them to `ArraySignal` or `HrirSignal`.</span>
+<span class="sd">`empty_time_signal`</span>
+<span class="sd">    Returns an empty np rec array that has the proper data structure.</span>
+<span class="sd">`load_array_signal`</span>
+<span class="sd">    Convenience function to load ArraySignal saved into np data structures.</span>
+<span class="sd">`read_wavefile`</span>
+<span class="sd">    Reads in WAV files and returns data [Nsig x Nsamples] and fs.</span>
+<span class="sd">`write_SSR_IRs`</span>
+<span class="sd">    Takes two time signals and writes out the horizontal plane as HRIRs for</span>
+<span class="sd">    the SoundScapeRenderer. Ideally, both hold 360 IRs but smaller sets are</span>
+<span class="sd">    tried to be scaled up using repeat.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
-<span class="kn">import</span> <span class="nn">pysofaconventions</span> <span class="k">as</span> <span
-                   class="nn">sofa</span>
+<span class="kn">import</span> <span class="nn">pysofaconventions</span> <span class="k">as</span> <span class="nn">sofa</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">sio</span>
 <span class="kn">import</span> <span class="nn">scipy.io.wavfile</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">utils</span>
 
 
-<div class="viewcode-block" id="ArrayConfiguration"><a class="viewcode-back"
-                                                       href="../../reference.html#sound_field_analysis.io.ArrayConfiguration">[docs]</a><span
-        class="k">class</span> <span class="nc">ArrayConfiguration</span><span class="p">(</span><span class="n">namedtuple</span><span
-        class="p">(</span><span class="s1">&#39;ArrayConfiguration&#39;</span><span class="p">,</span> <span class="s1">&#39;array_radius array_type transducer_type scatter_radius &#39;</span>
-                                                          <span class="s1">&#39;dual_radius&#39;</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;Named tuple ArrayConfiguration&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TimeSignal"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.TimeSignal">[docs]</a><span class="k">class</span> <span class="nc">TimeSignal</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;TimeSignal&quot;</span><span class="p">,</span> <span class="s2">&quot;signal fs delay&quot;</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Named tuple to store time domain data and related metadata.&quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
-<div class="viewcode-block" id="ArrayConfiguration.__new__"><a class="viewcode-back"
-                                                               href="../../reference.html#sound_field_analysis.io.ArrayConfiguration.__new__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span
-        class="p">,</span> <span class="n">array_radius</span><span class="p">,</span> <span class="n">array_type</span><span
-        class="p">,</span> <span class="n">transducer_type</span><span class="p">,</span> <span
-        class="n">scatter_radius</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">,</span> <span class="n">dual_radius</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        array_radius : float or array_like</span>
-<span class="sd">           Radius of array</span>
-<span class="sd">        array_type : {&#39;open&#39;, &#39;rigid&#39;}</span>
-<span class="sd">           Type array</span>
-<span class="sd">        transducer_type: {&#39;omni&#39;, &#39;cardioid&#39;}</span>
-<span class="sd">           Type of transducer,</span>
-<span class="sd">        scatter_radius : float, optional</span>
-<span class="sd">           Radius of scatterer, required for `array_type` == &#39;rigid&#39;. [Default: equal to array_radius]</span>
-<span class="sd">        dual_radius : float, optional</span>
-<span class="sd">           Radius of second array, required for `array_type` == &#39;dual&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">array_type</span> <span class="ow">not</span> <span
-            class="ow">in</span> <span class="p">{</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span
-            class="s1">&#39;rigid&#39;</span><span class="p">,</span> <span class="s1">&#39;dual&#39;</span><span
-            class="p">}:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Sphere configuration has to be either open, rigid, or dual.&#39;</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="n">transducer_type</span> <span class="ow">not</span> <span
-            class="ow">in</span> <span class="p">{</span><span class="s1">&#39;omni&#39;</span><span class="p">,</span> <span
-            class="s1">&#39;cardioid&#39;</span><span class="p">}:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Transducer type has to be either omni or cardioid.&#39;</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;rigid&#39;</span> <span
-            class="ow">and</span> <span class="n">scatter_radius</span> <span class="ow">is</span> <span
-            class="kc">None</span><span class="p">:</span>
-            <span class="n">scatter_radius</span> <span class="o">=</span> <span class="n">array_radius</span>
-        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;dual&#39;</span> <span
-            class="ow">and</span> <span class="n">dual_radius</span> <span class="ow">is</span> <span
-            class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;For a dual array configuration, dual_radius must be provided.&#39;</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;dual&#39;</span> <span
-            class="ow">and</span> <span class="n">transducer_type</span> <span class="o">==</span> <span class="s1">&#39;cardioid&#39;</span><span
-            class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;For a dual array configuration, cardioid transducers are not supported.&#39;</span><span
-            class="p">)</span>
-
-        <span class="c1"># noinspection PyArgumentList</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span
-            class="n">ArrayConfiguration</span><span class="p">,</span> <span class="bp">cls</span><span
-            class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span
-            class="bp">cls</span><span class="p">,</span> <span class="n">array_radius</span><span
-            class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span
-            class="n">transducer_type</span><span class="p">,</span> <span class="n">scatter_radius</span><span
-            class="p">,</span>
-                                                      <span class="n">dual_radius</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-
-<div class="viewcode-block" id="ArrayConfiguration.__repr__"><a class="viewcode-back"
-                                                                href="../../reference.html#sound_field_analysis.io.ArrayConfiguration.__repr__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span
-        class="p">):</span>
-        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span
-            class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="TimeSignal"><a class="viewcode-back"
-                                               href="../../reference.html#sound_field_analysis.io.TimeSignal">[docs]</a><span
-        class="k">class</span> <span class="nc">TimeSignal</span><span class="p">(</span><span
-        class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;TimeSignal&#39;</span><span
-        class="p">,</span> <span class="s1">&#39;signal fs delay&#39;</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;Named tuple TimeSignal&quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
-
-<div class="viewcode-block" id="TimeSignal.__new__"><a class="viewcode-back"
-                                                       href="../../reference.html#sound_field_analysis.io.TimeSignal.__new__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span
-        class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span
-        class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">):</span>
+<div class="viewcode-block" id="TimeSignal.__new__"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.TimeSignal.__new__">[docs]</a>    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        signal : array_like</span>
-<span class="sd">           Array of signals of shape [nSignals x nSamples]</span>
+<span class="sd">            Array of signals of shape [nSignals x nSamples]</span>
 <span class="sd">        fs : int or array_like</span>
-<span class="sd">           Sampling frequency</span>
+<span class="sd">            Sampling frequency</span>
 <span class="sd">        delay : float or array_like, optional</span>
-<span class="sd">           [Default: None]</span>
+<span class="sd">            [Default: None]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">signal</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">atleast_2d</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
-        <span class="n">no_of_signals</span> <span class="o">=</span> <span class="n">signal</span><span
-            class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span
-            class="p">]</span>
-        <span class="n">fs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">asarray</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
-        <span class="n">delay</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">asarray</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+        <span class="n">no_of_signals</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+        <span class="n">delay</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">fs</span><span class="o">.</span><span
-            class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span
-            class="ow">and</span> <span class="p">(</span><span class="n">fs</span><span class="o">.</span><span
-            class="n">size</span> <span class="o">!=</span> <span class="n">no_of_signals</span><span
-            class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;fs can either be a scalar or an array with one element per signal.&#39;</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">delay</span><span class="o">.</span><span
-            class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span
-            class="ow">and</span> <span class="p">(</span><span class="n">delay</span><span class="o">.</span><span
-            class="n">size</span> <span class="o">!=</span> <span class="n">no_of_signals</span><span
-            class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;delay can either be a scalar or an array with one element per signal.&#39;</span><span
-            class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">fs</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">fs</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">no_of_signals</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Sampling frequency can either be a scalar or an array with one element per signal.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">delay</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">delay</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">no_of_signals</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Delay can either be a scalar or an array with one element per signal.&quot;</span>
+            <span class="p">)</span>
 
-        <span class="c1"># noinspection PyArgumentList</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span
-            class="n">TimeSignal</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span
-            class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span
-            class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span
-            class="p">,</span> <span class="n">delay</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">TimeSignal</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">delay</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="TimeSignal.__repr__"><a class="viewcode-back"
-                                                        href="../../reference.html#sound_field_analysis.io.TimeSignal.__repr__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span
-        class="p">):</span>
-        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span
-            class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SphericalGrid"><a class="viewcode-back"
-                                                  href="../../reference.html#sound_field_analysis.io.SphericalGrid">[docs]</a><span
-        class="k">class</span> <span class="nc">SphericalGrid</span><span class="p">(</span><span
-        class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;SphericalGrid&#39;</span><span
-        class="p">,</span> <span class="s1">&#39;azimuth colatitude radius weight&#39;</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;Named tuple SphericalGrid&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SphericalGrid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.SphericalGrid">[docs]</a><span class="k">class</span> <span class="nc">SphericalGrid</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;SphericalGrid&quot;</span><span class="p">,</span> <span class="s2">&quot;azimuth colatitude radius weight&quot;</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Named tuple to store spherical sampling grid geometry.&quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
-<div class="viewcode-block" id="SphericalGrid.__new__"><a class="viewcode-back"
-                                                          href="../../reference.html#sound_field_analysis.io.SphericalGrid.__new__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span
-        class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">colatitude</span><span
-        class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">):</span>
+<div class="viewcode-block" id="SphericalGrid.__new__"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.SphericalGrid.__new__">[docs]</a>    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">colatitude</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        azimuth, colatitude : array_like</span>
-<span class="sd">           Grid sampling point directions in radians</span>
+<span class="sd">            Grid sampling point directions in radians</span>
 <span class="sd">        radius, weight : float or array_like, optional</span>
 <span class="sd">            Grid sampling point distances and weights</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">asarray</span><span class="p">(</span><span class="n">azimuth</span><span class="p">)</span>
-        <span class="n">colatitude</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">asarray</span><span class="p">(</span><span
-            class="n">colatitude</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span
-            class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">radius</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">radius</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span
-            class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">weight</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weight</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="n">azimuth</span><span class="o">.</span><span
-            class="n">size</span> <span class="o">!=</span> <span class="n">colatitude</span><span
-            class="o">.</span><span class="n">size</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Azimuth and colatitude have to contain the same number of elements.&#39;</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">radius</span> <span class="ow">is</span> <span
-            class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span
-            class="p">(</span><span class="n">radius</span><span class="o">.</span><span class="n">size</span> <span
-            class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span
-            class="p">(</span><span class="n">radius</span><span class="o">.</span><span class="n">size</span> <span
-            class="o">!=</span> <span class="n">azimuth</span><span class="o">.</span><span class="n">size</span><span
-            class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Radius can either be a scalar or an array of same size as azimuth/colatitude.&#39;</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">weight</span> <span class="ow">is</span> <span
-            class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span
-            class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">size</span> <span
-            class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span
-            class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">size</span> <span
-            class="o">!=</span> <span class="n">azimuth</span><span class="o">.</span><span class="n">size</span><span
-            class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Weight can either be a scalar or an array of same size as azimuth/colatitude.&#39;</span><span
-            class="p">)</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">azimuth</span><span class="p">)</span>
+        <span class="n">colatitude</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">colatitude</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">azimuth</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">colatitude</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Azimuth and colatitude have to contain the same number of elements.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">radius</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">radius</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">azimuth</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Radius can either be a scalar or an array of same size as &quot;</span>
+                <span class="s2">&quot;azimuth/colatitude.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">weight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">azimuth</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Weight can either be a scalar or an array of same size as &quot;</span>
+                <span class="s2">&quot;azimuth/colatitude.&quot;</span>
+            <span class="p">)</span>
 
-        <span class="c1"># noinspection PyArgumentList</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span
-            class="n">SphericalGrid</span><span class="p">,</span> <span class="bp">cls</span><span
-            class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span
-            class="bp">cls</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span
-            class="n">colatitude</span><span class="p">,</span> <span class="n">radius</span><span
-            class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SphericalGrid</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">colatitude</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">weight</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="SphericalGrid.__repr__"><a class="viewcode-back"
-                                                           href="../../reference.html#sound_field_analysis.io.SphericalGrid.__repr__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span
-        class="p">):</span>
-        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span
-            class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ArraySignal"><a class="viewcode-back"
-                                                href="../../reference.html#sound_field_analysis.io.ArraySignal">[docs]</a><span
-        class="k">class</span> <span class="nc">ArraySignal</span><span class="p">(</span><span
-        class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;ArraySignal&#39;</span><span class="p">,</span> <span
-        class="s1">&#39;signal grid center_signal configuration temperature&#39;</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;Named tuple ArraySignal&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ArrayConfiguration"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.ArrayConfiguration">[docs]</a><span class="k">class</span> <span class="nc">ArrayConfiguration</span><span class="p">(</span>
+    <span class="n">namedtuple</span><span class="p">(</span>
+        <span class="s2">&quot;ArrayConfiguration&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;array_radius array_type transducer_type scatter_radius dual_radius&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Named tuple to store microphone array characteristics.&quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
-<div class="viewcode-block" id="ArraySignal.__new__"><a class="viewcode-back"
-                                                        href="../../reference.html#sound_field_analysis.io.ArraySignal.__new__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span
-        class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">grid</span><span
-        class="p">,</span> <span class="n">center_signal</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">,</span> <span class="n">configuration</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">):</span>
+<div class="viewcode-block" id="ArrayConfiguration.__new__"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.ArrayConfiguration.__new__">[docs]</a>    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">array_radius</span><span class="p">,</span>
+        <span class="n">array_type</span><span class="p">,</span>
+        <span class="n">transducer_type</span><span class="p">,</span>
+        <span class="n">scatter_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dual_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        array_radius : float or array_like</span>
+<span class="sd">            Radius of array</span>
+<span class="sd">        array_type : {&#39;open&#39;, &#39;rigid&#39;}</span>
+<span class="sd">            Type array</span>
+<span class="sd">        transducer_type: {&#39;omni&#39;, &#39;cardioid&#39;}</span>
+<span class="sd">            Type of transducer,</span>
+<span class="sd">        scatter_radius : float, optional</span>
+<span class="sd">            Radius of scatterer, required for `array_type` == &#39;rigid&#39;.</span>
+<span class="sd">            [Default: equal to array_radius]</span>
+<span class="sd">        dual_radius : float, optional</span>
+<span class="sd">            Radius of second array, required for `array_type` == &#39;dual&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">array_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;open&quot;</span><span class="p">,</span> <span class="s2">&quot;rigid&quot;</span><span class="p">,</span> <span class="s2">&quot;dual&quot;</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Sphere configuration has to be either open, rigid, or dual.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">transducer_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;omni&quot;</span><span class="p">,</span> <span class="s2">&quot;cardioid&quot;</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transducer type has to be either omni or cardioid.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;rigid&quot;</span> <span class="ow">and</span> <span class="n">scatter_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">scatter_radius</span> <span class="o">=</span> <span class="n">array_radius</span>
+        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;dual&quot;</span> <span class="ow">and</span> <span class="n">dual_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;For a dual array configuration, dual_radius must be provided.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s2">&quot;dual&quot;</span> <span class="ow">and</span> <span class="n">transducer_type</span> <span class="o">==</span> <span class="s2">&quot;cardioid&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;For a dual array configuration, cardioid transducers are not supported.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ArrayConfiguration</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">array_radius</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">transducer_type</span><span class="p">,</span> <span class="n">scatter_radius</span><span class="p">,</span> <span class="n">dual_radius</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArraySignal"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.ArraySignal">[docs]</a><span class="k">class</span> <span class="nc">ArraySignal</span><span class="p">(</span>
+    <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;ArraySignal&quot;</span><span class="p">,</span> <span class="s2">&quot;signal grid center_signal configuration temperature&quot;</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Named tuple to store microphone array data in terms of `TimeSignal`,</span>
+<span class="sd">    `SphericalGrid` and `ArrayConfiguration`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+<div class="viewcode-block" id="ArraySignal.__new__"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.ArraySignal.__new__">[docs]</a>    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">center_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">configuration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        signal : TimeSignal</span>
-<span class="sd">           Array Time domain signals and sampling frequency</span>
+<span class="sd">            Array Time domain signals and sampling frequency</span>
 <span class="sd">        grid : SphericalGrid</span>
-<span class="sd">           Measurement grid of time domain signals</span>
+<span class="sd">            Measurement grid of time domain signals</span>
 <span class="sd">        center_signal : TimeSignal</span>
-<span class="sd">           Center measurement time domain signal and sampling frequency</span>
+<span class="sd">            Center measurement time domain signal and sampling frequency</span>
 <span class="sd">        configuration : ArrayConfiguration</span>
-<span class="sd">           Information on array configuration</span>
+<span class="sd">            Information on array configuration</span>
 <span class="sd">        temperature : array_like, optional</span>
-<span class="sd">           Temperature in room or at each sampling position</span>
+<span class="sd">            Temperature in room or at each sampling position</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span
-            class="o">*</span><span class="n">signal</span><span class="p">)</span>
-        <span class="n">grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">configuration</span> <span class="ow">is</span> <span
-            class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span
-            class="p">(</span><span class="o">*</span><span class="n">configuration</span><span class="p">)</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span class="o">*</span><span class="n">signal</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">configuration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">configuration</span><span class="p">)</span>
 
-        <span class="c1"># noinspection PyArgumentList</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span
-            class="n">ArraySignal</span><span class="p">,</span> <span class="bp">cls</span><span
-            class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span
-            class="bp">cls</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span
-            class="n">grid</span><span class="p">,</span> <span class="n">center_signal</span><span
-            class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span
-            class="n">temperature</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ArraySignal</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">center_signal</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">temperature</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="ArraySignal.__repr__"><a class="viewcode-back"
-                                                         href="../../reference.html#sound_field_analysis.io.ArraySignal.__repr__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span
-        class="p">):</span>
-        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span
-            class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="HrirSignal"><a class="viewcode-back"
-                                               href="../../reference.html#sound_field_analysis.io.HrirSignal">[docs]</a><span
-        class="k">class</span> <span class="nc">HrirSignal</span><span class="p">(</span><span
-        class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;HrirSignal&#39;</span><span
-        class="p">,</span> <span class="s1">&#39;l r grid center_signal&#39;</span><span class="p">)):</span>
-    <span class="sd">&quot;&quot;&quot;Named tuple HrirSignal&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="HrirSignal"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.HrirSignal">[docs]</a><span class="k">class</span> <span class="nc">HrirSignal</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;HrirSignal&quot;</span><span class="p">,</span> <span class="s2">&quot;l r grid center_signal&quot;</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Named tuple to store Head Related Impulse Response grid data in terms of</span>
+<span class="sd">    `TimeSignal` for either ear and `SphericalGrid`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
-<div class="viewcode-block" id="HrirSignal.__new__"><a class="viewcode-back"
-                                                       href="../../reference.html#sound_field_analysis.io.HrirSignal.__new__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span
-        class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span
-        class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">center_signal</span><span
-        class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="HrirSignal.__new__"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.HrirSignal.__new__">[docs]</a>    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">center_signal</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        l : TimeSignal</span>
-<span class="sd">           Left ear time domain signals and sampling frequency</span>
+<span class="sd">            Left ear time domain signals and sampling frequency</span>
 <span class="sd">        r : TimeSignal</span>
-<span class="sd">           Right ear time domain signals and sampling frequency</span>
+<span class="sd">            Right ear time domain signals and sampling frequency</span>
 <span class="sd">        grid : SphericalGrid</span>
-<span class="sd">           Measurement grid of time domain signals</span>
+<span class="sd">            Measurement grid of time domain signals</span>
 <span class="sd">        center_signal : TimeSignal</span>
-<span class="sd">           Center measurement time domain signal and sampling frequency</span>
+<span class="sd">            Center measurement time domain signal and sampling frequency</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span
-            class="o">*</span><span class="n">l</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span
-            class="o">*</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span class="o">*</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
 
-        <span class="n">grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">center_signal</span> <span class="ow">is</span> <span
-            class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">center_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span
-            class="p">(</span><span class="o">*</span><span class="n">center_signal</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">center_signal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">center_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span class="o">*</span><span class="n">center_signal</span><span class="p">)</span>
 
-        <span class="c1"># noinspection PyArgumentList</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span
-            class="n">HrirSignal</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span
-            class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span
-            class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span
-            class="n">grid</span><span class="p">,</span> <span class="n">center_signal</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">HrirSignal</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">center_signal</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="HrirSignal.__repr__"><a class="viewcode-back"
-                                                        href="../../reference.html#sound_field_analysis.io.HrirSignal.__repr__">[docs]</a>    <span
-        class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span
-        class="p">):</span>
-        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span
-            class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_named_tuple__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="read_miro_struct"><a class="viewcode-back"
-                                                     href="../../reference.html#sound_field_analysis.io.read_miro_struct">[docs]</a><span
-        class="k">def</span> <span class="nf">read_miro_struct</span><span class="p">(</span><span
-        class="n">file_name</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span
-        class="s1">&#39;irChOne&#39;</span><span class="p">,</span> <span class="n">transducer_type</span><span
-        class="o">=</span><span class="s1">&#39;omni&#39;</span><span class="p">,</span> <span
-        class="n">scatter_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">get_center_signal</span><span class="o">=</span><span class="kc">False</span><span
-            class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads miro matlab files.</span>
+<div class="viewcode-block" id="read_miro_struct"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.read_miro_struct">[docs]</a><span class="k">def</span> <span class="nf">read_miro_struct</span><span class="p">(</span>
+    <span class="n">file_name</span><span class="p">,</span>
+    <span class="n">channel</span><span class="o">=</span><span class="s2">&quot;irChOne&quot;</span><span class="p">,</span>
+    <span class="n">transducer_type</span><span class="o">=</span><span class="s2">&quot;omni&quot;</span><span class="p">,</span>
+    <span class="n">scatter_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">get_center_signal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read Head Related Impulse Responses (HRIRs) or Array / Directional</span>
+<span class="sd">    Impulse Responses (DRIRs) stored as MIRO Matlab files and convert them to</span>
+<span class="sd">    `ArraySignal`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    file_name : filepath</span>
-<span class="sd">       Path to file that has been exported as a struct</span>
+<span class="sd">        Path to file that has been exported as a struct</span>
 <span class="sd">    channel : string, optional</span>
-<span class="sd">       Channel that holds required signals. [Default: &#39;irChOne&#39;]</span>
+<span class="sd">        Channel that holds required signals. [Default: &#39;irChOne&#39;]</span>
 <span class="sd">    transducer_type : {omni, cardioid}, optional</span>
-<span class="sd">       Sets the type of transducer used in the recording. [Default: &#39;omni&#39;]</span>
+<span class="sd">        Sets the type of transducer used in the recording. [Default: &#39;omni&#39;]</span>
 <span class="sd">    scatter_radius : float, option</span>
-<span class="sd">       Radius of the scatterer. [Default: None]</span>
+<span class="sd">        Radius of the scatterer. [Default: None]</span>
 <span class="sd">    get_center_signal : bool, optional</span>
 <span class="sd">        If center signal should be loaded. [Default: False]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array_signal : ArraySignal</span>
-<span class="sd">       Tuple containing a TimeSignal `signal`, SphericalGrid `grid`, TimeSignal &#39;center_signal&#39;,</span>
-<span class="sd">       ArrayConfiguration `configuration` and the air temperature</span>
+<span class="sd">        Tuple containing a TimeSignal `signal`, SphericalGrid `grid`,</span>
+<span class="sd">        TimeSignal &#39;center_signal&#39;, ArrayConfiguration `configuration` and</span>
+<span class="sd">        the air temperature</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This function expects a slightly modified miro file in that it expects a field `colatitude` instead of</span>
-<span class="sd">    `elevation`. This is for avoiding confusion as may miro file contain colatitude data in the elevation field.</span>
+<span class="sd">    This function expects a slightly modified miro file in that it expects a</span>
+<span class="sd">    field `colatitude` instead of `elevation`. This is for avoiding confusion as</span>
+<span class="sd">    may miro file contain colatitude data in the elevation field.</span>
 
-<span class="sd">    To import center signal measurements the matlab method miro_to_struct has to be extended. Center measurements are</span>
-<span class="sd">    included in every measurement provided at http://audiogroup.web.th-koeln.de/.</span>
-
+<span class="sd">    To import center signal measurements the matlab method miro_to_struct has to</span>
+<span class="sd">    be extended. Center measurements are included in every measurement</span>
+<span class="sd">    provided at http://audiogroup.web.th-koeln.de/.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">current_data</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span
-            class="n">loadmat</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+    <span class="n">current_data</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
 
-    <span class="n">time_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span
-            class="p">(</span><span class="n">signal</span><span class="o">=</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span
-            class="n">current_data</span><span class="p">[</span><span class="n">channel</span><span class="p">])</span><span
-            class="o">.</span><span class="n">T</span><span class="p">,</span>
-                             <span class="n">fs</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span
-            class="p">[</span><span class="s1">&#39;fs&#39;</span><span class="p">]))</span>
+    <span class="n">time_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span>
+        <span class="n">signal</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="n">channel</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;fs&quot;</span><span class="p">])</span>
+    <span class="p">)</span>
 
     <span class="n">center_signal</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">get_center_signal</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">center_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span
-            class="p">(</span><span class="n">signal</span><span class="o">=</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span
-            class="n">current_data</span><span class="p">[</span><span class="s1">&#39;irCenter&#39;</span><span
-            class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-                                       <span class="n">fs</span><span class="o">=</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span
-            class="n">current_data</span><span class="p">[</span><span class="s1">&#39;fs&#39;</span><span
-            class="p">]))</span>
+            <span class="n">center_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span>
+                <span class="n">signal</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;irCenter&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">fs</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;fs&quot;</span><span class="p">]),</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: Center signal not included in miro struct, use extended miro_to_struct.m!&#39;</span><span
-            class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span
-            class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;WARNING: Center signal not included in miro struct, use &quot;</span>
+                <span class="s2">&quot;extended miro_to_struct.m!&quot;</span><span class="p">,</span>
+                <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">center_signal</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="n">mic_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="n">azimuth</span><span class="o">=</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span
-            class="n">current_data</span><span class="p">[</span><span class="s1">&#39;azimuth&#39;</span><span
-            class="p">]),</span>
-                             <span class="n">colatitude</span><span class="o">=</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span
-            class="n">current_data</span><span class="p">[</span><span class="s1">&#39;colatitude&#39;</span><span
-            class="p">]),</span>
-                             <span class="n">radius</span><span class="o">=</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span
-            class="n">current_data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span
-            class="p">]),</span>
-                             <span class="n">weight</span><span class="o">=</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span
-            class="n">current_data</span><span class="p">[</span><span class="s1">&#39;quadWeight&#39;</span><span
-            class="p">]))</span>
+    <span class="n">mic_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span>
+        <span class="n">azimuth</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;azimuth&quot;</span><span class="p">]),</span>
+        <span class="n">colatitude</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;colatitude&quot;</span><span class="p">]),</span>
+        <span class="n">radius</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">]),</span>
+        <span class="n">weight</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;quadWeight&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">&quot;quadWeight&quot;</span> <span class="ow">in</span> <span class="n">current_data</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">mic_grid</span><span class="o">.</span><span
-            class="n">colatitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span
-            class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: The &quot;colatitude&quot; data contains negative values, which is an indication that it is actually &#39;</span>
-              <span class="s1">&#39;elevation&#39;</span><span class="p">,</span> <span class="n">file</span><span
-            class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span
-            class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">mic_grid</span><span class="o">.</span><span class="n">colatitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s1">&#39;WARNING: The &quot;colatitude&quot; data contains negative values, which &#39;</span>
+            <span class="s2">&quot;is an indication that it is actually elevation&quot;</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+        <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span
-            class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s1">&#39;scatterer&#39;</span><span
-            class="p">]):</span>
-        <span class="n">sphere_config</span> <span class="o">=</span> <span class="s1">&#39;rigid&#39;</span>
+    <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;scatterer&quot;</span><span class="p">]):</span>
+        <span class="n">sphere_config</span> <span class="o">=</span> <span class="s2">&quot;rigid&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">sphere_config</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span>
-    <span class="n">array_config</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span
-            class="p">(</span><span class="n">mic_grid</span><span class="o">.</span><span class="n">radius</span><span
-            class="p">,</span> <span class="n">sphere_config</span><span class="p">,</span> <span class="n">transducer_type</span><span
-            class="p">,</span> <span class="n">scatter_radius</span><span class="p">)</span>
+        <span class="n">sphere_config</span> <span class="o">=</span> <span class="s2">&quot;open&quot;</span>
+    <span class="n">array_config</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span>
+        <span class="n">mic_grid</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">sphere_config</span><span class="p">,</span> <span class="n">transducer_type</span><span class="p">,</span> <span class="n">scatter_radius</span>
+    <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">ArraySignal</span><span class="p">(</span><span
-            class="n">time_signal</span><span class="p">,</span> <span class="n">mic_grid</span><span class="p">,</span> <span
-            class="n">center_signal</span><span class="p">,</span> <span class="n">array_config</span><span
-            class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span
-            class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s1">&#39;avgAirTemp&#39;</span><span
-            class="p">]))</span></div>
+    <span class="k">return</span> <span class="n">ArraySignal</span><span class="p">(</span>
+        <span class="n">time_signal</span><span class="p">,</span>
+        <span class="n">mic_grid</span><span class="p">,</span>
+        <span class="n">center_signal</span><span class="p">,</span>
+        <span class="n">array_config</span><span class="p">,</span>
+        <span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">current_data</span><span class="p">[</span><span class="s2">&quot;avgAirTemp&quot;</span><span class="p">]),</span>
+    <span class="p">)</span></div>
 
 
 <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="read_SOFA_file"><a class="viewcode-back"
-                                                   href="../../reference.html#sound_field_analysis.io.read_SOFA_file">[docs]</a><span
-        class="k">def</span> <span class="nf">read_SOFA_file</span><span class="p">(</span><span
-        class="n">file_name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads Head Related Impulse Responses or Array impulse responses (DRIRs) stored as Spatially Oriented Format</span>
-<span class="sd">    for Acoustics (SOFA) files files, and convert them to Array Signal or HRIR Signal class.</span>
+<div class="viewcode-block" id="read_SOFA_file"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.read_SOFA_file">[docs]</a><span class="k">def</span> <span class="nf">read_SOFA_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read Head Related Impulse Responses (HRIRs) or Array / Directional</span>
+<span class="sd">    Impulse Response (DRIRs) stored as Spatially Oriented Format for Acoustics</span>
+<span class="sd">    (SOFA) files and convert them to`ArraySignal` or `HrirSignal`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    file_name : filepath</span>
-<span class="sd">       Path to SOFA file</span>
+<span class="sd">        Path to SOFA file</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ArraySignal or HRIRSignal</span>
-<span class="sd">       Names tuples containing a the loaded file contents</span>
+<span class="sd">        Names tuples containing a the loaded file contents</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    NotImplementedError</span>
-<span class="sd">        In case SOFA conventions other then &quot;SimpleFreeFieldHRIR&quot; or &quot;SingleRoomDRIR&quot; should be loaded</span>
+<span class="sd">        In case SOFA conventions other then &quot;SimpleFreeFieldHRIR&quot; or</span>
+<span class="sd">        &quot;SingleRoomDRIR&quot; should be loaded</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        In case source / receiver grid given in units not according to the SOFA convention</span>
+<span class="sd">        In case source / receiver grid given in units not according to the SOFA</span>
+<span class="sd">        convention</span>
 <span class="sd">    ValueError</span>
 <span class="sd">        In case impulse response data is incomplete</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_print_sofa_infos</span><span class="p">(</span><span class="n">convention</span><span
-            class="p">):</span>
-        <span class="n">log_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; --&gt; samplerate: {convention.getSamplingRate()[0]:.0f} Hz&#39;</span> \
-                  <span class="sa">f</span><span class="s1">&#39;, receivers: </span><span class="si">{convention.ncfile.file.dimensions[&quot;R&quot;].size}</span><span
-            class="s1">&#39;</span> \
-                  <span class="sa">f</span><span class="s1">&#39;, emitters: </span><span class="si">{convention.ncfile.file.dimensions[&quot;E&quot;].size}</span><span
-            class="s1">&#39;</span> \
-                  <span class="sa">f</span><span class="s1">&#39;, measurements: </span><span class="si">{convention.ncfile.file.dimensions[&quot;M&quot;].size}</span><span
-            class="s1">&#39;</span> \
-                  <span class="sa">f</span><span class="s1">&#39;, samples: </span><span class="si">{convention.ncfile.file.dimensions[&quot;N&quot;].size}</span><span
-            class="s1">&#39;</span> \
-                  <span class="sa">f</span><span class="s1">&#39;, format: {convention.getDataIR().dtype}&#39;</span> \
-                  <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> --&gt; convention: {convention.getGlobalAttributeValue(&quot;SOFAConventions&quot;)}&#39;</span> \
-                  <span class="sa">f</span><span class="s1">&#39;, version: {convention.getGlobalAttributeValue(&quot;SOFAConventionsVersion&quot;)}&#39;</span>
+    <span class="k">def</span> <span class="nf">_print_sofa_infos</span><span class="p">(</span><span class="n">convention</span><span class="p">):</span>
+        <span class="n">log_str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot; --&gt; samplerate: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> Hz&quot;</span>
+            <span class="sa">f</span><span class="s1">&#39;, receivers: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">ncfile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;, emitters: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">ncfile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;, measurements: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">ncfile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s2">&quot;M&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;, samples: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">ncfile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s2">&quot;, format: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">getDataIR</span><span class="p">()</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> --&gt; convention: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">getGlobalAttributeValue</span><span class="p">(</span><span class="s2">&quot;SOFAConventions&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;, version: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">getGlobalAttributeValue</span><span class="p">(</span><span class="s2">&quot;SOFAConventionsVersion&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">log_str</span> <span class="o">=</span> <span class="sa">f</span><span
-            class="s1">&#39;</span><span class="si">{log_str}</span><span class="se">\n</span><span class="s1"> --&gt; listener: {convention.getGlobalAttributeValue(&quot;ListenerDescription&quot;)}&#39;</span>
-        <span class="k">except</span> <span class="n">sofa</span><span class="o">.</span><span
-            class="n">SOFAError</span><span class="p">:</span>
+            <span class="n">log_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">log_str</span><span class="si">}</span><span class="se">\n</span><span class="s1"> --&gt; listener: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">getGlobalAttributeValue</span><span class="p">(</span><span class="s2">&quot;ListenerDescription&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">except</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFAError</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">log_str</span> <span class="o">=</span> <span class="sa">f</span><span
-            class="s1">&#39;</span><span class="si">{log_str}</span><span class="se">\n</span><span class="s1"> --&gt; author: {convention.getGlobalAttributeValue(&quot;Author&quot;)}&#39;</span>
-        <span class="k">except</span> <span class="n">sofa</span><span class="o">.</span><span
-            class="n">SOFAError</span><span class="p">:</span>
+            <span class="n">log_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">log_str</span><span class="si">}</span><span class="se">\n</span><span class="s1"> --&gt; author: </span><span class="si">{</span><span class="n">convention</span><span class="o">.</span><span class="n">getGlobalAttributeValue</span><span class="p">(</span><span class="s2">&quot;Author&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">except</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFAError</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">log_str</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_load_convention</span><span class="p">(</span><span
-            class="n">_file</span><span class="p">):</span>
-        <span class="n">convention</span> <span class="o">=</span> <span class="n">_file</span><span
-            class="o">.</span><span class="n">getGlobalAttributeValue</span><span class="p">(</span><span class="s1">&#39;SOFAConventions&#39;</span><span
-            class="p">)</span>
-        <span class="k">if</span> <span class="n">convention</span> <span class="o">==</span> <span class="s1">&#39;SimpleFreeFieldHRIR&#39;</span><span
-            class="p">:</span>
-            <span class="k">return</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFASimpleFreeFieldHRIR</span><span
-            class="p">(</span><span class="n">_file</span><span class="o">.</span><span class="n">ncfile</span><span
-            class="o">.</span><span class="n">filename</span><span class="p">,</span> <span
-            class="s1">&#39;r&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">convention</span> <span class="o">==</span> <span class="s1">&#39;SingleRoomDRIR&#39;</span><span
-            class="p">:</span>
-            <span class="k">return</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFASingleRoomDRIR</span><span
-            class="p">(</span><span class="n">_file</span><span class="o">.</span><span class="n">ncfile</span><span
-            class="o">.</span><span class="n">filename</span><span class="p">,</span> <span
-            class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_load_convention</span><span class="p">(</span><span class="n">_file</span><span class="p">):</span>
+        <span class="n">convention</span> <span class="o">=</span> <span class="n">_file</span><span class="o">.</span><span class="n">getGlobalAttributeValue</span><span class="p">(</span><span class="s2">&quot;SOFAConventions&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">convention</span> <span class="o">==</span> <span class="s2">&quot;SimpleFreeFieldHRIR&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFASimpleFreeFieldHRIR</span><span class="p">(</span><span class="n">_file</span><span class="o">.</span><span class="n">ncfile</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">convention</span> <span class="o">==</span> <span class="s2">&quot;SingleRoomDRIR&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFASingleRoomDRIR</span><span class="p">(</span><span class="n">_file</span><span class="o">.</span><span class="n">ncfile</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span
-            class="sa">f</span><span class="s1">&#39;Loading SOFA convention &quot;</span><span
-            class="si">{convention}</span><span class="s1">&quot; is not implemented yet.&#39;</span><span
-            class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Loading SOFA convention &quot;</span><span class="si">{</span><span class="n">convention</span><span class="si">}</span><span class="s1">&quot; is not implemented yet.&#39;</span>
+            <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_check_irs</span><span class="p">(</span><span class="n">irs</span><span
-            class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span
-            class="n">irs</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_check_irs</span><span class="p">(</span><span class="n">irs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">irs</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">):</span>
             <span class="c1"># check that all values exist</span>
-            <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">ma</span><span
-            class="o">.</span><span class="n">count_masked</span><span class="p">(</span><span class="n">irs</span><span
-            class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span
-            class="s1">&#39;incomplete IR data at positions </span><span class="si">{irs.mask}</span><span class="s1">.&#39;</span><span
-            class="p">)</span>
+            <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">count_masked</span><span class="p">(</span><span class="n">irs</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;incomplete IR data at positions </span><span class="si">{</span><span class="n">irs</span><span class="o">.</span><span class="n">mask</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="c1"># transform into regular `numpy.ndarray`</span>
-            <span class="n">irs</span> <span class="o">=</span> <span class="n">irs</span><span class="o">.</span><span
-            class="n">filled</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">irs</span><span class="o">.</span><span class="n">copy</span><span
-            class="p">()</span>
+            <span class="n">irs</span> <span class="o">=</span> <span class="n">irs</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">irs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
     <span class="c1"># load SOFA file and check validity</span>
-    <span class="n">file</span> <span class="o">=</span> <span class="n">sofa</span><span class="o">.</span><span
-            class="n">SOFAFile</span><span class="p">(</span><span class="n">file_name</span><span
-            class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span
-            class="n">isValid</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid SOFA file.&#39;</span><span
-            class="p">)</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFAFile</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid SOFA file.&quot;</span><span class="p">)</span>
     <span class="c1"># load specific convention and check validity</span>
-    <span class="n">file</span> <span class="o">=</span> <span class="n">_load_convention</span><span class="p">(</span><span
-            class="n">file</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span
-            class="n">isValid</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span
-            class="s1">&#39;Invalid SOFA file according to &quot;{file.getGlobalAttributeValue(&quot;SOFAConventions&quot;)}&quot; &#39;</span>
-                         <span class="sa">f</span><span class="s1">&#39;convention.&#39;</span><span class="p">)</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">_load_convention</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid SOFA file according to &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="si">{</span><span class="n">file</span><span class="o">.</span><span class="n">getGlobalAttributeValue</span><span class="p">(</span><span class="s1">&#39;SOFAConventions&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2"> convention.&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># print SOFA file infos</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span
-            class="se">\n</span><span class="s1">open SOFA file &quot;</span><span class="si">{file_name}</span><span
-            class="s1">&quot;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">open SOFA file &quot;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
     <span class="n">_print_sofa_infos</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
     <span class="c1"># store SOFA data as named tuple</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span
-            class="p">,</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFAConventions</span><span
-            class="o">.</span><span class="n">SOFASimpleFreeFieldHRIR</span><span class="p">):</span>
-        <span class="n">hrir_l</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span
-            class="n">signal</span><span class="o">=</span><span class="n">_check_irs</span><span
-            class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getDataIR</span><span
-            class="p">()[:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">fs</span><span
-            class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">file</span><span
-            class="o">.</span><span class="n">getSamplingRate</span><span class="p">()[</span><span
-            class="mi">0</span><span class="p">]))</span>
-        <span class="n">hrir_r</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span><span
-            class="n">signal</span><span class="o">=</span><span class="n">_check_irs</span><span
-            class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getDataIR</span><span
-            class="p">()[:,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">fs</span><span
-            class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">file</span><span
-            class="o">.</span><span class="n">getSamplingRate</span><span class="p">()[</span><span
-            class="mi">0</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">sofa</span><span class="o">.</span><span class="n">SOFAConventions</span><span class="o">.</span><span class="n">SOFASimpleFreeFieldHRIR</span><span class="p">):</span>
+        <span class="n">hrir_l</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">_check_irs</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getDataIR</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">fs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">hrir_r</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">_check_irs</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getDataIR</span><span class="p">()[:,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">fs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="p">)</span>
 
         <span class="c1"># transform grid into azimuth, colatitude, radius in radians</span>
-        <span class="n">grid_acr_rad</span> <span class="o">=</span> <span class="n">utils</span><span
-            class="o">.</span><span class="n">SOFA_grid2acr</span><span class="p">(</span><span
-            class="n">grid_values</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span
-            class="n">getSourcePositionValues</span><span class="p">(),</span>
-                                           <span class="n">grid_info</span><span class="o">=</span><span
-            class="n">file</span><span class="o">.</span><span class="n">getSourcePositionInfo</span><span
-            class="p">())</span>
+        <span class="n">grid_acr_rad</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">SOFA_grid2acr</span><span class="p">(</span>
+            <span class="n">grid_values</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="n">getSourcePositionValues</span><span class="p">(),</span>
+            <span class="n">grid_info</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="n">getSourcePositionInfo</span><span class="p">(),</span>
+        <span class="p">)</span>
 
-        <span class="n">hrir_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="n">azimuth</span><span class="o">=</span><span
-            class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">0</span><span
-            class="p">],</span> <span class="n">colatitude</span><span class="o">=</span><span
-            class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">1</span><span
-            class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="n">grid_acr_rad</span><span
-            class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">HrirSignal</span><span class="p">(</span><span
-            class="n">l</span><span class="o">=</span><span class="n">hrir_l</span><span class="p">,</span> <span
-            class="n">r</span><span class="o">=</span><span class="n">hrir_r</span><span class="p">,</span> <span
-            class="n">grid</span><span class="o">=</span><span class="n">hrir_grid</span><span class="p">)</span>
+        <span class="n">hrir_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span>
+            <span class="n">azimuth</span><span class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colatitude</span><span class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">HrirSignal</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="n">hrir_l</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">hrir_r</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">hrir_grid</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># isinstance(file, sofa.SOFAConventions.SOFASingleRoomDRIR):</span>
-        <span class="n">drir_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span
-            class="p">(</span><span class="n">signal</span><span class="o">=</span><span
-            class="n">_check_irs</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">squeeze</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span
-            class="n">getDataIR</span><span class="p">())),</span> <span class="n">fs</span><span
-            class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">file</span><span
-            class="o">.</span><span class="n">getSamplingRate</span><span class="p">()[</span><span
-            class="mi">0</span><span class="p">]))</span>
+        <span class="n">drir_signal</span> <span class="o">=</span> <span class="n">TimeSignal</span><span class="p">(</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">_check_irs</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getDataIR</span><span class="p">())),</span>
+            <span class="n">fs</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">getSamplingRate</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">)</span>
 
         <span class="c1"># transform grid into azimuth, colatitude, radius in radians</span>
-        <span class="n">grid_acr_rad</span> <span class="o">=</span> <span class="n">utils</span><span
-            class="o">.</span><span class="n">SOFA_grid2acr</span><span class="p">(</span><span
-            class="n">grid_values</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span
-            class="n">getReceiverPositionValues</span><span class="p">()[:,</span> <span class="p">:,</span> <span
-            class="mi">0</span><span class="p">],</span>
-                                           <span class="n">grid_info</span><span class="o">=</span><span
-            class="n">file</span><span class="o">.</span><span class="n">getReceiverPositionInfo</span><span class="p">())</span>
+        <span class="n">grid_acr_rad</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">SOFA_grid2acr</span><span class="p">(</span>
+            <span class="n">grid_values</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="n">getReceiverPositionValues</span><span class="p">()[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">grid_info</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="n">getReceiverPositionInfo</span><span class="p">(),</span>
+        <span class="p">)</span>
 
-        <span class="c1"># assume rigid sphere and omnidirectional transducers according to SOFA 1.0, AES69-2015</span>
-        <span class="n">drir_configuration</span> <span class="o">=</span> <span
-            class="n">ArrayConfiguration</span><span class="p">(</span><span class="n">array_radius</span><span
-            class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">2</span><span
-            class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-                                                <span class="n">array_type</span><span class="o">=</span><span
-            class="s1">&#39;rigid&#39;</span><span class="p">,</span> <span class="n">transducer_type</span><span
-            class="o">=</span><span class="s1">&#39;omni&#39;</span><span class="p">)</span>
-        <span class="n">drir_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="n">azimuth</span><span class="o">=</span><span
-            class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">0</span><span
-            class="p">],</span> <span class="n">colatitude</span><span class="o">=</span><span
-            class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">1</span><span
-            class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="n">grid_acr_rad</span><span
-            class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">ArraySignal</span><span class="p">(</span><span
-            class="n">signal</span><span class="o">=</span><span class="n">drir_signal</span><span
-            class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">drir_grid</span><span
-            class="p">,</span> <span class="n">configuration</span><span class="o">=</span><span class="n">drir_configuration</span><span
-            class="p">)</span></div>
+        <span class="c1"># assume rigid sphere and omnidirectional transducers according to</span>
+        <span class="c1"># SOFA 1.0, AES69-2015</span>
+        <span class="n">drir_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span>
+            <span class="n">array_radius</span><span class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+            <span class="n">array_type</span><span class="o">=</span><span class="s2">&quot;rigid&quot;</span><span class="p">,</span>
+            <span class="n">transducer_type</span><span class="o">=</span><span class="s2">&quot;omni&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">drir_grid</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span>
+            <span class="n">azimuth</span><span class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colatitude</span><span class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="n">grid_acr_rad</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ArraySignal</span><span class="p">(</span>
+            <span class="n">signal</span><span class="o">=</span><span class="n">drir_signal</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">drir_grid</span><span class="p">,</span> <span class="n">configuration</span><span class="o">=</span><span class="n">drir_configuration</span>
+        <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="empty_time_signal"><a class="viewcode-back"
-                                                      href="../../reference.html#sound_field_analysis.io.empty_time_signal">[docs]</a><span
-        class="k">def</span> <span class="nf">empty_time_signal</span><span class="p">(</span><span class="n">no_of_signals</span><span
-        class="p">,</span> <span class="n">signal_length</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns an empty np rec array that has the proper data structure</span>
+<div class="viewcode-block" id="empty_time_signal"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.empty_time_signal">[docs]</a><span class="k">def</span> <span class="nf">empty_time_signal</span><span class="p">(</span><span class="n">no_of_signals</span><span class="p">,</span> <span class="n">signal_length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an empty np rec array that has the proper data structure.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    no_of_signals : int</span>
-<span class="sd">       Number of signals to be stored in the recarray</span>
+<span class="sd">        Number of signals to be stored in the recarray</span>
 <span class="sd">    signal_length : int</span>
-<span class="sd">       Length of the signals to be stored in the recarray</span>
+<span class="sd">        Length of the signals to be stored in the recarray</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -857,89 +708,71 @@
 <span class="sd">       .grid_weights     Weights of quadrature</span>
 <span class="sd">       .air_temperature  Average temperature in [C]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">rec</span><span
-            class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">zeros</span><span class="p">(</span><span
-            class="n">no_of_signals</span><span class="p">,</span>
-                                   <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span
-            class="s1">&#39;signal&#39;</span><span class="p">,</span> <span class="sa">f</span><span
-            class="s1">&#39;</span><span class="si">{signal_length}</span><span class="s1">f8&#39;</span><span
-            class="p">),</span>
-                                          <span class="p">(</span><span class="s1">&#39;fs&#39;</span><span
-            class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">),</span>
-                                          <span class="p">(</span><span class="s1">&#39;azimuth&#39;</span><span
-            class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">),</span>
-                                          <span class="p">(</span><span class="s1">&#39;colatitude&#39;</span><span
-            class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">),</span>
-                                          <span class="p">(</span><span class="s1">&#39;radius&#39;</span><span
-            class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">),</span>
-                                          <span class="p">(</span><span class="s1">&#39;grid_weights&#39;</span><span
-            class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">),</span>
-                                          <span class="p">(</span><span class="s1">&#39;air_temperature&#39;</span><span
-            class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">)]))</span></div>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+            <span class="n">no_of_signals</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;signal&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">signal_length</span><span class="si">}</span><span class="s2">f8&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">,</span> <span class="s2">&quot;f8&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;azimuth&quot;</span><span class="p">,</span> <span class="s2">&quot;f8&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;colatitude&quot;</span><span class="p">,</span> <span class="s2">&quot;f8&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;radius&quot;</span><span class="p">,</span> <span class="s2">&quot;f8&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;grid_weights&quot;</span><span class="p">,</span> <span class="s2">&quot;f8&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;f8&quot;</span><span class="p">),</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_array_signal"><a class="viewcode-back"
-                                                      href="../../reference.html#sound_field_analysis.io.load_array_signal">[docs]</a><span
-        class="k">def</span> <span class="nf">load_array_signal</span><span class="p">(</span><span
-        class="n">filename</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convenience function to load ArraySignal saved into np data structures</span>
+<div class="viewcode-block" id="load_array_signal"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.load_array_signal">[docs]</a><span class="k">def</span> <span class="nf">load_array_signal</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convenience function to load ArraySignal saved into np data structures.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    filename : string</span>
-<span class="sd">       File to load</span>
+<span class="sd">        File to load</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Y : ArraySignal</span>
-<span class="sd">       See io.ArraySignal</span>
+<span class="sd">        See io.ArraySignal</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ArraySignal</span><span class="p">(</span><span
-            class="o">*</span><span class="n">_np</span><span class="o">.</span><span class="n">load</span><span
-            class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">ArraySignal</span><span class="p">(</span><span class="o">*</span><span class="n">_np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="read_wavefile"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.read_wavefile">[docs]</a><span class="k">def</span> <span class="nf">read_wavefile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reads in WAV files and returns data [Nsig x Nsamples] and fs</span>
+    <span class="sd">&quot;&quot;&quot;Reads in WAV files and returns data [Nsig x Nsamples] and fs.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    filename : string</span>
-<span class="sd">       Filename of wave file to be read</span>
+<span class="sd">        Filename of wave file to be read</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    data : array_like</span>
-<span class="sd">       Data of dim [Nsig x Nsamples]</span>
+<span class="sd">        Data of dim [Nsig x Nsamples]</span>
 <span class="sd">    fs : int</span>
-<span class="sd">       Sampling frequency of read data</span>
+<span class="sd">        Sampling frequency of read data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fs</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span
-            class="n">sio</span><span class="o">.</span><span class="n">wavfile</span><span class="o">.</span><span
-            class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span><span
-            class="p">,</span> <span class="n">fs</span></div>
+    <span class="n">fs</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">wavfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">fs</span></div>
 
 
 <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="write_SSR_IRs"><a class="viewcode-back"
-                                                  href="../../reference.html#sound_field_analysis.io.write_SSR_IRs">[docs]</a><span
-        class="k">def</span> <span class="nf">write_SSR_IRs</span><span class="p">(</span><span
-        class="n">filename</span><span class="p">,</span> <span class="n">time_data_l</span><span
-        class="p">,</span> <span class="n">time_data_r</span><span class="p">,</span> <span
-        class="n">wavformat</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Takes two time signals and writes out the horizontal plane as HRIRs for the SoundScapeRenderer.</span>
-<span class="sd">    Ideally, both hold 360 IRs but smaller sets are tried to be scaled up using repeat.</span>
+<div class="viewcode-block" id="write_SSR_IRs"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.io.write_SSR_IRs">[docs]</a><span class="k">def</span> <span class="nf">write_SSR_IRs</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">time_data_l</span><span class="p">,</span> <span class="n">time_data_r</span><span class="p">,</span> <span class="n">wavformat</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Takes two time signals and writes out the horizontal plane as HRIRs for</span>
+<span class="sd">    the SoundScapeRenderer. Ideally, both hold 360 IRs but smaller sets are</span>
+<span class="sd">    tried to be scaled up using repeat.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    filename : string</span>
-<span class="sd">       filename to write to</span>
+<span class="sd">        filename to write to</span>
 <span class="sd">    time_data_l, time_data_r : io.ArraySignal</span>
-<span class="sd">       ArraySignals for left/right ear</span>
+<span class="sd">        ArraySignals for left/right ear</span>
 <span class="sd">    wavformat : {float32, int32, int16}, optional</span>
-<span class="sd">       wav file format to write [Default: float32]</span>
+<span class="sd">        wav file format to write [Default: float32]</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -949,101 +782,80 @@
 <span class="sd">        in case integer format should be exported and amplitude exceeds 1.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># make lower case and remove spaces</span>
-    <span class="n">wavformat</span> <span class="o">=</span> <span class="n">wavformat</span><span
-            class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span
-            class="n">strip</span><span class="p">()</span>
+    <span class="n">wavformat</span> <span class="o">=</span> <span class="n">wavformat</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-    <span class="c1"># equator_IDX_left = utils.nearest_to_value_logical_IDX(time_data_l.grid.colatitude, _np.pi / 2)</span>
-    <span class="c1"># equator_IDX_right = utils.nearest_to_value_logical_IDX(time_data_r.grid.colatitude, _np.pi / 2)</span>
+    <span class="c1"># equator_IDX_left = utils.nearest_to_value_logical_IDX(</span>
+    <span class="c1">#     time_data_l.grid.colatitude, _np.pi / 2</span>
+    <span class="c1"># )</span>
+    <span class="c1"># equator_IDX_right = utils.nearest_to_value_logical_IDX(</span>
+    <span class="c1">#     time_data_r.grid.colatitude, _np.pi / 2</span>
+    <span class="c1"># )</span>
 
     <span class="c1"># irs_left = time_data_l.signal.signal[equator_IDX_left]</span>
     <span class="c1"># irs_right = time_data_r.signal.signal[equator_IDX_right]</span>
-    <span class="n">irs_left</span> <span class="o">=</span> <span class="n">time_data_l</span><span
-            class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span>
-    <span class="n">irs_right</span> <span class="o">=</span> <span class="n">time_data_r</span><span class="o">.</span><span
-            class="n">signal</span><span class="o">.</span><span class="n">signal</span>
+    <span class="n">irs_left</span> <span class="o">=</span> <span class="n">time_data_l</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span>
+    <span class="n">irs_right</span> <span class="o">=</span> <span class="n">time_data_r</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span>
 
-    <span class="n">irs_to_write</span> <span class="o">=</span> <span class="n">utils</span><span
-            class="o">.</span><span class="n">interleave_channels</span><span class="p">(</span><span class="n">left_channel</span><span
-            class="o">=</span><span class="n">irs_left</span><span class="p">,</span> <span
-            class="n">right_channel</span><span class="o">=</span><span class="n">irs_right</span><span
-            class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;SSR&#39;</span><span
-            class="p">)</span>
-    <span class="c1"># data_to_write = utils.simple_resample(irs_to_write, original_fs=time_data_l.signal.fs, target_fs=44100)</span>
+    <span class="n">irs_to_write</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">interleave_channels</span><span class="p">(</span>
+        <span class="n">left_channel</span><span class="o">=</span><span class="n">irs_left</span><span class="p">,</span> <span class="n">right_channel</span><span class="o">=</span><span class="n">irs_right</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;SSR&quot;</span>
+    <span class="p">)</span>
+    <span class="c1"># data_to_write = utils.simple_resample(</span>
+    <span class="c1">#     irs_to_write, original_fs=time_data_l.signal.fs, target_fs=44100</span>
+    <span class="c1"># )</span>
     <span class="n">data_to_write</span> <span class="o">=</span> <span class="n">irs_to_write</span>
 
     <span class="c1"># get absolute max value</span>
-    <span class="n">max_val</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">abs</span><span class="p">([</span><span class="n">time_data_l</span><span class="o">.</span><span
-            class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span> <span
-            class="n">time_data_r</span><span class="o">.</span><span class="n">signal</span><span
-            class="o">.</span><span class="n">signal</span><span class="p">])</span><span class="o">.</span><span
-            class="n">max</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">max_val</span> <span class="o">&gt;</span> <span
-            class="mf">1.0</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s1">&#39;int&#39;</span> <span class="ow">in</span> <span class="n">wavformat</span><span
-            class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;At least one amplitude value exceeds 1.0, exporting to an integer format will lead to &#39;</span>
-                             <span class="s1">&#39;clipping. Choose wavformat &quot;float32&quot; instead or normalize data!&#39;</span><span
-            class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;WARNING: At least one amplitude value exceeds 1.0!&#39;</span><span
-            class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span
-            class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">max_val</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">time_data_l</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span> <span class="n">time_data_r</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">max_val</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;int&quot;</span> <span class="ow">in</span> <span class="n">wavformat</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;At least one amplitude value exceeds 1.0, exporting to an &quot;</span>
+                <span class="s2">&quot;integer format will lead to clipping. Choose wavformat &quot;</span>
+                <span class="s1">&#39;&quot;float32&quot; instead or normalize data!&#39;</span>
+            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: At least one amplitude value exceeds 1.0!&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">wavformat</span> <span class="ow">in</span> <span class="p">[</span><span
-            class="s1">&#39;float32&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span
-            class="p">]:</span>
-        <span class="n">sio</span><span class="o">.</span><span class="n">wavfile</span><span class="o">.</span><span
-            class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span
-            class="n">filename</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span
-            class="nb">int</span><span class="p">(</span><span class="n">time_data_l</span><span class="o">.</span><span
-            class="n">signal</span><span class="o">.</span><span class="n">fs</span><span class="p">),</span> <span
-            class="n">data</span><span class="o">=</span><span class="n">data_to_write</span><span
-            class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">astype</span><span
-            class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">float32</span><span
-            class="p">))</span>
-    <span class="k">elif</span> <span class="n">wavformat</span> <span class="ow">in</span> <span
-            class="p">[</span><span class="s1">&#39;int32&#39;</span><span class="p">,</span> <span class="s1">&#39;int16&#39;</span><span
-            class="p">]:</span>
-        <span class="n">sio</span><span class="o">.</span><span class="n">wavfile</span><span class="o">.</span><span
-            class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span
-            class="n">filename</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span
-            class="nb">int</span><span class="p">(</span><span class="n">time_data_l</span><span class="o">.</span><span
-            class="n">signal</span><span class="o">.</span><span class="n">fs</span><span class="p">),</span>
-                          <span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">data_to_write</span><span
-            class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">wavformat</span><span
-            class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">)</span><span class="o">.</span><span
-            class="n">astype</span><span class="p">(</span><span class="n">wavformat</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">wavformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">]:</span>
+        <span class="n">sio</span><span class="o">.</span><span class="n">wavfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+            <span class="n">rate</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">time_data_l</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">fs</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data_to_write</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">wavformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span> <span class="s2">&quot;int16&quot;</span><span class="p">]:</span>
+        <span class="n">sio</span><span class="o">.</span><span class="n">wavfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+            <span class="n">rate</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">time_data_l</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">fs</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">data_to_write</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">wavformat</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">wavformat</span><span class="p">),</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span
-            class="s1">&#39;Format &quot;</span><span class="si">{wavformat}</span><span class="s1">&quot; unknown, should be either &quot;float32&quot;, &quot;int32&quot; or &quot;int16&quot;.&#39;</span><span
-            class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Format &quot;</span><span class="si">{</span><span class="n">wavformat</span><span class="si">}</span><span class="s1">&quot; unknown, should be either &quot;float32&quot;, &quot;int32&quot; or &quot;int16&quot;.&#39;</span>
+        <span class="p">)</span></div>
 </pre></div>
 
            </div>
-
+           
           </div>
           <footer>
 
+  <hr/>
 
-              <hr/>
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Chalmers University of Technology.
 
-              <div role="contentinfo">
-                  <p>
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-                      &copy; Copyright 2020, Chalmers University of Technology
-
-                  </p>
-              </div>
-
-
-              Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
-                  href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a
-                  href="https://readthedocs.org">Read the Docs</a>.
-
-          </footer>
-
+</footer>
         </div>
       </div>
 
@@ -1058,6 +870,10 @@
       });
   </script>
 
+  
+  
+    
+   
 
 </body>
 </html>

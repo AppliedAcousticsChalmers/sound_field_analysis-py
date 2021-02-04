@@ -1,56 +1,68 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="writer-html5" lang="en" >
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>sound_field_analysis.gen &mdash; Sound Field Analysis toolbox for Python 2021.2.4 documentation</title>
+  
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
 
-    <title>sound_field_analysis.gen &mdash; Sound Field Analysis toolbox for Python 2020.1.30 documentation</title>
+  
+  
 
+  
+  
 
-    <!--[if lt IE 9]>
+  
+
+  
+  <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
-    <![endif]-->
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"
-            type="text/javascript"></script>
-    <script src="../../_static/jquery.js" type="text/javascript"></script>
-    <script src="../../_static/underscore.js" type="text/javascript"></script>
-    <script src="../../_static/doctools.js" type="text/javascript"></script>
-    <script src="../../_static/language_data.js" type="text/javascript"></script>
-
-    <script src="../../_static/js/theme.js" type="text/javascript"></script>
-
-
-    <link href="../../_static/css/theme.css" rel="stylesheet" type="text/css"/>
-    <link href="../../_static/pygments.css" rel="stylesheet" type="text/css"/>
-    <link href="../../genindex.html" rel="index" title="Index"/>
-    <link href="../../search.html" rel="search" title="Search"/>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
-
-<div class="wy-grid-for-nav">
-
+   
+  <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-        <div class="wy-side-scroll">
-            <div class="wy-side-nav-search">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
 
+          
+            <a href="../../index.html" class="icon icon-home"> Sound Field Analysis toolbox for Python
+          
 
-                <a alt="Documentation Home" class="icon icon-home" href="../../index.html"> Sound Field Analysis toolbox
-                    for Python
+          
+          </a>
 
-
-                </a>
-
-
-                <div class="version">
-                    2020.1.30
-                </div>
+          
+            
+            
+              <div class="version">
+                2021.2.4
+              </div>
             
           
 
@@ -66,462 +78,356 @@
           
         </div>
 
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp1-ideal-plane-wave">Exp1: Ideal plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp2-measured-plane-wave">Exp2: Measured plane wave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#exp4-binaural-rendering">Exp4: Binaural rendering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#version-history">Version history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#contribute">Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.gen">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.io">I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.plot">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.process">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.sph">Spherical</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference.html#module-sound_field_analysis.utils">Utilities</a></li>
+</ul>
+</li>
+</ul>
 
-            <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-
-
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#requirements">Requirements</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../usage.html#how-to-get-started">How to Get Started</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../usage.html#reference">Reference</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#generators">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#i-o">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#plotting">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#processing">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#spherical">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal" href="../../modules.html#utilities">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a>
-                        <ul>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.gen">Generators</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.io">I/O</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.lebedev">Lebedev</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.plot">Plotting</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.process">Processing</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.sph">Spherical</a>
-                            </li>
-                            <li class="toctree-l2"><a class="reference internal"
-                                                      href="../../reference.html#module-sound_field_analysis.utils">Utilities</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-
-            </div>
-
+            
+          
         </div>
+        
+      </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
-
-        <nav aria-label="top navigation" class="wy-nav-top">
-
-            <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-            <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
-
-        </nav>
-
-
-        <div class="wy-nav-content">
-
-            <div class="rst-content">
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Sound Field Analysis toolbox for Python</a>
+        
+      </nav>
 
 
-                <div role="navigation" aria-label="breadcrumbs navigation">
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
-
-      <li><a class="icon icon-home" href="../../index.html"></a> &raquo;</li>
-
-      <li><a href="../index.html">Module code</a> &raquo;</li>
-
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
       <li>sound_field_analysis.gen</li>
-
-
+    
+    
       <li class="wy-breadcrumbs-aside">
-
+        
       </li>
-
+    
   </ul>
 
-
-                    <hr/>
+  
+  <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for sound_field_analysis.gen</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Module contains various generator functions:</span>
+<span class="sd">Module containing various generator functions:</span>
 
 <span class="sd">`whiteNoise`</span>
-<span class="sd">   Generate additive White Gaussian noise</span>
+<span class="sd">    Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</span>
 <span class="sd">`gauss_grid`</span>
-<span class="sd">   Gauss-Legendre quadrature grid and weights</span>
+<span class="sd">    Compute Gauss-Legendre quadrature nodes and weights in the SOFiA /</span>
+<span class="sd">    VariSphear data format.</span>
 <span class="sd">`lebedev`</span>
-<span class="sd">   Lebedev quadrature grid and weights</span>
+<span class="sd">    Compute Lebedev quadrature nodes and weights given a maximum stable</span>
+<span class="sd">    order. Alternatively, a degree may be supplied.</span>
 <span class="sd">`radial_filter`</span>
-<span class="sd">   Modal radial filter</span>
+<span class="sd">    Generate modal radial filter of specified orders and frequencies.</span>
 <span class="sd">`radial_filter_fullspec`</span>
-<span class="sd">   Modal radial filter over the full spectrum</span>
-<span class="sd">`sampledWave`</span>
-<span class="sd">   Sampled Wave generator, emulating discrete sampling</span>
+<span class="sd">    Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for</span>
+<span class="sd">    frequencies 0:fs/2, wraps `radial_filter()`.</span>
+<span class="sd">`spherical_head_filter`</span>
+<span class="sd">    Generate coloration compensation filter of specified maximum SH order.</span>
+<span class="sd">`spherical_head_filter_spec`</span>
+<span class="sd">    Generate NFFT/2 + 1 coloration compensation filter of specified maximum</span>
+<span class="sd">    SH order for frequencies 0:fs/2, wraps `spherical_head_filter()`.</span>
+<span class="sd">`tapering_window`</span>
+<span class="sd">    Design tapering window with cosine slope for orders greater than 3.</span>
+<span class="sd">`sampled_wave`</span>
+<span class="sd">    Returns the frequency domain data of an ideal wave as recorded by a</span>
+<span class="sd">    provided array.</span>
 <span class="sd">`ideal_wave`</span>
-<span class="sd">   Ideal wave generator, returns spatial fourier coefficients</span>
+<span class="sd">    Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an</span>
+<span class="sd">    ideal wave front hitting a specified array.</span>
+<span class="sd">`spherical_noise`</span>
+<span class="sd">    Returns order-limited random weights on a spherical surface.</span>
+<span class="sd">`delay_fd`</span>
+<span class="sd">    Generate delay in frequency domain that resembles a circular shift in</span>
+<span class="sd">    time domain.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">spherical_jn</span>
 
-<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">ArrayConfiguration</span><span
-                   class="p">,</span> <span class="n">SphericalGrid</span>
-<span class="kn">from</span> <span class="nn">.process</span> <span class="kn">import</span> <span
-                   class="n">iSpatFT</span><span class="p">,</span> <span class="n">spatFT</span>
-<span class="kn">from</span> <span class="nn">.sph</span> <span class="kn">import</span> <span class="n">array_extrapolation</span><span
-                   class="p">,</span> <span class="n">cart2sph</span><span class="p">,</span> <span
-                   class="n">dsphankel2</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span
-                   class="n">sph_harm</span><span class="p">,</span> <span class="n">sph_harm_all</span><span class="p">,</span> <span
-                   class="n">sphankel2</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">ArrayConfiguration</span><span class="p">,</span> <span class="n">SphericalGrid</span>
+<span class="kn">from</span> <span class="nn">.process</span> <span class="kn">import</span> <span class="n">iSpatFT</span><span class="p">,</span> <span class="n">spatFT</span>
+<span class="kn">from</span> <span class="nn">.sph</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">array_extrapolation</span><span class="p">,</span>
+    <span class="n">cart2sph</span><span class="p">,</span>
+    <span class="n">dsphankel2</span><span class="p">,</span>
+    <span class="n">kr</span><span class="p">,</span>
+    <span class="n">sph_harm</span><span class="p">,</span>
+    <span class="n">sph_harm_all</span><span class="p">,</span>
+    <span class="n">sphankel2</span><span class="p">,</span>
+<span class="p">)</span>
 
 
-<div class="viewcode-block" id="whiteNoise"><a class="viewcode-back"
-                                               href="../../reference.html#sound_field_analysis.gen.whiteNoise">[docs]</a><span
-        class="k">def</span> <span class="nf">whiteNoise</span><span class="p">(</span><span
-        class="n">fftData</span><span class="p">,</span> <span class="n">noiseLevel</span><span class="o">=</span><span
-        class="mi">80</span><span class="p">):</span>
+<div class="viewcode-block" id="whiteNoise"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.whiteNoise">[docs]</a><span class="k">def</span> <span class="nf">whiteNoise</span><span class="p">(</span><span class="n">fftData</span><span class="p">,</span> <span class="n">noiseLevel</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Adds White Gaussian Noise of approx. 16dB crest to a FFT block.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    fftData : array of complex floats</span>
-<span class="sd">       Input fftData block (e.g. from F/D/T or S/W/G)</span>
+<span class="sd">        Input fftData block (e.g. from F/D/T or S/W/G)</span>
 <span class="sd">    noiseLevel : int, optional</span>
-<span class="sd">       Average noise Level in dB [Default: -80dB]</span>
+<span class="sd">        Average noise Level in dB [Default: -80dB]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    noisyData : array of complex floats</span>
-<span class="sd">       Output fftData block including white gaussian noise</span>
+<span class="sd">        Output fftData block including white gaussian noise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dimFactor</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span
-            class="p">(</span><span class="n">noiseLevel</span> <span class="o">/</span> <span class="mi">20</span><span
-            class="p">)</span>
-    <span class="n">fftData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">atleast_2d</span><span class="p">(</span><span class="n">fftData</span><span class="p">)</span>
-    <span class="n">channels</span> <span class="o">=</span> <span class="n">fftData</span><span class="o">.</span><span
-            class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">NFFT</span> <span class="o">=</span> <span class="p">(</span><span class="n">fftData</span><span
-            class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span
-            class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span
-            class="o">*</span> <span class="mi">2</span>
-    <span class="n">nNoise</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span
-            class="n">channels</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
-    <span class="n">nNoise</span> <span class="o">=</span> <span class="n">dimFactor</span> <span
-            class="o">*</span> <span class="n">nNoise</span> <span class="o">/</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nNoise</span><span
-            class="p">))</span>
-    <span class="n">nNoiseSpectrum</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span
-            class="p">(</span><span class="n">nNoise</span><span class="p">,</span> <span class="n">axis</span><span
-            class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">fftData</span> <span class="o">+</span> <span
-            class="n">nNoiseSpectrum</span></div>
+    <span class="n">dimFactor</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">noiseLevel</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">fftData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">fftData</span><span class="p">)</span>
+    <span class="n">channels</span> <span class="o">=</span> <span class="n">fftData</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">NFFT</span> <span class="o">=</span> <span class="p">(</span><span class="n">fftData</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="n">nNoise</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
+    <span class="n">nNoise</span> <span class="o">=</span> <span class="n">dimFactor</span> <span class="o">*</span> <span class="n">nNoise</span> <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nNoise</span><span class="p">))</span>
+    <span class="n">nNoiseSpectrum</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">nNoise</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fftData</span> <span class="o">+</span> <span class="n">nNoiseSpectrum</span></div>
 
 
-<div class="viewcode-block" id="gauss_grid"><a class="viewcode-back"
-                                               href="../../reference.html#sound_field_analysis.gen.gauss_grid">[docs]</a><span
-        class="k">def</span> <span class="nf">gauss_grid</span><span class="p">(</span><span
-        class="n">azimuth_nodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span
-        class="n">colatitude_nodes</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute Gauss-Legendre quadrature nodes and weights in the SOFiA/VariSphear data format.</span>
+<div class="viewcode-block" id="gauss_grid"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.gauss_grid">[docs]</a><span class="k">def</span> <span class="nf">gauss_grid</span><span class="p">(</span><span class="n">azimuth_nodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">colatitude_nodes</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute Gauss-Legendre quadrature nodes and weights in the SOFiA /</span>
+<span class="sd">    VariSphear data format.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    azimuth_nodes, colatitude_nodes : int, optional</span>
-<span class="sd">       Number of azimuth / elevation nodes</span>
+<span class="sd">        Number of azimuth / elevation nodes</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    gridData : io.SphericalGrid</span>
-<span class="sd">       SphericalGrid containing azimuth, colatitude and weights</span>
+<span class="sd">        SphericalGrid containing azimuth, colatitude and weights</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c1"># Azimuth: Gauss</span>
-    <span class="n">AZ</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="n">azimuth_nodes</span> <span class="o">-</span> <span class="mi">1</span><span
-            class="p">,</span> <span class="n">azimuth_nodes</span><span class="p">)</span> <span
-            class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">azimuth_nodes</span>
-    <span class="n">AZw</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">ones</span><span class="p">(</span><span class="n">azimuth_nodes</span><span
-            class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span
-            class="n">azimuth_nodes</span>
+    <span class="n">AZ</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">azimuth_nodes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">azimuth_nodes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">azimuth_nodes</span>
+    <span class="n">AZw</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">azimuth_nodes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">azimuth_nodes</span>
 
     <span class="c1"># Elevation: Legendre</span>
-    <span class="n">EL</span><span class="p">,</span> <span class="n">ELw</span> <span class="o">=</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span
-            class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span
-            class="p">(</span><span class="n">colatitude_nodes</span><span class="p">)</span>
-    <span class="n">EL</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">arccos</span><span class="p">(</span><span class="n">EL</span><span class="p">)</span>
+    <span class="n">EL</span><span class="p">,</span> <span class="n">ELw</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">legendre</span><span class="o">.</span><span class="n">leggauss</span><span class="p">(</span><span class="n">colatitude_nodes</span><span class="p">)</span>
+    <span class="n">EL</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">EL</span><span class="p">)</span>
 
     <span class="c1"># Weights</span>
-    <span class="n">W</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span
-            class="p">(</span><span class="n">AZw</span><span class="p">,</span> <span class="n">ELw</span><span
-            class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
-    <span class="n">W</span> <span class="o">/=</span> <span class="n">W</span><span class="o">.</span><span class="n">sum</span><span
-            class="p">()</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">AZw</span><span class="p">,</span> <span class="n">ELw</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="n">W</span> <span class="o">/=</span> <span class="n">W</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
     <span class="c1"># VariSphere order: AZ increasing, EL alternating</span>
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">empty</span><span class="p">((</span><span class="n">colatitude_nodes</span> <span
-            class="o">*</span> <span class="n">azimuth_nodes</span><span class="p">,</span> <span
-            class="mi">3</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span
-            class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="n">azimuth_nodes</span><span class="p">):</span>
-        <span class="n">curIDX</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span
-            class="n">colatitude_nodes</span>
-        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span
-            class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span
-            class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">AZ</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span
-            class="o">.</span><span class="n">repeat</span><span class="p">(</span><span
-            class="n">colatitude_nodes</span><span class="p">)</span>
-        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span
-            class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span
-            class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">EL</span><span class="p">[::</span><span class="o">-</span><span
-            class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">%</span> <span
-            class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>  <span
-            class="c1"># flip EL every second iteration</span>
-        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span><span
-            class="p">:</span><span class="n">curIDX</span> <span class="o">+</span> <span
-            class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">][::</span><span
-            class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span
-            class="o">%</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span
-            class="p">]</span>  <span class="c1"># flip W every second iteration</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">colatitude_nodes</span> <span class="o">*</span> <span class="n">azimuth_nodes</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">azimuth_nodes</span><span class="p">):</span>
+        <span class="n">curIDX</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">colatitude_nodes</span>
+        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span> <span class="p">:</span> <span class="n">curIDX</span> <span class="o">+</span> <span class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">AZ</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">colatitude_nodes</span><span class="p">)</span>
+        <span class="c1"># flip EL every second iteration</span>
+        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span> <span class="p">:</span> <span class="n">curIDX</span> <span class="o">+</span> <span class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">EL</span><span class="p">[::</span> <span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="c1"># flip W every second iteration</span>
+        <span class="n">gridData</span><span class="p">[</span><span class="n">curIDX</span> <span class="p">:</span> <span class="n">curIDX</span> <span class="o">+</span> <span class="n">colatitude_nodes</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">][::</span> <span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>
 
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">0</span><span
-            class="p">],</span> <span class="n">gridData</span><span class="p">[:,</span> <span class="mi">1</span><span
-            class="p">],</span> <span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span
-            class="p">(</span><span class="n">colatitude_nodes</span> <span class="o">*</span> <span class="n">azimuth_nodes</span><span
-            class="p">),</span> <span class="n">gridData</span><span class="p">[:,</span> <span class="mi">2</span><span
-            class="p">])</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span>
+        <span class="n">gridData</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">gridData</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">colatitude_nodes</span> <span class="o">*</span> <span class="n">azimuth_nodes</span><span class="p">),</span>
+        <span class="n">gridData</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">gridData</span></div>
 
 
-<div class="viewcode-block" id="lebedev"><a class="viewcode-back"
-                                            href="../../reference.html#sound_field_analysis.gen.lebedev">[docs]</a><span
-        class="k">def</span> <span class="nf">lebedev</span><span class="p">(</span><span
-        class="n">max_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span
-        class="n">degree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute Lebedev quadrature nodes and weights given a maximum stable order. Alternatively, a degree may be</span>
-<span class="sd">    supplied.</span>
+<div class="viewcode-block" id="lebedev"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.lebedev">[docs]</a><span class="k">def</span> <span class="nf">lebedev</span><span class="p">(</span><span class="n">max_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute Lebedev quadrature nodes and weights given a maximum stable</span>
+<span class="sd">    order. Alternatively, a degree may be supplied.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    max_order : int</span>
-<span class="sd">       Maximum stable order of the Lebedev grid, [0 ... 11]</span>
+<span class="sd">        Maximum stable order of the Lebedev grid, [0 ... 11]</span>
 <span class="sd">    degree : int, optional</span>
-<span class="sd">       Lebedev Degree, one of {6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}</span>
+<span class="sd">        Lebedev Degree, one of {6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194}</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    gridData : array_like</span>
-<span class="sd">       Lebedev quadrature positions and weights: [AZ, EL, W]</span>
+<span class="sd">        Lebedev quadrature positions and weights: [AZ, EL, W]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span
-            class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">degree</span><span
-            class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either a maximum order or a degree have to be given.&#39;</span><span
-            class="p">)</span>
+    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">degree</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either a maximum order or a degree have to be given.&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">is</span> <span class="mi">0</span><span
-            class="p">:</span>
+    <span class="k">if</span> <span class="n">max_order</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">max_order</span> <span class="o">=</span> <span class="mi">1</span>
 
-    <span class="n">allowed_degrees</span> <span class="o">=</span> <span class="p">[</span><span
-            class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span
-            class="mi">26</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span
-            class="mi">50</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span
-            class="mi">86</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span
-            class="mi">146</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span
-            class="mi">194</span><span class="p">]</span>
+    <span class="n">allowed_degrees</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">146</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">194</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">and</span> <span
-            class="mi">0</span> <span class="o">&lt;=</span> <span class="n">max_order</span> <span
-            class="o">&lt;=</span> <span class="mi">11</span><span class="p">:</span>
-        <span class="n">degree</span> <span class="o">=</span> <span class="n">allowed_degrees</span><span
-            class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">max_order</span><span
-            class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">max_order</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">max_order</span> <span class="o">&lt;=</span> <span class="mi">11</span><span class="p">:</span>
+        <span class="n">degree</span> <span class="o">=</span> <span class="n">allowed_degrees</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
     <span class="k">elif</span> <span class="n">max_order</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Maximum order can only be between 0 and 11.&#39;</span><span
-            class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Maximum order can only be between 0 and 11.&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">degree</span> <span class="ow">not</span> <span class="ow">in</span> <span
-            class="n">allowed_degrees</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span
-            class="s1">&#39;</span><span class="si">{degree}</span><span class="s1"> is an invalid quadrature degree. Choose one of the following: </span><span
-            class="si">{allowed_degrees}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">degree</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_degrees</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">degree</span><span class="si">}</span><span class="s2"> is an invalid quadrature degree. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Choose one of the following: </span><span class="si">{</span><span class="n">allowed_degrees</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 
     <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lebedev</span>
-    <span class="n">leb</span> <span class="o">=</span> <span class="n">lebedev</span><span class="o">.</span><span
-            class="n">genGrid</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
-    <span class="n">azimuth</span><span class="p">,</span> <span class="n">elevation</span><span
-            class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span
-            class="n">cart2sph</span><span class="p">(</span><span class="n">leb</span><span class="o">.</span><span
-            class="n">x</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span
-            class="n">y</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span
-            class="n">z</span><span class="p">)</span>
 
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">array</span><span class="p">([</span><span class="n">azimuth</span> <span class="o">%</span> <span
-            class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="p">(</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span
-            class="mi">2</span> <span class="o">-</span> <span class="n">elevation</span><span class="p">)</span> <span
-            class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span
-            class="n">radius</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span
-            class="n">w</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">gridData</span><span
-            class="p">[</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">1</span><span
-            class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">gridData</span><span
-            class="p">[</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">0</span><span
-            class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
+    <span class="n">leb</span> <span class="o">=</span> <span class="n">lebedev</span><span class="o">.</span><span class="n">genGrid</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
+    <span class="n">azimuth</span><span class="p">,</span> <span class="n">elevation</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">cart2sph</span><span class="p">(</span><span class="n">leb</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">SphericalGrid</span><span class="p">(</span><span
-            class="o">*</span><span class="n">gridData</span><span class="o">.</span><span class="n">T</span><span
-            class="p">)</span></div>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">azimuth</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">elevation</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">leb</span><span class="o">.</span><span class="n">w</span><span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">gridData</span><span class="p">[</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">gridData</span><span class="p">[</span><span class="n">gridData</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">gridData</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="radial_filter_fullspec"><a class="viewcode-back"
-                                                           href="../../reference.html#sound_field_analysis.gen.radial_filter_fullspec">[docs]</a><span
-        class="k">def</span> <span class="nf">radial_filter_fullspec</span><span class="p">(</span><span class="n">max_order</span><span
-        class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span
-        class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span
-        class="o">=</span><span class="mi">40</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for frequencies 0:fs/2, wraps radial_filter().</span>
+<div class="viewcode-block" id="radial_filter_fullspec"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.radial_filter_fullspec">[docs]</a><span class="k">def</span> <span class="nf">radial_filter_fullspec</span><span class="p">(</span><span class="n">max_order</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for</span>
+<span class="sd">    frequencies 0:fs/2, wraps `radial_filter()`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    max_order : int</span>
-<span class="sd">       Maximum order</span>
+<span class="sd">        Maximum order</span>
 <span class="sd">    NFFT : int</span>
-<span class="sd">       Order of FFT (number of bins), should be a power of 2.</span>
+<span class="sd">        Order of FFT (number of bins), should be a power of 2.</span>
 <span class="sd">    fs : int</span>
-<span class="sd">       Sampling frequency</span>
+<span class="sd">        Sampling frequency</span>
 <span class="sd">    array_configuration : io.ArrayConfiguration</span>
-<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
 <span class="sd">    amp_maxdB : int, optional</span>
-<span class="sd">       Maximum modal amplification limit in dB [Default: 40]</span>
+<span class="sd">        Maximum modal amplification limit in dB [Default: 40]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    dn : array_like</span>
-<span class="sd">       Vector of modal frequency domain filter of shape [max_order + 1 x NFFT / 2 + 1]</span>
+<span class="sd">        Vector of modal frequency domain filter of shape</span>
+<span class="sd">        [max_order + 1 x NFFT / 2 + 1]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span
-            class="n">NFFT</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span
-            class="mi">1</span><span class="p">)</span>
-    <span class="n">orders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">r_</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">max_order</span> <span
-            class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">radial_filter</span><span class="p">(</span><span
-            class="n">orders</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span
-            class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span
-            class="o">=</span><span class="n">amp_maxdB</span><span class="p">)</span></div>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">NFFT</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">orders</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">radial_filter</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="n">amp_maxdB</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="radial_filter"><a class="viewcode-back"
-                                                  href="../../reference.html#sound_field_analysis.gen.radial_filter">[docs]</a><span
-        class="k">def</span> <span class="nf">radial_filter</span><span class="p">(</span><span
-        class="n">orders</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span
-        class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span
-        class="o">=</span><span class="mi">40</span><span class="p">):</span>
+<div class="viewcode-block" id="radial_filter"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.radial_filter">[docs]</a><span class="k">def</span> <span class="nf">radial_filter</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate modal radial filter of specified orders and frequencies.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    orders : array_like</span>
-<span class="sd">       orders of filter</span>
+<span class="sd">        orders of filter</span>
 <span class="sd">    freqs : array_like</span>
-<span class="sd">       Frequency of modal filter</span>
+<span class="sd">        Frequency of modal filter</span>
 <span class="sd">    array_configuration : io.ArrayConfiguration</span>
-<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
 <span class="sd">    amp_maxdB : int, optional</span>
-<span class="sd">       Maximum modal amplification limit in dB [Default: 40]</span>
+<span class="sd">        Maximum modal amplification limit in dB [Default: 40]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    dn : array_like</span>
-<span class="sd">       Vector of modal frequency domain filter of shape [nOrders x nFreq]</span>
+<span class="sd">        Vector of modal frequency domain filter of shape [nOrders x nFreq]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span
-            class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
+    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
 
-    <span class="n">extrapolation_coeffs</span> <span class="o">=</span> <span class="n">array_extrapolation</span><span
-            class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">freqs</span><span
-            class="p">,</span> <span class="n">array_configuration</span><span class="p">)</span>
-    <span class="n">extrapolation_coeffs</span><span class="p">[</span><span class="n">extrapolation_coeffs</span> <span
-            class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span
-            class="mf">1e-12</span>
+    <span class="n">extrapolation_coeffs</span> <span class="o">=</span> <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">)</span>
+    <span class="n">extrapolation_coeffs</span><span class="p">[</span><span class="n">extrapolation_coeffs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-12</span>
 
-    <span class="n">amp_max</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span
-            class="p">(</span><span class="n">amp_maxdB</span> <span class="o">/</span> <span class="mi">20</span><span
-            class="p">)</span>
-    <span class="n">limiting_factor</span> <span class="o">=</span> <span class="mi">2</span> <span
-            class="o">*</span> <span class="n">amp_max</span> <span class="o">/</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">abs</span><span class="p">(</span><span
-            class="n">extrapolation_coeffs</span><span class="p">)</span> <span class="o">*</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span>
-        <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span
-            class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">amp_max</span> <span
-            class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span
-            class="p">(</span><span class="n">extrapolation_coeffs</span><span class="p">)))</span>
+    <span class="n">amp_max</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">amp_maxdB</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">limiting_factor</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mi">2</span>
+        <span class="o">*</span> <span class="n">amp_max</span>
+        <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">extrapolation_coeffs</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">amp_max</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">extrapolation_coeffs</span><span class="p">)))</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">limiting_factor</span> <span class="o">/</span> <span class="n">extrapolation_coeffs</span></div>
 
 
-<div class="viewcode-block" id="spherical_head_filter"><a class="viewcode-back"
-                                                          href="../../reference.html#sound_field_analysis.gen.spherical_head_filter">[docs]</a><span
-        class="k">def</span> <span class="nf">spherical_head_filter</span><span class="p">(</span><span class="n">max_order</span><span
-        class="p">,</span> <span class="n">full_order</span><span class="p">,</span> <span class="n">kr</span><span
-        class="p">,</span> <span class="n">is_tapering</span><span class="o">=</span><span class="kc">False</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate coloration compensation filter of specified maximum SH order, according to [1].</span>
+<div class="viewcode-block" id="spherical_head_filter"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.spherical_head_filter">[docs]</a><span class="k">def</span> <span class="nf">spherical_head_filter</span><span class="p">(</span><span class="n">max_order</span><span class="p">,</span> <span class="n">full_order</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">is_tapering</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate coloration compensation filter of specified maximum SH order,</span>
+<span class="sd">    according to [1]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -532,438 +438,114 @@
 <span class="sd">    kr : array_like</span>
 <span class="sd">        Vector of corresponding wave numbers</span>
 <span class="sd">    is_tapering : bool, optional</span>
-<span class="sd">        If set, spherical head filter will be adapted applying a Hann window, according to [2]</span>
+<span class="sd">        If set, spherical head filter will be adapted applying a Hann window,</span>
+<span class="sd">        according to [2]_</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    G_SHF : array_like</span>
-<span class="sd">       Vector of frequency domain filter of shape [NFFT / 2 + 1]</span>
+<span class="sd">        Vector of frequency domain filter of shape [NFFT / 2 + 1]</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., et al. (2017). &quot;Spectral equalization in binaural signals</span>
-<span class="sd">    represented by order-truncated spherical harmonics. The Journal of the Acoustical Society of America&quot;.</span>
-
-<span class="sd">    [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and Ivan J. Tashev (2019). “Improving</span>
-<span class="sd">    Binaural Ambisonics Decoding by Spherical Harmonics Domain Tapering and Coloration Compensation.”</span>
+<span class="sd">    .. [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., et al. (2017). &quot;Spectral</span>
+<span class="sd">       equalization in binaural signals represented by order-truncated</span>
+<span class="sd">       spherical harmonics. The Journal of the Acoustical Society of America&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># noinspection PyShadowingNames</span>
-    <span class="k">def</span> <span class="nf">pressure_on_sphere</span><span class="p">(</span><span class="n">max_order</span><span
-            class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span
-            class="n">taper_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the diffuse field pressure frequency response of a spherical scatterer, up to the specified SH order.</span>
-<span class="sd">        If tapering weights are specified, pressure on the sphere function will be adapted.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">taper_weights</span> <span class="ow">is</span> <span
-            class="kc">None</span><span class="p">:</span>
-            <span class="n">taper_weights</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">max_order</span> <span
-            class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># no weighting</span>
 
-        <span class="n">p</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">zeros_like</span><span class="p">(</span><span class="n">kr</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span
-            class="p">(</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">):</span>
+    <span class="k">def</span> <span class="nf">pressure_on_sphere</span><span class="p">(</span><span class="n">max_order</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">taper_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the diffuse field pressure frequency response of a spherical</span>
+<span class="sd">        scatterer, up to the specified SH order. If tapering weights are</span>
+<span class="sd">        specified, pressure on the sphere function will be adapted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">taper_weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taper_weights</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># no weighting</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">kr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="c1"># Calculate mode strength b_n(kr) for an incident plane wave on sphere according to [1, Eq.(9)]</span>
-            <span class="n">b_n</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span
-            class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">order</span> <span
-            class="o">*</span> <span class="p">(</span><span class="n">spherical_jn</span><span class="p">(</span><span
-            class="n">order</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span
-            class="o">-</span>
-                                              <span class="p">(</span><span class="n">spherical_jn</span><span
-            class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">kr</span><span
-            class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="o">/</span>
-                                               <span class="n">dsphankel2</span><span class="p">(</span><span class="n">order</span><span
-            class="p">,</span> <span class="n">kr</span><span class="p">))</span> <span class="o">*</span> <span
-            class="n">sphankel2</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span
-            class="n">kr</span><span class="p">))</span>
-            <span class="n">p</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">2</span> <span
-            class="o">*</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">abs</span><span class="p">(</span><span class="n">b_n</span><span class="p">)</span> <span
-            class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span
-            class="n">taper_weights</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+            <span class="n">b_n</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">4</span>
+                <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+                <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">**</span> <span class="n">order</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">spherical_jn</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="p">(</span><span class="n">spherical_jn</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">dsphankel2</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">kr</span><span class="p">))</span>
+                    <span class="o">*</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">p</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">b_n</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">taper_weights</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
 
         <span class="c1"># according to [1, Eq.(11)]</span>
-        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span
-            class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span
-            class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
     <span class="c1"># according to [1, Eq.(12)].</span>
-    <span class="n">taper_weights</span> <span class="o">=</span> <span class="n">tapering_window</span><span class="p">(</span><span
-            class="n">max_order</span><span class="p">)</span> <span class="k">if</span> <span
-            class="n">is_tapering</span> <span class="k">else</span> <span class="kc">None</span>
-    <span class="n">G_SHF</span> <span class="o">=</span> <span class="n">pressure_on_sphere</span><span
-            class="p">(</span><span class="n">full_order</span><span class="p">,</span> <span class="n">kr</span><span
-            class="p">)</span> <span class="o">/</span> <span class="n">pressure_on_sphere</span><span
-            class="p">(</span><span class="n">max_order</span><span class="p">,</span> <span class="n">kr</span><span
-            class="p">,</span> <span class="n">taper_weights</span><span class="p">)</span>
+    <span class="n">taper_weights</span> <span class="o">=</span> <span class="n">tapering_window</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_tapering</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">G_SHF</span> <span class="o">=</span> <span class="n">pressure_on_sphere</span><span class="p">(</span><span class="n">full_order</span><span class="p">,</span> <span class="n">kr</span><span class="p">)</span> <span class="o">/</span> <span class="n">pressure_on_sphere</span><span class="p">(</span>
+        <span class="n">max_order</span><span class="p">,</span> <span class="n">kr</span><span class="p">,</span> <span class="n">taper_weights</span>
+    <span class="p">)</span>
 
-    <span class="n">G_SHF</span><span class="p">[</span><span class="n">G_SHF</span> <span class="o">==</span> <span
-            class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-12</span>  <span
-            class="c1"># catch zeros</span>
-    <span class="n">G_SHF</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">isnan</span><span class="p">(</span><span class="n">G_SHF</span><span class="p">)]</span> <span
-            class="o">=</span> <span class="mi">1</span>  <span class="c1"># catch NaNs</span>
+    <span class="n">G_SHF</span><span class="p">[</span><span class="n">G_SHF</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-12</span>  <span class="c1"># catch zeros</span>
+    <span class="n">G_SHF</span><span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">G_SHF</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># catch NaNs</span>
     <span class="k">return</span> <span class="n">G_SHF</span></div>
 
 
-<div class="viewcode-block" id="spherical_head_filter_spec"><a class="viewcode-back"
-                                                               href="../../reference.html#sound_field_analysis.gen.spherical_head_filter_spec">[docs]</a><span
-        class="k">def</span> <span class="nf">spherical_head_filter_spec</span><span class="p">(</span><span class="n">max_order</span><span
-        class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span
-        class="n">radius</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span
-        class="kc">None</span><span class="p">,</span> <span class="n">is_tapering</span><span class="o">=</span><span
-        class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate NFFT/2 + 1 coloration compensation filter of specified maximum SH order for frequencies 0:fs/2, wraps</span>
-<span class="sd">    spherical_head_filter().</span>
+<div class="viewcode-block" id="spherical_head_filter_spec"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.spherical_head_filter_spec">[docs]</a><span class="k">def</span> <span class="nf">spherical_head_filter_spec</span><span class="p">(</span>
+    <span class="n">max_order</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">amp_maxdB</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_tapering</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate NFFT/2 + 1 coloration compensation filter of specified maximum</span>
+<span class="sd">    SH order for frequencies 0:fs/2, wraps `spherical_head_filter()`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    max_order : int</span>
-<span class="sd">       Maximum order</span>
+<span class="sd">        Maximum order</span>
 <span class="sd">    NFFT : int</span>
-<span class="sd">       Order of FFT (number of bins), should be a power of 2</span>
+<span class="sd">        Order of FFT (number of bins), should be a power of 2</span>
 <span class="sd">    fs : int</span>
-<span class="sd">       Sampling frequency</span>
+<span class="sd">        Sampling frequency</span>
 <span class="sd">    radius : float</span>
 <span class="sd">        Array radius</span>
 <span class="sd">    amp_maxdB : int, optional</span>
-<span class="sd">       Maximum modal amplification limit in dB [Default: None]</span>
+<span class="sd">        Maximum modal amplification limit in dB [Default: None]</span>
 <span class="sd">    is_tapering : bool, optional</span>
-<span class="sd">       If true spherical head filter will be adapted for SH tapering. [Default: False]</span>
+<span class="sd">        If true spherical head filter will be adapted for SH tapering.</span>
+<span class="sd">        [Default: False]</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    G_SHF : array_like</span>
-<span class="sd">       Vector of frequency domain filter of shape [NFFT / 2 + 1]</span>
+<span class="sd">        Vector of frequency domain filter of shape [NFFT / 2 + 1]</span>
+
+<span class="sd">    TODO</span>
+<span class="sd">    ----</span>
+<span class="sd">    Implement `arctan()` soft-clipping</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># frequency support vector &amp; corresponding wave numbers k</span>
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span
-            class="nb">int</span><span class="p">(</span><span class="n">NFFT</span> <span class="o">/</span> <span
-            class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">kr_SHF</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span
-            class="n">freqs</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">NFFT</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">kr_SHF</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
 
     <span class="c1"># calculate SH order necessary to expand sound field in entire modal range</span>
-    <span class="n">order_full</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span
-            class="n">kr_SHF</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span
-            class="p">]))</span>
+    <span class="n">order_full</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">kr_SHF</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
     <span class="c1"># calculate filter</span>
-    <span class="n">G_SHF</span> <span class="o">=</span> <span class="n">spherical_head_filter</span><span
-            class="p">(</span><span class="n">max_order</span><span class="p">,</span> <span class="n">order_full</span><span
-            class="p">,</span> <span class="n">kr_SHF</span><span class="p">,</span> <span
-            class="n">is_tapering</span><span class="o">=</span><span class="n">is_tapering</span><span
-            class="p">)</span>
+    <span class="n">G_SHF</span> <span class="o">=</span> <span class="n">spherical_head_filter</span><span class="p">(</span>
+        <span class="n">max_order</span><span class="p">,</span> <span class="n">order_full</span><span class="p">,</span> <span class="n">kr_SHF</span><span class="p">,</span> <span class="n">is_tapering</span><span class="o">=</span><span class="n">is_tapering</span>
+    <span class="p">)</span>
 
     <span class="c1"># filter limiting</span>
     <span class="k">if</span> <span class="n">amp_maxdB</span><span class="p">:</span>
-        <span class="c1"># TODO: implement arctan() soft clipping</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span
-            class="s1">&#39;amplitude soft clipping not yet implemented&#39;</span><span class="p">)</span>
+        <span class="c1"># TODO: Implement `arctan()` soft-clipping</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;amplitude soft clipping not yet implemented&quot;</span><span class="p">)</span>
         <span class="c1"># amp_max = 10 ** (amp_maxdB / 20)</span>
         <span class="c1"># G_SHF[np.where(G_SHF &gt; amp_max)] = amp_max</span>
-    <span class="k">return</span> <span class="n">G_SHF</span><span class="o">.</span><span class="n">astype</span><span
-            class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span
-            class="p">)</span></div>
+    <span class="k">return</span> <span class="n">G_SHF</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="sampled_wave"><a class="viewcode-back"
-                                                 href="../../reference.html#sound_field_analysis.gen.sampled_wave">[docs]</a><span
-        class="k">def</span> <span class="nf">sampled_wave</span><span class="p">(</span><span
-        class="n">order</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span
-        class="n">NFFT</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">,</span>
-                 <span class="n">gridData</span><span class="p">,</span> <span class="n">wave_azimuth</span><span
-            class="p">,</span> <span class="n">wave_colatitude</span><span class="p">,</span> <span
-            class="n">wavetype</span><span class="o">=</span><span class="s1">&#39;plane&#39;</span><span
-            class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">343</span><span
-            class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span><span
-            class="p">,</span> <span class="n">limit_order</span><span class="o">=</span><span class="mi">85</span><span
-            class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the frequency domain data of an ideal wave as recorded by a provided array.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    order : int</span>
-<span class="sd">        Maximum transform order</span>
-<span class="sd">    fs : int</span>
-<span class="sd">       Sampling frequency</span>
-<span class="sd">    NFFT : int</span>
-<span class="sd">       Order of FFT (number of bins), should be a power of 2.</span>
-<span class="sd">    array_configuration : io.ArrayConfiguration</span>
-<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
-<span class="sd">    gridData : io.SphericalGrid</span>
-<span class="sd">       List/Tuple/gauss_grid, see io.SphericalGrid</span>
-<span class="sd">    wave_azimuth, wave_colatitude : float, optional</span>
-<span class="sd">       Direction of incoming wave in radians [0-2pi].</span>
-<span class="sd">    wavetype : {&#39;plane&#39;, &#39;spherical&#39;}, optional</span>
-<span class="sd">       Type of the wave. [Default: plane]</span>
-<span class="sd">    c : float, optional</span>
-<span class="sd">       __UNUSED__ Speed of sound in [m/s] [Default: 343 m/s]</span>
-<span class="sd">    distance : float, optional</span>
-<span class="sd">       Distance of the source in [m] (For spherical waves only)</span>
-<span class="sd">    limit_order : int, optional</span>
-<span class="sd">       Sets the limit for wave generation</span>
-
-<span class="sd">    Warning</span>
-<span class="sd">    -------</span>
-<span class="sd">    If NFFT is smaller than the time the wavefront needs to travel from the source to the array, the impulse response</span>
-<span class="sd">    will by cyclically shifted (cyclic convolution).</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Pnm : array_like</span>
-<span class="sd">        Spatial fourier coefficients of resampled sound field</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="o">*</span><span class="n">gridData</span><span class="p">)</span>
-    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span
-            class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
-
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span
-            class="n">NFFT</span><span class="p">)</span>
-    <span class="n">kr_mic</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span
-            class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span
-            class="o">.</span><span class="n">array_radius</span><span class="p">)</span>
-
-    <span class="n">max_order_fullspec</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">kr_mic</span><span
-            class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="c1"># TODO : Investigate if limit_order works as intended</span>
-    <span class="k">if</span> <span class="n">max_order_fullspec</span> <span class="o">&gt;</span> <span class="n">limit_order</span><span
-            class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Requested wave front needs a minimum order of </span><span
-            class="si">{max_order_fullspec}</span><span class="s1"> but was limited to order &#39;</span>
-              <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{limit_order}</span><span
-            class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">Pnm</span> <span class="o">=</span> <span class="n">ideal_wave</span><span class="p">(</span><span
-            class="nb">min</span><span class="p">(</span><span class="n">max_order_fullspec</span><span
-            class="p">,</span> <span class="n">limit_order</span><span class="p">),</span> <span
-            class="n">fs</span><span class="p">,</span> <span class="n">wave_azimuth</span><span
-            class="p">,</span> <span class="n">wave_colatitude</span><span class="p">,</span> <span class="n">array_configuration</span><span
-            class="p">,</span>
-                     <span class="n">wavetype</span><span class="p">,</span> <span class="n">distance</span><span
-            class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
-    <span class="n">Pnm_resampled</span> <span class="o">=</span> <span class="n">spatFT</span><span
-            class="p">(</span><span class="n">iSpatFT</span><span class="p">(</span><span class="n">Pnm</span><span
-            class="p">,</span> <span class="n">gridData</span><span class="p">),</span> <span
-            class="n">gridData</span><span class="p">,</span> <span class="n">order_max</span><span
-            class="o">=</span><span class="n">order</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Pnm_resampled</span></div>
-
-
-<div class="viewcode-block" id="ideal_wave"><a class="viewcode-back"
-                                               href="../../reference.html#sound_field_analysis.gen.ideal_wave">[docs]</a><span
-        class="k">def</span> <span class="nf">ideal_wave</span><span class="p">(</span><span class="n">order</span><span
-        class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">azimuth</span><span
-        class="p">,</span> <span class="n">colatitude</span><span class="p">,</span> <span
-        class="n">array_configuration</span><span class="p">,</span>
-               <span class="n">wavetype</span><span class="o">=</span><span class="s1">&#39;plane&#39;</span><span
-            class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span><span
-            class="p">,</span> <span class="n">NFFT</span><span class="o">=</span><span class="mi">128</span><span
-            class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.0</span><span
-            class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">343.0</span><span
-            class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an ideal wave front hitting a specified array</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    order : int</span>
-<span class="sd">        Maximum transform order</span>
-<span class="sd">    fs : int</span>
-<span class="sd">       Sampling frequency</span>
-<span class="sd">    NFFT : int</span>
-<span class="sd">       Order of FFT (number of bins), should be a power of 2</span>
-<span class="sd">    array_configuration : io.ArrayConfiguration</span>
-<span class="sd">       List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
-<span class="sd">    azimuth, colatitude : float</span>
-<span class="sd">       Azimuth/Colatitude angle of the wave in [RAD]</span>
-<span class="sd">    wavetype : {&#39;plane&#39;, &#39;spherical&#39;}, optional</span>
-<span class="sd">       Select between plane or spherical wave [Default: Plane wave]</span>
-<span class="sd">    distance : float, optional</span>
-<span class="sd">       Distance of the source in [m] (for spherical waves only)</span>
-<span class="sd">    delay : float, optional</span>
-<span class="sd">       Time Delay in s [default: 0]</span>
-<span class="sd">    c : float, optional</span>
-<span class="sd">       Propagation velocity in m/s [Default: 343m/s]</span>
-
-<span class="sd">    Warning</span>
-<span class="sd">    -------</span>
-<span class="sd">    If NFFT is smaller than the time the wavefront needs to travel from the source to the array, the impulse response</span>
-<span class="sd">    will by cyclically shifted.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Pnm : array of complex floats</span>
-<span class="sd">       Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in rows</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span
-            class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
-
-    <span class="n">order</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">int</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
-    <span class="n">NFFT</span> <span class="o">=</span> <span class="n">NFFT</span> <span class="o">//</span> <span
-            class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">NMLocatorSize</span> <span class="o">=</span> <span class="p">(</span><span
-            class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span
-            class="o">**</span> <span class="mi">2</span>
-
-    <span class="c1"># SAFETY CHECKS</span>
-    <span class="k">if</span> <span class="n">wavetype</span> <span class="ow">not</span> <span
-            class="ow">in</span> <span class="p">{</span><span class="s1">&#39;plane&#39;</span><span class="p">,</span> <span
-            class="s1">&#39;spherical&#39;</span><span class="p">}:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid wavetype: Choose either plane or spherical.&#39;</span><span
-            class="p">)</span>
-    <span class="k">if</span> <span class="n">delay</span> <span class="o">*</span> <span class="n">fs</span> <span
-            class="o">&gt;</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span><span
-            class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Delay t is large for provided NFFT. Choose t &lt; NFFT/(2*FS).&#39;</span><span
-            class="p">)</span>
-
-    <span class="n">w</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span
-            class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fs</span><span
-            class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
-    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span
-            class="n">NFFT</span><span class="p">)</span>
-
-    <span class="n">radial_filters</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">zeros</span><span class="p">([</span><span
-            class="n">NMLocatorSize</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">],</span> <span
-            class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span
-            class="n">complex_</span><span class="p">)</span>
-    <span class="n">time_shift</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span
-            class="n">j</span> <span class="o">*</span> <span class="n">w</span> <span class="o">*</span> <span
-            class="n">delay</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span
-            class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">order</span> <span
-            class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">wavetype</span> <span class="ow">is</span> <span class="s1">&#39;plane&#39;</span><span
-            class="p">:</span>
-            <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span
-            class="p">]</span> <span class="o">=</span> <span class="n">time_shift</span> <span class="o">*</span> <span
-            class="n">array_extrapolation</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span
-            class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span
-            class="p">)</span>
-        <span class="k">elif</span> <span class="n">wavetype</span> <span class="ow">is</span> <span class="s1">&#39;spherical&#39;</span><span
-            class="p">:</span>
-            <span class="n">k_dist</span> <span class="o">=</span> <span class="n">kr</span><span
-            class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">distance</span><span
-            class="p">)</span>
-            <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span
-            class="p">]</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span
-            class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span
-            class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span
-            class="n">w</span> <span class="o">/</span> <span class="n">c</span> <span class="o">*</span> <span
-            class="n">time_shift</span> <span class="o">*</span> <span class="n">sphankel2</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k_dist</span><span
-            class="p">)</span> \
-                                <span class="o">*</span> <span class="n">array_extrapolation</span><span
-            class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">freqs</span><span
-            class="p">,</span> <span class="n">array_configuration</span><span class="p">)</span>
-
-    <span class="c1"># GENERATOR CORE</span>
-    <span class="n">Pnm</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">empty</span><span class="p">([</span><span class="n">NMLocatorSize</span><span class="p">,</span> <span
-            class="n">NFFT</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span
-            class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-    <span class="c1"># m, n = mnArrays(order + 1)</span>
-    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span
-            class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">order</span> <span
-            class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span
-            class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span
-            class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">):</span>
-            <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span
-            class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span
-            class="p">(</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span
-            class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">azimuth</span><span
-            class="p">,</span> <span class="n">colatitude</span><span class="p">))</span> <span class="o">*</span> <span
-            class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-            <span class="n">ctr</span> <span class="o">=</span> <span class="n">ctr</span> <span
-            class="o">+</span> <span class="mi">1</span>
-
-    <span class="k">return</span> <span class="n">Pnm</span></div>
-
-
-<div class="viewcode-block" id="spherical_noise"><a class="viewcode-back"
-                                                    href="../../reference.html#sound_field_analysis.gen.spherical_noise">[docs]</a><span
-        class="k">def</span> <span class="nf">spherical_noise</span><span class="p">(</span><span
-        class="n">gridData</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span
-        class="n">order_max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span
-        class="n">spherical_harmonic_bases</span><span class="o">=</span><span class="kc">None</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns order-limited random weights on a spherical surface</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    gridData : io.SphericalGrid</span>
-<span class="sd">       SphericalGrid containing azimuth and colatitude</span>
-<span class="sd">    order_max : int, optional</span>
-<span class="sd">        Spherical order limit [Default: 8]</span>
-<span class="sd">    spherical_harmonic_bases : array_like, optional</span>
-<span class="sd">       Spherical harmonic base coefficients (not yet weighted by spatial sampling grid) [Default: None]</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    noisy_weights : array_like, complex</span>
-<span class="sd">       Noisy weights</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">spherical_harmonic_bases</span> <span class="ow">is</span> <span
-            class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">gridData</span> <span class="ow">is</span> <span
-            class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Either a grid or the spherical harmonic bases have to be provided.&#39;</span><span
-            class="p">)</span>
-        <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span
-            class="p">(</span><span class="o">*</span><span class="n">gridData</span><span class="p">)</span>
-        <span class="n">spherical_harmonic_bases</span> <span class="o">=</span> <span
-            class="n">sph_harm_all</span><span class="p">(</span><span class="n">order_max</span><span
-            class="p">,</span> <span class="n">gridData</span><span class="o">.</span><span
-            class="n">azimuth</span><span class="p">,</span> <span class="n">gridData</span><span
-            class="o">.</span><span class="n">colatitude</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">order_max</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">_np</span><span
-            class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spherical_harmonic_bases</span><span
-            class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span
-            class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">inner</span><span
-            class="p">(</span><span class="n">spherical_harmonic_bases</span><span class="p">,</span>
-                     <span class="n">_np</span><span class="o">.</span><span class="n">random</span><span
-            class="o">.</span><span class="n">randn</span><span class="p">((</span><span
-            class="n">order_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span
-            class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span
-            class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span
-            class="p">((</span><span class="n">order_max</span> <span class="o">+</span> <span class="mi">1</span><span
-            class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="tapering_window"><a class="viewcode-back"
-                                                    href="../../reference.html#sound_field_analysis.gen.tapering_window">[docs]</a><span
-        class="k">def</span> <span class="nf">tapering_window</span><span class="p">(</span><span
-        class="n">max_order</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Design tapering window with cosine slope for orders greater than 3, according to [1].</span>
+<div class="viewcode-block" id="tapering_window"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.tapering_window">[docs]</a><span class="k">def</span> <span class="nf">tapering_window</span><span class="p">(</span><span class="n">max_order</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Design tapering window with cosine slope for orders greater than 3,</span>
+<span class="sd">    according to [2]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -973,47 +555,265 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    hann_window_half : array_like</span>
-<span class="sd">       Tapering window with cosine slope for orders greater than 3. Ones in case of maximum SH order being smaller than</span>
-<span class="sd">       3.</span>
+<span class="sd">       Tapering window with cosine slope for orders greater than 3. Ones in case</span>
+<span class="sd">       of maximum SH order being smaller than 3.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    [1] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and Ivan J. Tashev (2019). “Improving</span>
-<span class="sd">    Binaural Ambisonics Decoding by Spherical Harmonics Domain Tapering and Coloration Compensation.”</span>
+<span class="sd">    .. [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and</span>
+<span class="sd">       Ivan J. Tashev (2019). “Improving Binaural Ambisonics Decoding by</span>
+<span class="sd">       Spherical Harmonics Domain Tapering and Coloration Compensation.”</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">ones</span><span class="p">(</span><span class="n">max_order</span> <span class="o">+</span> <span
-            class="mi">1</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">max_order</span> <span class="o">&gt;=</span> <span
-            class="mi">3</span><span class="p">:</span>
-        <span class="n">hann_window</span> <span class="o">=</span> <span class="n">_np</span><span
-            class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="mi">2</span> <span
-            class="o">*</span> <span class="p">((</span><span class="n">max_order</span> <span class="o">+</span> <span
-            class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span
-            class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="p">((</span><span
-            class="n">max_order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span
-            class="o">//</span> <span class="mi">2</span><span class="p">):]</span> <span class="o">=</span> <span
-            class="n">hann_window</span><span class="p">[</span><span class="o">-</span><span class="p">((</span><span
-            class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span
-            class="o">//</span> <span class="mi">2</span><span class="p">):</span><span class="o">-</span><span
-            class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">max_order</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">hann_window</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="p">((</span><span class="n">max_order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">hann_window</span><span class="p">[</span><span class="o">-</span><span class="p">((</span><span class="n">max_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">sys</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;[WARNING]  SH maximum order is smaller than 3. No tapering will be used.&#39;</span><span
-            class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span
-            class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;[WARNING]  SH maximum order is smaller than 3. No tapering will be used.&quot;</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">weights</span></div>
 
 
-<div class="viewcode-block" id="delay_fd"><a class="viewcode-back"
-                                             href="../../reference.html#sound_field_analysis.gen.delay_fd">[docs]</a><span
-        class="k">def</span> <span class="nf">delay_fd</span><span class="p">(</span><span
-        class="n">target_length_fd</span><span class="p">,</span> <span class="n">delay_samples</span><span
-        class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate delay in frequency domain that resembles a circular shift in time domain</span>
+<span class="c1"># noinspection PyUnusedLocal</span>
+<div class="viewcode-block" id="sampled_wave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.sampled_wave">[docs]</a><span class="k">def</span> <span class="nf">sampled_wave</span><span class="p">(</span>
+    <span class="n">order</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">,</span>
+    <span class="n">NFFT</span><span class="p">,</span>
+    <span class="n">array_configuration</span><span class="p">,</span>
+    <span class="n">gridData</span><span class="p">,</span>
+    <span class="n">wave_azimuth</span><span class="p">,</span>
+    <span class="n">wave_colatitude</span><span class="p">,</span>
+    <span class="n">wavetype</span><span class="o">=</span><span class="s2">&quot;plane&quot;</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="mi">343</span><span class="p">,</span>
+    <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">limit_order</span><span class="o">=</span><span class="mi">85</span><span class="p">,</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the frequency domain data of an ideal wave as recorded by a</span>
+<span class="sd">    provided array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    order : int</span>
+<span class="sd">        Maximum transform order</span>
+<span class="sd">    fs : int</span>
+<span class="sd">        Sampling frequency</span>
+<span class="sd">    NFFT : int</span>
+<span class="sd">        Order of FFT (number of bins), should be a power of 2.</span>
+<span class="sd">    array_configuration : io.ArrayConfiguration</span>
+<span class="sd">        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">    gridData : io.SphericalGrid</span>
+<span class="sd">        List/Tuple/gauss_grid, see io.SphericalGrid</span>
+<span class="sd">    wave_azimuth, wave_colatitude : float, optional</span>
+<span class="sd">        Direction of incoming wave in radians [0-2pi].</span>
+<span class="sd">    wavetype : {&#39;plane&#39;, &#39;spherical&#39;}, optional</span>
+<span class="sd">        Type of the wave. [Default: plane]</span>
+<span class="sd">    c : float, optional</span>
+<span class="sd">        __UNUSED__ Speed of sound in [m/s] [Default: 343 m/s]</span>
+<span class="sd">    distance : float, optional</span>
+<span class="sd">        Distance of the source in [m] (For spherical waves only)</span>
+<span class="sd">    limit_order : int, optional</span>
+<span class="sd">        Sets the limit for wave generation</span>
+<span class="sd">    kind : {&#39;complex&#39;, &#39;real&#39;}, optional</span>
+<span class="sd">        Spherical harmonic coefficients data type [Default: &#39;complex&#39;]</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    If NFFT is smaller than the time the wavefront needs to travel from the</span>
+<span class="sd">    source to the array, the impulse response will by cyclically shifted</span>
+<span class="sd">    (cyclic convolution).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Pnm : array_like</span>
+<span class="sd">        Spatial fourier coefficients of resampled sound field</span>
+
+<span class="sd">    TODO</span>
+<span class="sd">    ----</span>
+<span class="sd">    Investigate if `limit_order` works as intended</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">gridData</span><span class="p">)</span>
+    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
+
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
+    <span class="n">kr_mic</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="o">.</span><span class="n">array_radius</span><span class="p">)</span>
+
+    <span class="n">max_order_fullspec</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">kr_mic</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># TODO : Investigate if `limit_order` works as intended</span>
+    <span class="k">if</span> <span class="n">max_order_fullspec</span> <span class="o">&gt;</span> <span class="n">limit_order</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Requested wave front needs a minimum order of &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">max_order_fullspec</span><span class="si">}</span><span class="s2"> but was limited to order </span><span class="si">{</span><span class="n">limit_order</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="n">Pnm</span> <span class="o">=</span> <span class="n">ideal_wave</span><span class="p">(</span>
+        <span class="nb">min</span><span class="p">(</span><span class="n">max_order_fullspec</span><span class="p">,</span> <span class="n">limit_order</span><span class="p">),</span>
+        <span class="n">fs</span><span class="p">,</span>
+        <span class="n">wave_azimuth</span><span class="p">,</span>
+        <span class="n">wave_colatitude</span><span class="p">,</span>
+        <span class="n">array_configuration</span><span class="p">,</span>
+        <span class="n">wavetype</span><span class="o">=</span><span class="n">wavetype</span><span class="p">,</span>
+        <span class="n">distance</span><span class="o">=</span><span class="n">distance</span><span class="p">,</span>
+        <span class="n">NFFT</span><span class="o">=</span><span class="n">NFFT</span><span class="p">,</span>
+        <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">Pnm_resampled</span> <span class="o">=</span> <span class="n">spatFT</span><span class="p">(</span>
+        <span class="n">iSpatFT</span><span class="p">(</span><span class="n">Pnm</span><span class="p">,</span> <span class="n">gridData</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">),</span> <span class="n">gridData</span><span class="p">,</span> <span class="n">order_max</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">Pnm_resampled</span></div>
+
+
+<div class="viewcode-block" id="ideal_wave"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.ideal_wave">[docs]</a><span class="k">def</span> <span class="nf">ideal_wave</span><span class="p">(</span>
+    <span class="n">order</span><span class="p">,</span>
+    <span class="n">fs</span><span class="p">,</span>
+    <span class="n">azimuth</span><span class="p">,</span>
+    <span class="n">colatitude</span><span class="p">,</span>
+    <span class="n">array_configuration</span><span class="p">,</span>
+    <span class="n">wavetype</span><span class="o">=</span><span class="s2">&quot;plane&quot;</span><span class="p">,</span>
+    <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">NFFT</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">delay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="mf">343.0</span><span class="p">,</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an</span>
+<span class="sd">    ideal wave front hitting a specified array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    order : int</span>
+<span class="sd">        Maximum transform order</span>
+<span class="sd">    fs : int</span>
+<span class="sd">        Sampling frequency</span>
+<span class="sd">    NFFT : int</span>
+<span class="sd">        Order of FFT (number of bins), should be a power of 2</span>
+<span class="sd">    array_configuration : io.ArrayConfiguration</span>
+<span class="sd">        List/Tuple/ArrayConfiguration, see io.ArrayConfiguration</span>
+<span class="sd">    azimuth, colatitude : float</span>
+<span class="sd">        Azimuth/Colatitude angle of the wave in [RAD]</span>
+<span class="sd">    wavetype : {&#39;plane&#39;, &#39;spherical&#39;}, optional</span>
+<span class="sd">        Select between plane or spherical wave [Default: Plane wave]</span>
+<span class="sd">    distance : float, optional</span>
+<span class="sd">        Distance of the source in [m] (for spherical waves only)</span>
+<span class="sd">    delay : float, optional</span>
+<span class="sd">        Time Delay in s [default: 0]</span>
+<span class="sd">    c : float, optional</span>
+<span class="sd">        Propagation velocity in m/s [Default: 343m/s]</span>
+<span class="sd">    kind : {&#39;complex&#39;, &#39;real&#39;}, optional</span>
+<span class="sd">        Spherical harmonic coefficients data type [Default: &#39;complex&#39;]</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    If NFFT is smaller than the time the wavefront needs to travel from the</span>
+<span class="sd">    source to the array, the impulse response will by cyclically shifted.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Pnm : array of complex floats</span>
+<span class="sd">        Spatial Fourier Coefficients with nm coeffs in cols and FFT coeffs in</span>
+<span class="sd">        rows</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">array_configuration</span> <span class="o">=</span> <span class="n">ArrayConfiguration</span><span class="p">(</span><span class="o">*</span><span class="n">array_configuration</span><span class="p">)</span>
+
+    <span class="n">order</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">NFFT</span> <span class="o">=</span> <span class="n">NFFT</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">NMLocatorSize</span> <span class="o">=</span> <span class="p">(</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="c1"># SAFETY CHECKS</span>
+    <span class="n">wavetype</span> <span class="o">=</span> <span class="n">wavetype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">wavetype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;plane&quot;</span><span class="p">,</span> <span class="s2">&quot;spherical&quot;</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid wavetype: Choose either plane or spherical.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">delay</span> <span class="o">*</span> <span class="n">fs</span> <span class="o">&gt;</span> <span class="n">NFFT</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Delay t is large for provided NFFT. Choose t &lt; NFFT/(2*FS).&quot;</span><span class="p">)</span>
+
+    <span class="n">w</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fs</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">)</span>
+
+    <span class="n">radial_filters</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">NMLocatorSize</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="n">time_shift</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">w</span> <span class="o">*</span> <span class="n">delay</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">wavetype</span> <span class="o">==</span> <span class="s2">&quot;plane&quot;</span><span class="p">:</span>
+            <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_shift</span> <span class="o">*</span> <span class="n">array_extrapolation</span><span class="p">(</span>
+                <span class="n">n</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># wavetype == &#39;spherical&#39;:</span>
+            <span class="n">k_dist</span> <span class="o">=</span> <span class="n">kr</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+            <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">4</span>
+                <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span>
+                <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span>
+                <span class="o">*</span> <span class="n">w</span>
+                <span class="o">/</span> <span class="n">c</span>
+                <span class="o">*</span> <span class="n">time_shift</span>
+                <span class="o">*</span> <span class="n">sphankel2</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k_dist</span><span class="p">)</span>
+                <span class="o">*</span> <span class="n">array_extrapolation</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">array_configuration</span><span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="c1"># GENERATOR CORE</span>
+    <span class="n">Pnm</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">([</span><span class="n">NMLocatorSize</span><span class="p">,</span> <span class="n">NFFT</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
+    <span class="c1"># m, n = mnArrays(order + 1)</span>
+    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">Pnm</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">_np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">sph_harm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">colatitude</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">))</span>
+                <span class="o">*</span> <span class="n">radial_filters</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">ctr</span> <span class="o">=</span> <span class="n">ctr</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">Pnm</span></div>
+
+
+<div class="viewcode-block" id="spherical_noise"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.spherical_noise">[docs]</a><span class="k">def</span> <span class="nf">spherical_noise</span><span class="p">(</span>
+    <span class="n">gridData</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order_max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">,</span> <span class="n">spherical_harmonic_bases</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns order-limited random weights on a spherical surface.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gridData : io.SphericalGrid</span>
+<span class="sd">        SphericalGrid containing azimuth and colatitude</span>
+<span class="sd">    order_max : int, optional</span>
+<span class="sd">        Spherical order limit [Default: 8]</span>
+<span class="sd">    kind : {&#39;complex&#39;, &#39;real&#39;}, optional</span>
+<span class="sd">        Spherical harmonic coefficients data type [Default: &#39;complex&#39;]</span>
+<span class="sd">    spherical_harmonic_bases : array_like, optional</span>
+<span class="sd">        Spherical harmonic base coefficients (not yet weighted by spatial</span>
+<span class="sd">        sampling grid) [Default: None]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    noisy_weights : array_like, complex</span>
+<span class="sd">        Noisy weights</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">spherical_harmonic_bases</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">gridData</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Either a grid or the spherical harmonic bases have to be provided.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">gridData</span> <span class="o">=</span> <span class="n">SphericalGrid</span><span class="p">(</span><span class="o">*</span><span class="n">gridData</span><span class="p">)</span>
+        <span class="n">spherical_harmonic_bases</span> <span class="o">=</span> <span class="n">sph_harm_all</span><span class="p">(</span>
+            <span class="n">order_max</span><span class="p">,</span> <span class="n">gridData</span><span class="o">.</span><span class="n">azimuth</span><span class="p">,</span> <span class="n">gridData</span><span class="o">.</span><span class="n">colatitude</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">order_max</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spherical_harmonic_bases</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span>
+        <span class="n">spherical_harmonic_bases</span><span class="p">,</span>
+        <span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="n">order_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="n">order_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="delay_fd"><a class="viewcode-back" href="../../reference.html#sound_field_analysis.gen.delay_fd">[docs]</a><span class="k">def</span> <span class="nf">delay_fd</span><span class="p">(</span><span class="n">target_length_fd</span><span class="p">,</span> <span class="n">delay_samples</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate delay in frequency domain that resembles a circular shift in</span>
+<span class="sd">    time domain.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1027,41 +827,33 @@
 <span class="sd">    numpy.ndarray</span>
 <span class="sd">        delay spectrum in frequency domain</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">omega</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span
-            class="o">.</span><span class="mi">5</span><span class="p">,</span> <span
-            class="n">target_length_fd</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span
-            class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span
-            class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span
-            class="n">pi</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span
-            class="n">delay_samples</span><span class="p">)</span></div>
-</pre>
-           </div>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">target_length_fd</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">delay_samples</span><span class="p">)</span></div>
+</pre></div>
 
            </div>
-
+           
           </div>
           <footer>
 
+  <hr/>
 
-              <hr/>
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Chalmers University of Technology.
 
-              <div role="contentinfo">
-                  <p>
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-                      &copy; Copyright 2020, Chalmers University of Technology
-
-                  </p>
-              </div>
-
-
-              Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a
-                  href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a
-                  href="https://readthedocs.org">Read the Docs</a>.
-
-          </footer>
-
+</footer>
         </div>
       </div>
 
@@ -1076,6 +868,10 @@
       });
   </script>
 
+  
+  
+    
+   
 
 </body>
 </html>
