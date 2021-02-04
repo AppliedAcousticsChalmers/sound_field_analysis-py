@@ -173,7 +173,7 @@ Contribute
 
 See `CONTRIBUTE.rst <CONTRIBUTE.rst>`_ for full details.
 
-You can find the full offline documentation as `PDF <sfa_readme.pdf>`_ as well as online at https://appliedacousticschalmers.github.io/sound_field_analysis-py/ .
+You can find the full offline documentation as `PDF <DOCUMENTATION.pdf>`_ as well as online at https://appliedacousticschalmers.github.io/sound_field_analysis-py/ .
 
 
 License

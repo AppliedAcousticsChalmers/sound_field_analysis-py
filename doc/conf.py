@@ -251,7 +251,7 @@ html_static_path = ['_static']
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'sfa_doc'
+htmlhelp_basename = "DOCUMENTATION"
 
 # -- Options for LaTeX output ---------------------------------------------
 
