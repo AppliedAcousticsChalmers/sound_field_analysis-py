@@ -1,5 +1,41 @@
 """
-Miscellaneous utility functions"""
+Module containing various utility functions:
+
+`env_info`
+    Guess environment based on `sys.modules`.
+`progress_bar`
+    Display a spinner or a progress bar.
+`db`
+    Convenience function to calculate the 20*log10(abs(x)).
+`cart2sph` / `sph2cart`
+    Transform cartesian into spherical coordinates and vice versa.
+`SOFA_grid2acr`
+    Transform coordinate grid with specified coordinate system definition
+    from a SOFA file into spherical coordinates in radians.
+`nearest_to_value` / `nearest_to_value_IDX` / `nearest_to_value_logical_IDX`
+    Returns nearest value inside an array.
+`interleave_channels`
+    Interleave left and right channels. Style == 'SSR' checks if we total
+    360 channels.
+`simple_resample`
+    Wrap scipy.signal.resample with a simpler API.
+`scalar_broadcast_match`
+    Returns arguments as np.array, if one is a scalar it will broadcast the
+    other one's shape.
+`frq2kr`
+    Returns the kr bin closest to the target frequency.
+`stack`
+    Stacks two 2D vectors along the same-sized dimension or the smaller one.
+`zero_pad_fd`
+    Apply zero padding to frequency domain data by transformation into time
+    domain and back.
+`current_time`
+    Return current system time based on `datetime.now()`.
+`time_it`
+    Measure execution of a specified statement which is useful for the
+    performance analysis. In this way, the execution time and respective
+    results can be directly compared.
+"""
 
 import sys
 import timeit
@@ -82,7 +118,8 @@ def db(data, power=False):
 
 
 def cart2sph(cartesian_coords, is_deg=False):
-    """
+    """Transform cartesian into spherical coordinates.
+
     Parameters
     ----------
     cartesian_coords : numpy.ndarray
@@ -115,7 +152,8 @@ def cart2sph(cartesian_coords, is_deg=False):
 
 
 def sph2cart(spherical_coords, is_deg=False):
-    """
+    """Transform spherical into cartesian coordinates.
+
     Parameters
     ----------
     spherical_coords : numpy.ndarray
@@ -272,7 +310,7 @@ def scalar_broadcast_match(a, b):
 
 
 def frq2kr(target_frequency, freq_vector):
-    """Returns the kr bin closest  to the target frequency.
+    """Returns the kr bin closest to the target frequency.
 
     Parameters
     ----------
@@ -327,6 +365,7 @@ def zero_pad_fd(data_fd, target_length_td):
 
 
 def current_time():
+    """Return current system time based on `datetime.now()`."""
     return datetime.now()
 
 

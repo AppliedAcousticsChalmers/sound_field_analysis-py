@@ -1,28 +1,33 @@
 """
-Functions that act on the Spatial Fourier Coefficients.
+Module containing functions to act on the Spatial Fourier Coefficients.
 
 `BEMA`
-   Bandwidth Extension for Microphone Arrays
-
+    Perform Bandwidth Extension for Microphone Arrays (BEMA) spatial
+    anti-aliasing.
 `FFT`
-   (Fast) Fourier Transform
+    Perform real-valued Fast Fourier Transform (FFT).
 `iFFT`
-   Inverse (Fast) Fourier Transform
-
+    Perform inverse real-valued (Fast) Fourier Transform (iFFT).
 `spatFT`
-   Spatial Fourier Transform
+    Perform spatial Fourier transform.
 `spatFT_RT`
-   Spatial Fourier Transform for real-time application
+    Perform spatial Fourier transform for real-time applications
+    (otherwise use `spatFT()` for more more convenience and flexibility).
 `spatFT_LSF`
-   Spatial Fourier Transform by least square fit to provided data
+    Perform spatial Fourier transform by least square fit to provided data.
 `iSpatFT`
-   Fast Inverse Spatial Fourier Transform
-
-`rfi`
-   Radial Filter Improvement
-
+    Perform inverse spatial Fourier transform.
 `plane_wave_decomp`
-   Plane Wave Decomposition
+    Perform plane wave decomposition.
+`rfi`
+    Perform radial filter improvement (RFI)
+`sfe`
+    Perform sound field extrapolation (SFE) - WORK IN PROGRESS.
+`wdr`
+    Perform Wigner-D rotation (WDR) - NOT YET IMPLEMENTED.
+`convolve`
+    Convolve two arrays A & B row-wise where one or both can be
+    one-dimensional for SIMO/SISO convolution.
 """
 import sys
 
@@ -34,9 +39,9 @@ from .io import SphericalGrid, TimeSignal
 from .sph import besselj, hankel1, sph_harm_all
 
 
-# noinspection PyUnusedLocal
 def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order=None):
-    """BEMA Spatial Anti-Aliasing, according to [4]_.
+    """Perform Bandwidth Extension for Microphone Arrays (BEMA) spatial
+    anti-aliasing, according to [4]_.
 
     Parameters
     ----------
@@ -143,7 +148,7 @@ def FFT(
     last_sample=None,
     calculate_freqs=True,
 ):
-    """Real-valued Fast Fourier Transform.
+    """Perform real-valued Fast Fourier Transform (FFT).
 
     Parameters
     ----------
@@ -222,10 +227,52 @@ def FFT(
     return fftData, f
 
 
+def iFFT(Y, output_length=None, window=False):
+    """Perform inverse real-valued (Fast) Fourier Transform (iFFT).
+
+    Parameters
+    ----------
+    Y : array_like
+        Frequency domain data [Nsignals x Nbins]
+    output_length : int, optional
+        Length of returned time-domain signal (Default: 2 x len(Y) + 1)
+    window : str, optional
+        Window applied to the resulting time-domain signal
+
+    Returns
+    -------
+    y : array_like
+        Reconstructed time-domain signal
+    """
+    Y = _np.atleast_2d(Y)
+    y = _np.fft.irfft(Y, n=output_length)
+
+    if window:
+        no_of_samples = y.shape[-1]
+
+        window = window.lower()
+        if window == "hann":
+            window_array = _np.hanning(no_of_samples)
+        elif window == "hamming":
+            window_array = _np.hamming(no_of_samples)
+        elif window == "blackman":
+            window_array = _np.blackman(no_of_samples)
+        elif window == "kaiser":
+            window_array = _np.kaiser(no_of_samples, 3)
+        else:
+            raise ValueError(
+                "Selected window must be one of hann, hamming, blackman or kaiser."
+            )
+
+        y *= window_array
+
+    return y
+
+
 def spatFT(
     data, position_grid, order_max=10, kind="complex", spherical_harmonic_bases=None
 ):
-    """Spatial Fourier Transform
+    """Perform spatial Fourier transform.
 
     Parameters
     ----------
@@ -287,8 +334,8 @@ def spatFT(
 
 
 def spatFT_RT(data, spherical_harmonic_weighted):
-    """Spatial Fourier Transform for real-time application, otherwise use
-    `spatFT()` for more more convenience and flexibility.
+    """Perform spatial Fourier transform for real-time applications
+    (otherwise use `spatFT()` for more more convenience and flexibility).
 
     Parameters
     ----------
@@ -308,6 +355,44 @@ def spatFT_RT(data, spherical_harmonic_weighted):
     return _np.dot(spherical_harmonic_weighted, data)
 
 
+def spatFT_LSF(
+    data, position_grid, order_max=10, kind="complex", spherical_harmonic_bases=None
+):
+    """Perform spatial Fourier transform by least square fit to provided data.
+
+    Parameters
+    ----------
+    data : array_like, complex
+        Data to be fitted to
+    position_grid : array_like, or io.SphericalGrid
+        Azimuth / colatitude data locations
+    order_max: int, optional
+        Maximum transform order [Default: 10]
+    kind : {'complex', 'real'}, optional
+        Spherical harmonic coefficients data type [Default: 'complex']
+    spherical_harmonic_bases : array_like, optional
+        Spherical harmonic base coefficients (not yet weighted by spatial
+        sampling grid) [Default: None]
+
+    Returns
+    -------
+    coefficients: array_like, float
+        Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
+    """
+    # Re-generate spherical harmonic bases if they were not provided or their order is too small
+    if (
+        spherical_harmonic_bases is None
+        or spherical_harmonic_bases.shape[0] < data.shape[0]
+        or spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2
+    ):
+        position_grid = SphericalGrid(*position_grid)
+        spherical_harmonic_bases = sph_harm_all(
+            order_max, position_grid.azimuth, position_grid.colatitude, kind=kind
+        )
+
+    return lstsq(spherical_harmonic_bases, data)[0]
+
+
 def iSpatFT(
     spherical_coefficients,
     position_grid,
@@ -315,7 +400,7 @@ def iSpatFT(
     kind="complex",
     spherical_harmonic_bases=None,
 ):
-    """Inverse spatial Fourier Transform
+    """Perform inverse spatial Fourier transform.
 
     Parameters
     ----------
@@ -364,48 +449,10 @@ def iSpatFT(
     return _np.dot(spherical_harmonic_bases, spherical_coefficients)
 
 
-def spatFT_LSF(
-    data, position_grid, order_max=10, kind="complex", spherical_harmonic_bases=None
-):
-    """Spatial Fourier Transform by least square fit to provided data
-
-    Parameters
-    ----------
-    data : array_like, complex
-        Data to be fitted to
-    position_grid : array_like, or io.SphericalGrid
-        Azimuth / colatitude data locations
-    order_max: int, optional
-        Maximum transform order [Default: 10]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
-    spherical_harmonic_bases : array_like, optional
-        Spherical harmonic base coefficients (not yet weighted by spatial
-        sampling grid) [Default: None]
-
-    Returns
-    -------
-    coefficients: array_like, float
-        Fitted spherical harmonic coefficients (indexing: n**2 + n + m + 1)
-    """
-    # Re-generate spherical harmonic bases if they were not provided or their order is too small
-    if (
-        spherical_harmonic_bases is None
-        or spherical_harmonic_bases.shape[0] < data.shape[0]
-        or spherical_harmonic_bases.shape[1] < (order_max + 1) ** 2
-    ):
-        position_grid = SphericalGrid(*position_grid)
-        spherical_harmonic_bases = sph_harm_all(
-            order_max, position_grid.azimuth, position_grid.colatitude, kind=kind
-        )
-
-    return lstsq(spherical_harmonic_bases, data)[0]
-
-
 def plane_wave_decomp(
     order, wave_direction, field_coeffs, radial_filter, weights=None, kind="complex"
 ):
-    """Plane wave decomposition
+    """Perform plane wave decomposition.
 
     Parameters
     ----------
@@ -494,9 +541,8 @@ def plane_wave_decomp(
     return OutputArray * gaincorrection
 
 
-# noinspection PyUnusedLocal
 def rfi(dn, kernelSize=512, highPass=0.0):
-    """R/F/I Radial Filter Improvement
+    """Perform radial filter improvement (RFI), according to [6]_.
 
     Parameters
     ----------
@@ -541,6 +587,12 @@ def rfi(dn, kernelSize=512, highPass=0.0):
         > Be very careful if NFFT/max(kr) < 25
         > Do not use R/F/I if NFFT/max(kr) < 15
 
+    References
+    ----------
+    .. [6] B. Bernschütz, C. Pörschmann, S. Spors, and S. Weinzierl, “SOFiA
+       Sound Field Analysis Toolbox,” in International Conference on Spatial
+       Audio, 2011, pp. 7–15.
+
     TODO
     ----
     Implement `kernelsize` extension
@@ -549,11 +601,11 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     sourceKernelSize = (dn.shape[-1] - 1) * 2
 
     if kernelSize > sourceKernelSize:
+        # TODO: Implement `kernelsize` extension
         raise ValueError(
             "Kernelsize greater than radial filters. Extension of "
             "kernelsize not yet implemented."
         )
-        # TODO: Implement `kernelsize` extension
 
     # in case highpass should be applied, half both individual kernel sizes
     endKernelSize = kernelSize
@@ -638,7 +690,7 @@ def rfi(dn, kernelSize=512, highPass=0.0):
 
 
 def sfe(Pnm_kra, kra, krb, problem="interior"):
-    """S/F/E Sound Field Extrapolation. CURRENTLY WIP
+    """Perform sound field extrapolation (SFE) - WORK IN PROGRESS.
 
     Parameters
     ----------
@@ -653,6 +705,10 @@ def sfe(Pnm_kra, kra, krb, problem="interior"):
     -------
     Pnm_kra : array_like
         Extrapolated spatial Fourier coefficients
+
+    TODO
+    ----
+    Verify sound field extrapolation
     """
     if kra.shape[1] != Pnm_kra.shape[1] or kra.shape[1] != krb.shape[1]:
         raise ValueError("FFTData: Complex Input Data expected.")
@@ -691,54 +747,13 @@ def sfe(Pnm_kra, kra, krb, problem="interior"):
         hn_krb = _np.sqrt(_np.pi / (2 * krb)) * hankel1(nvector + 0.5, krb)
         exp = hn_krb / hn_kra
 
+    # TODO: Verify sound field extrapolation
     return Pnm_kra * exp.T
-
-
-def iFFT(Y, output_length=None, window=False):
-    """Inverse real-valued Fourier Transform
-
-    Parameters
-    ----------
-    Y : array_like
-        Frequency domain data [Nsignals x Nbins]
-    output_length : int, optional
-        Length of returned time-domain signal (Default: 2 x len(Y) + 1)
-    window : str, optional
-        Window applied to the resulting time-domain signal
-
-    Returns
-    -------
-    y : array_like
-        Reconstructed time-domain signal
-    """
-    Y = _np.atleast_2d(Y)
-    y = _np.fft.irfft(Y, n=output_length)
-
-    if window:
-        no_of_samples = y.shape[-1]
-
-        window = window.lower()
-        if window == "hann":
-            window_array = _np.hanning(no_of_samples)
-        elif window == "hamming":
-            window_array = _np.hamming(no_of_samples)
-        elif window == "blackman":
-            window_array = _np.blackman(no_of_samples)
-        elif window == "kaiser":
-            window_array = _np.kaiser(no_of_samples, 3)
-        else:
-            raise ValueError(
-                "Selected window must be one of hann, hamming, blackman or kaiser."
-            )
-
-        y *= window_array
-
-    return y
 
 
 # noinspection PyUnusedLocal
 def wdr(Pnm, xAngle, yAngle, zAngle):
-    """W/D/R Wigner-D Rotation - NOT YET IMPLEMENTED
+    """Perform Wigner-D rotation (WDR) - NOT YET IMPLEMENTED.
 
     Parameters
     ----------
@@ -766,8 +781,8 @@ def wdr(Pnm, xAngle, yAngle, zAngle):
 
 
 def convolve(A, B, FFT=None):
-    """Convolve two arrays A & B row-wise. One or both can be one-dimensional
-    for SIMO/SISO convolution
+    """Convolve two arrays A & B row-wise where one or both can be
+    one-dimensional for SIMO/SISO convolution.
 
     Parameters
     ----------

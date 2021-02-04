@@ -1,6 +1,17 @@
 """
-Plotting functions
-Helps visualizing spherical microphone data.
+Module containing various plotting functions:
+
+`makeMTX`
+    Returns a plane wave decomposition over a full sphere.
+`makeFullMTX`
+    Generates visualization matrix for a set of spatial fourier coefficients
+    over all kr.
+`plot2D`
+    Visualize 2D data using plotly.
+`plot3D`
+    Visualize matrix data, such as from `makeMTX(Pnm, dn)`.
+`plot3Dgrid`
+    Visualize matrix data in a grid, such as from `makeMTX(Pnm, dn)`.
 """
 from collections import namedtuple
 

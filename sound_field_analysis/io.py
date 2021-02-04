@@ -1,4 +1,37 @@
-"""Input-Output functions"""
+"""
+Module containing various input and output functions:
+
+`TimeSignal`
+    Named tuple to store time domain data and related metadata.
+`SphericalGrid`
+    Named tuple to store spherical sampling grid geometry.
+`ArrayConfiguration`
+    Named tuple to store microphone array characteristics.
+`ArraySignal`
+    Named tuple to store microphone array data in terms of `TimeSignal`,
+    `SphericalGrid` and `ArrayConfiguration`
+`HrirSignal`
+    Named tuple to store Head Related Impulse Response grid data in terms of
+    `TimeSignal` for either ear and `SphericalGrid`
+`read_miro_struct`
+    Read Head Related Impulse Responses (HRIRs) or Array / Directional
+    Impulse Responses (DRIRs) stored as MIRO Matlab files and convert them to
+    `ArraySignal`.
+`read_SOFA_file`
+    Read Head Related Impulse Responses (HRIRs) or Array / Directional
+    Impulse Responses (DRIRs) stored as Spatially Oriented Format for Acoustics
+    (SOFA) files and convert them to `ArraySignal` or `HrirSignal`.
+`empty_time_signal`
+    Returns an empty np rec array that has the proper data structure.
+`load_array_signal`
+    Convenience function to load ArraySignal saved into np data structures.
+`read_wavefile`
+    Reads in WAV files and returns data [Nsig x Nsamples] and fs.
+`write_SSR_IRs`
+    Takes two time signals and writes out the horizontal plane as HRIRs for
+    the SoundScapeRenderer. Ideally, both hold 360 IRs but smaller sets are
+    tried to be scaled up using repeat.
+"""
 import sys
 from collections import namedtuple
 
@@ -10,13 +43,102 @@ import scipy.io.wavfile
 from . import utils
 
 
+class TimeSignal(namedtuple("TimeSignal", "signal fs delay")):
+    """Named tuple to store time domain data and related metadata."""
+
+    __slots__ = ()
+
+    def __new__(cls, signal, fs, delay=None):
+        """
+        Parameters
+        ----------
+        signal : array_like
+            Array of signals of shape [nSignals x nSamples]
+        fs : int or array_like
+            Sampling frequency
+        delay : float or array_like, optional
+            [Default: None]
+        """
+        signal = _np.atleast_2d(signal)
+        no_of_signals = signal.shape[1]
+        fs = _np.asarray(fs)
+        delay = _np.asarray(delay)
+
+        if (fs.size != 1) and (fs.size != no_of_signals):
+            raise ValueError(
+                "Sampling frequency can either be a scalar or an array with one element per signal."
+            )
+        if (delay.size != 1) and (delay.size != no_of_signals):
+            raise ValueError(
+                "Delay can either be a scalar or an array with one element per signal."
+            )
+
+        self = super(TimeSignal, cls).__new__(cls, signal, fs, delay)
+        return self
+
+    def __repr__(self):
+        return utils.get_named_tuple__repr__(self)
+
+
+class SphericalGrid(namedtuple("SphericalGrid", "azimuth colatitude radius weight")):
+    """Named tuple to store spherical sampling grid geometry."""
+
+    __slots__ = ()
+
+    def __new__(cls, azimuth, colatitude, radius=None, weight=None):
+        """
+        Parameters
+        ----------
+        azimuth, colatitude : array_like
+            Grid sampling point directions in radians
+        radius, weight : float or array_like, optional
+            Grid sampling point distances and weights
+        """
+        azimuth = _np.asarray(azimuth)
+        colatitude = _np.asarray(colatitude)
+        if radius is not None:
+            radius = _np.asarray(radius)
+        if weight is not None:
+            weight = _np.asarray(weight)
+        if azimuth.size != colatitude.size:
+            raise ValueError(
+                "Azimuth and colatitude have to contain the same number of elements."
+            )
+        if (
+            (radius is not None)
+            and (radius.size != 1)
+            and (radius.size != azimuth.size)
+        ):
+            raise ValueError(
+                "Radius can either be a scalar or an array of same size as "
+                "azimuth/colatitude."
+            )
+        if (
+            (weight is not None)
+            and (weight.size != 1)
+            and (weight.size != azimuth.size)
+        ):
+            raise ValueError(
+                "Weight can either be a scalar or an array of same size as "
+                "azimuth/colatitude."
+            )
+
+        self = super(SphericalGrid, cls).__new__(
+            cls, azimuth, colatitude, radius, weight
+        )
+        return self
+
+    def __repr__(self):
+        return utils.get_named_tuple__repr__(self)
+
+
 class ArrayConfiguration(
     namedtuple(
         "ArrayConfiguration",
         "array_radius array_type transducer_type scatter_radius dual_radius",
     )
 ):
-    """Named tuple ArrayConfiguration"""
+    """Named tuple to store microphone array characteristics."""
 
     __slots__ = ()
 
@@ -69,99 +191,13 @@ class ArrayConfiguration(
         return utils.get_named_tuple__repr__(self)
 
 
-class TimeSignal(namedtuple("TimeSignal", "signal fs delay")):
-    """Named tuple TimeSignal"""
-
-    __slots__ = ()
-
-    def __new__(cls, signal, fs, delay=None):
-        """
-        Parameters
-        ----------
-        signal : array_like
-            Array of signals of shape [nSignals x nSamples]
-        fs : int or array_like
-            Sampling frequency
-        delay : float or array_like, optional
-            [Default: None]
-        """
-        signal = _np.atleast_2d(signal)
-        no_of_signals = signal.shape[1]
-        fs = _np.asarray(fs)
-        delay = _np.asarray(delay)
-
-        if (fs.size != 1) and (fs.size != no_of_signals):
-            raise ValueError(
-                "Sampling frequency can either be a scalar or an array with one element per signal."
-            )
-        if (delay.size != 1) and (delay.size != no_of_signals):
-            raise ValueError(
-                "Delay can either be a scalar or an array with one element per signal."
-            )
-
-        self = super(TimeSignal, cls).__new__(cls, signal, fs, delay)
-        return self
-
-    def __repr__(self):
-        return utils.get_named_tuple__repr__(self)
-
-
-class SphericalGrid(namedtuple("SphericalGrid", "azimuth colatitude radius weight")):
-    """Named tuple SphericalGrid"""
-
-    __slots__ = ()
-
-    def __new__(cls, azimuth, colatitude, radius=None, weight=None):
-        """
-        Parameters
-        ----------
-        azimuth, colatitude : array_like
-            Grid sampling point directions in radians
-        radius, weight : float or array_like, optional
-            Grid sampling point distances and weights
-        """
-        azimuth = _np.asarray(azimuth)
-        colatitude = _np.asarray(colatitude)
-        if radius is not None:
-            radius = _np.asarray(radius)
-        if weight is not None:
-            weight = _np.asarray(weight)
-        if azimuth.size != colatitude.size:
-            raise ValueError(
-                "Azimuth and colatitude have to contain the same number of elements."
-            )
-        if (
-            (radius is not None)
-            and (radius.size != 1)
-            and (radius.size != azimuth.size)
-        ):
-            raise ValueError(
-                "Radius can either be a scalar or an array of same size as "
-                "azimuth/colatitude."
-            )
-        if (
-            (weight is not None)
-            and (weight.size != 1)
-            and (weight.size != azimuth.size)
-        ):
-            raise ValueError(
-                "Weight can either be a scalar or an array of same size as "
-                "azimuth/colatitude."
-            )
-
-        self = super(SphericalGrid, cls).__new__(
-            cls, azimuth, colatitude, radius, weight
-        )
-        return self
-
-    def __repr__(self):
-        return utils.get_named_tuple__repr__(self)
-
-
 class ArraySignal(
     namedtuple("ArraySignal", "signal grid center_signal configuration temperature")
 ):
-    """Named tuple ArraySignal"""
+    """
+    Named tuple to store microphone array data in terms of `TimeSignal`,
+    `SphericalGrid` and `ArrayConfiguration`.
+    """
 
     __slots__ = ()
 
@@ -197,7 +233,10 @@ class ArraySignal(
 
 
 class HrirSignal(namedtuple("HrirSignal", "l r grid center_signal")):
-    """Named tuple HrirSignal"""
+    """
+    Named tuple to store Head Related Impulse Response grid data in terms of
+    `TimeSignal` for either ear and `SphericalGrid`.
+    """
 
     __slots__ = ()
 
@@ -235,7 +274,9 @@ def read_miro_struct(
     scatter_radius=None,
     get_center_signal=False,
 ):
-    """Reads miro matlab files.
+    """Read Head Related Impulse Responses (HRIRs) or Array / Directional
+    Impulse Responses (DRIRs) stored as MIRO Matlab files and convert them to
+    `ArraySignal`.
 
     Parameters
     ----------
@@ -323,9 +364,9 @@ def read_miro_struct(
 
 # noinspection PyPep8Naming
 def read_SOFA_file(file_name):
-    """Reads Head Related Impulse Responses or Array impulse responses (DRIRs)
-    stored as Spatially Oriented Format for Acoustics (SOFA) files files,
-    and convert them to Array Signal or HRIR Signal class.
+    """Read Head Related Impulse Responses (HRIRs) or Array / Directional
+    Impulse Response (DRIRs) stored as Spatially Oriented Format for Acoustics
+    (SOFA) files and convert them to`ArraySignal` or `HrirSignal`.
 
     Parameters
     ----------

@@ -1,9 +1,9 @@
 """
-Generate Lebedev grid and coefficients
-This module only exposes the function `lebGrid = lebedev.genGrid(degree)`.
+Module to generate Lebedev grids and quadrature weights for degrees 6, 14, 26,
+38, 50, 74, 86, 110, 146, 170, 194:
 
-lebGrid is a named tuple containing the coordinates .x, .y, .z and the weights .w
-Possible degrees: 6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194
+`genGrid(n)`
+    Generate Lebedev grid geometry of degree `n`.
 
 Adapted from Richard P. Mullers Python version,
 https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py
@@ -19,6 +19,7 @@ References
    131st algebraic order of accuracy' Doklady Mathematics, Vol. 59, No. 3,
    1999, pp. 477-481.
 """
+from collections import namedtuple
 
 import numpy as _np
 
@@ -205,7 +206,7 @@ LebFunc = {
 
 
 def genGrid(n):
-    """Returns Lebedev coefficients of n'th degree
+    """Generate Lebedev grid geometry of degree `n`.
 
     Parameters
     ----------
@@ -215,7 +216,8 @@ def genGrid(n):
     Returns
     -------
     lebGrid : named tuple
-       lebGrid is a named tuple containing .x, .y, .z and .w
+       Named tuple to store `x`, `y`, `z` cartesian coordinates and quadrature
+       weights `w`
 
     Raises
     ------
@@ -224,14 +226,12 @@ def genGrid(n):
     """
     try:
         leb = _np.array(LebFunc[n]())  # try retrieving grid first
-
-        from collections import namedtuple
-
-        lebGrid = namedtuple("lebGrid", "x y z w")
-        lebGrid.x = leb[:, 0]
-        lebGrid.y = leb[:, 1]
-        lebGrid.z = leb[:, 2]
-        lebGrid.w = leb[:, 3]
-        return lebGrid
     except KeyError:
         raise ValueError(f"No grid available for degree {n}")
+
+    lebGrid = namedtuple("lebGrid", "x y z w")
+    lebGrid.x = leb[:, 0]
+    lebGrid.y = leb[:, 1]
+    lebGrid.z = leb[:, 2]
+    lebGrid.w = leb[:, 3]
+    return lebGrid

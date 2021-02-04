@@ -1,17 +1,41 @@
-# -*- coding: utf-8 -*-
 """
-Collection of spherical helper functions:
+Module containing various spherical harmonics helper functions:
 
+`besselj` / `neumann`
+    Bessel function of first and second kind of order n at kr.
+`hankel1` / `hankel2`
+    Hankel function of first and second kind of order n at kr.
+`spbessel` / `spneumann`
+    Spherical Bessel function of first and second kind of order n at kr.
+`sphankel1` / `sphankel2`
+    Spherical Hankel of first and second kind of order n at kr.
+`dspbessel` / `dspneumann`
+    Derivative of spherical Bessel of first and second kind of order n at kr.
+`dsphankel1` / `dsphankel2`
+    Derivative spherical Hankel of first and second kind of order n at kr.
+`spherical_extrapolation`
+    Factor that relate signals recorded on a sphere to it's center.
+`array_extrapolation`
+    Factor that relate signals recorded on a sphere to it's center. In the
+    rigid configuration, a scatter_radius that is different to the array radius
+    may be set.
 `sph_harm`
-   More robust spherical harmonic basis functions
-`spbessel / dspbessel`
-   Spherical Bessel and derivative
-`spneumann / dspneumann`
-   Spherical Neumann (Bessel 2nd kind) and derivative
-`sphankel / dsphankel`
-   Spherical Hankel (second kind) and derivative
-`cart2sph / sph2cart`
-   Convert cartesian to spherical coordinates and vice versa
+    Compute spherical harmonics.
+`sph_harm_large`
+    Compute spherical harmonics for large orders > 84.
+`sph_harm_all`
+    Compute all spherical harmonic coefficients up to degree nMax.
+`mnArrays`
+    Generate degrees n and orders m up to nMax.
+`reverseMnIds`
+    Generate reverse indexes according to stacked coefficients of orders m up
+    to nMax.
+`cart2sph` / `sph2cart`
+    Convert cartesian to spherical coordinates and vice versa.
+`kr`
+    Generate kr vector for given f and array radius.
+`kr_full_spec`
+    Generate full spectrum kr.
 """
 
 from math import factorial as fact
@@ -62,8 +86,8 @@ def neumann(n, z):
 
 
 def hankel1(n, z):
-    """Bessel function of third kind (Hankel function) of order n at kr.
-    Wraps `scipy.special.hankel1(n, z)`.
+    """Hankel function of first kind of order n at kr. Wraps
+    `scipy.special.hankel2(n, z)`.
 
     Parameters
     ----------
@@ -81,8 +105,8 @@ def hankel1(n, z):
 
 
 def hankel2(n, z):
-    """Bessel function of third kind (Hankel function) of order n at kr.
-    Wraps `scipy.special.hankel2(n, z)`.
+    """Hankel function of second kind of order n at kr. Wraps
+    `scipy.special.hankel2(n, z)`.
 
     Parameters
     ----------
@@ -456,8 +480,8 @@ def sph_harm(m, n, az, co, kind="complex"):
     co : (float)
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
     kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type according to complex [6]_ or
-        real definition [7]_ [Default: 'complex']
+        Spherical harmonic coefficients data type according to complex [7]_ or
+        real definition [8]_ [Default: 'complex']
 
     Returns
     -------
@@ -467,8 +491,8 @@ def sph_harm(m, n, az, co, kind="complex"):
 
     References
     ----------
-    .. [6] scipy.special.sph_harm
-    .. [7] F. Zotter, “Analysis and synthesis of sound-radiation with
+    .. [7] scipy.special.sph_harm
+    .. [8] F. Zotter, “Analysis and synthesis of sound-radiation with
        spherical arrays,” University of Music and Performing Arts, 2009.
     """
     # SAFETY CHECKS
@@ -578,7 +602,7 @@ def sph_harm_all(nMax, az, co, kind="complex"):
     Returns
     -------
     y_mn : (complex float) or (float), array_like
-        Spherical harmonics of degrees n [0 ... nMax] and all orresponding
+        Spherical harmonics of degrees n [0 ... nMax] and all corresponding
         orders m [-n ... n], sampled at [az, co]. dim1 corresponds to az/co
         pairs, dim2 to oder/degree (m, n) pairs like 0/0, -1/1, 0/1, 1/1,
         -2/2, -1/2 ...
@@ -590,7 +614,7 @@ def sph_harm_all(nMax, az, co, kind="complex"):
 
 
 def mnArrays(nMax):
-    """Returns degrees n and orders m up to nMax.
+    """Generate degrees n and orders m up to nMax.
 
     Parameters
     ----------
@@ -618,7 +642,7 @@ def mnArrays(nMax):
 
 
 def reverseMnIds(nMax):
-    """Returns reverse indexes according to stacked coefficients of orders m up
+    """Generate reverse indexes according to stacked coefficients of orders m up
     to nMax.
 
     Parameters
@@ -640,7 +664,9 @@ def reverseMnIds(nMax):
 
 
 def cart2sph(x, y, z):
-    """Converts cartesian coordinates x, y, z to spherical coordinates az, el, r."""
+    """Convert cartesian coordinates x, y, z to spherical coordinates
+    az, el, r.
+    """
     hxy = _np.hypot(x, y)
     r = _np.hypot(hxy, z)
     el = _np.arctan2(z, hxy)
@@ -649,7 +675,9 @@ def cart2sph(x, y, z):
 
 
 def sph2cart(az, el, r):
-    """Converts spherical coordinates az, el, r to cartesian coordinates x, y, z."""
+    """Convert spherical coordinates az, el, r to cartesian coordinates
+    x, y, z.
+    """
     rcos_theta = r * _np.cos(el)
     x = rcos_theta * _np.cos(az)
     y = rcos_theta * _np.sin(az)
@@ -658,7 +686,7 @@ def sph2cart(az, el, r):
 
 
 def kr(f, radius, temperature=20):
-    """Return kr vector for given f and array radius
+    """Generate kr vector for given f and array radius.
 
     Parameters
     ----------
@@ -678,7 +706,7 @@ def kr(f, radius, temperature=20):
 
 
 def kr_full_spec(fs, radius, NFFT, temperature=20):
-    """Returns full spectrum kr
+    """Generate full spectrum kr.
 
     Parameters
     ----------

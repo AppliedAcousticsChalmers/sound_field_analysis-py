@@ -1,20 +1,37 @@
 """
-Module contains various generator functions:
+Module containing various generator functions:
 
 `whiteNoise`
-   Generate additive White Gaussian noise
+    Adds White Gaussian Noise of approx. 16dB crest to a FFT block.
 `gauss_grid`
-   Gauss-Legendre quadrature grid and weights
+    Compute Gauss-Legendre quadrature nodes and weights in the SOFiA /
+    VariSphear data format.
 `lebedev`
-   Lebedev quadrature grid and weights
+    Compute Lebedev quadrature nodes and weights given a maximum stable
+    order. Alternatively, a degree may be supplied.
 `radial_filter`
-   Modal radial filter
+    Generate modal radial filter of specified orders and frequencies.
 `radial_filter_fullspec`
-   Modal radial filter over the full spectrum
+    Generate NFFT/2 + 1 modal radial filter of orders 0:max_order for
+    frequencies 0:fs/2, wraps `radial_filter()`.
+`spherical_head_filter`
+    Generate coloration compensation filter of specified maximum SH order.
+`spherical_head_filter_spec`
+    Generate NFFT/2 + 1 coloration compensation filter of specified maximum
+    SH order for frequencies 0:fs/2, wraps `spherical_head_filter()`.
+`tapering_window`
+    Design tapering window with cosine slope for orders greater than 3.
 `sampled_wave`
-   Sampled Wave generator, emulating discrete sampling
+    Returns the frequency domain data of an ideal wave as recorded by a
+    provided array.
 `ideal_wave`
-   Ideal wave generator, returns spatial fourier coefficients
+    Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an
+    ideal wave front hitting a specified array.
+`spherical_noise`
+    Returns order-limited random weights on a spherical surface.
+`delay_fd`
+    Generate delay in frequency domain that resembles a circular shift in
+    time domain.
 """
 import numpy as _np
 from scipy.special import spherical_jn
@@ -58,8 +75,8 @@ def whiteNoise(fftData, noiseLevel=80):
 
 
 def gauss_grid(azimuth_nodes=10, colatitude_nodes=5):
-    """Compute Gauss-Legendre quadrature nodes and weights in the
-    SOFiA / VariSphear data format.
+    """Compute Gauss-Legendre quadrature nodes and weights in the SOFiA /
+    VariSphear data format.
 
     Parameters
     ----------
@@ -335,6 +352,43 @@ def spherical_head_filter_spec(
     return G_SHF.astype(_np.complex_)
 
 
+def tapering_window(max_order):
+    """Design tapering window with cosine slope for orders greater than 3,
+    according to [2]_.
+
+    Parameters
+    ----------
+    max_order : int
+        Maximum SH order
+
+    Returns
+    -------
+    hann_window_half : array_like
+       Tapering window with cosine slope for orders greater than 3. Ones in case
+       of maximum SH order being smaller than 3.
+
+    References
+    ----------
+    .. [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and
+       Ivan J. Tashev (2019). “Improving Binaural Ambisonics Decoding by
+       Spherical Harmonics Domain Tapering and Coloration Compensation.”
+    """
+    weights = _np.ones(max_order + 1)
+
+    if max_order >= 3:
+        hann_window = _np.hanning(2 * ((max_order + 1) // 2) + 1)
+        weights[-((max_order - 1) // 2) :] = hann_window[-((max_order + 1) // 2) : -1]
+    else:
+        import sys
+
+        print(
+            "[WARNING]  SH maximum order is smaller than 3. No tapering will be used.",
+            file=sys.stderr,
+        )
+
+    return weights
+
+
 # noinspection PyUnusedLocal
 def sampled_wave(
     order,
@@ -438,7 +492,7 @@ def ideal_wave(
     kind="complex",
 ):
     """Ideal wave generator, returns spatial Fourier coefficients `Pnm` of an
-    ideal wave front hitting a specified array
+    ideal wave front hitting a specified array.
 
     Parameters
     ----------
@@ -529,7 +583,7 @@ def ideal_wave(
 def spherical_noise(
     gridData=None, order_max=8, kind="complex", spherical_harmonic_bases=None
 ):
-    """Returns order-limited random weights on a spherical surface
+    """Returns order-limited random weights on a spherical surface.
 
     Parameters
     ----------
@@ -564,43 +618,6 @@ def spherical_noise(
         _np.random.randn((order_max + 1) ** 2)
         + 1j * _np.random.randn((order_max + 1) ** 2),
     )
-
-
-def tapering_window(max_order):
-    """Design tapering window with cosine slope for orders greater than 3,
-    according to [2]_.
-
-    Parameters
-    ----------
-    max_order : int
-        Maximum SH order
-
-    Returns
-    -------
-    hann_window_half : array_like
-       Tapering window with cosine slope for orders greater than 3. Ones in case
-       of maximum SH order being smaller than 3.
-
-    References
-    ----------
-    .. [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and
-       Ivan J. Tashev (2019). “Improving Binaural Ambisonics Decoding by
-       Spherical Harmonics Domain Tapering and Coloration Compensation.”
-    """
-    weights = _np.ones(max_order + 1)
-
-    if max_order >= 3:
-        hann_window = _np.hanning(2 * ((max_order + 1) // 2) + 1)
-        weights[-((max_order - 1) // 2) :] = hann_window[-((max_order + 1) // 2) : -1]
-    else:
-        import sys
-
-        print(
-            "[WARNING]  SH maximum order is smaller than 3. No tapering will be used.",
-            file=sys.stderr,
-        )
-
-    return weights
 
 
 def delay_fd(target_length_fd, delay_samples):
