@@ -113,6 +113,15 @@ Render a spherical microphone array impulse response measurement binaurally. The
 Version history
 ---------------
 
+*v2021.2.4*
+    * Implement option to use real spherical harmonic basis functions
+    * Update Exp4 to optionally utilize real spherical harmonics
+    * Fix testing of spherical harmonics against reference Matlab implementation
+    * Add testing for generation of real spherical harmonics
+    * Add evaluation of performance for generation of complex and real spherical harmonics
+    * Add evaluation of performance for spatial sound field decomposition
+    * Update `Conda`_ environment setup to combine all development dependencies
+
 *v2021.1.12*
     * Update MIRO struct loading (quadrature weights are now optional)
     * Fix to prevent Python 3.8 syntax warnings
