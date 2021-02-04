@@ -1,15 +1,12 @@
-Welcome to the Sound Field Analysis toolbox for Python!
-=======================================================
-
-Contents:
+Sound Field Analysis toolbox Documentation
+==========================================
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
    usage
-   generators
-   processing
-   plotting
+   modules
    reference
 
 
@@ -17,4 +14,5 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
+* :ref:`modindex`
 * :ref:`search`

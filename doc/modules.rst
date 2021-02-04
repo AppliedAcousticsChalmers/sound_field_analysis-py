@@ -1,51 +1,37 @@
-Reference
-=========
+Modules
+=======
 
 Generators
 ----------
 .. automodule:: sound_field_analysis.gen
-    :members:
-    :undoc-members:
-    :inherited-members:
+    :noindex:
 
 I/O
 ---
 .. automodule:: sound_field_analysis.io
-    :members:
-    :undoc-members:
-    :inherited-members:
+    :noindex:
 
 Lebedev
 -------
 .. automodule:: sound_field_analysis.lebedev
-    :members:
-    :undoc-members:
-    :inherited-members:
+    :noindex:
 
 Plotting
 --------
 .. automodule:: sound_field_analysis.plot
-    :members:
-    :undoc-members:
-    :inherited-members:
+    :noindex:
 
 Processing
 ----------
 .. automodule:: sound_field_analysis.process
-    :members:
-    :undoc-members:
-    :inherited-members:
+    :noindex:
 
 Spherical
 ---------
 .. automodule:: sound_field_analysis.sph
-    :members:
-    :undoc-members:
-    :inherited-members:
+    :noindex:
 
 Utilities
 ---------
 .. automodule:: sound_field_analysis.utils
-    :members:
-    :undoc-members:
-    :inherited-members:
+    :noindex:
