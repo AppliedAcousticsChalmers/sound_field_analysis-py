@@ -81,16 +81,6 @@ def db(data, power=False):
     return factor * np.log10(np.abs(data))
 
 
-def deg2rad(deg):
-    """Converts from degree [0 ... 360] to radiant [0 ... 2pi]"""
-    return deg % 360 / 180 * np.pi
-
-
-def rad2deg(rad):
-    """Converts from radiant [0 ... 2pi] to degree [0 ... 360]"""
-    return rad / np.pi * 180 % 360
-
-
 def cart2sph(cartesian_coords, is_deg=False):
     """
     Parameters
@@ -118,8 +108,8 @@ def cart2sph(cartesian_coords, is_deg=False):
 
     az %= 2 * np.pi  # converting to 0 ... 2pi
     if is_deg:
-        az = rad2deg(az)
-        col = rad2deg(col)
+        az = np.rad2deg(az)
+        col = np.rad2deg(col)
 
     return np.vstack((az, col, r))
 
@@ -144,8 +134,8 @@ def sph2cart(spherical_coords, is_deg=False):
     r = spherical_coords[2].copy()  # prevent altering input data
 
     if is_deg:
-        az = deg2rad(az)
-        col = deg2rad(col)
+        az = np.deg2rad(az)
+        col = np.deg2rad(col)
 
     x = r * np.sin(col) * np.cos(az)
     y = r * np.sin(col) * np.sin(az)
@@ -214,8 +204,8 @@ def SOFA_grid2acr(grid_values, grid_info):
     if _is_grid_spherical(grid_info):
         # given spherical degrees with elevation
         # transform into spherical radians with colatitude
-        grid_values[0] = deg2rad(grid_values[0])
-        grid_values[1] = deg2rad(90 - grid_values[1])
+        grid_values[0] = np.deg2rad(grid_values[0])
+        grid_values[1] = np.deg2rad(90 - grid_values[1])
 
     elif _is_grid_cartesian(grid_info):
         # given cartesian
