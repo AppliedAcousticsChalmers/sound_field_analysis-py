@@ -7,7 +7,8 @@ setup(
     .readlines()[-1]
     .split()[-1]
     .strip("\"'"),
-    license="GPLv3",
+    license="MIT",
+    license_file="LICENSE",
     description="Analyze, visualize and process sound field data recorded by "
     "spherical microphone arrays.",
     long_description=open("README.rst", mode="r", encoding="utf-8").read(),
