@@ -21,10 +21,14 @@ function miro2struct(file)
     miro_data = miro_data.(fields{1});
     clear fields;
 
+    % Initialize elevation variable in order to prevent error in modern
+    % Matlab versions when replacing it with colatitude below.
+    elevation = [];
+
     % Pull all existing fields from stuct into this work space
     read_struct_fields(miro_data);
-    
-    % Pull impulse response again seperately using the builtin function 
+
+    % Pull impulse response again seperately using the builtin function
     % `getIR()` which applies a time window
     [irCenter,irChOne,irChTwo] = read_ir_fields(miro_data); %#ok<ASGLU>
     clear miro_data;
@@ -32,7 +36,7 @@ function miro2struct(file)
     % Rename field 'elevation' since the Python API uses 'colatitude'. This
     % was done to prevent mistakes, due to the field actually containing
     % colatitude data, i.e. was falsely named before.
-    colatitude = elevation(:,:); %#ok<IDISVAR,NODEF>
+    colatitude = elevation(:,:);
     clear elevation;
 
     % Update file name

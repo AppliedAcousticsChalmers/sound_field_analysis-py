@@ -113,6 +113,9 @@ Render a spherical microphone array impulse response measurement binaurally. The
 Version history
 ---------------
 
+*unreleased*
+    * Update `miro_to_struct()` to work in modern Matlab versions
+
 *v2021.2.4*
     * Implement option to use real spherical harmonic basis functions
     * Update Exp4 to optionally utilize real spherical harmonics
