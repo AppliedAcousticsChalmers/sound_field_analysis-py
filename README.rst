@@ -115,6 +115,7 @@ Version history
 
 *unreleased*
     * Update `miro_to_struct()` to work in modern Matlab versions
+    * Update MIRO struct loading for `SphericalGrid` (forgiving empty radius and quadrature weights)
 
 *v2021.2.4*
     * Implement option to use real spherical harmonic basis functions
@@ -127,7 +128,7 @@ Version history
     * Update `online <https://appliedacousticschalmers.github.io/sound_field_analysis-py/>`_ and `offline <DOCUMENTATION.pdf>`_ documentation
 
 *v2021.1.12*
-    * Update MIRO struct loading (quadrature weights are now optional)
+    * Update MIRO struct loading for `SphericalGrid` (quadrature weights are now optional)
     * Fix to prevent Python 3.8 syntax warnings
     * Improve Exp4 (general code structure and utilizing Spherical Head Filter and Spherical Harmonics Tapering)
 

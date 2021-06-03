@@ -73,6 +73,7 @@ class TimeSignal(namedtuple("TimeSignal", "signal fs delay")):
                 "Delay can either be a scalar or an array with one element per signal."
             )
 
+        # noinspection PyArgumentList
         self = super(TimeSignal, cls).__new__(cls, signal, fs, delay)
         return self
 
@@ -98,31 +99,28 @@ class SphericalGrid(namedtuple("SphericalGrid", "azimuth colatitude radius weigh
         colatitude = _np.asarray(colatitude)
         if radius is not None:
             radius = _np.asarray(radius)
+        if radius.size == 0:
+            radius = None
         if weight is not None:
             weight = _np.asarray(weight)
+        if weight.size == 0:
+            weight = None
         if azimuth.size != colatitude.size:
             raise ValueError(
                 "Azimuth and colatitude have to contain the same number of elements."
             )
-        if (
-            (radius is not None)
-            and (radius.size != 1)
-            and (radius.size != azimuth.size)
-        ):
+        if radius is not None and radius.size not in (1, azimuth.size):
             raise ValueError(
                 "Radius can either be a scalar or an array of same size as "
                 "azimuth/colatitude."
             )
-        if (
-            (weight is not None)
-            and (weight.size != 1)
-            and (weight.size != azimuth.size)
-        ):
+        if weight is not None and weight.size not in (1, azimuth.size):
             raise ValueError(
                 "Weight can either be a scalar or an array of same size as "
                 "azimuth/colatitude."
             )
 
+        # noinspection PyArgumentList
         self = super(SphericalGrid, cls).__new__(
             cls, azimuth, colatitude, radius, weight
         )
@@ -182,6 +180,7 @@ class ArrayConfiguration(
                 "For a dual array configuration, cardioid transducers are not supported."
             )
 
+        # noinspection PyArgumentList
         self = super(ArrayConfiguration, cls).__new__(
             cls, array_radius, array_type, transducer_type, scatter_radius, dual_radius
         )
@@ -223,6 +222,7 @@ class ArraySignal(
         if configuration is not None:
             configuration = ArrayConfiguration(*configuration)
 
+        # noinspection PyArgumentList
         self = super(ArraySignal, cls).__new__(
             cls, signal, grid, center_signal, configuration, temperature
         )
@@ -260,6 +260,7 @@ class HrirSignal(namedtuple("HrirSignal", "l r grid center_signal")):
         if center_signal is not None:
             center_signal = TimeSignal(*center_signal)
 
+        # noinspection PyArgumentList
         self = super(HrirSignal, cls).__new__(cls, l, r, grid, center_signal)
         return self
 
