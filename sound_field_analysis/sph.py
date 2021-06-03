@@ -539,7 +539,7 @@ def sph_harm_large(m, n, az, co, kind="complex"):
     Notes
     -----
     Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5
-    * exp(i m phi) * P_n^m(cos(theta)) as per http://dlmf.nist.gov/14.30
+    * exp(i m phi) * P_n^m(cos(theta)) as per https://dlmf.nist.gov/14.30
     Pmn(z) are the associated Legendre functions of the first kind,
     like scipy.special.lpmv, which calculates P(0...m 0...n) and its derivative
     but won't return +inf at high orders.

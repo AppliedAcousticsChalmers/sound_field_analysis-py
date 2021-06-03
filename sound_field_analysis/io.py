@@ -306,7 +306,7 @@ def read_miro_struct(
 
     To import center signal measurements the matlab method miro_to_struct has to
     be extended. Center measurements are included in every measurement
-    provided at http://audiogroup.web.th-koeln.de/.
+    provided at https://audiogroup.web.th-koeln.de/.
     """
     current_data = sio.loadmat(file_name)
 

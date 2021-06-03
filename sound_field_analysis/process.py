@@ -69,7 +69,7 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
     ----------
     .. [4] B. Bernschütz, "Bandwidth Extension for Microphone Arrays",
        AES Convention 2012, Convention Paper 8751, 2012.
-       http://www.aes.org/e-lib/browse.cfm?elib=16493
+       https://www.aes.org/e-lib/browse.cfm?elib=16493
     """
 
     if not max_order:
