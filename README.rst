@@ -1,8 +1,13 @@
 Sound Field Analysis toolbox for Python
 =======================================
 
-.. image:: https://api.travis-ci.org/QULab/sound_field_analysis-py.svg
-.. image:: https://ci.appveyor.com/api/projects/status/u0koxo5vcitmbghc?svg=true
+|icon_awesome| |icon_travis| |icon_appveyor|
+
+.. |icon_awesome| image:: https://awesome.re/mentioned-badge.svg
+   :alt: Mentioned in Awesome Python for Scientific Audio
+   :target: https://github.com/faroit/awesome-python-scientific-audio
+.. |icon_travis| image:: https://api.travis-ci.org/QULab/sound_field_analysis-py.svg
+.. |icon_appveyor| image:: https://ci.appveyor.com/api/projects/status/u0koxo5vcitmbghc?svg=true
 
 .. sphinx-include-start-1
 
