@@ -422,16 +422,18 @@ def _prepare_2D_traces(data, viz_type, fs, line_names):
     traces = []
     for k in range(0, N):
         y = data[k]
-        traces.append(go.Scatter(
-            x=x, y=y if viz_type == "TIME" else 20 * _np.log10(_np.abs(y))
-        ))
+        traces.append(
+            go.Scatter(x=x, y=y if viz_type == "TIME" else 20 * _np.log10(_np.abs(y)))
+        )
         if line_names and k < len(line_names):
             traces[k].name = line_names[k]
 
     return traces
 
 
-def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
+def plot2D(
+    data, title=None, viz_type=None, fs=44100, line_names=None, lim_y_range=True
+):
     """Visualize 2D data using plotly.
 
     Parameters
@@ -447,6 +449,9 @@ def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
     line_names : list of str, optional
         Add legend to be displayed on plot, with one entry for each data row
         [Default: None]
+    lim_y_range : bool, optional
+        Toggle automatic limitation of y-rang for {'ETC', 'LogFFT'} plots
+        [Default: True]
     """
     viz_type = viz_type.strip().upper()  # remove whitespaces and make upper case
 
@@ -454,6 +459,15 @@ def plot2D(data, title=None, viz_type=None, fs=44100, line_names=None):
     traces = _prepare_2D_traces(
         data=data, viz_type=viz_type, fs=fs, line_names=line_names
     )
+
+    if lim_y_range and viz_type in ["ETC", "LOGFFT"]:
+        _Y_MARGIN = 5
+        _Y_DR = 120 if viz_type == "ETC" else 80
+
+        # update layout ranges based on data
+        y_max = _np.max([trace.y.max() for trace in traces])
+        y_max = _np.ceil((y_max + _Y_MARGIN / 2) / _Y_MARGIN) * _Y_MARGIN
+        layout.yaxis.range = [y_max - _Y_DR, y_max]
 
     _showTrace(traces, layout=layout, title=title)
 
@@ -544,10 +558,10 @@ def plot3Dgrid(rows, cols, viz_data, style, normalize=True, title=None):
     rows = rows.flatten()
     cols = cols.flatten()
     for IDX in range(0, len(viz_data)):
-        cur_row = int(rows[IDX])
-        cur_col = int(cols[IDX])
         fig.add_trace(
-            _genVisual(viz_data[IDX], style=style, normalize=normalize), cur_row, cur_col
+            _genVisual(viz_data[IDX], style=style, normalize=normalize),
+            row=int(rows[IDX]),
+            col=int(cols[IDX]),
         )
         fig.layout[f"scene{IDX + 1:d}"].update(layout_3D)
 

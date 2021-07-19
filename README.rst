@@ -121,6 +121,7 @@ Version history
 *unreleased*
     * Update `miro_to_struct()` to work in modern Matlab versions
     * Update MIRO struct loading for `SphericalGrid` (forgiving empty radius and quadrature weights)
+    * Add optional automatic limitation of y-axis range in `plot2D()`
 
 *v2021.2.4*
     * Implement option to use real spherical harmonic basis functions
