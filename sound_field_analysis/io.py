@@ -99,12 +99,12 @@ class SphericalGrid(namedtuple("SphericalGrid", "azimuth colatitude radius weigh
         colatitude = _np.asarray(colatitude)
         if radius is not None:
             radius = _np.asarray(radius)
-        if radius.size == 0:
-            radius = None
+            if radius.size == 0:
+                radius = None
         if weight is not None:
             weight = _np.asarray(weight)
-        if weight.size == 0:
-            weight = None
+            if weight.size == 0:
+                weight = None
         if azimuth.size != colatitude.size:
             raise ValueError(
                 "Azimuth and colatitude have to contain the same number of elements."
