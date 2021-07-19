@@ -58,6 +58,14 @@ For performance and convenience reasons we highly recommend to use `Conda`_ (min
     |  ``conda install -c conda-forge sound_field_analysis``
 
 
+Documentation
+-------------
+
+https://appliedacousticschalmers.github.io/sound_field_analysis-py/ and offline as `PDF <DOCUMENTATION.pdf>`_.
+
+**Note:** Verify the version number of the documentation to see if it reflects the `latest changes <#version-history>`_.
+
+
 Examples
 --------
 
@@ -183,8 +191,6 @@ Contribute
 ----------
 
 See `CONTRIBUTE.rst <CONTRIBUTE.rst>`_ for full details.
-
-You can find the full offline documentation as `PDF <DOCUMENTATION.pdf>`_ as well as online at https://appliedacousticschalmers.github.io/sound_field_analysis-py/ .
 
 
 License
