@@ -20,7 +20,7 @@ import plotly.graph_objs as go
 from plotly import offline as plotly_off, subplots
 
 from .process import plane_wave_decomp
-from .utils import current_time, env_info, progress_bar
+from .utils import current_time, env_info, frac_oct_smooth_fd, progress_bar
 
 
 def _showTrace(trace, layout=None, title=None):
@@ -361,7 +361,10 @@ def _genVisual(vizMTX, style="shape", normalize=True, logScale=False):
 
 def _layout_2D(viz_type=None, title=None):
     layout = go.Layout(
-        title=title, xaxis=dict(title="Samples"), yaxis=dict(title="Amplitude")
+        title=title,
+        xaxis=dict(title="Samples"),
+        yaxis=dict(title="Amplitude"),
+        template="plotly",
     )
 
     if viz_type == "TIME":
@@ -420,11 +423,9 @@ def _prepare_2D_traces(data, viz_type, fs, line_names):
     x = _prepare_2D_x(L, viz_type, fs)
 
     traces = []
-    for k in range(0, N):
-        y = data[k]
-        traces.append(
-            go.Scatter(x=x, y=y if viz_type == "TIME" else 20 * _np.log10(_np.abs(y)))
-        )
+    for k in range(N):
+        y = data[k] if viz_type == "TIME" else 20 * _np.log10(_np.abs(data[k]))
+        traces.append(go.Scatter(x=x, y=y))
         if line_names and k < len(line_names):
             traces[k].name = line_names[k]
 
@@ -432,7 +433,13 @@ def _prepare_2D_traces(data, viz_type, fs, line_names):
 
 
 def plot2D(
-    data, title=None, viz_type=None, fs=44100, line_names=None, lim_y_range=True
+    data,
+    title=None,
+    viz_type=None,
+    fs=44100,
+    line_names=None,
+    lim_y_range=True,
+    log_fft_frac=None,
 ):
     """Visualize 2D data using plotly.
 
@@ -452,6 +459,9 @@ def plot2D(
     lim_y_range : bool, optional
         Toggle automatic limitation of y-rang for {'ETC', 'LogFFT'} plots
         [Default: True]
+    log_fft_frac : float, optional
+        Fractional octaves of amplitude smoothing for 'LogFFT' plots
+        [Default: None]
     """
     viz_type = viz_type.strip().upper()  # remove whitespaces and make upper case
 
@@ -460,11 +470,24 @@ def plot2D(
         data=data, viz_type=viz_type, fs=fs, line_names=line_names
     )
 
+    if viz_type == "LOGFFT" and log_fft_frac:
+        # adjust title to reflect smoothing
+        layout.title.text += f" (1/{log_fft_frac:.0f} frac. oct. smoothing)"
+        # limit colors to number of existing traces
+        layout.update(colorway=layout.template.layout.colorway[: len(traces)])
+        for t in range(len(traces)):
+            # apply fractional octave smoothing
+            y = _np.squeeze(frac_oct_smooth_fd(traces[t].y, frac=log_fft_frac))
+            # append trace with smoothed data
+            traces.append(go.Scatter(traces[t], y=y))
+            # adjust line styles to differentiate raw and smoothed data
+            traces[t].line.update(width=0.25)
+            traces[-1].line.update(width=2.5)
+
     if lim_y_range and viz_type in ["ETC", "LOGFFT"]:
         _Y_MARGIN = 5
         _Y_DR = 120 if viz_type == "ETC" else 80
-
-        # update layout ranges based on data
+        # limit layout range of y-axis based on data
         y_max = _np.max([trace.y.max() for trace in traces])
         y_max = _np.ceil((y_max + _Y_MARGIN / 2) / _Y_MARGIN) * _Y_MARGIN
         layout.yaxis.range = [y_max - _Y_DR, y_max]
