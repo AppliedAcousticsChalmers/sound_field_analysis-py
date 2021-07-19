@@ -21,8 +21,8 @@ We use `Python 3.9 <https://www.python.org/downloads/>`_ for development. Chance
 
 The following external libraries are required:
 
--  `NumPy <http://www.numpy.org>`_
--  `SciPy <http://www.scipy.org>`_
+-  `NumPy`_
+-  `SciPy <https://www.scipy.org>`_
 -  `Pysofaconventions <https://github.com/andresperezlopez/pysofaconventions>`_
 -  `Jupyter`_ (for running *Notebooks* locally)
 -  `Plotly <https://plot.ly/python/>`_ (for plotting)
@@ -69,7 +69,7 @@ https://appliedacousticschalmers.github.io/sound_field_analysis-py/ and offline 
 Examples
 --------
 
-The following examples are available as `Jupyter`_ *Notebooks*, either statically on `GitHub <examples/>`_ or interactively on `nbviewer <http://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/>`_. You can of course also simply download the examples and run them locally!
+The following examples are available as `Jupyter`_ *Notebooks*, either statically on `GitHub <examples/>`_ or interactively on `nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/>`_. You can of course also simply download the examples and run them locally!
 
 
 Exp1: Ideal plane wave
@@ -140,6 +140,7 @@ Version history
     * Add testing for generation of real spherical harmonics
     * Add evaluation of performance for generation of complex and real spherical harmonics
     * Add evaluation of performance for spatial sound field decomposition
+    * Remove `deg2rad` and `rad2deg` utility functions (replaced by `NumPy`_ equivalent)
     * Update `Conda`_ environment setup to combine all development dependencies
     * Update `online <https://appliedacousticschalmers.github.io/sound_field_analysis-py/>`_ and `offline <DOCUMENTATION.pdf>`_ documentation
 
@@ -206,13 +207,14 @@ References
 
 The *sound_field_analysis* toolbox is based on the Matlab/C++ `Sound Field Analysis Toolbox (SOFiA) toolbox`_ by Benjamin Bernschütz. For more information you may refer to the original publication:
 
-[1] `Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio <http://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/>`_
+[1] `Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011). SOFiA Sound Field Analysis Toolbox. Proceedings of the ICSA International Conference on Spatial Audio <https://spatialaudio.net/sofia-sound-field-analysis-toolbox-2/>`_
 
 The Lebedev grid generation was adapted from an implementation by `Richard P. Muller <https://github.com/gabrielelanaro/pyquante/blob/master/Data/lebedev_write.py>`_.
 
-.. _Sound Field Analysis Toolbox (SOFiA) toolbox: http://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html
+.. _Sound Field Analysis Toolbox (SOFiA) toolbox: https://audiogroup.web.th-koeln.de/SOFiA_wiki/WELCOME.html
 .. _[1]: #references
 .. _PyPI: https://pypi.org/project/sound-field-analysis/
+.. _NumPy: https://www.numpy.org/
 .. _Jupyter: https://jupyter.org/
 .. _Conda: https://conda.io/en/master/miniconda.html
 .. _SOFA: https://www.sofaconventions.org/mediawiki/index.php/SOFA_(Spatially_Oriented_Format_for_Acoustics)
