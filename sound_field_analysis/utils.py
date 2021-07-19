@@ -29,6 +29,9 @@ Module containing various utility functions:
 `zero_pad_fd`
     Apply zero padding to frequency domain data by transformation into time
     domain and back.
+`frac_oct_smooth_fd`
+    Apply amplitude only fractional octave band smoothing to frequency domain
+    data.
 `current_time`
     Return current system time based on `datetime.now()`.
 `time_it`
@@ -44,7 +47,8 @@ from itertools import cycle
 from time import sleep
 
 import numpy as np
-from scipy.signal import resample
+from scipy.interpolate import interp1d
+from scipy.signal import filtfilt, resample, windows
 
 spinner = cycle(["-", "/", "|", "\\"])
 
@@ -317,7 +321,7 @@ def frq2kr(target_frequency, freq_vector):
     target_frequency : float
        Target frequency
     freq_vector : array_like
-       Array containing the available frequencys
+       Array containing the available frequencies
 
     Returns
     -------
@@ -362,6 +366,74 @@ def zero_pad_fd(data_fd, target_length_td):
     # by transforming into time domain, zero padding and transforming back into
     # frequency domain
     return np.fft.rfft(np.fft.irfft(data_fd), n=target_length_td)
+
+
+def frac_oct_smooth_fd(data_fd, frac=3):
+    """Apply amplitude only fractional octave band smoothing to frequency
+    domain data.
+
+    This implementation is based on the amplitude ('welti') method of
+    `AKfractOctSmooth()` in [9]_.
+
+    Parameters
+    ----------
+    data_fd : numpy.ndarray
+        Single-sided spectrum
+    frac : float, optional
+        Fraction of octaves, e.g. third octaves by default [Default: 3]
+
+    Returns
+    -------
+    numpy.ndarray
+        Smoothed single-sided spectrum
+
+    References
+    ----------
+    .. [9] Brinkmann, F., and Weinzierl, S. (2017). “AKtools - An Open Software
+    Toolbox for Signal Acquisition, Processing, and Inspection in Acoustics,”
+    AES Conv. 142, Audio Engineering Society, Berlin, Germany, 1–6.
+    """
+
+    def interp1(x, y, x_2interp, kind="linear"):
+        """simple wrapper to use interp1d MATLAB like"""
+        # check if target x values exceed given x_values
+        if x_2interp.max() > x.max() or x_2interp.min() < x.min():
+            # make extrapolate function
+            interpolator_function = interp1d(x, y, kind, fill_value="extrapolate")
+        else:
+            interpolator_function = interp1d(x, y, kind)
+        return interpolator_function(x_2interp)
+
+    # check dimension and transform to sample X channel
+    data_fd = np.atleast_2d(data_fd).copy()
+
+    # if operation == "welti":  # according to `AKfractOctSmooth()`
+    num_bins = data_fd.shape[-1]
+    start_bin, stop_bin = 1, num_bins
+    N = stop_bin
+
+    # multiplicative factors
+    spacing = 10 ** (np.log10(stop_bin - start_bin) / N)
+    # number of bins per octave
+    N_oct = np.log10(2) / (frac * np.log10(spacing))
+    N_oct_even = round(N_oct / 2) * 2
+    # logarithmic scalar
+    log_bins = np.logspace(np.log10(start_bin), np.log10(stop_bin - 1), N)
+    lin_bins = np.arange(0, num_bins)
+
+    if np.iscomplexobj(data_fd):
+        data_fd = np.abs(data_fd)
+    data_fd_ip = interp1(lin_bins, data_fd, log_bins, kind="cubic")
+
+    fd_win = windows.gaussian(N_oct_even * 2, N_oct_even / 2.5)
+    fd_lead = np.ones(np.append(data_fd.shape[:-1], fd_win.size)) * data_fd_ip[..., :1]
+    fd_lag = np.ones(np.append(data_fd.shape[:-1], fd_win.size)) * data_fd_ip[..., -1:]
+    data_fd_ip_extrap = np.concatenate((fd_lead, data_fd_ip, fd_lag), axis=-1)
+
+    data_fd_temp = filtfilt(b=fd_win, a=1, x=data_fd_ip_extrap) / np.sum(fd_win) ** 2
+    data_fd_temp = data_fd_temp[..., fd_win.size : fd_win.size + num_bins]
+    data_fd_sm = interp1(log_bins, data_fd_temp, lin_bins, kind="linear")
+    return data_fd_sm
 
 
 def current_time():
