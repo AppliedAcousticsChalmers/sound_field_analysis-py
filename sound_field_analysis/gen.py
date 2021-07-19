@@ -257,9 +257,10 @@ def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
 
     References
     ----------
-    .. [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., et al. (2017). "Spectral
-       equalization in binaural signals represented by order-truncated
-       spherical harmonics. The Journal of the Acoustical Society of America".
+    .. [1] Ben-Hur, Z., Brinkmann, F., Sheaffer, J., Weinzierl, S., and
+    Rafaely, B. (2017). “Spectral Equalization in Binaural Signals Represented
+    by Order-Truncated Spherical Harmonics,” J. Acoust. Soc. Am., 141,
+    4087–4096. doi:10.1121/1.4983652
     """
 
     def pressure_on_sphere(max_order, kr, taper_weights=None):
@@ -369,9 +370,11 @@ def tapering_window(max_order):
 
     References
     ----------
-    .. [2] Hold, Christoph, Hannes Gamper, Ville Pulkki, Nikunj Raghuvanshi, and
-       Ivan J. Tashev (2019). “Improving Binaural Ambisonics Decoding by
-       Spherical Harmonics Domain Tapering and Coloration Compensation.”
+    .. [2] Hold, C., Gamper, H., Pulkki, V., Raghuvanshi, N., and Tashev, I. J.
+    (2019). “Improving Binaural Ambisonics Decoding by Spherical Harmonics
+    Domain Tapering and Coloration Compensation,” Int. Conf. Acoust. Speech
+    Signal Process., IEEE, Brighton, UK, 261–265.
+    doi:10.1109/ICASSP.2019.8683751
     """
     weights = _np.ones(max_order + 1)
 

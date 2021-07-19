@@ -15,9 +15,8 @@ and in the user- and programmers-manuals describing their codes.
 
 References
 ----------
-.. [3] V.I. Lebedev, and D.N. Laikov 'A quadrature formula for the sphere of the
-   131st algebraic order of accuracy' Doklady Mathematics, Vol. 59, No. 3,
-   1999, pp. 477-481.
+.. [3] Lebedev, V. I. (1977). “Spherical quadrature formulas exact to orders
+25-29,” Sib. Math. J., 18, 99–107. doi:10.1007/BF00966954
 """
 from collections import namedtuple
 

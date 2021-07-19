@@ -67,9 +67,8 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
 
     References
     ----------
-    .. [4] B. Bernschütz, "Bandwidth Extension for Microphone Arrays",
-       AES Convention 2012, Convention Paper 8751, 2012.
-       https://www.aes.org/e-lib/browse.cfm?elib=16493
+    .. [4] Bernschütz, B. (2012). “Bandwidth Extension for Microphone Arrays,”
+    AES Conv. 133, Audio Engineering Society, San Francisco, USA, 1–10.
     """
 
     if not max_order:
@@ -302,9 +301,9 @@ def spatFT(
 
     References
     ----------
-    .. [5] Boaz Rafaely: Fundamentals of spherical array processing. In.
-       Springer topics in signal processing. Benesty, J.; Kellermann,
-       W. (Eds.), Springer, Heidelberg et al. (2015).
+    .. [5] Rafaely, B. (2015). Fundamentals of Spherical Array Processing,
+    (J. Benesty and W. Kellermann, Eds.) Springer Berlin Heidelberg, 2nd ed.,
+    196 pages. doi:10.1007/978-3-319-99561-8
     """
     data = _np.atleast_2d(data)
     position_grid = SphericalGrid(*position_grid)
@@ -589,9 +588,9 @@ def rfi(dn, kernelSize=512, highPass=0.0):
 
     References
     ----------
-    .. [6] B. Bernschütz, C. Pörschmann, S. Spors, and S. Weinzierl, “SOFiA
-       Sound Field Analysis Toolbox,” in International Conference on Spatial
-       Audio, 2011, pp. 7–15.
+    .. [6] Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011).
+    “SOFiA Sound Field Analysis Toolbox,” Int. Conf. Spat. Audio, Verband
+    Deutscher Tonmeister e.V., Detmold, Germany, 7–15.
 
     TODO
     ----
