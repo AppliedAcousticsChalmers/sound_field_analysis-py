@@ -486,11 +486,14 @@ def plot2D(
 
     if lim_y_range and viz_type in ["ETC", "LOGFFT"]:
         _Y_MARGIN = 5
-        _Y_DR = 120 if viz_type == "ETC" else 80
-        # limit layout range of y-axis based on data
+        _Y_DR = 110 if viz_type == "ETC" else 70
+
+        y_min = _np.min([trace.y.min() for trace in traces])
         y_max = _np.max([trace.y.max() for trace in traces])
-        y_max = _np.ceil((y_max + _Y_MARGIN / 2) / _Y_MARGIN) * _Y_MARGIN
-        layout.yaxis.range = [y_max - _Y_DR, y_max]
+        if y_max - y_min > _Y_DR:
+            # limit layout range of y-axis based on data
+            y_max = _np.ceil((y_max + _Y_MARGIN / 2) / _Y_MARGIN) * _Y_MARGIN
+            layout.yaxis.range = [y_max - _Y_DR, y_max]
 
     _showTrace(traces, layout=layout, title=title)
 
