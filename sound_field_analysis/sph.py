@@ -498,7 +498,7 @@ def sph_harm(m, n, az, co, kind="complex"):
     """
     # SAFETY CHECKS
     kind = kind.lower()
-    if kind not in {"complex", "real"}:
+    if kind not in ["complex", "real"]:
         raise ValueError("Invalid kind: Choose either complex or real.")
     m = _np.atleast_1d(m)
 

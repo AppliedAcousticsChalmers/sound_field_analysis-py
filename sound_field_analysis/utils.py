@@ -230,13 +230,13 @@ def SOFA_grid2acr(grid_values, grid_info):
         return (
             grid0[0] == "degree"
             and grid0[1] == "degree"
-            and grid0[2] in {"metre", "meter"}
+            and grid0[2] in ["metre", "meter"]
             and grid[1] == "spherical"
         )
 
     def _is_grid_cartesian(grid):
         grid = tuple(g.lower() for g in grid)
-        return grid[0] in {"metre", "meter"} or grid[1] == "cartesian"
+        return grid[0] in ["metre", "meter"] or grid[1] == "cartesian"
 
     # transform into regular `numpy.ndarray`
     grid_values = grid_values.T.filled(0).copy()

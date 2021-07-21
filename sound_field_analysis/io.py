@@ -163,11 +163,11 @@ class ArrayConfiguration(
         dual_radius : float, optional
             Radius of second array, required for `array_type` == 'dual'
         """
-        if array_type not in {"open", "rigid", "dual"}:
+        if array_type not in ["open", "rigid", "dual"]:
             raise ValueError(
                 "Sphere configuration has to be either open, rigid, or dual."
             )
-        if transducer_type not in {"omni", "cardioid"}:
+        if transducer_type not in ["omni", "cardioid"]:
             raise ValueError("Transducer type has to be either omni or cardioid.")
         if array_type == "rigid" and scatter_radius is None:
             scatter_radius = array_radius

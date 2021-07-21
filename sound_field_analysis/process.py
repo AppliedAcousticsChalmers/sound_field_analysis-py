@@ -712,7 +712,7 @@ def sfe(Pnm_kra, kra, krb, problem="interior"):
     if kra.shape[1] != Pnm_kra.shape[1] or kra.shape[1] != krb.shape[1]:
         raise ValueError("FFTData: Complex Input Data expected.")
     problem = problem.lower()
-    if problem not in {"interior", "exterior"}:
+    if problem not in ["interior", "exterior"]:
         raise ValueError("Invalid problem: Choose either interior or exterior.")
 
     FCoeff = Pnm_kra.shape[0]

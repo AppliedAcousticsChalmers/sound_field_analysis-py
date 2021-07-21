@@ -539,7 +539,7 @@ def ideal_wave(
 
     # SAFETY CHECKS
     wavetype = wavetype.lower()
-    if wavetype not in {"plane", "spherical"}:
+    if wavetype not in ["plane", "spherical"]:
         raise ValueError("Invalid wavetype: Choose either plane or spherical.")
     if delay * fs > NFFT - 1:
         raise ValueError("Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).")
