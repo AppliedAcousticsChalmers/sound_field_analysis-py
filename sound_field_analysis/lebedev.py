@@ -16,7 +16,7 @@ and in the user- and programmers-manuals describing their codes.
 References
 ----------
 .. [3] Lebedev, V. I. (1977). “Spherical quadrature formulas exact to orders
-25-29,” Sib. Math. J., 18, 99–107. doi:10.1007/BF00966954
+    25-29,” Sib. Math. J., 18, 99–107. doi:10.1007/BF00966954
 """
 from collections import namedtuple
 

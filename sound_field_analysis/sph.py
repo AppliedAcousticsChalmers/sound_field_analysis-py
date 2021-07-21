@@ -491,10 +491,10 @@ def sph_harm(m, n, az, co, kind="complex"):
 
     References
     ----------
-    .. [7] scipy.special.sph_harm
+    .. [7] `scipy.special.sph_harm()`
     .. [8] Zotter, F. (2009). Analysis and Synthesis of Sound-Radiation with
-    Spherical Arrays University of Music and Performing Arts Graz, Austria,
-    192 pages.
+        Spherical Arrays University of Music and Performing Arts Graz, Austria,
+        192 pages.
     """
     # SAFETY CHECKS
     kind = kind.lower()

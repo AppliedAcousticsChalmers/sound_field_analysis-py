@@ -302,8 +302,8 @@ def spatFT(
     References
     ----------
     .. [5] Rafaely, B. (2015). Fundamentals of Spherical Array Processing,
-    (J. Benesty and W. Kellermann, Eds.) Springer Berlin Heidelberg, 2nd ed.,
-    196 pages. doi:10.1007/978-3-319-99561-8
+        (J. Benesty and W. Kellermann, Eds.) Springer Berlin Heidelberg,
+        2nd ed., 196 pages. doi:10.1007/978-3-319-99561-8
     """
     data = _np.atleast_2d(data)
     position_grid = SphericalGrid(*position_grid)
@@ -589,8 +589,8 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     References
     ----------
     .. [6] Bernschütz, B., Pörschmann, C., Spors, S., and Weinzierl, S. (2011).
-    “SOFiA Sound Field Analysis Toolbox,” Int. Conf. Spat. Audio, Verband
-    Deutscher Tonmeister e.V., Detmold, Germany, 7–15.
+        “SOFiA Sound Field Analysis Toolbox,” Int. Conf. Spat. Audio, Verband
+        Deutscher Tonmeister e.V., Detmold, Germany, 7–15.
 
     TODO
     ----
