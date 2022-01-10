@@ -134,6 +134,7 @@ Version history
     * Add option for fractional octave smoothing of magnitude spectra to `plot2D()`
     * Fix Exp4 to replace removed `deg2rad` and `rad2deg` utility functions
     * Add option to generate unlimited radial filters
+    * Add Radial Filter Improvement DC-component estimation for all orders where the 0 Hz bin is NaN
 
 *v2021.2.4*
     * Implement option to use real spherical harmonic basis functions

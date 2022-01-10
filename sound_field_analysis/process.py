@@ -611,15 +611,13 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     if highPass:
         kernelSize //= 2
 
-    # DC-component estimation
+    # DC-component estimation for all odd and orders where the 0 Hz bin is NaN
     dn_diff = _np.abs(dn[:, 1] / dn[:, 2])
-    oddOrders = range(1, dn.shape[0], 2)
-    dn[oddOrders, 0] = (
-        -1j
-        * dn[oddOrders, 1]
-        * 2
-        * (sourceKernelSize / kernelSize)
-        * dn_diff[oddOrders]
+    odd_orders = range(1, dn.shape[0], 2)
+    nan_orders = _np.isnan(dn[:, 0])
+    nan_orders[odd_orders] = True
+    dn[nan_orders, 0] = (
+        -2j * sourceKernelSize / kernelSize * dn[nan_orders, 1] * dn_diff[nan_orders]
     )
 
     # transform into time domain
