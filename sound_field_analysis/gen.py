@@ -274,22 +274,20 @@ def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
             taper_weights = _np.ones(max_order + 1)  # no weighting
 
         p = _np.zeros_like(kr)
-        for order in range(max_order + 1):
+        for n in range(max_order + 1):
             # Calculate mode strength b_n(kr) for an incident plane wave on sphere according to [1, Eq.(9)]
-            b_n = (
-                4
-                * _np.pi
-                * 1j ** order
-                * (
-                    spherical_jn(order, kr)
-                    - (spherical_jn(order, kr, True) / dsphankel2(order, kr))
-                    * sphankel2(order, kr)
+            b_n = (4 * _np.pi * 1j ** n) * (
+                spherical_jn(n, kr)
+                - (
+                    spherical_jn(n, kr, derivative=True)
+                    * sphankel2(n, kr)
+                    / dsphankel2(n, kr)
                 )
             )
-            p += (2 * order + 1) * _np.abs(b_n) ** 2 * taper_weights[order]
+            p += (2 * n + 1) * _np.abs(b_n) ** 2 * taper_weights[n]
 
         # according to [1, Eq.(11)]
-        return 1 / (4 * _np.pi) * _np.sqrt(p)
+        return _np.sqrt(p) / (4 * _np.pi)
 
     # according to [1, Eq.(12)].
     taper_weights = tapering_window(max_order) if is_tapering else None
@@ -372,7 +370,7 @@ def tapering_window(max_order):
     References
     ----------
     .. [2] Hold, C., Gamper, H., Pulkki, V., Raghuvanshi, N., and Tashev, I. J.
-        (2019). “Improving Binaural Ambisonics Decoding by Spherical 
+        (2019). “Improving Binaural Ambisonics Decoding by Spherical
         Harmonics Domain Tapering and Coloration Compensation,” Int. Conf.
         Acoust. Speech Signal Process., IEEE, Brighton, UK, 261–265.
         doi:10.1109/ICASSP.2019.8683751
@@ -545,11 +543,11 @@ def ideal_wave(
     if delay * fs > NFFT - 1:
         raise ValueError("Delay t is large for provided NFFT. Choose t < NFFT/(2*FS).")
 
-    w = _np.linspace(0, _np.pi * fs, NFFT)
+    omega = _np.linspace(0, _np.pi * fs, NFFT)
     freqs = _np.linspace(0, fs / 2, NFFT)
 
     radial_filters = _np.zeros([NMLocatorSize, NFFT], dtype=_np.complex_)
-    time_shift = _np.exp(-1j * w * delay)
+    time_shift = _np.exp(-1j * omega * delay)
 
     for n in range(0, order + 1):
         if wavetype == "plane":
@@ -559,12 +557,7 @@ def ideal_wave(
         else:  # wavetype == 'spherical':
             k_dist = kr(freqs, distance)
             radial_filters[n] = (
-                4
-                * _np.pi
-                * -1j
-                * w
-                / c
-                * time_shift
+                (4 * _np.pi * -1j * omega / c * time_shift)
                 * sphankel2(n, k_dist)
                 * array_extrapolation(n, freqs, array_configuration)
             )

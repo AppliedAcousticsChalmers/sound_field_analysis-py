@@ -435,17 +435,20 @@ def bn_open_cardioid(n, krm):
 
 
 def bn_rigid_omni(n, krm, krs):
+    # krm: for mic radius, krs: for sphere radius
     krm, krs = scalar_broadcast_match(krm, krs)
-    return spbessel(n, krm) - (dspbessel(n, krs) / dsphankel2(n, krs)) * sphankel2(
-        n, krm
+    return spbessel(n, krm) - (
+        (dspbessel(n, krs) / dsphankel2(n, krs)) * sphankel2(n, krm)
     )
+    # # for krm == krs one could use
+    # return 1j / (krm ** 2 * dsphankel2(n, krm))
 
 
 def bn_rigid_cardioid(n, krm, krs):
-    #  Rerence for Filter design for rigid sphere with cardioid microphones:
-    #  P. Plessas, F. Zotter: Microphone arrays around rigid spheres for spatial
-    #  recording and holography, DAGA 2010
-    #  krm: for mic radius, krs: for sphere radius
+    # Reference for Filter design for rigid sphere with cardioid microphones:
+    # P. Plessas, F. Zotter: Microphone arrays around rigid spheres for spatial
+    # recording and holography, DAGA 2010
+    # krm: for mic radius, krs: for sphere radius
     krm, krs = scalar_broadcast_match(krm, krs)
     return (
         spbessel(n, krm)
