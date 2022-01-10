@@ -133,6 +133,7 @@ Version history
     * Implement `frac_oct_smooth_fd()` with fractional octave smoothing of magnitude spectra
     * Add option for fractional octave smoothing of magnitude spectra to `plot2D()`
     * Fix Exp4 to replace removed `deg2rad` and `rad2deg` utility functions
+    * Add option to generate unlimited radial filters
 
 *v2021.2.4*
     * Implement option to use real spherical harmonic basis functions

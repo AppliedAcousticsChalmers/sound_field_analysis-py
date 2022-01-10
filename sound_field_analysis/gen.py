@@ -183,8 +183,9 @@ def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=4
         Sampling frequency
     array_configuration : io.ArrayConfiguration
         List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
-    amp_maxdB : int, optional
-        Maximum modal amplification limit in dB [Default: 40]
+    amp_maxdB : float, optional
+        Maximum modal amplification limit in dB, unlimited in case of
+        {None, "", NaN, Inf, -Inf} [Default: 40]
 
     Returns
     -------
@@ -194,7 +195,7 @@ def radial_filter_fullspec(max_order, NFFT, fs, array_configuration, amp_maxdB=4
     """
 
     freqs = _np.linspace(0, fs / 2, NFFT // 2 + 1)
-    orders = _np.r_[0 : max_order + 1]
+    orders = _np.arange(max_order + 1)
     return radial_filter(orders, freqs, array_configuration, amp_maxdB=amp_maxdB)
 
 
@@ -209,8 +210,9 @@ def radial_filter(orders, freqs, array_configuration, amp_maxdB=40):
         Frequency of modal filter
     array_configuration : io.ArrayConfiguration
         List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
-    amp_maxdB : int, optional
-        Maximum modal amplification limit in dB [Default: 40]
+    amp_maxdB : float, optional
+        Maximum modal amplification limit in dB, unlimited in case of
+        {None, "", NaN, Inf, -Inf} [Default: 40]
 
     Returns
     -------
@@ -222,14 +224,13 @@ def radial_filter(orders, freqs, array_configuration, amp_maxdB=40):
     extrapolation_coeffs = array_extrapolation(orders, freqs, array_configuration)
     extrapolation_coeffs[extrapolation_coeffs == 0] = 1e-12
 
-    amp_max = 10 ** (amp_maxdB / 20)
-    limiting_factor = (
-        2
-        * amp_max
-        / _np.pi
-        * _np.abs(extrapolation_coeffs)
-        * _np.arctan(_np.pi / (2 * amp_max * _np.abs(extrapolation_coeffs)))
-    )
+    if amp_maxdB in {None, "", _np.NAN, _np.PINF, _np.NINF}:
+        limiting_factor = 1
+    else:
+        limiting_factor = (
+            10 ** (amp_maxdB / 20) * 2 * _np.abs(extrapolation_coeffs) / _np.pi
+        )
+        limiting_factor *= _np.arctan(1 / limiting_factor)
 
     return limiting_factor / extrapolation_coeffs
 
