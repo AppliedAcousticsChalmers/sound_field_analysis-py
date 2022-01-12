@@ -301,13 +301,15 @@ def read_miro_struct(
 
     Notes
     -----
-    This function expects a slightly modified miro file in that it expects a
-    field `colatitude` instead of `elevation`. This is for avoiding confusion as
-    may miro file contain colatitude data in the elevation field.
+    This function expects a slightly modified MIRO file in that it expects a
+    field `colatitude` instead of `elevation`. A warning will be given in
+    case an `elevation` field is present and the data will be interpreted as
+    `colatitude` regardless.
 
-    To import center signal measurements the matlab method miro_to_struct has to
-    be extended. Center measurements are included in every measurement
-    provided at https://audiogroup.web.th-koeln.de/.
+    To import measurements with a center signal, the Matlab method
+    `miro_to_struct` has to be extended. Center measurements are for example
+    included in every measurement provided at
+    https://audiogroup.web.th-koeln.de/.
     """
     current_data = sio.loadmat(file_name)
 
@@ -330,6 +332,26 @@ def read_miro_struct(
             )
             center_signal = None
 
+    if "elevation" in current_data.keys():
+        if (current_data["elevation"] >= 0).all():
+            print(
+                'WARNING: The "elevation" data contains only positive values, '
+                "which is an indication that it contains colatitude data?",
+                file=sys.stderr,
+            )
+        print(
+            'WARNING: The provided data set contains the field "elevation", '
+            "which will be interpreted as colatitude instead!",
+            file=sys.stderr,
+        )
+        current_data["colatitude"] = current_data["elevation"]
+    elif (current_data["colatitude"] < 0).any():
+        print(
+            'WARNING: The "colatitude" data contains some negative values, '
+            "which is an indication that it contains elevation data?",
+            file=sys.stderr,
+        )
+
     mic_grid = SphericalGrid(
         azimuth=_np.squeeze(current_data["azimuth"]),
         colatitude=_np.squeeze(current_data["colatitude"]),
@@ -338,13 +360,6 @@ def read_miro_struct(
         if "quadWeight" in current_data
         else None,
     )
-
-    if (mic_grid.colatitude < 0).any():
-        print(
-            'WARNING: The "colatitude" data contains negative values, which '
-            "is an indication that it is actually elevation",
-            file=sys.stderr,
-        )
 
     if _np.squeeze(current_data["scatterer"]):
         sphere_config = "rigid"

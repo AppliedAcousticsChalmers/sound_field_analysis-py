@@ -126,6 +126,9 @@ Render a spherical microphone array impulse response measurement binaurally. The
 Version history
 ---------------
 
+*unreleased*
+    * Improve `read_miro_struct()` to give warnings in case elevation data is found
+
 *v2022.1.10*
     * Update `miro_to_struct()` to work in modern Matlab versions
     * Update MIRO struct loading for `SphericalGrid` (forgiving empty radius and quadrature weights)
