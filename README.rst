@@ -69,7 +69,7 @@ https://appliedacousticschalmers.github.io/sound_field_analysis-py/ and offline 
 Examples
 --------
 
-The following examples are available as `Jupyter`_ *Notebooks*, either statically on `GitHub <examples/>`_ or interactively on `nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/master/examples/>`_. You can of course also simply download the examples and run them locally!
+The following examples are available as `Jupyter`_ *Notebooks*, either statically on `GitHub <examples/>`_ or interactively on `nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/tree/main/examples/>`_. You can of course also simply download the examples and run them locally!
 
 
 Exp1: Ideal plane wave
@@ -77,14 +77,14 @@ Exp1: Ideal plane wave
 
 Ideal unity plane wave simulation and 3D plot.
 
-`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/main/examples/Exp1_IdealPlaneWave.ipynb>`__
 
 .. sphinx-include-end-1
 
 |AE1_img|_
 
 .. |AE1_img| image:: examples/img/AE1_shape.png?raw=true
-.. _AE1_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp1_IdealPlaneWave.ipynb
+.. _AE1_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/main/examples/Exp1_IdealPlaneWave.ipynb
 
 .. sphinx-include-start-2
 
@@ -94,14 +94,14 @@ Exp2: Measured plane wave
 
 A measured plane wave from AZ=180°, EL=90° in the anechoic chamber using a cardioid mic.
 
-`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/main/examples/Exp2_MeasuredWave.ipynb>`__
 
 .. sphinx-include-end-2
 
 |AE2_img|_
 
 .. |AE2_img| image:: examples/img/AE2_shape.png?raw=true
-.. _AE2_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp2_MeasuredWave.ipynb
+.. _AE2_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/main/examples/Exp2_MeasuredWave.ipynb
 
 .. sphinx-include-start-3
 
@@ -111,14 +111,14 @@ Exp4: Binaural rendering
 
 Render a spherical microphone array impulse response measurement binaurally. The example shows examples for loading miro or `SOFA`_ files.
 
-`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb>`__
+`View interactively on nbviewer <https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/main/examples/Exp4_BinauralRendering.ipynb>`__
 
 .. sphinx-include-end-3
 
 |AE4_img|_
 
 .. |AE4_img| image:: examples/img/AE4_radial_filters.png?raw=true
-.. _AE4_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/master/examples/Exp4_BinauralRendering.ipynb
+.. _AE4_img: https://nbviewer.jupyter.org/github/AppliedAcousticsChalmers/sound_field_analysis-py/blob/main/examples/Exp4_BinauralRendering.ipynb
 
 .. sphinx-include-start-4
 
@@ -129,6 +129,7 @@ Version history
 *unreleased*
     * Improve `read_miro_struct()` to give warnings in case elevation data is found
     * Fix *Exp4* loading of MIRO files and improve documentation table formatting
+    * Update README to reflect the name change of master branch to "main"
 
 *v2022.1.10*
     * Update `miro_to_struct()` to work in modern Matlab versions
