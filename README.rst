@@ -126,7 +126,7 @@ Render a spherical microphone array impulse response measurement binaurally. The
 Version history
 ---------------
 
-*unreleased*
+*v2022.1.10*
     * Update `miro_to_struct()` to work in modern Matlab versions
     * Update MIRO struct loading for `SphericalGrid` (forgiving empty radius and quadrature weights)
     * Add optional automatic limitation of y-axis range in `plot2D()`
