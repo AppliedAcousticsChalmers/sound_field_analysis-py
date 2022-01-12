@@ -128,6 +128,7 @@ Version history
 
 *unreleased*
     * Improve `read_miro_struct()` to give warnings in case elevation data is found
+    * Fix *Exp4* loading of MIRO files and improve documentation table formatting
 
 *v2022.1.10*
     * Update `miro_to_struct()` to work in modern Matlab versions
@@ -135,13 +136,13 @@ Version history
     * Add optional automatic limitation of y-axis range in `plot2D()`
     * Implement `frac_oct_smooth_fd()` with fractional octave smoothing of magnitude spectra
     * Add option for fractional octave smoothing of magnitude spectra to `plot2D()`
-    * Fix Exp4 to replace removed `deg2rad` and `rad2deg` utility functions
+    * Fix *Exp4* to replace removed `deg2rad` and `rad2deg` utility functions
     * Add option to generate unlimited radial filters
     * Add Radial Filter Improvement DC-component estimation for all orders where the 0 Hz bin is NaN
 
 *v2021.2.4*
     * Implement option to use real spherical harmonic basis functions
-    * Update Exp4 to optionally utilize real spherical harmonics
+    * Update *Exp4* to optionally utilize real spherical harmonics
     * Fix testing of spherical harmonics against reference Matlab implementation
     * Add testing for generation of real spherical harmonics
     * Add evaluation of performance for generation of complex and real spherical harmonics
@@ -153,7 +154,7 @@ Version history
 *v2021.1.12*
     * Update MIRO struct loading for `SphericalGrid` (quadrature weights are now optional)
     * Fix to prevent Python 3.8 syntax warnings
-    * Improve Exp4 (general code structure and utilizing Spherical Head Filter and Spherical Harmonics Tapering)
+    * Improve *Exp4* (general code structure and utilizing Spherical Head Filter and Spherical Harmonics Tapering)
 
 *v2020.1.30*
     * Update README and `PyPI`_ package
@@ -163,7 +164,7 @@ Version history
 
 *v2019.8.15*
     * Change version number scheme to CalVer
-    * Improve Exp4
+    * Improve *Exp4*
     * Update `read_SOFA_file()`
     * Update 2D plotting functions
     * Improve `write_SSR_IRs()`
@@ -172,8 +173,8 @@ Version history
 
 *2019-07-30 (v0.9)*
     * Implement `SOFA`_ import
-    * Update Exp4 to contain `SOFA`_ import
-    * Delete obsolete Exp3
+    * Update *Exp4* to contain `SOFA`_ import
+    * Delete obsolete *Exp3*
     * Add named tuple `HRIRSignal`
     * Implement `cart2sph()` and `sph2cart()` utility functions
     * Add `Conda`_ environment file for convenient installation of required packages
@@ -193,7 +194,7 @@ Version history
     * Implement Spherical Head Filter
     * Implement Spherical Fourier Transform using pseudo-inverse
     * Extract real time capable spatial Fourier transform
-    * Extract reversed m index function (Update Exp4)
+    * Extract reversed m index function (Update *Exp4*)
 
 
 Contribute
