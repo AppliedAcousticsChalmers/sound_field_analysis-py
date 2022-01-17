@@ -532,7 +532,7 @@ def ideal_wave(
     """
     array_configuration = ArrayConfiguration(*array_configuration)
 
-    order = _np.int(order)
+    order = _np.int_(order)
     NFFT = NFFT // 2 + 1
     NMLocatorSize = (order + 1) ** 2
 
@@ -609,7 +609,7 @@ def spherical_noise(
             order_max, gridData.azimuth, gridData.colatitude, kind=kind
         )
     else:
-        order_max = _np.int(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)
+        order_max = _np.int_(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)
     return _np.inner(
         spherical_harmonic_bases,
         _np.random.randn((order_max + 1) ** 2)

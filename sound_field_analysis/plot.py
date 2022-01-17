@@ -115,7 +115,7 @@ def makeMTX(
     """
 
     if not viz_order:
-        viz_order = _np.int(_np.ceil(_np.sqrt(spat_coeffs.shape[0]) - 1))
+        viz_order = _np.int_(_np.ceil(_np.sqrt(spat_coeffs.shape[0]) - 1))
 
     angles = (
         _np.mgrid[0:360:stepsize_deg, 0:181:stepsize_deg].reshape((2, -1))
@@ -152,7 +152,7 @@ def makeFullMTX(Pnm, dn, kr, viz_order=None):
     """
     kr = _np.asarray(kr)
     if not viz_order:
-        viz_order = _np.int(_np.ceil(_np.sqrt(Pnm.shape[0]) - 1))
+        viz_order = _np.int_(_np.ceil(_np.sqrt(Pnm.shape[0]) - 1))
 
     N = kr.size
     vizMtx = []
