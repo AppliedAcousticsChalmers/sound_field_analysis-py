@@ -9,6 +9,7 @@ env:
 jobs:
   tests:
     strategy:
+      fail-fast: false
       matrix:
         python-version:
           - "3.7"
@@ -31,6 +32,9 @@ jobs:
           python --version
       - name: Clone Git repository
         uses: actions/checkout@v2
+      - name: Install pip
+        run: |
+          python -m pip install --upgrade pip
       - name: Install Python package
         run: |
           python -m pip install .
