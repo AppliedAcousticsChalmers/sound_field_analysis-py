@@ -1,0 +1,42 @@
+name: Run tests with different OS and Python versions
+
+on:
+  - push
+  - pull_request
+env:
+  PYTEST_ADDOPTS: "--color=yes"
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        python-version:
+          - "3.7"
+          - "3.8"
+          - "3.9"
+          - "3.10"
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Double-check Python version
+        run: |
+          python --version
+      - name: Clone Git repository
+        uses: actions/checkout@v2
+      - name: Install Python package
+        run: |
+          python -m pip install .
+      - name: Install pytest
+        run: |
+          python -m pip install pytest
+      - name: Run tests
+        run: |
+          python -m pytest
