@@ -482,9 +482,11 @@ def sph_harm(m, n, az, co, kind="complex"):
         Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
     co : (float)
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type according to complex [7]_ or
-        real definition [8]_ [Default: 'complex']
+    kind : {'complex', 'complex_SciPy', 'complex_SHT', 'complex_spaudiopy',
+        'complex_AKT', 'complex_GumDur', 'complex_SFS', 'real', 'real_SHT',
+        'real_spaudiopy', 'real_Zotter', 'real_AKT', 'real_SFS'}, optional
+        Spherical harmonic coefficients' data type according to conventions /
+        definitions referenced in the Note below. [Default: 'complex']
 
     Returns
     -------
@@ -492,28 +494,69 @@ def sph_harm(m, n, az, co, kind="complex"):
         Spherical harmonic of order m and degree n, sampled at theta = az,
         phi = co
 
+    Notes
+    -----
+    The different spherical harmonic conventions are used for example in:
+    'complex' [5]_ == 'complex_SciPy' [10]_ == 'complex_SHT' [11]_ ==
+    'complex_spaudiopy' [12]_ == 'complex_AKT' [13]_;
+    vs. 'complex_GumDur' [7]_ == 'complex_SFS' [14]_;
+    vs. 'real' [8]_ == 'real_SHT' [11]_ == 'real_spaudiopy' [12]_;
+    vs. 'real_Zotter' [9]_ == 'real_AKT' [13]_ == 'real_SFS' [14]_.
+
     References
     ----------
-    .. [7] `scipy.special.sph_harm()`
-    .. [8] Zotter, F. (2009). Analysis and Synthesis of Sound-Radiation with
+    .. [7] Gumerov, N. A., and Duraiswami, R. (2005). Fast Multipole Methods for
+        the Helmholtz Equation in Three Dimensions, Elsevier Science,
+        Amsterdam, NL, 520 pages. doi:10.1016/B978-0-08-044371-3.X5000-5
+    .. [8] Williams, E. G. (1999). Fourier Acoustics: Sound Radiation and
+        Nearfield Acoustical Holography, (E. G. Williams, Ed.) Academic Press,
+        London, UK, 1st ed., 1–306 pages. doi:10.1016/B978-012753960-7/50001-2
+    .. [9] Zotter, F. (2009). Analysis and Synthesis of Sound-Radiation with
         Spherical Arrays University of Music and Performing Arts Graz, Austria,
         192 pages.
+    .. [10] https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.sph_harm.html
+    .. [11] https://github.com/polarch/Spherical-Harmonic-Transform/blob/master/inverseSHT.m
+    .. [12] https://github.com/chris-hld/spaudiopy/blob/master/spaudiopy/sph.py
+    .. [13] Brinkmann, F., and Weinzierl, S. (2017). “AKtools - An Open Software
+        Toolbox for Signal Acquisition, Processing, and Inspection in
+        Acoustics,” AES Conv. 142, Audio Engineering Society, Berlin,
+        Germany, 1–6.
+    .. [14] https://github.com/JensAhrens/soundfieldsynthesis/blob/master/Common/spherical/sphharm.m
     """
     # SAFETY CHECKS
     kind = kind.lower()
-    if kind not in ["complex", "real"]:
-        raise ValueError("Invalid kind: Choose either complex or real.")
-    m = _np.atleast_1d(m)
+    if kind not in [
+        "complex",
+        "complex_scipy",
+        "complex_sht",
+        "complex_spaudiopy",
+        "complex_akt",
+        "complex_gumdur",
+        "complex_sfs",
+        "real",
+        "real_sht",
+        "real_spaudiopy",
+        "real_zotter",
+        "real_akt",
+        "real_sfs",
+    ]:
+        raise ValueError(f'Invalid kind "{kind}".')
 
-    Y = scy.sph_harm(m, n, az, co)
-    if kind == "complex":
+    if "complex" in kind:
+        Y = _np.asarray(scy.sph_harm(m, n, az, co))
+        if kind in ["complex_gumdur", "complex_sfs"]:
+            # apply Condon-Shortley phase also for positive m
+            mg0 = m > 0
+            _np.multiply(Y, _np.float_power(-1.0, m, where=mg0), out=Y, where=mg0)
         return Y
-    else:  # kind == 'real'
-        mg0 = m > 0
-        ml0 = m < 0
-        Y[mg0] = _np.float_power(-1.0, m)[mg0] * _np.sqrt(2) * _np.real(Y[mg0])
-        Y[ml0] = _np.sqrt(2) * _np.imag(Y[ml0])
-        return _np.real(Y)
+
+    else:  # "real"
+        Y = _np.asarray(scy.sph_harm(abs(m), n, az, co))
+        _np.multiply(Y, _np.sqrt(2), out=Y, where=m > 0)
+        _np.multiply(Y.imag, _np.sqrt(2), out=Y, where=m < 0, dtype=Y.dtype)
+        if kind in ["real_zotter", "real_akt", "real_sfs"]:
+            _np.multiply(Y, -1, out=Y, where=m < 0)  # negate for negative m
+        return _np.float_power(-1.0, m) * Y.real
 
 
 def sph_harm_large(m, n, az, co, kind="complex"):
