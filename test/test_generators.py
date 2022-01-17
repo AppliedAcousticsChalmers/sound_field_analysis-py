@@ -5,8 +5,6 @@ import numpy as np
 
 from sound_field_analysis import gen, io
 
-# TODO: Fix tests
-
 
 def test_ideal_wave_open_omni():
     array_configuration = io.ArrayConfiguration(
@@ -50,7 +48,7 @@ def test_ideal_wave_open_omni():
             NFFT=8,
             delay=0,
             c=343,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_open_omni,
     )
@@ -104,7 +102,7 @@ def test_ideal_wave_open_cardioid():
             NFFT=8,
             delay=0,
             c=343,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_open_cardioid,
     )
@@ -158,7 +156,7 @@ def test_ideal_wave_rigid_omni():
             NFFT=8,
             delay=0,
             c=343,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_rigid_omni,
     )
@@ -215,7 +213,7 @@ def test_ideal_wave_rigid_cardioid():
             NFFT=8,
             delay=0,
             c=343,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_rigid_cardioid,
     )
@@ -269,7 +267,7 @@ def test_sampled_wave_open_omni():
             wavetype="plane",
             c=343,
             distance=1.0,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_open_omni,
         atol=1e-12,
@@ -324,7 +322,7 @@ def test_sampled_wave_open_cardioid():
             wavetype="plane",
             c=343,
             distance=1.0,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_open_cardioid,
         atol=1e-12,
@@ -382,7 +380,7 @@ def test_sampled_wave_rigid_omni():
             wavetype="plane",
             c=343,
             distance=1.0,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_rigid_omni,
         atol=1e-12,
@@ -440,7 +438,7 @@ def test_sampled_wave_rigid_cardioid():
             wavetype="plane",
             c=343,
             distance=1.0,
-            kind="complex",
+            kind="complex_GumDur",
         ),
         results_rigid_cardioid,
         atol=1e-12,
