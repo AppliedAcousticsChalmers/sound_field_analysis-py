@@ -2,6 +2,9 @@
 # e.g. `git add --force examples/miro_to_struct.m`
 examples/
 
+# Test data and external Matlab packages
+test/*/
+
 # always include .gitignore in subdirectories
 !.gitignore
 

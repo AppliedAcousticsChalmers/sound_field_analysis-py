@@ -1,0 +1,11 @@
+name: sfa_compare_SH_conventions
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - pip
+  - python >=3.7
+  - scipy
+  - pip:
+      - spaudiopy
+      - -e .
