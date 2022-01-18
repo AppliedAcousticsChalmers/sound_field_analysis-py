@@ -38,8 +38,6 @@ Module containing various spherical harmonics helper functions:
     Generate full spectrum kr.
 """
 
-from math import factorial as fact
-
 import numpy as _np
 from scipy import special as scy
 
@@ -559,7 +557,7 @@ def sph_harm(m, n, az, co, kind="complex"):
         return _np.float_power(-1.0, m) * Y.real
 
 
-def sph_harm_large(m, n, az, co, kind="complex"):
+def sph_harm_large(m, n, az, co, kind="complex", force_large=False):
     """Compute spherical harmonics for large orders > 84.
 
     Parameters
@@ -572,9 +570,12 @@ def sph_harm_large(m, n, az, co, kind="complex"):
         Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
     co : (float)
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type according to complex [6]_ or
-        real definition [7]_ [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
+    force_large: bool, optional
+        If the computation method for large orders should be forced even if a
+        small order is given. [Default: False]
 
     Returns
     -------
@@ -588,48 +589,69 @@ def sph_harm_large(m, n, az, co, kind="complex"):
     Y_n,m (theta, phi) = ((n - m)! * (2l + 1)) / (4pi * (l + m))^0.5
     * exp(i m phi) * P_n^m(cos(theta)) as per https://dlmf.nist.gov/14.30
     Pmn(z) are the associated Legendre functions of the first kind,
-    like scipy.special.lpmv, which calculates P(0...m 0...n) and its derivative
-    but won't return +inf at high orders.
-
-    TODO
-    ----
-    Confirm that the correct SH definition is used
+    like `scipy.special.lpmv()`, which calculates P(0...m 0...n) and its
+    derivative but won't return +inf at high orders.
     """
-    if _np.all(_np.abs(m) < 84):
-        return sph_harm(m, n, az, co, kind=kind)
+    if not force_large and _np.all(_np.abs(m) < 84):
+        return sph_harm(m=m, n=n, az=az, co=co, kind=kind)
     else:
         # SAFETY CHECKS
         kind = kind.lower()
-        if kind not in {"complex", "real"}:
-            raise ValueError("Invalid kind: Choose either complex or real.")
-        m = _np.atleast_1d(m)
+        if kind not in [
+            "complex",
+            "complex_scipy",
+            "complex_sht",
+            "complex_spaudiopy",
+            "complex_akt",
+            "complex_gumdur",
+            "complex_sfs",
+            "real",
+            "real_sht",
+            "real_spaudiopy",
+            "real_zotter",
+            "real_akt",
+            "real_sfs",
+        ]:
+            raise ValueError(f'Invalid kind "{kind}".')
 
-        # TODO: Confirm that the correct SH definition is used
-        mAbs = _np.abs(m)
-        if isinstance(co, _np.ndarray):
-            P = _np.empty(co.size)
-            for k in range(0, co.size):
-                P[k] = scy.lpmn(mAbs, n, _np.cos(co[k]))[0][-1][-1]
-        else:
-            P = scy.lpmn(mAbs, n, _np.cos(co))[0][-1][-1]
+        m = _np.atleast_1d(m)
+        n = _np.atleast_1d(n)
+        az = _np.atleast_1d(az)
+        co = _np.atleast_1d(co)
+        if not (m.shape == n.shape == az.shape == co.shape):
+            raise ValueError(
+                "This function only handles input data of identical shape."
+            )
+
+        abs_m = abs(m)
+        P = _np.empty(co.shape)
+        # noinspection PyTypeChecker
+        for i in _np.ndindex(P.shape):
+            P[i] = scy.lpmn(abs_m[i], n[i], _np.cos(co[i]))[0][-1][-1]
+        # P = scy.lpmv(abs_m, n, _np.cos(co))
+
         preFactor1 = _np.sqrt((2 * n + 1) / (4 * _np.pi))
         try:
-            preFactor2 = _np.sqrt(fact(n - mAbs) / fact(n + mAbs))
+            preFactor2 = _np.sqrt(scy.factorial(n - abs_m) / scy.factorial(n + abs_m))
         except OverflowError:  # integer division for very large orders
-            preFactor2 = _np.sqrt(fact(n - mAbs) // fact(n + mAbs))
+            preFactor2 = _np.sqrt(scy.factorial(n - abs_m) // scy.factorial(n + abs_m))
+        Y = preFactor1 * preFactor2 * P
 
-        Y = preFactor1 * preFactor2 * _np.exp(1j * m * az) * P
-        if kind == "complex":
-            return Y if m >= 0 else _np.conj(Y)
-        else:  # kind == 'real'
-            Y[_np.where(m > 0)] = (
-                _np.float_power(-1.0, m)[_np.where(m > 0)]
-                * _np.sqrt(2)
-                * _np.real(Y[_np.where(m > 0)])
-            )
-            Y[_np.where(m == 0)] = _np.real(Y[_np.where(m == 0)])
-            Y[_np.where(m < 0)] = _np.sqrt(2) * _np.real(Y[_np.where(m < 0)])
-            return _np.real(Y)
+        if "complex" in kind:
+            _np.multiply(Y, _np.float_power(-1.0, m, where=m < 0), out=Y, where=m < 0)
+            if kind in ["complex_gumdur", "complex_sfs"]:
+                # apply Condon-Shortley phase also for positive m
+                _np.multiply(
+                    Y, _np.float_power(-1.0, m, where=m > 0), out=Y, where=m > 0
+                )
+            return Y * _np.exp(1j * m * az)
+
+        else:  # "real"
+            _np.multiply(Y, _np.sqrt(2) * _np.cos(m * az), out=Y, where=m > 0)
+            _np.multiply(Y, _np.sqrt(2) * _np.sin(abs_m * az), out=Y, where=m < 0)
+            if kind in ["real_zotter", "real_akt", "real_sfs"]:
+                _np.multiply(Y, -1, out=Y, where=m < 0)  # negate for negative m
+            return _np.float_power(-1.0, m) * Y.real
 
 
 def sph_harm_all(nMax, az, co, kind="complex"):
