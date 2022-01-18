@@ -3,55 +3,138 @@ generate spherical harmonics.
 
 Exemplary execution:
 ======================
-_TIMEIT_REPEAT = 5
-_TIMEIT_NUMBER = 5000
-_N_MAX = 8
-_KIND = real
-======================
 node "C18TTLT"
 ======================
 
-sph_harm_1
-time:                          0.88s
+======================
+_TIMEIT_REPEAT = 5
+_TIMEIT_NUMBER = 500
+_N_MAX = 8
+======================
+
+======================
+_KIND = 'complex'
+======================
+
+sph.sph_harm
+time:                          0.33s
 
 spaudiopy.sh_matrix
-time:                          3.98s
-time factor:                   4.54 ... WORSE
-result sum:      0.7027539767877192 ... MISMATCH
-result max:     0.12727637177922763 ... MISMATCH
+time:                          0.39s
+time factor:                   1.16 ... WORSE
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
 
-pyshtools
-time:                          0.52s
-time factor:                   0.60 ... BETTER
-result sum:       0.702753976787717 ... MISMATCH
-result max:      0.9629001108439836 ... MISMATCH
+sph.sph_harm_large (fallback to sph.sph_harm)
+time:                          0.33s
+time factor:                   1.00 ... EVEN
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
+
+sph.sph_harm_large (force_large)
+time:                         13.73s
+time factor:                  41.28 ... WORSE
+result sum:   5.287666796125258e-15 ... OKAY
+result max:   8.568339948907339e-16 ... OKAY
+
+======================
+_KIND = 'complex_GumDur'
+======================
+
+sph.sph_harm
+time:                          0.35s
 
 sph_harm_2
-time:                          0.63s
-time factor:                   0.72 ... BETTER
+time:                          0.35s
+time factor:                   1.02 ... EVEN
 result sum:                     0.0 ... PERFECT
 result max:                     0.0 ... PERFECT
 
 sph_harm_3
-time:                          0.57s
-time factor:                   0.65 ... BETTER
+time:                          0.35s
+time factor:                   1.01 ... EVEN
 result sum:                     0.0 ... PERFECT
 result max:                     0.0 ... PERFECT
 
 sph_harm_4
-time:                          0.55s
-time factor:                   0.62 ... BETTER
+time:                          0.38s
+time factor:                   1.09 ... WORSE
 result sum:                     0.0 ... PERFECT
 result max:                     0.0 ... PERFECT
 
-sph_harm_5
-time:                          0.56s
-time factor:                   0.64 ... BETTER
+sph.sph_harm_large (force_large)
+time:                         13.69s
+time factor:                  39.31 ... WORSE
+result sum:     3.1285120834878e-15 ... OKAY
+result max:   8.568339948907339e-16 ... OKAY
+
+sph.sph_harm COMPLEX (mismatch expected)
+time:                          0.33s
+time factor:                   0.95 ... BETTER
+result sum:      15.318139446419302 ... MISMATCH
+result max:       1.355973823707794 ... MISMATCH
+
+======================
+_KIND = 'real'
+======================
+
+sph.sph_harm
+time:                          0.36s
+
+spaudiopy.sh_matrix
+time:                          0.54s
+time factor:                   1.51 ... WORSE
 result sum:                     0.0 ... PERFECT
 result max:                     0.0 ... PERFECT
 
-sph_harm COMPLEX
+sph.sph_harm_large (force_large)
+time:                         13.88s
+time factor:                  38.46 ... WORSE
+result sum:   5.789664227699895e-15 ... OKAY
+result max:   9.992007221626409e-16 ... OKAY
+
+======================
+_KIND = 'real_Zotter'
+======================
+
+sph.sph_harm
+time:                          0.37s
+
+sph_harm_2
+time:                          0.37s
+time factor:                   1.00 ... EVEN
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
+
+sph_harm_3
+time:                          0.39s
+time factor:                   1.05 ... WORSE
+result sum:                     0.0 ... PERFECT
+result max:                     0.0 ... PERFECT
+
+sph_harm_4
 time:                          0.40s
+time factor:                   1.08 ... WORSE
+result sum:  1.7488523968906112e-15 ... OKAY
+result max:  1.1102230246251565e-16 ... OKAY
+
+sph.sph_harm_large (force_large)
+time:                         13.71s
+time factor:                  37.08 ... WORSE
+result sum:   6.429683438309033e-15 ... OKAY
+result max:   9.992007221626409e-16 ... OKAY
+
+sph.sph_harm COMPLEX (mismatch expected)
+time:                          0.38s
+time factor:                   1.03 ... WORSE
+result sum:       7.676718890119865 ... MISMATCH
+result max:        1.77470334799578 ... MISMATCH
+
+sph.sph_harm COMPLEX (mismatch expected)
+time:                          0.36s
+time factor:                   0.97 ... BETTER
+result sum:      14.423863129737137 ... MISMATCH
+result max:      1.4644711794479288 ... MISMATCH
 """
 
 import platform
@@ -59,7 +142,7 @@ import platform
 import numpy as _np
 from scipy import special as scy
 
-from sound_field_analysis.sph import mnArrays
+from sound_field_analysis import sph
 from sound_field_analysis.utils import time_it
 
 
@@ -116,102 +199,98 @@ def sh_matrix(N, azi, colat, SH_type="complex", weights=None):
     return Ymn
 
 
-def sph_harm_all_func(func, _N_MAX, az, co, kind="complex"):
-    m, n = mnArrays(_N_MAX)
+def sph_harm_all_func(func, nMax, az, co, kind, force_large=False):
+    m, n = sph.mnArrays(nMax)
     mA, azA = _np.meshgrid(m, az)
     nA, coA = _np.meshgrid(n, co)
-    return func(mA, nA, azA, coA, kind=kind)
-
-
-def sph_harm_1(m, n, az, co, kind="complex"):
-    Y = scy.sph_harm(m, n, az, co)
-    if kind == "complex":
-        return Y
-    else:  # kind == 'real'
-        Y[_np.where(m > 0)] = (
-            _np.float_power(-1.0, m)[_np.where(m > 0)]
-            * _np.sqrt(2)
-            * _np.real(Y[_np.where(m > 0)])
-        )
-        Y[_np.where(m == 0)] = _np.real(Y[_np.where(m == 0)])
-        Y[_np.where(m < 0)] = _np.sqrt(2) * _np.imag(Y[_np.where(m < 0)])
-        return _np.real(Y)
+    if force_large:
+        return func(mA, nA, azA, coA, kind=kind, force_large=force_large)
+    else:
+        return func(mA, nA, azA, coA, kind=kind)
 
 
 def sph_harm_2(m, n, az, co, kind="complex"):
-    Y = scy.sph_harm(m, n, az, co)
-    if kind == "complex":
+    kind = kind.lower()
+    if "complex" in kind:
+        Y = _np.asarray(scy.sph_harm(m, n, az, co))
+        if kind in ["complex_gumdur", "complex_sfs"]:
+            # apply Condon-Shortley phase also for positive m
+            _np.multiply(Y, _np.float_power(-1.0, m, where=m > 0), out=Y, where=m > 0)
         return Y
-    else:  # kind == 'real'
-        Y[_np.where(m > 0)] = (
-            _np.float_power(-1.0, m)[_np.where(m > 0)]
-            * _np.sqrt(2)
-            * _np.real(Y[_np.where(m > 0)])
-        )
-        Y[_np.where(m < 0)] = _np.sqrt(2) * _np.imag(Y[_np.where(m < 0)])
-        return _np.real(Y)
+
+    else:  # "real"
+        Y = _np.asarray(scy.sph_harm(abs(m), n, az, co))
+        _np.multiply(Y, _np.sqrt(2), out=Y, where=m > 0)
+        _np.multiply(Y.imag, _np.sqrt(2), out=Y, where=m < 0, dtype=Y.dtype)
+        if kind in ["real_zotter", "real_akt", "real_sfs"]:
+            _np.multiply(Y, -1, out=Y, where=m < 0)  # negate for negative m
+        return _np.float_power(-1.0, m) * Y.real
 
 
 def sph_harm_3(m, n, az, co, kind="complex"):
-    Y = scy.sph_harm(m, n, az, co)
-    if kind == "complex":
+    kind = kind.lower()
+    if "complex" in kind:
+        Y = _np.asarray(scy.sph_harm(m, n, az, co))
+        if kind in ["complex_gumdur", "complex_sfs"]:
+            # apply Condon-Shortley phase also for positive m
+            Y[m > 0] *= _np.float_power(-1.0, m[m > 0])
         return Y
-    else:  # kind == 'real'
-        Y[m > 0] = _np.float_power(-1.0, m)[m > 0] * _np.sqrt(2) * _np.real(Y[m > 0])
-        Y[m < 0] = _np.sqrt(2) * _np.imag(Y[m < 0])
-        return _np.real(Y)
+
+    else:  # "real"
+        Y = _np.asarray(scy.sph_harm(abs(m), n, az, co))
+        Y[m > 0] *= _np.sqrt(2)
+        Y[m < 0] = Y.imag[m < 0] * _np.sqrt(2)
+        if kind in ["real_zotter", "real_akt", "real_sfs"]:
+            Y[m < 0] *= -1  # negate for negative m
+        return _np.float_power(-1.0, m) * Y.real
 
 
 def sph_harm_4(m, n, az, co, kind="complex"):
-    Y = scy.sph_harm(m, n, az, co)
-    if kind == "complex":
+    kind = kind.lower()
+    if "complex" in kind:
+        Y = _np.asarray(scy.sph_harm(m, n, 0, co)) * _np.exp(1j * m * az)
+        if kind in ["complex_gumdur", "complex_sfs"]:
+            # apply Condon-Shortley phase also for positive m
+            _np.multiply(Y, _np.float_power(-1.0, m), out=Y, where=m > 0)
         return Y
-    else:  # kind == 'real'
-        mg0 = m > 0
-        ml0 = m < 0
-        Y[mg0] = _np.float_power(-1.0, m)[mg0] * _np.sqrt(2) * _np.real(Y[mg0])
-        Y[ml0] = _np.sqrt(2) * _np.imag(Y[ml0])
-        return _np.real(Y)
-
-
-def sph_harm_5(m, n, az, co, kind="complex"):
-    Y = scy.sph_harm(m, n, az, co)
-    if kind == "complex":
-        return Y
-    else:  # kind == 'real'
-        mg0 = m > 0
-        me0 = m == 0
-        ml0 = m < 0
-        Y_real = _np.zeros(Y.shape, dtype=_np.float_)
-        Y_real[mg0] = _np.float_power(-1.0, m)[mg0] * _np.sqrt(2) * _np.real(Y[mg0])
-        Y_real[me0] = _np.real(Y[me0])
-        Y_real[ml0] = _np.sqrt(2) * _np.imag(Y[ml0])
-        return Y_real
+    else:  # "real"
+        Y = _np.asarray(scy.sph_harm(abs(m), n, 0, co))
+        _np.multiply(Y, _np.sqrt(2) * _np.cos(m * az), out=Y, where=m > 0)
+        _np.multiply(Y, _np.sqrt(2) * _np.sin(abs(m) * az), out=Y, where=m < 0)
+        if kind in ["real_zotter", "real_akt", "real_sfs"]:
+            _np.multiply(Y, -1, out=Y, where=m < 0)  # negate for negative m
+        return _np.float_power(-1.0, m) * Y.real
 
 
 # set parameters
 _TIMEIT_REPEAT = 5
-_TIMEIT_NUMBER = 5000
-(_N_MAX, _AZ, _CO, _KIND) = (8, 0.1, 0.1, "real")
+_TIMEIT_NUMBER = 500
+_AZ = _np.linspace(start=0, stop=2 * _np.pi, num=50)
+_CO = _np.random.uniform(low=0, high=_np.pi, size=_AZ.size)
+_N_MAX = 8
 
-print("======================")
-print(f"_TIMEIT_REPEAT = {_TIMEIT_REPEAT}")
-print(f"_TIMEIT_NUMBER = {_TIMEIT_NUMBER}")
-print(f"_N_MAX = {_N_MAX}")
-print(f"_KIND = {_KIND}")
 print("======================")
 print(f'node "{platform.node()}"')
 print("======================\n")
+print("======================")
+print(f"{_TIMEIT_REPEAT = }")
+print(f"{_TIMEIT_NUMBER = }")
+print(f"{_N_MAX = }")
+print("======================\n")
+
+_KIND = "complex"
+print("======================")
+print(f"{_KIND = }")
+print("======================\n")
 
 ref = time_it(
-    description="sph_harm_1",
-    stmt="sph_harm_all_func(sph_harm_1, _N_MAX, _AZ, _CO, kind=_KIND)",
+    description="sph.sph_harm",
+    stmt="sph_harm_all_func(sph.sph_harm, _N_MAX, _AZ, _CO, _KIND)",
     setup="",
     _globals=locals(),
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
 )
-
 time_it(
     description="spaudiopy.sh_matrix",
     stmt="sh_matrix(N=_N_MAX, azi=_AZ, colat=_CO, SH_type=_KIND, weights=None)",
@@ -220,40 +299,41 @@ time_it(
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
     reference=ref,
-)  # slowest, not sure if mismatch is due to a bug or a different convention
-
+)  # slower
 time_it(
-    description="pyshtools",
-    stmt="""\
-result = spharm(lmax=_N_MAX, theta=_CO, phi=_AZ, kind=_KIND, degrees=False,
-                normalization='ortho', csphase=1, packed=False)
-result = SHCilmToVector(result)[_np.newaxis, :]""",
-    setup="""\
-from pyshtools.expand import spharm
-from pyshtools.shio import SHCilmToVector""",
+    description="sph.sph_harm_large (fallback to sph.sph_harm)",
+    stmt="sph_harm_all_func(sph.sph_harm_large, _N_MAX, _AZ, _CO, _KIND)",
+    setup="",
     _globals=locals(),
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
     reference=ref,
-)  # fastest, but does not result in similar coefficient order yet
-"""
-Notes
------
-pyshtools has a lot of additional dependencies that are not required for the
-purpose of generating the spherical harmonic basis functions. The following
-dependencies can be added to the environment.yml for a minimal setup.
+)
+time_it(
+    description="sph.sph_harm_large (force_large)",
+    stmt="sph_harm_all_func(sph.sph_harm_large, _N_MAX, _AZ, _CO, _KIND, True)",
+    setup="",
+    _globals=locals(),
+    repeat=1,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)  # slowest
 
-channels:
-  - defaults
-  - conda-forge
-dependencies:
-  - pyshtools [--no-deps]  # to not get tons of additional dependencies
-  - openblas  # required dependency for pyshtools
-"""
-
+_KIND = "complex_GumDur"
+print("======================")
+print(f"{_KIND = }")
+print("======================\n")
+ref = time_it(
+    description="sph.sph_harm",
+    stmt="sph_harm_all_func(sph.sph_harm, _N_MAX, _AZ, _CO, _KIND)",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+)
 time_it(
     description="sph_harm_2",
-    stmt="sph_harm_all_func(sph_harm_2, _N_MAX, _AZ, _CO, kind=_KIND)",
+    stmt="sph_harm_all_func(sph_harm_2, _N_MAX, _AZ, _CO, _KIND)",
     setup="",
     _globals=locals(),
     repeat=_TIMEIT_REPEAT,
@@ -262,7 +342,7 @@ time_it(
 )
 time_it(
     description="sph_harm_3",
-    stmt="sph_harm_all_func(sph_harm_3, _N_MAX, _AZ, _CO, kind=_KIND)",
+    stmt="sph_harm_all_func(sph_harm_3, _N_MAX, _AZ, _CO, _KIND)",
     setup="",
     _globals=locals(),
     repeat=_TIMEIT_REPEAT,
@@ -271,16 +351,7 @@ time_it(
 )
 time_it(
     description="sph_harm_4",
-    stmt="sph_harm_all_func(sph_harm_4, _N_MAX, _AZ, _CO, kind=_KIND)",
-    setup="",
-    _globals=locals(),
-    repeat=_TIMEIT_REPEAT,
-    number=_TIMEIT_NUMBER,
-    reference=ref,
-)  # fastest (apart from pyshtools(
-time_it(
-    description="sph_harm_5",
-    stmt="sph_harm_all_func(sph_harm_5, _N_MAX, _AZ, _CO, kind=_KIND)",
+    stmt="sph_harm_all_func(sph_harm_4, _N_MAX, _AZ, _CO, _KIND)",
     setup="",
     _globals=locals(),
     repeat=_TIMEIT_REPEAT,
@@ -288,10 +359,120 @@ time_it(
     reference=ref,
 )
 time_it(
-    description="sph_harm COMPLEX",
-    stmt="sph_harm_all_func(sph_harm_1, _N_MAX, _AZ, _CO, kind='complex')",
+    description="sph.sph_harm_large (force_large)",
+    stmt="sph_harm_all_func(sph.sph_harm_large, _N_MAX, _AZ, _CO, _KIND, True)",
+    setup="",
+    _globals=locals(),
+    repeat=1,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)  # slowest
+time_it(
+    description="sph.sph_harm COMPLEX (mismatch expected)",
+    stmt="sph_harm_all_func(sph.sph_harm, _N_MAX, _AZ, _CO, 'complex')",
     setup="",
     _globals=locals(),
     repeat=_TIMEIT_REPEAT,
     number=_TIMEIT_NUMBER,
-)  # for timing reference (mismatch in case of 'real' kind is expected)
+    reference=ref,
+)  # for timing reference (mismatch in case of 'complex_GumDur' kind is expected)
+
+
+_KIND = "real"
+print("======================")
+print(f"{_KIND = }")
+print("======================\n")
+
+ref = time_it(
+    description="sph.sph_harm",
+    stmt="sph_harm_all_func(sph.sph_harm, _N_MAX, _AZ, _CO, _KIND)",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+)
+time_it(
+    description="spaudiopy.sh_matrix",
+    stmt="sh_matrix(N=_N_MAX, azi=_AZ, colat=_CO, SH_type=_KIND, weights=None)",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)  # slower
+time_it(
+    description="sph.sph_harm_large (force_large)",
+    stmt="sph_harm_all_func(sph.sph_harm_large, _N_MAX, _AZ, _CO, _KIND, True)",
+    setup="",
+    _globals=locals(),
+    repeat=1,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)  # slowest
+
+_KIND = "real_Zotter"
+print("======================")
+print(f"{_KIND = }")
+print("======================\n")
+ref = time_it(
+    description="sph.sph_harm",
+    stmt="sph_harm_all_func(sph.sph_harm, _N_MAX, _AZ, _CO, _KIND)",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+)
+time_it(
+    description="sph_harm_2",
+    stmt="sph_harm_all_func(sph_harm_2, _N_MAX, _AZ, _CO, _KIND)",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)
+time_it(
+    description="sph_harm_3",
+    stmt="sph_harm_all_func(sph_harm_3, _N_MAX, _AZ, _CO, _KIND)",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)
+time_it(
+    description="sph_harm_4",
+    stmt="sph_harm_all_func(sph_harm_4, _N_MAX, _AZ, _CO, _KIND)",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)
+time_it(
+    description="sph.sph_harm_large (force_large)",
+    stmt="sph_harm_all_func(sph.sph_harm_large, _N_MAX, _AZ, _CO, _KIND, True)",
+    setup="",
+    _globals=locals(),
+    repeat=1,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)  # slowest
+time_it(
+    description="sph.sph_harm REAL (mismatch expected)",
+    stmt="sph_harm_all_func(sph.sph_harm, _N_MAX, _AZ, _CO, 'real')",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)  # for timing reference (mismatch in case of 'real_Zotter' kind is expected)
+time_it(
+    description="sph.sph_harm COMPLEX (mismatch expected)",
+    stmt="sph_harm_all_func(sph.sph_harm, _N_MAX, _AZ, _CO, 'complex')",
+    setup="",
+    _globals=locals(),
+    repeat=_TIMEIT_REPEAT,
+    number=_TIMEIT_NUMBER,
+    reference=ref,
+)  # for timing reference (mismatch in case of 'real_Zotter' kind is expected)
