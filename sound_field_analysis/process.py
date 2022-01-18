@@ -282,8 +282,9 @@ def spatFT(
         Azimuths/Colatitudes/Gridweights of spatial sampling points
     order_max : int, optional
         Maximum transform order [Default: 10]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
         Spherical harmonic base coefficients (not yet weighted by spatial
         sampling grid) [Default: None]
@@ -367,8 +368,9 @@ def spatFT_LSF(
         Azimuth / colatitude data locations
     order_max: int, optional
         Maximum transform order [Default: 10]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
         Spherical harmonic base coefficients (not yet weighted by spatial
         sampling grid) [Default: None]
@@ -409,8 +411,9 @@ def iSpatFT(
         Azimuth/Colatitude angles of spherical coefficients
     order_max : int, optional
         Maximum transform order [Default: highest available order]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
         Spherical harmonic base coefficients (not yet weighted by spatial
         sampling grid) [Default: None]
@@ -467,8 +470,9 @@ def plane_wave_decomp(
     weights : array_like, optional
         Weighting function. Either scalar, one per directions or of dimension
         (nKR_bins x  nDirections). [Default: None]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
 
     Returns
     -------

@@ -382,7 +382,7 @@ def array_extrapolation(order, freqs, array_configuration, normalize=True):
         Frequencies
     array_configuration : io.ArrayConfiguration
         List/Tuple/ArrayConfiguration, see io.ArrayConfiguration
-    normalize: Bool, optional
+    normalize: bool, optional
         Normalize by 4 * pi * 1j ** order [Default: True]
 
     Returns
@@ -666,7 +666,7 @@ def sph_harm_all(nMax, az, co, kind="complex"):
     co : (float), array_like
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
     kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+        Spherical harmonic coefficients' data type [Default: 'complex']
 
     Returns
     -------
@@ -679,7 +679,7 @@ def sph_harm_all(nMax, az, co, kind="complex"):
     m, n = mnArrays(nMax)
     mA, azA = _np.meshgrid(m, az)
     nA, coA = _np.meshgrid(n, co)
-    return sph_harm(mA, nA, azA, coA, kind=kind)
+    return sph_harm(m=mA, n=nA, az=azA, co=coA, kind=kind)
 
 
 def mnArrays(nMax):

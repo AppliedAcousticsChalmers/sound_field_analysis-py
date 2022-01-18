@@ -431,8 +431,9 @@ def sampled_wave(
         Distance of the source in [m] (For spherical waves only)
     limit_order : int, optional
         Sets the limit for wave generation
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
 
     Warning
     -------
@@ -464,18 +465,21 @@ def sampled_wave(
             f"{max_order_fullspec} but was limited to order {limit_order}"
         )
     Pnm = ideal_wave(
-        min(max_order_fullspec, limit_order),
-        fs,
-        wave_azimuth,
-        wave_colatitude,
-        array_configuration,
+        order=min(max_order_fullspec, limit_order),
+        fs=fs,
+        azimuth=wave_azimuth,
+        colatitude=wave_colatitude,
+        array_configuration=array_configuration,
         wavetype=wavetype,
         distance=distance,
         NFFT=NFFT,
         kind=kind,
     )
     Pnm_resampled = spatFT(
-        iSpatFT(Pnm, gridData, kind=kind), gridData, order_max=order, kind=kind
+        iSpatFT(Pnm, position_grid=gridData, kind=kind),
+        position_grid=gridData,
+        order_max=order,
+        kind=kind,
     )
     return Pnm_resampled
 
@@ -516,13 +520,14 @@ def ideal_wave(
         Time Delay in s [default: 0]
     c : float, optional
         Propagation velocity in m/s [Default: 343m/s]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
 
     Warning
     -------
     If NFFT is smaller than the time the wavefront needs to travel from the
-    source to the array, the impulse response will by cyclically shifted.
+    source to the array, the impulse response will be cyclically shifted.
 
     Returns
     -------
@@ -569,7 +574,7 @@ def ideal_wave(
     for n in range(0, order + 1):
         for m in range(-n, n + 1):
             Pnm[ctr] = (
-                _np.conj(sph_harm(m, n, azimuth, colatitude, kind=kind))
+                _np.conj(sph_harm(m=m, n=n, az=azimuth, co=colatitude, kind=kind))
                 * radial_filters[n]
             )
             ctr = ctr + 1
@@ -588,8 +593,9 @@ def spherical_noise(
         SphericalGrid containing azimuth and colatitude
     order_max : int, optional
         Spherical order limit [Default: 8]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
     spherical_harmonic_bases : array_like, optional
         Spherical harmonic base coefficients (not yet weighted by spatial
         sampling grid) [Default: None]
@@ -606,7 +612,7 @@ def spherical_noise(
             )
         gridData = SphericalGrid(*gridData)
         spherical_harmonic_bases = sph_harm_all(
-            order_max, gridData.azimuth, gridData.colatitude, kind=kind
+            nMax=order_max, az=gridData.azimuth, co=gridData.colatitude, kind=kind
         )
     else:
         order_max = _np.int_(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)

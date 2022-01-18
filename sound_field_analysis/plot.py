@@ -100,8 +100,9 @@ def makeMTX(
         Order of the spatial fourier transform [Default: Highest available]
     stepsize_deg : float, optional
         Integer Factor to increase the resolution. [Default: 1]
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
 
     Returns
     -------
