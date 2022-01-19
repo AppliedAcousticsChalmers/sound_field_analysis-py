@@ -2,6 +2,7 @@
 """
 
 import numpy as np
+import pytest
 
 from sound_field_analysis import gen, io
 
@@ -36,7 +37,7 @@ def test_ideal_wave_open_omni():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_open_omni == pytest.approx(
         gen.ideal_wave(
             order=1,
             fs=48000,
@@ -49,8 +50,7 @@ def test_ideal_wave_open_omni():
             delay=0,
             c=343,
             kind="complex_GumDur",
-        ),
-        results_open_omni,
+        )
     )
 
 
@@ -90,7 +90,7 @@ def test_ideal_wave_open_cardioid():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_open_cardioid == pytest.approx(
         gen.ideal_wave(
             order=1,
             fs=48000,
@@ -103,8 +103,7 @@ def test_ideal_wave_open_cardioid():
             delay=0,
             c=343,
             kind="complex_GumDur",
-        ),
-        results_open_cardioid,
+        )
     )
 
 
@@ -144,7 +143,7 @@ def test_ideal_wave_rigid_omni():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_rigid_omni == pytest.approx(
         gen.ideal_wave(
             order=1,
             fs=48000,
@@ -157,8 +156,7 @@ def test_ideal_wave_rigid_omni():
             delay=0,
             c=343,
             kind="complex_GumDur",
-        ),
-        results_rigid_omni,
+        )
     )
 
 
@@ -201,7 +199,7 @@ def test_ideal_wave_rigid_cardioid():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_rigid_cardioid == pytest.approx(
         gen.ideal_wave(
             order=1,
             fs=48000,
@@ -214,8 +212,7 @@ def test_ideal_wave_rigid_cardioid():
             delay=0,
             c=343,
             kind="complex_GumDur",
-        ),
-        results_rigid_cardioid,
+        )
     )
 
 
@@ -255,7 +252,7 @@ def test_sampled_wave_open_omni():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_open_omni == pytest.approx(
         gen.sampled_wave(
             order=1,
             fs=44100,
@@ -269,8 +266,7 @@ def test_sampled_wave_open_omni():
             distance=1.0,
             kind="complex_GumDur",
         ),
-        results_open_omni,
-        atol=1e-12,
+        abs=1e-12,
     )
 
 
@@ -310,7 +306,7 @@ def test_sampled_wave_open_cardioid():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_open_cardioid == pytest.approx(
         gen.sampled_wave(
             order=1,
             fs=44100,
@@ -324,8 +320,7 @@ def test_sampled_wave_open_cardioid():
             distance=1.0,
             kind="complex_GumDur",
         ),
-        results_open_cardioid,
-        atol=1e-12,
+        abs=1e-12,
     )
 
 
@@ -368,7 +363,7 @@ def test_sampled_wave_rigid_omni():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_rigid_omni == pytest.approx(
         gen.sampled_wave(
             order=1,
             fs=44100,
@@ -382,8 +377,7 @@ def test_sampled_wave_rigid_omni():
             distance=1.0,
             kind="complex_GumDur",
         ),
-        results_rigid_omni,
-        atol=1e-12,
+        abs=1e-12,
     )
 
 
@@ -426,7 +420,7 @@ def test_sampled_wave_rigid_cardioid():
             ],
         ]
     )  # Where do these results come from?
-    np.testing.assert_allclose(
+    assert results_rigid_cardioid == pytest.approx(
         gen.sampled_wave(
             order=1,
             fs=44100,
@@ -440,6 +434,5 @@ def test_sampled_wave_rigid_cardioid():
             distance=1.0,
             kind="complex_GumDur",
         ),
-        results_rigid_cardioid,
-        atol=1e-12,
+        abs=1e-12,
     )
