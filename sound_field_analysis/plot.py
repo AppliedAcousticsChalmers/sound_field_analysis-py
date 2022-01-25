@@ -458,7 +458,7 @@ def plot2D(
         Add legend to be displayed on plot, with one entry for each data row
         [Default: None]
     lim_y_range : bool, optional
-        Toggle automatic limitation of y-rang for {'ETC', 'LogFFT'} plots
+        Toggle automatic limitation of y-range for {'ETC', 'LogFFT'} plots
         [Default: True]
     log_fft_frac : float, optional
         Fractional octaves of amplitude smoothing for 'LogFFT' plots

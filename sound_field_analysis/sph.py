@@ -510,7 +510,7 @@ def sph_harm(m, n, az, co, kind="complex"):
         Nearfield Acoustical Holography, (E. G. Williams, Ed.) Academic Press,
         London, UK, 1st ed., 1–306 pages. doi:10.1016/B978-012753960-7/50001-2
     .. [9] Zotter, F. (2009). Analysis and Synthesis of Sound-Radiation with
-        Spherical Arrays University of Music and Performing Arts Graz, Austria,
+        Spherical Arrays, University of Music and Performing Arts Graz, Austria,
         192 pages.
     .. [10] https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.sph_harm.html
     .. [11] https://github.com/polarch/Spherical-Harmonic-Transform/blob/master/inverseSHT.m
@@ -665,8 +665,9 @@ def sph_harm_all(nMax, az, co, kind="complex"):
         Azimuthal (longitudinal) coordinate [0, 2pi], also called Theta.
     co : (float), array_like
         Polar (colatitudinal) coordinate [0, pi], also called Phi.
-    kind : {'complex', 'real'}, optional
-        Spherical harmonic coefficients' data type [Default: 'complex']
+    kind : {'complex', 'complex_GumDur', 'real', 'real_Zotter'}, optional
+        Spherical harmonic coefficients' data type, see `sph.sph_harm()` for
+        notes on the different conventions [Default: 'complex']
 
     Returns
     -------
