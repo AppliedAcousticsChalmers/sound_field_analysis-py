@@ -4,7 +4,8 @@ channels:
   - conda-forge
 dependencies:
   - pip
-  - python >=3.7,<3.9
+#  - python =3.6 # compatible with MATLAB >=R2017b,<=R2020b
+  - python >=3.7,<3.9 # compatible with MATLAB >=R2019a
   - scipy
   - pip:
       - spaudiopy
