@@ -13,12 +13,17 @@
 % optionally requires distFig()
 % (install "Distribute figures" by Anders Simonsen in Add-On Explorer)
 %
-% requires Python environment to compare respective implementations:
+% requires Python environment to compare respective implementations
+% (Every different Matlab versions is only compatible with specific Python
+% versions, so make sure you install a matching version according to
+% https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/support/sysreq/files/python-compatibility.pdf 
+% A restriction to `python >=3.7,<3.9` in "environment_test.yml" should 
+% allow for the compatability with `MATLAB >=R2019a`.)
 % $ conda env create --file environment_test.yml --force
 %
-% Activate the Python environment in Matlab (e.g. Windows or MacOS)
-% $ pyversion('%HOMEPATH%\Miniconda3\envs\sfa_compare_SH_conventions\python.exe')
+% Activate the Python environment in Matlab (e.g. MacOS or Windows)
 % $ pyversion('~/miniconda3/envs/sfa_compare_SH_conventions/bin/python')
+% $ pyversion('%HOMEPATH%\Miniconda3\envs\sfa_compare_SH_conventions\python.exe')
 %
 close all; clear; clc;
 
