@@ -126,7 +126,7 @@ Render a spherical microphone array impulse response measurement binaurally. The
 Version history
 ---------------
 
-*unreleased*
+*v2022.12.29*
     * Fix to prevent errors with `NumPy >= 1.24.0 <https://numpy.org/doc/stable//release/1.24.0-notes.html>`_ (replace all `int` and `np.int` with `np.int_`)
     * Improve `read_miro_struct()` to give warnings in case elevation data is found
     * Fix *Exp4* loading of MIRO files and improve documentation table formatting
