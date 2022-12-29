@@ -127,6 +127,7 @@ Version history
 ---------------
 
 *unreleased*
+    * Fix to prevent errors with `NumPy >= 1.24.0 <https://numpy.org/doc/stable//release/1.24.0-notes.html>`_ (replace all `int` and `np.int` with `np.int_`)
     * Improve `read_miro_struct()` to give warnings in case elevation data is found
     * Fix *Exp4* loading of MIRO files and improve documentation table formatting
     * Update README to reflect the name change of master branch to "main"

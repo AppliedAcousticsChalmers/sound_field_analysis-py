@@ -145,7 +145,7 @@ def lebedev(max_order=None, degree=None):
     allowed_degrees = [6, 14, 26, 38, 50, 74, 86, 110, 146, 170, 194]
 
     if max_order and 0 <= max_order <= 11:
-        degree = allowed_degrees[int(max_order) - 1]
+        degree = allowed_degrees[_np.int_(max_order) - 1]
     elif max_order:
         raise ValueError("Maximum order can only be between 0 and 11.")
 
@@ -276,7 +276,7 @@ def spherical_head_filter(max_order, full_order, kr, is_tapering=False):
         p = _np.zeros_like(kr)
         for n in range(max_order + 1):
             # Calculate mode strength b_n(kr) for an incident plane wave on sphere according to [1, Eq.(9)]
-            b_n = (4 * _np.pi * 1j ** n) * (
+            b_n = (4 * _np.pi * 1j**n) * (
                 spherical_jn(n, kr)
                 - (
                     spherical_jn(n, kr, derivative=True)
@@ -332,11 +332,11 @@ def spherical_head_filter_spec(
     Implement `arctan()` soft-clipping
     """
     # frequency support vector & corresponding wave numbers k
-    freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
+    freqs = _np.linspace(0, fs / 2, _np.int_(NFFT / 2 + 1))
     kr_SHF = kr(freqs, radius)
 
     # calculate SH order necessary to expand sound field in entire modal range
-    order_full = int(_np.ceil(kr_SHF[-1]))
+    order_full = _np.int_(_np.ceil(kr_SHF[-1]))
 
     # calculate filter
     G_SHF = spherical_head_filter(
@@ -532,7 +532,7 @@ def ideal_wave(
     """
     array_configuration = ArrayConfiguration(*array_configuration)
 
-    order = _np.int(order)
+    order = _np.int_(order)
     NFFT = NFFT // 2 + 1
     NMLocatorSize = (order + 1) ** 2
 
@@ -609,7 +609,7 @@ def spherical_noise(
             order_max, gridData.azimuth, gridData.colatitude, kind=kind
         )
     else:
-        order_max = _np.int(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)
+        order_max = _np.int_(_np.sqrt(spherical_harmonic_bases.shape[1]) - 1)
     return _np.inner(
         spherical_harmonic_bases,
         _np.random.randn((order_max + 1) ** 2)

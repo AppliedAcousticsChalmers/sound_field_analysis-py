@@ -149,7 +149,7 @@ def spbessel(n, kr):
         )
         J[_np.logical_and(kr == 0, n == 0)] = 1
     else:
-        J = scy.spherical_jn(n.astype(_np.int), kr)
+        J = scy.spherical_jn(n.astype(_np.int_), kr)
     return _np.squeeze(J)
 
 
@@ -179,7 +179,7 @@ def spneumann(n, kr):
         )
         Yv[kr < 0] = -Yv[kr < 0]
     else:
-        Yv = scy.spherical_yn(n.astype(_np.int), kr)
+        Yv = scy.spherical_yn(n.astype(_np.int_), kr)
         # return possible infs as nan to stay consistent
         Yv[_np.isinf(Yv)] = _np.nan
     return _np.squeeze(Yv)
@@ -277,7 +277,7 @@ def dspneumann(n, kr):
         return spneumann(n, kr) * n / kr - spneumann(n + 1, kr)
     else:
         return scy.spherical_yn(
-            n.astype(_np.int), kr.astype(_np.complex), derivative=True
+            n.astype(_np.int_), kr.astype(_np.complex_), derivative=True
         )
 
 
@@ -400,7 +400,7 @@ def array_extrapolation(order, freqs, array_configuration, normalize=True):
     k_dual = None
 
     if normalize:
-        scale_factor = _np.squeeze(4 * _np.pi * 1j ** order)
+        scale_factor = _np.squeeze(4 * _np.pi * 1j**order)
     else:
         scale_factor = 1
 
@@ -639,7 +639,7 @@ def mnArrays(nMax):
     # Order m = 0, -1, 0, 1, -2, -1, 0, 1, 2, ...
     # http://oeis.org/A196199
     elementNumber = _np.arange((nMax + 1) ** 2) + 1
-    t = _np.floor(_np.sqrt(elementNumber - 1)).astype(int)
+    t = _np.floor(_np.sqrt(elementNumber - 1)).astype(_np.int_)
     m = elementNumber - t * t - t - 1
 
     return m, n
@@ -661,7 +661,7 @@ def reverseMnIds(nMax):
     """
     m_ids = list(range(nMax * (nMax + 2) + 1))
     for o in range(nMax + 1):
-        id_start = o ** 2
+        id_start = o**2
         id_end = id_start + o * 2 + 1
         m_ids[id_start:id_end] = reversed(m_ids[id_start:id_end])
     return m_ids
@@ -728,7 +728,7 @@ def kr_full_spec(fs, radius, NFFT, temperature=20):
     kr : array_like
        kr vector of length NFFT/2 + 1 spanning the frequencies of 0:fs/2
     """
-    freqs = _np.linspace(0, fs / 2, int(NFFT / 2 + 1))
+    freqs = _np.linspace(0, fs / 2, _np.int_(NFFT / 2 + 1))
     return kr(freqs, radius, temperature)
 
 
@@ -775,14 +775,14 @@ def _print_mic_scaling(N, freqs, array_radius, scatter_radius=None, dual_radius=
 
 
 def _print_bns(N, k_mic, k_scatter):
-    print("bn_open_omni:", bn_open_omni(N, k_mic) * 4 * _np.pi * 1j ** N)
-    print("bn_open_cardioid:", bn_open_cardioid(N, k_mic) * 4 * _np.pi * 1j ** N),
-    print("bn_rigid_omni:", bn_rigid_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j ** N),
+    print("bn_open_omni:", bn_open_omni(N, k_mic) * 4 * _np.pi * 1j**N)
+    print("bn_open_cardioid:", bn_open_cardioid(N, k_mic) * 4 * _np.pi * 1j**N),
+    print("bn_rigid_omni:", bn_rigid_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N),
     print(
         "bn_rigid_cardioid:",
-        bn_rigid_cardioid(N, k_mic, k_scatter) * 4 * _np.pi * 1j ** N,
+        bn_rigid_cardioid(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N,
     )
     print(
         "bn_dual_open_omni:",
-        bn_dual_open_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j ** N,
+        bn_dual_open_omni(N, k_mic, k_scatter) * 4 * _np.pi * 1j**N,
     )

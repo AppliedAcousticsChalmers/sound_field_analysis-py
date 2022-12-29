@@ -72,14 +72,14 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
     """
 
     if not max_order:
-        max_order = int(_np.sqrt(Pnm.shape[0] - 1))  # SH order
+        max_order = _np.int_(_np.sqrt(Pnm.shape[0] - 1))  # SH order
 
-    transition = int(_np.floor(transition))
+    transition = _np.int_(_np.floor(transition))
 
     # computing spatio-temporal Image Imn
-    Imn = _np.zeros((Pnm.shape[0], 1), dtype=complex)
+    Imn = _np.zeros((Pnm.shape[0], 1), dtype=_np.complex_)
     # first bin for averaging
-    start_avg_bin = int(_np.floor(transition / (_np.power(2, avg_band_width))))
+    start_avg_bin = _np.int_(_np.floor(transition / (_np.power(2, avg_band_width))))
 
     modeCnt = 0
     avgPower = 0
@@ -104,7 +104,7 @@ def BEMA(Pnm, center_sig, dn, transition, avg_band_width=1, fade=True, max_order
     )
     center_sig = _np.multiply(center_sig, (1 / sq_avg))
 
-    Pnm_synth = _np.zeros(Pnm.shape, dtype=complex)
+    Pnm_synth = _np.zeros(Pnm.shape, dtype=_np.complex_)
     modeCnt = 0
     for n in range(0, max_order + 1):
         for _ in range(0, 2 * n + 1):
@@ -216,7 +216,7 @@ def FFT(
     signals = signals[:, first_sample:last_sample]
 
     if not NFFT:
-        NFFT = int(2 ** _np.ceil(_np.log2(total_samples)))
+        NFFT = _np.int_(2 ** _np.ceil(_np.log2(total_samples)))
 
     fftData = _np.fft.rfft(signals, NFFT * oversampling, 1)
     if not calculate_freqs:
@@ -432,7 +432,7 @@ def iSpatFT(
     # TODO: Check `spherical_coefficients` and `spherical_harmonic_bases` length
     #  correspond with `order_max`
     if order_max is None:
-        order_max = int(_np.sqrt(number_of_coefficients) - 1)
+        order_max = _np.int_(_np.sqrt(number_of_coefficients) - 1)
 
     # Re-generate spherical harmonic bases if they were not provided or their
     # order is too small
@@ -494,7 +494,7 @@ def plane_wave_decomp(
             "radial filter (dn) are not consistent."
         )
 
-    max_order = int(_np.floor(_np.sqrt(NMDeliveredSize) - 1))
+    max_order = _np.int_(_np.floor(_np.sqrt(NMDeliveredSize) - 1))
     if order > max_order:
         raise ValueError(
             f"The provided coefficients deliver a maximum order of {max_order} "
@@ -629,7 +629,7 @@ def rfi(dn, kernelSize=512, highPass=0.0):
     # downsize kernel
     latency = kernelSize / 2
     mid = dn_ir.shape[-1] / 2
-    dn_ir = dn_ir[:, int(mid - latency) : int(mid + latency)]
+    dn_ir = dn_ir[:, _np.int_(mid - latency) : _np.int_(mid + latency)]
 
     # apply Hanning / cosine window
     # 0.5 + 0.5 * _np.cos(2 * _np.pi * (_np.arange(0, kernelSize)
@@ -714,7 +714,7 @@ def sfe(Pnm_kra, kra, krb, problem="interior"):
         raise ValueError("Invalid problem: Choose either interior or exterior.")
 
     FCoeff = Pnm_kra.shape[0]
-    N = int(_np.floor(_np.sqrt(FCoeff) - 1))
+    N = _np.int_(_np.floor(_np.sqrt(FCoeff) - 1))
 
     nvector = _np.zeros(FCoeff)
     IDX = 1

@@ -88,13 +88,13 @@ def progress_bar(curIDX, maxIDX=None, description="Progress"):
     if maxIDX is None:
         print(f"\r{description}: {next(spinner)}", end="", flush=True)
     else:
-        maxIDX = int(maxIDX) - 1
+        maxIDX = np.int_(maxIDX) - 1
         if maxIDX == 0:
             amount_done = 1
         else:
             amount_done = curIDX / maxIDX
         print(
-            f'\r{description}: [{"#" * int(amount_done * 50):50s}] {amount_done * 100:.1f}%',
+            f'\r{description}: [{"#" * np.int_(amount_done * 50):50s}] {amount_done * 100:.1f}%',
             end="",
             flush=True,
         )
@@ -298,7 +298,9 @@ def interleave_channels(left_channel, right_channel, style=None):
 
 def simple_resample(data, original_fs, target_fs):
     """Wrap scipy.signal.resample with a simpler API."""
-    return resample(data, num=int(data.shape[-1] * target_fs / original_fs), axis=-1)
+    return resample(
+        data, num=np.int_(data.shape[-1] * target_fs / original_fs), axis=-1
+    )
 
 
 def scalar_broadcast_match(a, b):

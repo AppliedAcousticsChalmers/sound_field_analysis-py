@@ -466,10 +466,12 @@ def read_SOFA_file(file_name):
     # store SOFA data as named tuple
     if isinstance(file, sofa.SOFAConventions.SOFASimpleFreeFieldHRIR):
         hrir_l = TimeSignal(
-            signal=_check_irs(file.getDataIR()[:, 0]), fs=int(file.getSamplingRate()[0])
+            signal=_check_irs(file.getDataIR()[:, 0]),
+            fs=_np.int_(file.getSamplingRate()[0]),
         )
         hrir_r = TimeSignal(
-            signal=_check_irs(file.getDataIR()[:, 1]), fs=int(file.getSamplingRate()[0])
+            signal=_check_irs(file.getDataIR()[:, 1]),
+            fs=_np.int_(file.getSamplingRate()[0]),
         )
 
         # transform grid into azimuth, colatitude, radius in radians
@@ -486,7 +488,7 @@ def read_SOFA_file(file_name):
     else:  # isinstance(file, sofa.SOFAConventions.SOFASingleRoomDRIR):
         drir_signal = TimeSignal(
             signal=_check_irs(_np.squeeze(file.getDataIR())),
-            fs=int(file.getSamplingRate()[0]),
+            fs=_np.int_(file.getSamplingRate()[0]),
         )
 
         # transform grid into azimuth, colatitude, radius in radians
@@ -643,13 +645,13 @@ def write_SSR_IRs(filename, time_data_l, time_data_r, wavformat="float32"):
     if wavformat in ["float32", "float"]:
         sio.wavfile.write(
             filename=filename,
-            rate=int(time_data_l.signal.fs),
+            rate=_np.int_(time_data_l.signal.fs),
             data=data_to_write.T.astype(_np.float32),
         )
     elif wavformat in ["int32", "int16"]:
         sio.wavfile.write(
             filename=filename,
-            rate=int(time_data_l.signal.fs),
+            rate=_np.int_(time_data_l.signal.fs),
             data=(data_to_write.T * _np.iinfo(wavformat).max).astype(wavformat),
         )
     else:
